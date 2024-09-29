@@ -1,0 +1,9 @@
+InternalServerError:
+  description: サーバ内部でエラーが発生した
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/response.yml"
+      example:
+        code: 500
+        message: "Internal Server Error"

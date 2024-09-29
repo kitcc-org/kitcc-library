@@ -1,0 +1,175 @@
+books:
+  get:
+    tags:
+      - book
+    operationId: getBooks
+    summary: 書籍の情報を取得する
+    description: ページ番号が指定されなかった場合は1ページ目を返す
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/book.yml"
+            examples:
+              sicp:
+                $ref: "../components/examples/book.yml#/sicp"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  post:
+    tags:
+      - book
+    operationId: addBook
+    summary: 書籍を追加する
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/book.yml"
+    responses:
+      '201':
+        description: 書籍の追加に成功した
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: integer
+                message:
+                  type: string
+            example:
+              code: 201
+              message: "Created"
+      '400':
+        description: リクエストボディに書籍の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+book:
+  get:
+    tags:
+      - book
+    operationId: getBook
+    summary: 特定の書籍の情報を取得する
+    parameters:
+      - name: bookId
+        in: path
+        description: "取得する書籍のID"
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/book.yml"
+            examples:
+              sicp:
+                $ref: "../components/examples/book.yml#/sicp"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  put:
+    tags:
+      - book
+    operationId: updateBook
+    summary: 特定の書籍の情報を更新する
+    parameters:
+      - name: bookId
+        in: path
+        description: 更新する書籍のID
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/book.yml"
+    responses:
+      '200':
+        description: 情報の更新に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/book.yml"
+            examples:
+              sicp:
+                $ref: "../components/examples/book.yml#/sicp"
+      '400':
+        description: リクエストボディに書籍の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  delete:
+    tags:
+      - book
+    operationId: deleteBook
+    summary: 特定の書籍を削除する
+    parameters:
+      - name: bookId
+        in: path
+        description: 削除する書籍のID
+        required: true
+        schema:
+          type: integer
+    responses:
+      '204':
+        description: 書籍の削除に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 204
+              message: "No Content"
+      '401':
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"

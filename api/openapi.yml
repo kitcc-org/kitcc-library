@@ -1,0 +1,38 @@
+openapi: 3.0.0
+info:
+  title: "KITCC Library API"
+  contact:
+    name: "KITCC"
+    url: "https://www.kitcc.org/"
+    email: "question@kitcc.org"
+  version: "1.0.0"
+
+servers:
+  - url: "https://kitcc-library.kitcc.workers.dev/"
+
+tags:
+  - name: book
+  - name: user
+  - name: loan
+
+paths:
+  /books:
+    $ref: "./paths/book.yml#/books"
+  /books/{bookId}:
+    $ref: "./paths/book.yml#/book"
+
+  # /users:
+  # /users/{userId}:
+
+  # /loans:
+  # /loans/{loanId}:
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  
+  schemas:
+    Book: 
+      $ref: "./components/schemas/book.yml"

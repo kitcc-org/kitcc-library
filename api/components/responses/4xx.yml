@@ -1,0 +1,29 @@
+BadRequest:
+  description: リクエストの構文が誤っている
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/response.yml"
+      example:
+        code: 400
+        message: "Bad Request"
+
+Unauthorized:
+  description: 適切な認証情報を持たずにリソースにアクセスしようとした
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/response.yml"
+      example:
+        code: 401
+        message: "Unauthorized"
+
+NotFound:
+  description: 指定されたリソースが存在しない
+  content:
+    application/json:
+      schema:
+        $ref: "../schemas/response.yml"
+      example:
+        code: 404
+        message: "Not Found"
