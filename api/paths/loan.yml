@@ -1,0 +1,76 @@
+loans:
+  get:
+    tags:
+      - loan
+    operationId: getLoans
+    summary: 貸出履歴を取得する
+    description: 指定された条件に合致する貸出履歴を返す
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: userId
+        in: query
+        description: 貸出履歴を取得するユーザーのID
+        required: false
+        schema:
+          type: integer
+      - name: bookId
+        in: query
+        description: 貸出履歴を取得する書籍のID
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/loan.yml"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  put:
+    tags:
+      - loan
+    operationId: updateLoans
+    summary: 貸出履歴を更新する
+    description: 指定された貸出履歴の情報を更新する
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../components/schemas/loan.yml"
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 200
+              message: "OK"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"

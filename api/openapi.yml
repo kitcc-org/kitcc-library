@@ -34,9 +34,9 @@ paths:
   /users/{userId}:
     $ref: "paths/user.yml#/user"
 
-  # /loans:
-  # /loans/{loanId}:
-  
+  /loans:
+    $ref: "./paths/loan.yml#/loans"
+
   /login:
     $ref: "./paths/auth.yml#/login"
   /logout:
