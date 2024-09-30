@@ -1,19 +1,25 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: "KITCC Library API"
+  title: KITCC Library API
   contact:
-    name: "KITCC"
+    name: KITCC
     url: "https://www.kitcc.org/"
     email: "question@kitcc.org"
+  license: 
+    name: MIT
+    url: https://en.wikipedia.org/wiki/MIT_License
   version: "1.0.0"
 
 servers:
-  - url: "https://kitcc-library.kitcc.workers.dev/"
+  - url: "https://kitcc-library.kitcc.workers.dev"
 
 tags:
   - name: book
+    description: 書籍に関するAPI
   - name: user
+    description: ユーザーに関するAPI
   - name: loan
+    description: 貸借に関するAPI
 
 paths:
   /books:

@@ -5,6 +5,7 @@ books:
     operationId: getBooks
     summary: 書籍の情報を取得する
     description: ページ番号が指定されなかった場合は1ページ目を返す
+    security: []
     parameters:
       - name: page
         in: query
@@ -23,9 +24,6 @@ books:
               type: array
               items:
                 $ref: "../components/schemas/book.yml"
-            examples:
-              sicp:
-                $ref: "../components/examples/book.yml#/sicp"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -34,6 +32,8 @@ books:
       - book
     operationId: addBook
     summary: 書籍を追加する
+    security:
+      - BasicAuth: []
     requestBody:
       required: true
       content:
@@ -75,6 +75,7 @@ book:
       - book
     operationId: getBook
     summary: 特定の書籍の情報を取得する
+    security: []
     parameters:
       - name: bookId
         in: path
@@ -102,6 +103,8 @@ book:
       - book
     operationId: updateBook
     summary: 特定の書籍の情報を更新する
+    security:
+      - BasicAuth: []
     parameters:
       - name: bookId
         in: path
@@ -146,6 +149,8 @@ book:
       - book
     operationId: deleteBook
     summary: 特定の書籍を削除する
+    security:
+      - BasicAuth: []
     parameters:
       - name: bookId
         in: path
