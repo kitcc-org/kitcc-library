@@ -23,7 +23,7 @@ books:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/book.yml"
+                $ref: "../components/schemas/book.yml#/response"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -39,19 +39,17 @@ books:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml"
+            $ref: "../components/schemas/book.yml#/request"
+          examples:
+            book:
+              $ref: "../components/examples/book.yml#/request"
     responses:
       '201':
         description: 書籍の追加に成功した
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                code:
-                  type: integer
-                message:
-                  type: string
+              $ref: "../components/schemas/response.yml"
             example:
               code: 201
               message: "Created"
@@ -89,10 +87,10 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
+              $ref: "../components/schemas/book.yml#/response"
             examples:
               book:
-                $ref: "../components/examples/book.yml#/book"
+                $ref: "../components/examples/book.yml#/response"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -117,17 +115,20 @@ book:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml"
+            $ref: "../components/schemas/book.yml#/request"
+          examples:
+            book:
+              $ref: "../components/examples/book.yml#/request"
     responses:
       '200':
         description: 情報の更新に成功した
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
-            examples:
-              book:
-                $ref: "../components/examples/book.yml#/book"
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 200
+              message: "OK"
       '400':
         description: リクエストボディに書籍の情報が含まれていない
         content:

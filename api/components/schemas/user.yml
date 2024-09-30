@@ -1,6 +1,24 @@
-type: object
-properties:
-  id:
-    type: integer
-  name:
-    type: string
+request:
+  type: object
+  properties:
+    name:
+      type: string
+    password:
+      type: string
+      format: password
+  required:
+    - name
+    - password
+
+response:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    passwordDigest:
+      type: string
+  required:
+    - id
+    - name

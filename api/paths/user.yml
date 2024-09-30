@@ -23,7 +23,7 @@ users:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/user.yml"
+                $ref: "../components/schemas/user.yml#/response"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -39,7 +39,10 @@ users:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/user.yml"
+            $ref: "../components/schemas/user.yml#/request"
+          examples:
+            user:
+              $ref: "../components/examples/user.yml#/request"
     responses:
       '201':
         description: ユーザーの追加に成功した
@@ -89,10 +92,10 @@ user:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/user.yml"
+              $ref: "../components/schemas/user.yml#/response"
             examples:
               user:
-                $ref: "../components/examples/user.yml#/user"
+                $ref: "../components/examples/user.yml#/response"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -117,17 +120,20 @@ user:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/user.yml"
+            $ref: "../components/schemas/user.yml#/request"
+          examples:
+            user:
+              $ref: "../components/examples/user.yml#/request"
     responses:
       '200':
         description: 情報の更新に成功した
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/user.yml"
-            examples:
-              user:
-                $ref: "../components/examples/user.yml#/user"
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 200
+              message: "OK"
       '400':
         description: リクエストボディにユーザーの情報が含まれていない
         content:

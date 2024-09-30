@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "lint": "npx @redocly/cli lint openapi.yml"
+  }
+}

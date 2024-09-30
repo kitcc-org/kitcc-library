@@ -1,16 +1,48 @@
-type: object
-properties:
-  id:
-    type: integer
-  title:
-    type: string
-  author:
-    type: string
-  publisher:
-    type: string
-  edition:
-    type: integer
-  isbn:
-    type: string
-  stock:
-    type: integer
+request:
+  type: object
+  properties:
+    title:
+      type: string
+    author:
+      type: string
+    publisher:
+      type: string
+    edition:
+      type: integer
+    isbn:
+      type: string
+      pattern: '^\d{13}$'
+    stock:
+      type: integer
+  required:
+    - title
+    - author
+    - publisher
+    - isbn
+    - stock
+
+response:
+  type: object
+  properties:
+    id:
+      type: integer
+    title:
+      type: string
+    author:
+      type: string
+    publisher:
+      type: string
+    edition:
+      type: integer
+    isbn:
+      type: string
+      pattern: '^\d{13}$'
+    stock:
+      type: integer
+  required:
+    - id
+    - title
+    - author
+    - publisher
+    - isbn
+    - stock

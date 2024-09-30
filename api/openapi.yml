@@ -34,6 +34,9 @@ paths:
 
   # /loans:
   # /loans/{loanId}:
+  
+  # /login:
+  # /logout:
 
 components:
   securitySchemes:
@@ -42,5 +45,7 @@ components:
       scheme: basic
   
   schemas:
-    Book: 
-      $ref: "./components/schemas/book.yml"
+    Book:
+      $ref: "./components/schemas/book.yml#/response"
+    User:
+      $ref: "./components/schemas/user.yml#/response"
