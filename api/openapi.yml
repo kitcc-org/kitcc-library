@@ -27,8 +27,10 @@ paths:
   /books/{bookId}:
     $ref: "./paths/book.yml#/book"
 
-  # /users:
-  # /users/{userId}:
+  /users:
+    $ref: "./paths/user.yml#/users"
+  /users/{userId}:
+    $ref: "paths/user.yml#/user"
 
   # /loans:
   # /loans/{loanId}:

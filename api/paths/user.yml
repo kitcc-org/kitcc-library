@@ -1,9 +1,9 @@
-books:
+users:
   get:
     tags:
-      - book
-    operationId: getBooks
-    summary: 書籍の情報を取得する
+      - user
+    operationId: getUsers
+    summary: ユーザーの情報を取得する
     description: ページ番号が指定されなかった場合は1ページ目を返す
     security: []
     parameters:
@@ -23,15 +23,15 @@ books:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/book.yml"
+                $ref: "../components/schemas/user.yml"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
   post:
     tags:
-      - book
-    operationId: addBook
-    summary: 書籍を追加する
+      - user
+    operationId: addUser
+    summary: ユーザーを追加する
     security:
       - BasicAuth: []
     requestBody:
@@ -39,10 +39,10 @@ books:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml"
+            $ref: "../components/schemas/user.yml"
     responses:
       '201':
-        description: 書籍の追加に成功した
+        description: ユーザーの追加に成功した
         content:
           application/json:
             schema:
@@ -56,7 +56,7 @@ books:
               code: 201
               message: "Created"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
+        description: リクエストボディにユーザーの情報が含まれていない
         content:
           application/json:
             schema:
@@ -69,17 +69,17 @@ books:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-book:
+user:
   get:
     tags:
-      - book
-    operationId: getBook
-    summary: 特定の書籍の情報を取得する
+      - user
+    operationId: getUser
+    summary: 特定のユーザーの情報を取得する
     security: []
     parameters:
-      - name: bookId
+      - name: userId
         in: path
-        description: "取得する書籍のID"
+        description: "取得するユーザーのID"
         required: true
         schema:
           type: integer
@@ -89,10 +89,10 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
+              $ref: "../components/schemas/user.yml"
             examples:
-              book:
-                $ref: "../components/examples/book.yml#/book"
+              user:
+                $ref: "../components/examples/user.yml#/user"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -100,15 +100,15 @@ book:
 
   put:
     tags:
-      - book
-    operationId: updateBook
-    summary: 特定の書籍の情報を更新する
+      - user
+    operationId: updateUser
+    summary: 特定のユーザーの情報を更新する
     security:
       - BasicAuth: []
     parameters:
-      - name: bookId
+      - name: userId
         in: path
-        description: 更新する書籍のID
+        description: 更新するユーザーのID
         required: true
         schema:
           type: integer
@@ -117,19 +117,19 @@ book:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml"
+            $ref: "../components/schemas/user.yml"
     responses:
       '200':
         description: 情報の更新に成功した
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
+              $ref: "../components/schemas/user.yml"
             examples:
-              book:
-                $ref: "../components/examples/book.yml#/book"
+              user:
+                $ref: "../components/examples/user.yml#/user"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
+        description: リクエストボディにユーザーの情報が含まれていない
         content:
           application/json:
             schema:
@@ -146,21 +146,21 @@ book:
 
   delete:
     tags:
-      - book
-    operationId: deleteBook
-    summary: 特定の書籍を削除する
+      - user
+    operationId: deleteUser
+    summary: 特定のユーザーを削除する
     security:
       - BasicAuth: []
     parameters:
-      - name: bookId
+      - name: userId
         in: path
-        description: 削除する書籍のID
+        description: 削除するユーザーのID
         required: true
         schema:
           type: integer
     responses:
       '204':
-        description: 書籍の削除に成功した
+        description: ユーザーの削除に成功した
         content:
           application/json:
             schema:
