@@ -1,0 +1,604 @@
+openapi: 3.0.3
+info:
+  title: KITCC Library API
+  contact:
+    name: KITCC
+    url: https://www.kitcc.org/
+    email: question@kitcc.org
+  license:
+    name: MIT
+    url: https://en.wikipedia.org/wiki/MIT_License
+  version: 1.0.0
+servers:
+  - url: https://kitcc-library.kitcc.workers.dev
+tags:
+  - name: book
+    description: 書籍に関するAPI
+  - name: user
+    description: ユーザーに関するAPI
+  - name: loan
+    description: 貸借に関するAPI
+  - name: auth
+    description: 認証に関するAPI
+paths:
+  /books:
+    get:
+      tags:
+        - book
+      operationId: getBooks
+      summary: 書籍の情報を取得する
+      description: ページ番号が指定されなかった場合は1ページ目を返す
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/response'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - book
+      operationId: addBook
+      summary: 書籍を追加する
+      security:
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request'
+            examples:
+              book:
+                $ref: '#/components/examples/request'
+      responses:
+        '201':
+          description: 書籍の追加に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 201
+                message: Created
+        '400':
+          description: リクエストボディに書籍の情報が含まれていない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 400
+                message: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /books/{bookId}:
+    get:
+      tags:
+        - book
+      operationId: getBook
+      summary: 特定の書籍の情報を取得する
+      security: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 取得する書籍のID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+              examples:
+                book:
+                  $ref: '#/components/examples/response'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - book
+      operationId: updateBook
+      summary: 特定の書籍の情報を更新する
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 更新する書籍のID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/request'
+            examples:
+              book:
+                $ref: '#/components/examples/request'
+      responses:
+        '200':
+          description: 情報の更新に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 200
+                message: OK
+        '400':
+          description: リクエストボディに書籍の情報が含まれていない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 400
+                message: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - book
+      operationId: deleteBook
+      summary: 特定の書籍を削除する
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 削除する書籍のID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 書籍の削除に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 204
+                message: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users:
+    get:
+      tags:
+        - user
+      operationId: getUsers
+      summary: ユーザーの情報を取得する
+      description: ページ番号が指定されなかった場合は1ページ目を返す
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user_response'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - user
+      operationId: addUser
+      summary: ユーザーを追加する
+      security:
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_request'
+            examples:
+              user:
+                $ref: '#/components/examples/user_request'
+      responses:
+        '201':
+          description: ユーザーの追加に成功した
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                code: 201
+                message: Created
+        '400':
+          description: リクエストボディにユーザーの情報が含まれていない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 400
+                message: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      operationId: getUser
+      summary: 特定のユーザーの情報を取得する
+      security: []
+      parameters:
+        - name: userId
+          in: path
+          description: 取得するユーザーのID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_response'
+              examples:
+                user:
+                  $ref: '#/components/examples/user_response'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - user
+      operationId: updateUser
+      summary: 特定のユーザーの情報を更新する
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: userId
+          in: path
+          description: 更新するユーザーのID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_request'
+            examples:
+              user:
+                $ref: '#/components/examples/user_request'
+      responses:
+        '200':
+          description: 情報の更新に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 200
+                message: OK
+        '400':
+          description: リクエストボディにユーザーの情報が含まれていない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 400
+                message: Bad Request
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - user
+      operationId: deleteUser
+      summary: 特定のユーザーを削除する
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: userId
+          in: path
+          description: 削除するユーザーのID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: ユーザーの削除に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 204
+                message: No Content
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /login:
+    post:
+      tags:
+        - auth
+      operationId: login
+      summary: ログインする
+      description: セッションIDをCookieに保存する
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              email: username@example.com
+              password: password
+      responses:
+        '200':
+          description: |
+            ログインに成功した． `session_token`という名前のCookieにセッションIDが保存される． 以降のリクエストにはこのCookieを含める必要がある．
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session_token=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_response'
+              examples:
+                user:
+                  $ref: '#/components/examples/user_response'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /logout:
+    delete:
+      tags:
+        - auth
+      operationId: logout
+      summary: ログアウトする
+      description: CookieからセッションIDを削除する
+      security: []
+      responses:
+        '204':
+          description: ログアウトに成功した
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session_token=; Path=/; Max-Age=0
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response-2'
+              example:
+                code: 204
+                message: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Book:
+      $ref: '#/components/schemas/response'
+    User:
+      $ref: '#/components/schemas/user_response'
+    response:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        edition:
+          type: integer
+        isbn:
+          type: string
+          pattern: ^\d{13}$
+        stock:
+          type: integer
+      required:
+        - id
+        - title
+        - author
+        - publisher
+        - isbn
+        - stock
+    response-2:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      required:
+        - code
+        - message
+    request:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        publisher:
+          type: string
+        edition:
+          type: integer
+        isbn:
+          type: string
+          pattern: ^\d{13}$
+        stock:
+          type: integer
+      required:
+        - title
+        - author
+        - publisher
+        - isbn
+        - stock
+    user_response:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        passwordDigest:
+          type: string
+      required:
+        - id
+        - name
+        - email
+    user_request:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - email
+        - password
+  responses:
+    InternalServerError:
+      description: サーバ内部でエラーが発生した
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response-2'
+          example:
+            code: 500
+            message: Internal Server Error
+    Unauthorized:
+      description: 適切な認証情報を持たずにリソースにアクセスしようとした
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response-2'
+          example:
+            code: 401
+            message: Unauthorized
+    NotFound:
+      description: 指定されたリソースが存在しない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/response-2'
+          example:
+            code: 404
+            message: Not Found
+  examples:
+    request:
+      value:
+        title: 計算機プログラムの構造と解釈
+        author: Harold Abelson, Gerald Jay Sussman, Julie Sussman
+        publisher: 翔泳社
+        isbn: '9784798135984'
+        stock: 1
+    response:
+      value:
+        id: 1
+        title: 計算機プログラムの構造と解釈
+        author: Harold Abelson, Gerald Jay Sussman, Julie Sussman
+        publisher: 翔泳社
+        isbn: '9784798135984'
+        stock: 1
+    user_request:
+      value:
+        name: 比企谷八幡
+        email: hikigaya@oregairu.com
+        password: password
+    user_response:
+      value:
+        id: 1
+        name: 比企谷八幡
+        email: hikigaya@oregairu.com
+        passwordDigest: d41d8cd98f00b204e9800998ecf8427e
