@@ -3,11 +3,15 @@ request:
   properties:
     name:
       type: string
+    email:
+      type: string
+      format: email
     password:
       type: string
       format: password
   required:
     - name
+    - email
     - password
 
 response:
@@ -17,8 +21,12 @@ response:
       type: integer
     name:
       type: string
+    email:
+      type: string
+      format: email
     passwordDigest:
       type: string
   required:
     - id
     - name
+    - email

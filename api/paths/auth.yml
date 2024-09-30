@@ -1,2 +1,72 @@
 login:
-  
+  post:
+    tags:
+      - auth
+    operationId: login
+    summary: ログインする
+    description: セッションIDをCookieに保存する
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+          example:
+            email: "username@example.com"
+            password: "password"
+    responses:
+      '200':
+        description: >
+          ログインに成功した．
+          `session_token`という名前のCookieにセッションIDが保存される．
+          以降のリクエストにはこのCookieを含める必要がある．
+        headers:
+          Set-Cookie:
+            schema:
+              type: string
+              example: session_token=abcde12345; Path=/; HttpOnly
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/user.yml#/response"
+            examples:
+              user:
+                $ref: "../components/examples/user.yml#/response"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+logout:
+  delete:
+    tags:
+      - auth
+    operationId: logout
+    summary: ログアウトする
+    description: CookieからセッションIDを削除する
+    security: []
+    responses:
+      '204':
+        description: ログアウトに成功した
+        headers:
+          Set-Cookie:
+            schema:
+              type: string
+              example: session_token=; Path=/; Max-Age=0
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 204
+              message: "No Content"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"

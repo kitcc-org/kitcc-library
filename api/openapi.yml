@@ -20,6 +20,8 @@ tags:
     description: ユーザーに関するAPI
   - name: loan
     description: 貸借に関するAPI
+  - name: auth
+    description: 認証に関するAPI
 
 paths:
   /books:
@@ -35,8 +37,10 @@ paths:
   # /loans:
   # /loans/{loanId}:
   
-  # /login:
-  # /logout:
+  /login:
+    $ref: "./paths/auth.yml#/login"
+  /logout:
+    $ref: "paths/auth.yml#/logout"
 
 components:
   securitySchemes:
