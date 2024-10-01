@@ -7,8 +7,6 @@ request:
       type: string
     publisher:
       type: string
-    edition:
-      type: integer
     isbn:
       type: string
       pattern: '^\d{13}$'
@@ -32,8 +30,6 @@ response:
       type: string
     publisher:
       type: string
-    edition:
-      type: integer
     isbn:
       type: string
       pattern: '^\d{13}$'

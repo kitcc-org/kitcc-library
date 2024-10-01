@@ -28,6 +28,8 @@ paths:
     $ref: "./paths/book.yml#/books"
   /books/{bookId}:
     $ref: "./paths/book.yml#/book"
+  /books/search:
+    $ref: "paths/book.yml#/search"
 
   /users:
     $ref: "./paths/user.yml#/users"

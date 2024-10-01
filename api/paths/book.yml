@@ -179,3 +179,56 @@ book:
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+search:
+  get:
+    tags:
+      - book
+    operationId: searchBooks
+    summary: 書籍を検索する
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: title
+        in: query
+        description: タイトル
+        required: false
+        schema:
+          type: string
+      - name: author
+        in: query
+        description: 著者
+        required: false
+        schema:
+          type: string
+      - name: publisher
+        in: query
+        description: 出版社
+        required: false
+        schema:
+          type: string
+      - name: isbn
+        in: query
+        description: ISBN
+        required: false
+        schema:
+          type: string
+          pattern: '^\\d{13}$'
+    responses:
+      '200':
+        description: 検索に成功した
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/book.yml#/response"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
