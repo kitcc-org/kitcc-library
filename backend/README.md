@@ -1,3 +1,4 @@
+## pnpm
 ```
 pnpm install
 ```
@@ -16,4 +17,13 @@ pnpm run dev
 
 ```
 pnpm run deploy
+```
+
+## Supabase
+```
+npx supabase start
+```
+
+```
+npx supabase stop [--no-backup]
 ```
