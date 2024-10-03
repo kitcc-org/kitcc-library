@@ -12,6 +12,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout latest file
+        uses: actions/checkout@v4
+
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
