@@ -24,5 +24,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kitcc-library-api-doc
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           directory: swagger-ui
           branch: main
