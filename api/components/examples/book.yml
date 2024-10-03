@@ -1,22 +1,11 @@
-request:
-  value:
-    title: "計算機プログラムの構造と解釈"
-    author:
-      - "Harold Abelson"
-      - "Gerald Jay Sussman"
-      - " Julie Sussman"
-    publisher: "翔泳社"
-    isbn: "9784798135984"
-    stock: 1
-
-response:
-  value:
-    id: 1
-    title: "計算機プログラムの構造と解釈"
-    author:
-      - "Harold Abelson"
-      - "Gerald Jay Sussman"
-      - "Julie Sussman"
-    publisher: "翔泳社"
-    isbn: "9784798135984"
-    stock: 1
+value:
+  id: 1
+  title: "計算機プログラムの構造と解釈"
+  author:
+    - "Harold Abelson"
+    - "Gerald Jay Sussman"
+    - "Julie Sussman"
+  publisher: "翔泳社"
+  thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+  isbn: "9784798135984"
+  stock: 1

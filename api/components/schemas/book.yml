@@ -1,48 +1,27 @@
-request:
-  type: object
-  properties:
-    title:
-      type: string
-    author:
-      type: string
-    publisher:
-      type: array
-      items:
-        type: string
-    isbn:
-      type: string
-      pattern: '^\d{13}$'
-    stock:
-      type: integer
-  required:
-    - title
-    - author
-    - publisher
-    - isbn
-    - stock
 
-response:
-  type: object
-  properties:
-    id:
-      type: integer
-    title:
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  author:
+    type: array
+    items:
       type: string
-    author:
-      type: array
-      items:
-        type: string
-    publisher:
-      type: string
-    isbn:
-      type: string
-      pattern: '^\d{13}$'
-    stock:
-      type: integer
-  required:
-    - id
-    - title
-    - author
-    - publisher
-    - isbn
-    - stock
+  publisher:
+    type: string
+  thumbnail:
+    type: string
+  isbn:
+    type: string
+    pattern: '^\d{13}$'
+  stock:
+    type: integer
+required:
+  - id
+  - title
+  - author
+  - publisher
+  - isbn
+  - stock

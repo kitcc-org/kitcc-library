@@ -23,7 +23,7 @@ books:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/book.yml#/response"
+                $ref: "../components/schemas/book.yml"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -39,10 +39,33 @@ books:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml#/request"
-          examples:
-            book:
-              $ref: "../components/examples/book.yml#/request"
+            type: object
+            properties:
+              title:
+                type: string
+              author:
+                type: string
+              publisher:
+                type: array
+                items:
+                  type: string
+              thumbnail:
+                type: string
+              isbn:
+                type: string
+                pattern: '^\d{13}$'
+              stock:
+                type: integer
+            example:
+              title: "計算機プログラムの構造と解釈"
+              author:
+                - "Harold Abelson"
+                - "Gerald Jay Sussman"
+                - "Julie Sussman"
+              publisher: "翔泳社"
+              thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+              isbn: "9784798135984"
+              stock: 1
     responses:
       '201':
         description: 書籍の追加に成功した
@@ -87,10 +110,10 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml#/response"
+              $ref: "../components/schemas/book.yml"
             examples:
               book:
-                $ref: "../components/examples/book.yml#/response"
+                $ref: "../components/examples/book.yml"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -115,10 +138,26 @@ book:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/book.yml#/request"
-          examples:
-            book:
-              $ref: "../components/examples/book.yml#/request"
+            type: object
+            properties:
+              title:
+                type: string
+              author:
+                type: array
+                items:
+                  type: string
+              publisher:
+                type: string
+              stock:
+                type: integer
+          example:
+            title: "計算機プログラムの構造と解釈"
+            author:
+              - "Harold Abelson"
+              - "Gerald Jay Sussman"
+              - "Julie Sussman"
+            publisher: "翔泳社"
+            stock: 1
     responses:
       '200':
         description: 情報の更新に成功した
@@ -229,6 +268,29 @@ search:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/book.yml#/response"
+                type: object
+                properties:
+                  title:
+                    type: string
+                  author:
+                    type: array
+                    items:
+                      type: string
+                  publisher:
+                    type: string
+                  thumbnail:
+                    type: string
+                  isbn:
+                    type: string
+                    pattern: '^\d{13}$'
+            example:
+              - title: "計算機プログラムの構造と解釈"
+                author:
+                  - "Harold Abelson"
+                  - "Gerald Jay Sussman"
+                  - "Julie Sussman"
+                publisher: "翔泳社"
+                thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                isbn: "9784798135984"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
