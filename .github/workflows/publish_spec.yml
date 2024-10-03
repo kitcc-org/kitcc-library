@@ -18,7 +18,7 @@ jobs:
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
-          output: swagger-ui
+          output: api
           spec-file: ./api/openapi.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -28,5 +28,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kitcc-library-api-doc
-          directory: swagger-ui
+          directory: api
           branch: main
