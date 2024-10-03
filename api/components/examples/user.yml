@@ -1,12 +1,5 @@
-request:
-  value:
-    name: "比企谷八幡"
-    email: "hikigaya@oregairu.com"
-    password: "password"
-
-response:
-  value:
-    id: 1
-    name: "比企谷八幡"
-    email: "hikigaya@oregairu.com"
-    passwordDigest: "d41d8cd98f00b204e9800998ecf8427e"
+value:
+  id: 1
+  name: "比企谷八幡"
+  email: "hikigaya@oregairu.com"
+  passwordDigest: "d41d8cd98f00b204e9800998ecf8427e"

@@ -36,10 +36,10 @@ login:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/user.yml#/response"
+              $ref: "../components/schemas/user.yml"
             examples:
               user:
-                $ref: "../components/examples/user.yml#/response"
+                $ref: "../components/examples/user.yml"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 

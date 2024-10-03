@@ -1,32 +1,16 @@
-request:
-  type: object
-  properties:
-    name:
-      type: string
-    email:
-      type: string
-      format: email
-    password:
-      type: string
-      format: password
-  required:
-    - name
-    - email
-    - password
 
-response:
-  type: object
-  properties:
-    id:
-      type: integer
-    name:
-      type: string
-    email:
-      type: string
-      format: email
-    passwordDigest:
-      type: string
-  required:
-    - id
-    - name
-    - email
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  email:
+    type: string
+    format: email
+  passwordDigest:
+    type: string
+required:
+  - id
+  - name
+  - email

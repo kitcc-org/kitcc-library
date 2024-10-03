@@ -23,7 +23,7 @@ users:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/user.yml#/response"
+                $ref: "../components/schemas/user.yml"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -39,22 +39,27 @@ users:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/user.yml#/request"
-          examples:
-            user:
-              $ref: "../components/examples/user.yml#/request"
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+          example:
+            name: "比企谷八幡"
+            email: "hikigaya@oregairu.com"
+            password: "password"
     responses:
       '201':
         description: ユーザーの追加に成功した
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                code:
-                  type: integer
-                message:
-                  type: string
+              $ref: "../components/schemas/response.yml"
             example:
               code: 201
               message: "Created"
@@ -92,10 +97,10 @@ user:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/user.yml#/response"
+              $ref: "../components/schemas/user.yml"
             examples:
               user:
-                $ref: "../components/examples/user.yml#/response"
+                $ref: "../components/examples/user.yml"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -106,6 +111,7 @@ user:
       - user
     operationId: updateUser
     summary: 特定のユーザーの情報を更新する
+    description: リクエストボディに含まれている情報のみ更新する
     security:
       - BasicAuth: []
     parameters:
@@ -120,10 +126,20 @@ user:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/user.yml#/request"
-          examples:
-            user:
-              $ref: "../components/examples/user.yml#/request"
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+          example:
+            name: "比企谷八幡"
+            email: "hikigaya@oregairu.com"
+            password: "password"
     responses:
       '200':
         description: 情報の更新に成功した

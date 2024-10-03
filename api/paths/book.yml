@@ -124,6 +124,7 @@ book:
       - book
     operationId: updateBook
     summary: 特定の書籍の情報を更新する
+    description: リクエストボディで指定された情報のみ更新する
     security:
       - BasicAuth: []
     parameters:
