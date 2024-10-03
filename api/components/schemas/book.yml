@@ -6,7 +6,9 @@ request:
     author:
       type: string
     publisher:
-      type: string
+      type: array
+      items:
+        type: string
     isbn:
       type: string
       pattern: '^\d{13}$'
@@ -27,7 +29,9 @@ response:
     title:
       type: string
     author:
-      type: string
+      type: array
+      items:
+        type: string
     publisher:
       type: string
     isbn:
