@@ -15,6 +15,14 @@ books:
           type: integer
           minimum: 1
           default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
     responses:
       '200':
         description: 情報の取得に成功した
@@ -236,6 +244,14 @@ search:
           type: integer
           minimum: 1
           default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
       - name: title
         in: query
         description: タイトル
