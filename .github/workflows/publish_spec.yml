@@ -17,6 +17,7 @@ jobs:
         with:
           output: swagger-ui
           spec-file: ./api/openapi.yaml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -24,6 +25,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kitcc-library-api-doc
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           directory: swagger-ui
           branch: main
