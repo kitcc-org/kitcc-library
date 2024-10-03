@@ -1,0 +1,27 @@
+
+type: object
+properties:
+  id:
+    type: integer
+  title:
+    type: string
+  author:
+    type: array
+    items:
+      type: string
+  publisher:
+    type: string
+  thumbnail:
+    type: string
+  isbn:
+    type: string
+    pattern: '^\d{13}$'
+  stock:
+    type: integer
+required:
+  - id
+  - title
+  - author
+  - publisher
+  - isbn
+  - stock

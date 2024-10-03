@@ -1,0 +1,59 @@
+openapi: 3.0.3
+info:
+  title: KITCC Library API
+  contact:
+    name: KITCC
+    url: "https://www.kitcc.org/"
+    email: "question@kitcc.org"
+  license: 
+    name: MIT
+    url: https://en.wikipedia.org/wiki/MIT_License
+  version: "1.0.0"
+
+servers:
+  - url: "https://kitcc-library.kitcc.workers.dev"
+
+tags:
+  - name: book
+    description: 書籍に関するAPI
+  - name: user
+    description: ユーザーに関するAPI
+  - name: loan
+    description: 貸借に関するAPI
+  - name: auth
+    description: 認証に関するAPI
+
+paths:
+  /books:
+    $ref: "./paths/book.yml#/books"
+  /books/{bookId}:
+    $ref: "./paths/book.yml#/book"
+  /books/search:
+    $ref: "paths/book.yml#/search"
+
+  /users:
+    $ref: "./paths/user.yml#/users"
+  /users/{userId}:
+    $ref: "paths/user.yml#/user"
+
+  /loans:
+    $ref: "./paths/loan.yml#/loans"
+
+  /login:
+    $ref: "./paths/auth.yml#/login"
+  /logout:
+    $ref: "paths/auth.yml#/logout"
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  
+  schemas:
+    Book:
+      $ref: "./components/schemas/book.yml"
+    User:
+      $ref: "./components/schemas/user.yml"
+    Loan:
+      $ref: "./components/schemas/loan.yml"

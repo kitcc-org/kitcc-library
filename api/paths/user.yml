@@ -1,0 +1,210 @@
+users:
+  get:
+    tags:
+      - user
+    operationId: getUsers
+    summary: ユーザーの情報を取得する
+    description: ページ番号が指定されなかった場合は1ページ目を返す
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/user.yml"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  post:
+    tags:
+      - user
+    operationId: addUser
+    summary: ユーザーを追加する
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+          example:
+            name: "比企谷八幡"
+            email: "hikigaya@oregairu.com"
+            password: "password"
+    responses:
+      '201':
+        description: ユーザーの追加に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 201
+              message: "Created"
+      '400':
+        description: リクエストボディにユーザーの情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+user:
+  get:
+    tags:
+      - user
+    operationId: getUser
+    summary: 特定のユーザーの情報を取得する
+    security: []
+    parameters:
+      - name: userId
+        in: path
+        description: "取得するユーザーのID"
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/user.yml"
+            examples:
+              user:
+                $ref: "../components/examples/user.yml"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  put:
+    tags:
+      - user
+    operationId: updateUser
+    summary: 特定のユーザーの情報を更新する
+    description: リクエストボディに含まれている情報のみ更新する
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: userId
+        in: path
+        description: 更新するユーザーのID
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+          example:
+            name: "比企谷八幡"
+            email: "hikigaya@oregairu.com"
+            password: "password"
+    responses:
+      '200':
+        description: 情報の更新に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/user.yml"
+            examples:
+              user:
+                $ref: "../components/examples/user.yml"
+      '400':
+        description: リクエストボディにユーザーの情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  delete:
+    tags:
+      - user
+    operationId: deleteUser
+    summary: 特定のユーザーを削除する
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: userId
+        in: path
+        description: 削除するユーザーのID
+        required: true
+        schema:
+          type: integer
+    responses:
+      '204':
+        description: ユーザーの削除に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 204
+              message: "No Content"
+      '401':
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"

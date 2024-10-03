@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "lint": "npx @redocly/cli lint openapi.yml",
+    "bundle": "npx @redocly/cli bundle openapi.yml --output bundle.yml"
+  }
+}

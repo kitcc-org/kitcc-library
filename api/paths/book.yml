@@ -1,0 +1,313 @@
+books:
+  get:
+    tags:
+      - book
+    operationId: getBooks
+    summary: 書籍の情報を取得する
+    description: ページ番号が指定されなかった場合は1ページ目を返す
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../components/schemas/book.yml"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  post:
+    tags:
+      - book
+    operationId: addBook
+    summary: 書籍を追加する
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              author:
+                type: string
+              publisher:
+                type: array
+                items:
+                  type: string
+              thumbnail:
+                type: string
+              isbn:
+                type: string
+                pattern: '^\d{13}$'
+              stock:
+                type: integer
+            example:
+              title: "計算機プログラムの構造と解釈"
+              author:
+                - "Harold Abelson"
+                - "Gerald Jay Sussman"
+                - "Julie Sussman"
+              publisher: "翔泳社"
+              thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+              isbn: "9784798135984"
+              stock: 1
+    responses:
+      '201':
+        description: 書籍の追加に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 201
+              message: "Created"
+      '400':
+        description: リクエストボディに書籍の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+book:
+  get:
+    tags:
+      - book
+    operationId: getBook
+    summary: 特定の書籍の情報を取得する
+    security: []
+    parameters:
+      - name: bookId
+        in: path
+        description: "取得する書籍のID"
+        required: true
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/book.yml"
+            examples:
+              book:
+                $ref: "../components/examples/book.yml"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  put:
+    tags:
+      - book
+    operationId: updateBook
+    summary: 特定の書籍の情報を更新する
+    description: リクエストボディで指定された情報のみ更新する
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: bookId
+        in: path
+        description: 更新する書籍のID
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              author:
+                type: array
+                items:
+                  type: string
+              publisher:
+                type: string
+              stock:
+                type: integer
+          example:
+            title: "計算機プログラムの構造と解釈"
+            author:
+              - "Harold Abelson"
+              - "Gerald Jay Sussman"
+              - "Julie Sussman"
+            publisher: "翔泳社"
+            stock: 1
+    responses:
+      '200':
+        description: 情報の更新に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/book.yml"
+            examples:
+              book:
+                $ref: "../components/examples/book.yml"
+      '400':
+        description: リクエストボディに書籍の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  delete:
+    tags:
+      - book
+    operationId: deleteBook
+    summary: 特定の書籍を削除する
+    security:
+      - BasicAuth: []
+    parameters:
+      - name: bookId
+        in: path
+        description: 削除する書籍のID
+        required: true
+        schema:
+          type: integer
+    responses:
+      '204':
+        description: 書籍の削除に成功した
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 204
+              message: "No Content"
+      '401':
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+search:
+  get:
+    tags:
+      - book
+    operationId: searchBooks
+    summary: 書籍を検索する
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+      - name: title
+        in: query
+        description: タイトル
+        required: false
+        schema:
+          type: string
+      - name: author
+        in: query
+        description: 著者
+        required: false
+        schema:
+          type: string
+      - name: publisher
+        in: query
+        description: 出版社
+        required: false
+        schema:
+          type: string
+      - name: isbn
+        in: query
+        description: ISBN
+        required: false
+        schema:
+          type: string
+          pattern: '^\\d{13}$'
+    responses:
+      '200':
+        description: 検索に成功した
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  author:
+                    type: array
+                    items:
+                      type: string
+                  publisher:
+                    type: string
+                  thumbnail:
+                    type: string
+                  isbn:
+                    type: string
+                    pattern: '^\d{13}$'
+            example:
+              - title: "計算機プログラムの構造と解釈"
+                author:
+                  - "Harold Abelson"
+                  - "Gerald Jay Sussman"
+                  - "Julie Sussman"
+                publisher: "翔泳社"
+                thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                isbn: "9784798135984"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
