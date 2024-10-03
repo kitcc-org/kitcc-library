@@ -79,10 +79,7 @@ loans:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
-            example:
-              code: 200
-              message: "OK"
+              $ref: "../components/schemas/loan.yml"
       '400':
         description: リクエストボディに貸借の情報が含まれていない
         content:
@@ -126,10 +123,7 @@ loans:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
-            example:
-              code: 200
-              message: "OK"
+              $ref: "../components/schemas/loan.yml"
       '400':
         description: リクエストボディに貸借の情報が含まれていない
         content:

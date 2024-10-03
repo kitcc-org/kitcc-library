@@ -173,10 +173,10 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
-            example:
-              code: 200
-              message: "OK"
+              $ref: "../components/schemas/book.yml"
+            examples:
+              book:
+                $ref: "../components/examples/book.yml"
       '400':
         description: リクエストボディに書籍の情報が含まれていない
         content:
