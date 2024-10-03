@@ -28,6 +28,14 @@ loans:
           type: integer
           minimum: 1
           default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
     responses:
       '200':
         description: OK
@@ -42,12 +50,11 @@ loans:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  put:
+  post:
     tags:
       - loan
-    operationId: updateLoans
-    summary: 貸出履歴を更新する
-    description: 指定された貸出履歴の情報を更新する
+    operationId: addLoans
+    summary: 貸出履歴を追加する
     security:
       - BasicAuth: []
     requestBody:
@@ -57,7 +64,15 @@ loans:
           schema:
             type: array
             items:
-              $ref: "../components/schemas/loan.yml"
+              type: object
+              properties:
+                userId:
+                  type: integer
+                bookId:
+                  type: integer
+                volume:
+                  type: integer
+                  minimum: 1
     responses:
       '200':
         description: OK
@@ -69,7 +84,61 @@ loans:
               code: 200
               message: "OK"
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        description: リクエストボディに貸借の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '500':
+        $ref: "../components/responses/5xx.yml#/InternalServerError"
+
+  put:
+    tags:
+      - loan
+    operationId: updateLoans
+    summary: 貸出履歴を更新する
+    description: リクエストボディに含まれている情報のみ更新する
+    security:
+      - BasicAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                bookId:
+                  type: integer
+                volume:
+                  type: integer
+    responses:
+      '200':
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 200
+              message: "OK"
+      '400':
+        description: リクエストボディに貸借の情報が含まれていない
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/response.yml"
+            example:
+              code: 400
+              message: "Bad Request"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
