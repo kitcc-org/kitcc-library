@@ -3,7 +3,7 @@ InternalServerError:
   content:
     application/json:
       schema:
-        $ref: "../schemas/response.yml"
+        $ref: "../schemas/Error.yml"
       example:
         code: 500
         message: "Internal Server Error"

@@ -3,7 +3,7 @@ BadRequest:
   content:
     application/json:
       schema:
-        $ref: "../schemas/response.yml"
+        $ref: "../schemas/Error.yml"
       example:
         code: 400
         message: "Bad Request"
@@ -13,7 +13,7 @@ Unauthorized:
   content:
     application/json:
       schema:
-        $ref: "../schemas/response.yml"
+        $ref: "../schemas/Error.yml"
       example:
         code: 401
         message: "Unauthorized"
@@ -23,7 +23,7 @@ NotFound:
   content:
     application/json:
       schema:
-        $ref: "../schemas/response.yml"
+        $ref: "../schemas/Error.yml"
       example:
         code: 404
         message: "Not Found"

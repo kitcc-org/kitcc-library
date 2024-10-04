@@ -19,7 +19,7 @@ tags:
   - name: user
     description: ユーザーに関するAPI
   - name: loan
-    description: 貸借に関するAPI
+    description: 貸出履歴に関するAPI
   - name: auth
     description: 認証に関するAPI
 
@@ -49,11 +49,3 @@ components:
     BasicAuth:
       type: http
       scheme: basic
-  
-  schemas:
-    Book:
-      $ref: "./components/schemas/book.yml"
-    User:
-      $ref: "./components/schemas/user.yml"
-    Loan:
-      $ref: "./components/schemas/loan.yml"

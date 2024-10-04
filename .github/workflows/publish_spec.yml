@@ -14,12 +14,22 @@ jobs:
     steps:
       - name: Checkout latest file
         uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Bundle API
+        run: |
+          cd api
+          npm run bundle
 
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         with:
-          output: api
-          spec-file: ./api/openapi.yml
+          output: swagger-ui
+          spec-file: ./api/bundle.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Cloudflare Pages
@@ -28,5 +38,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: kitcc-library-api-doc
-          directory: api
+          directory: swagger-ui
           branch: main

@@ -36,7 +36,7 @@ login:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/user.yml"
+              $ref: "../components/schemas/User.yml"
             examples:
               user:
                 $ref: "../components/examples/user.yml"
@@ -62,7 +62,7 @@ logout:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
             example:
               code: 204
               message: "No Content"

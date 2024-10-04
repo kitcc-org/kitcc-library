@@ -31,7 +31,7 @@ books:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/book.yml"
+                $ref: "../components/schemas/Book.yml"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -80,7 +80,7 @@ books:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
             example:
               code: 201
               message: "Created"
@@ -89,7 +89,7 @@ books:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
             example:
               code: 400
               message: "Bad Request"
@@ -118,7 +118,7 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
+              $ref: "../components/schemas/Book.yml"
             examples:
               book:
                 $ref: "../components/examples/book.yml"
@@ -173,7 +173,7 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/book.yml"
+              $ref: "../components/schemas/Book.yml"
             examples:
               book:
                 $ref: "../components/examples/book.yml"
@@ -182,7 +182,7 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
             example:
               code: 400
               message: "Bad Request"
@@ -213,7 +213,7 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
             example:
               code: 204
               message: "No Content"
@@ -222,7 +222,7 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/response.yml"
+              $ref: "../components/schemas/Error.yml"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
