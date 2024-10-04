@@ -38,7 +38,7 @@ books:
   post:
     tags:
       - book
-    operationId: addBook
+    operationId: createBook
     summary: 書籍を追加する
     security:
       - BasicAuth: []

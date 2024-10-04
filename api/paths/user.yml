@@ -38,7 +38,7 @@ users:
   post:
     tags:
       - user
-    operationId: addUser
+    operationId: createUser
     summary: ユーザーを追加する
     security:
       - BasicAuth: []

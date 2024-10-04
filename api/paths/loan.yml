@@ -53,7 +53,7 @@ loans:
   post:
     tags:
       - loan
-    operationId: addLoans
+    operationId: createLoans
     summary: 貸出履歴を追加する
     security:
       - BasicAuth: []
