@@ -27,3 +27,8 @@ npx supabase start
 ```
 npx supabase stop [--no-backup]
 ```
+
+## Orval
+```
+npx orval
+```
