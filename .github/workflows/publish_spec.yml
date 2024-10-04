@@ -12,7 +12,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest file
+      - name: Checkout latest repo
         uses: actions/checkout@v4
       
       - name: Setup Node.js
