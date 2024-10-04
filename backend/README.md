@@ -31,6 +31,10 @@ npx prisma migrate dev --name <name>
 ```
 
 ```
+npm prisma generate
+```
+
+```
 npx prisma db seed
 ```
 
