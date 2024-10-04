@@ -5,7 +5,7 @@ pnpm install
 ```
 
 ```
-pnpm add <pkg>
+pnpm add [-D] <pkg>
 ```
 
 ```
@@ -28,6 +28,10 @@ npx prisma init
 
 ```
 npx prisma migrate dev --name <name>
+```
+
+```
+npx prisma db seed
 ```
 
 ## Supabase
