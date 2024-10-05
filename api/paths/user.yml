@@ -32,6 +32,8 @@ users:
               type: array
               items:
                 $ref: "../components/schemas/User.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -69,17 +71,9 @@ users:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 201
               message: "Created"
       '400':
-        description: リクエストボディにユーザーの情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -109,6 +103,8 @@ user:
             examples:
               user:
                 $ref: "../components/examples/user.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -159,14 +155,7 @@ user:
               user:
                 $ref: "../components/examples/user.yml"
       '400':
-        description: リクエストボディにユーザーの情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
@@ -196,8 +185,9 @@ user:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 204
               message: "No Content"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         description: Unauthorized
         content:

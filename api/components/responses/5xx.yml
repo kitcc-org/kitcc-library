@@ -5,5 +5,4 @@ InternalServerError:
       schema:
         $ref: "../schemas/Error.yml"
       example:
-        code: 500
         message: "Internal Server Error"

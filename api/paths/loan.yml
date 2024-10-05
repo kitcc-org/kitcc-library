@@ -45,6 +45,8 @@ loans:
               type: array
               items:
                 $ref: "../components/schemas/Loan.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -81,14 +83,7 @@ loans:
             schema:
               $ref: "../components/schemas/Loan.yml"
       '400':
-        description: リクエストボディに貸借の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -125,14 +120,7 @@ loans:
             schema:
               $ref: "../components/schemas/Loan.yml"
       '400':
-        description: リクエストボディに貸出履歴の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':

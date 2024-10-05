@@ -57,6 +57,8 @@ books:
               type: array
               items:
                 $ref: "../components/schemas/Book.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -107,17 +109,9 @@ books:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 201
               message: "Created"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -147,6 +141,8 @@ book:
             examples:
               book:
                 $ref: "../components/examples/book.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -203,14 +199,7 @@ book:
               book:
                 $ref: "../components/examples/book.yml"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
@@ -240,8 +229,9 @@ book:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 204
               message: "No Content"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         description: Unauthorized
         content:
@@ -334,5 +324,7 @@ search:
                 publisher: "翔泳社"
                 thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                 isbn: "9784798135984"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"

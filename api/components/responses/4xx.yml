@@ -5,7 +5,6 @@ BadRequest:
       schema:
         $ref: "../schemas/Error.yml"
       example:
-        code: 400
         message: "Bad Request"
 
 Unauthorized:
@@ -15,7 +14,6 @@ Unauthorized:
       schema:
         $ref: "../schemas/Error.yml"
       example:
-        code: 401
         message: "Unauthorized"
 
 NotFound:
@@ -25,5 +23,4 @@ NotFound:
       schema:
         $ref: "../schemas/Error.yml"
       example:
-        code: 404
         message: "Not Found"
