@@ -23,6 +23,31 @@ books:
           type: integer
           minimum: 1
           default: 10
+      - name: title
+        in: query
+        description: タイトル
+        required: false
+        schema:
+          type: string
+      - name: author
+        in: query
+        description: 著者
+        required: false
+        schema:
+          type: string
+      - name: publisher
+        in: query
+        description: 出版社
+        required: false
+        schema:
+          type: string
+      - name: isbn
+        in: query
+        description: ISBN
+        required: false
+        schema:
+          type: string
+          pattern: '^\\d{13}$'
     responses:
       '200':
         description: 情報の取得に成功した
