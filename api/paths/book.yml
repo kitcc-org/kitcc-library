@@ -12,7 +12,8 @@ books:
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
           minimum: 1
           default: 1
       - name: limit
@@ -20,7 +21,8 @@ books:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
           minimum: 1
           default: 10
       - name: title
@@ -256,7 +258,8 @@ search:
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
           minimum: 1
           default: 1
       - name: limit
@@ -264,7 +267,8 @@ search:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
           minimum: 1
           default: 10
       - name: title
