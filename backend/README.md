@@ -20,24 +20,6 @@ pnpm run dev
 pnpm run deploy
 ```
 
-## Prisma
-
-```
-npx prisma init
-```
-
-```
-npx prisma migrate dev --name <name>
-```
-
-```
-npm prisma generate
-```
-
-```
-npx prisma db seed
-```
-
 ## Supabase
 
 ```
