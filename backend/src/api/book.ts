@@ -1,42 +1,53 @@
+import { bookTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { getPrismaClient } from '@utils/prisma-client';
+import { InferSelectModel } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import { getBooksQueryParams, getBooksResponse } from '../schema';
 
-type Bindings = {
-	DATABASE_URL: string;
-};
+type Book = InferSelectModel<typeof bookTable>;
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Env }>();
 
-app.get('/', zValidator('query', getBooksQueryParams), async (ctx) => {
-	// TODO:書籍の絞り込み
-	// PR#16がマージされたら実装する
-	let { page, limit } = ctx.req.valid('query');
+app.get(
+	'/',
+	zValidator('query', getBooksQueryParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Bad Request',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		const query = ctx.req.valid('query');
 
-	page = page ?? 1;
-	limit = limit ?? 10;
+		const page = parseInt(query['page'] ?? '1');
+		const limit = parseInt(query['limit'] ?? '10');
 
-	const prisma = getPrismaClient(ctx.env.DATABASE_URL);
+		const db = drizzle(ctx.env.DB);
+		const books: Book[] = await db
+			.select()
+			.from(bookTable)
+			// TODO:ここに絞り込み条件を追加する
+			// .where()
+			.limit(limit)
+			.offset((page - 1) * limit);
 
-	const books = await prisma.book.findMany({
-		skip: (page - 1) * limit,
-		take: limit,
-		// TODO:ここに絞り込み条件を追加する
-	});
+		const result = getBooksResponse.safeParse(books);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Internal Server Error',
+				},
+				500
+			);
+		}
 
-	const result = getBooksResponse.safeParse(books);
-	if (!result.success) {
-		return ctx.json(
-			{
-				code: 500,
-				message: 'Internal Server Error',
-			},
-			500
-		);
+		return ctx.json(result.data);
 	}
-
-	return ctx.json(result.data);
-});
+);
 
 export default app;

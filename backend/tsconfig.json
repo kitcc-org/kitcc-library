@@ -31,7 +31,7 @@
 		"baseUrl": "./",
 		/* Specify a set of entries that re-map imports to additional lookup locations. */
 		"paths": {
-			"@utils/*": ["src/utils/*"],
+			"@/*": ["./*"],
 		},
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
 		// "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */
@@ -105,5 +105,5 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 	"exclude": ["test"],
-	"include": ["worker-configuration.d.ts", "src/**/*.ts"]
+	"include": ["worker-configuration.d.ts", "src/**/*.ts", "test/types/env.d.ts"]
 }

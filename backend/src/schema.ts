@@ -13,9 +13,13 @@ import {
  * ページ番号が指定されなかった場合は1ページ目を返す
  * @summary 書籍の情報を取得する
  */
+export const getBooksQueryPageRegExp = new RegExp('^\\d+$');
+export const getBooksQueryLimitRegExp = new RegExp('^\\d+$');
+
+
 export const getBooksQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "page": zod.string().min(1).regex(getBooksQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getBooksQueryLimitRegExp).optional()
 })
 
 export const getBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
@@ -110,12 +114,14 @@ export const deleteBookParams = zod.object({
 /**
  * @summary 書籍を検索する
  */
+export const searchBooksQueryPageRegExp = new RegExp('^\\d+$');
+export const searchBooksQueryLimitRegExp = new RegExp('^\\d+$');
 export const searchBooksQueryIsbnRegExp = new RegExp('^\\\\d{13}$');
 
 
 export const searchBooksQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional(),
+  "page": zod.string().min(1).regex(searchBooksQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(searchBooksQueryLimitRegExp).optional(),
   "title": zod.string().optional(),
   "author": zod.string().optional(),
   "publisher": zod.string().optional(),
@@ -139,9 +145,13 @@ export const searchBooksResponse = zod.array(searchBooksResponseItem)
  * ページ番号が指定されなかった場合は1ページ目を返す
  * @summary ユーザーの情報を取得する
  */
+export const getUsersQueryPageRegExp = new RegExp('^\\d+$');
+export const getUsersQueryLimitRegExp = new RegExp('^\\d+$');
+
+
 export const getUsersQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "page": zod.string().min(1).regex(getUsersQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getUsersQueryLimitRegExp).optional()
 })
 
 export const getUsersResponseItem = zod.object({
@@ -212,11 +222,15 @@ export const deleteUserParams = zod.object({
  * 指定された条件に合致する貸出履歴を返す
  * @summary 貸出履歴を取得する
  */
+export const getLoansQueryPageRegExp = new RegExp('^\\d+$');
+export const getLoansQueryLimitRegExp = new RegExp('^\\d+$');
+
+
 export const getLoansQueryParams = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "userId": zod.string().optional(),
+  "bookId": zod.string().optional(),
+  "page": zod.string().min(1).regex(getLoansQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional()
 })
 
 export const getLoansResponseItem = zod.object({

@@ -19,3 +19,9 @@ pnpm run dev
 ```
 pnpm run deploy
 ```
+
+## drizzle-orm
+
+```
+pnpm drizzle-kit drop
+```
