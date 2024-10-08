@@ -138,7 +138,8 @@ book:
         description: "取得する書籍のID"
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -170,7 +171,8 @@ book:
         description: 更新する書籍のID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     requestBody:
       required: true
       content:
@@ -228,7 +230,8 @@ book:
         description: 削除する書籍のID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '204':
         description: 書籍の削除に成功した

@@ -30,7 +30,7 @@ export const getBooksResponseItem = zod.object({
   "title": zod.string(),
   "author": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseIsbnRegExp),
   "stock": zod.number()
 })
@@ -56,8 +56,11 @@ export const createBookBody = zod.object({
 /**
  * @summary 特定の書籍の情報を取得する
  */
+export const getBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const getBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(getBookPathBookIdRegExp)
 })
 
 export const getBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
@@ -68,7 +71,7 @@ export const getBookResponse = zod.object({
   "title": zod.string(),
   "author": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBookResponseIsbnRegExp),
   "stock": zod.number()
 })
@@ -78,8 +81,11 @@ export const getBookResponse = zod.object({
  * リクエストボディで指定された情報のみ更新する
  * @summary 特定の書籍の情報を更新する
  */
+export const updateBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const updateBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(updateBookPathBookIdRegExp)
 })
 
 export const updateBookBody = zod.object({
@@ -97,7 +103,7 @@ export const updateBookResponse = zod.object({
   "title": zod.string(),
   "author": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(updateBookResponseIsbnRegExp),
   "stock": zod.number()
 })
@@ -106,8 +112,11 @@ export const updateBookResponse = zod.object({
 /**
  * @summary 特定の書籍を削除する
  */
+export const deleteBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const deleteBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(deleteBookPathBookIdRegExp)
 })
 
 
@@ -176,8 +185,11 @@ export const createUserBody = zod.object({
 /**
  * @summary 特定のユーザーの情報を取得する
  */
+export const getUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const getUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(getUserPathUserIdRegExp)
 })
 
 export const getUserResponse = zod.object({
@@ -192,8 +204,11 @@ export const getUserResponse = zod.object({
  * リクエストボディに含まれている情報のみ更新する
  * @summary 特定のユーザーの情報を更新する
  */
+export const updateUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const updateUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(updateUserPathUserIdRegExp)
 })
 
 export const updateUserBody = zod.object({
@@ -213,8 +228,11 @@ export const updateUserResponse = zod.object({
 /**
  * @summary 特定のユーザーを削除する
  */
+export const deleteUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const deleteUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(deleteUserPathUserIdRegExp)
 })
 
 
@@ -222,13 +240,15 @@ export const deleteUserParams = zod.object({
  * 指定された条件に合致する貸出履歴を返す
  * @summary 貸出履歴を取得する
  */
+export const getLoansQueryUserIdRegExp = new RegExp('^\\d+$');
+export const getLoansQueryBookIdRegExp = new RegExp('^\\d+$');
 export const getLoansQueryPageRegExp = new RegExp('^\\d+$');
 export const getLoansQueryLimitRegExp = new RegExp('^\\d+$');
 
 
 export const getLoansQueryParams = zod.object({
-  "userId": zod.string().optional(),
-  "bookId": zod.string().optional(),
+  "userId": zod.string().regex(getLoansQueryUserIdRegExp).optional(),
+  "bookId": zod.string().regex(getLoansQueryBookIdRegExp).optional(),
   "page": zod.string().min(1).regex(getLoansQueryPageRegExp).optional(),
   "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional()
 })
@@ -271,7 +291,7 @@ export const createLoansResponse = zod.object({
 export const updateLoansBodyItem = zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),
-  "volume": zod.number()
+  "volume": zod.number().optional()
 })
 export const updateLoansBody = zod.array(updateLoansBodyItem)
 

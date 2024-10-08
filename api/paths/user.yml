@@ -98,7 +98,8 @@ user:
         description: "取得するユーザーのID"
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -130,7 +131,8 @@ user:
         description: 更新するユーザーのID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     requestBody:
       required: true
       content:
@@ -182,7 +184,8 @@ user:
         description: 削除するユーザーのID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '204':
         description: ユーザーの削除に成功した

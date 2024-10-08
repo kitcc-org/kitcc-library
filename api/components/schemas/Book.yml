@@ -12,6 +12,7 @@ properties:
     type: string
   thumbnail:
     type: string
+    format: uri
   isbn:
     type: string
     pattern: '^\d{13}$'

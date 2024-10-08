@@ -14,12 +14,14 @@ loans:
         required: false
         schema:
           type: string
+          pattern: '^\d+$'
       - name: bookId
         in: query
         description: 貸出履歴を取得する書籍のID
         required: false
         schema:
           type: string
+          pattern: '^\d+$'
       - name: page
         in: query
         description: ページ番号
@@ -121,7 +123,6 @@ loans:
               required:
                 - userId
                 - bookId
-                - volume
     responses:
       '200':
         description: OK
