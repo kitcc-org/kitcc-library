@@ -88,10 +88,14 @@ export const updateBookParams = zod.object({
   "bookId": zod.string().regex(updateBookPathBookIdRegExp)
 })
 
+export const updateBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
+
+
 export const updateBookBody = zod.object({
   "title": zod.string().optional(),
   "author": zod.array(zod.string()).optional(),
   "publisher": zod.string().optional(),
+  "isbn": zod.string().regex(updateBookBodyIsbnRegExp).optional(),
   "stock": zod.number().optional()
 })
 

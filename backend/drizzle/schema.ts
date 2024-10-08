@@ -1,4 +1,9 @@
-import { integer, sqliteTable, text, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import {
+	integer,
+	sqliteTable,
+	text,
+	uniqueIndex,
+} from 'drizzle-orm/sqlite-core';
 
 export const bookTable = sqliteTable(
 	'books',
@@ -9,9 +14,12 @@ export const bookTable = sqliteTable(
 		publisher: text('publisher').notNull(),
 		thumbnail: text('thumbnail'),
 		isbn: text('isbn').notNull().unique(),
-		stock: integer('stock').default(1),
+		stock: integer('stock').notNull().default(1),
 	},
 	(Books) => ({
 		isbnIdx: uniqueIndex('isbn_idx').on(Books.isbn),
 	})
 );
+
+export type SelectBook = typeof bookTable.$inferSelect;
+export type InsertBook = typeof bookTable.$inferInsert;

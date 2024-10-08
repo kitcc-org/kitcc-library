@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "36b2adcd-0dd4-46ec-abb7-c5c0324d170f",
+  "id": "868231d2-3e01-414f-b8bf-fd93b390147e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "books": {
@@ -53,7 +53,7 @@
           "name": "stock",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": 1
         }

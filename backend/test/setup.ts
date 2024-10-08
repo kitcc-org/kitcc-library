@@ -12,8 +12,16 @@ await db
       publisher TEXT NOT NULL,
       thumbnail TEXT,
       isbn TEXT NOT NULL,
-      stock INTEGER DEFAULT 1
+      stock INTEGER NOT NULL DEFAULT 1
     )
+    `
+	)
+	.run();
+
+await db
+	.prepare(
+		`
+    CREATE UNIQUE INDEX IF NOT EXISTS isbn_idx ON books (isbn)
     `
 	)
 	.run();

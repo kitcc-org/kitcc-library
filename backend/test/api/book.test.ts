@@ -46,7 +46,7 @@ describe('GET /books', () => {
 describe('POST /books', () => {
 	const db = drizzle(env.DB);
 
-	it('should create book', async () => {
+	it('should create new book', async () => {
 		const book = bookFactory.build();
 		const response = await app.request(
 			'/books',
@@ -64,6 +64,35 @@ describe('POST /books', () => {
 
 		const totalBook = await db.select({ count: count() }).from(bookTable);
 		expect(totalBook[0].count).toBe(1);
+	});
+
+	it('should increase stock when book is already registered', async () => {
+		const book = bookFactory.build();
+		await db.insert(bookTable).values(book);
+
+		const response = await app.request(
+			'/books',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(book),
+			},
+			env
+		);
+
+		expect(response.status).toBe(201);
+
+		const totalBook = await db
+			.select({
+				count: count(),
+				stock: bookTable.stock,
+			})
+			.from(bookTable)
+			.where(eq(bookTable.isbn, book.isbn));
+		expect(totalBook[0].count).toBe(1);
+		expect(totalBook[0].stock).toBe(book.stock! + 1);
 	});
 
 	it('should return 400 when title is missing', async () => {
@@ -155,6 +184,8 @@ describe('POST /books', () => {
 
 		expect(response.status).toBe(400);
 	});
+
+	// TODO:未ログインの時
 });
 
 describe('GET /books/:bookId', () => {
@@ -188,4 +219,91 @@ describe('GET /books/:bookId', () => {
 
 		expect(response.status).toBe(404);
 	});
+});
+
+describe('PUT /books/:bookId', () => {
+	const db = drizzle(env.DB);
+	const books = bookFactory.buildList(2);
+
+	beforeEach(async () => {
+		await db.insert(bookTable).values(books);
+	});
+
+	afterEach(async () => {
+		for (const book of books) {
+			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+		}
+	});
+
+	it('should update book', async () => {
+		const book = {
+			title: '計算機プログラムの構造と解釈',
+			// prettier-ignore
+			author: [
+				'Harold Abelson',
+				'Gerald Jay Sussman',
+				'Julie Sussman'
+			],
+			publisher: '翔泳社',
+			isbn: '9784798135984',
+			stock: 1,
+		};
+
+		const books = await db.select().from(bookTable);
+		const response = await app.request(
+			`/books/${books[0].id}`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(book),
+			},
+			env
+		);
+
+		expect(response.status).toBe(200);
+
+		const updatedBook = await db
+			.select()
+			.from(bookTable)
+			.where(eq(bookTable.id, books[0].id));
+		expect(updatedBook[0]).toMatchObject(book);
+	});
+
+	it('should return 400 when violate ISBN unique constraint', async () => {
+		const books = await db.select().from(bookTable);
+
+		const response = await app.request(
+			`/books/${books[1].id}`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ isbn: books[0].isbn }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 404 when book is not found', async () => {
+		const response = await app.request(
+			`/books/100`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ title: 'New Title' }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(404);
+	});
+
+	// TODO:未ログインの時
 });

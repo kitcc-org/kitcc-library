@@ -5,7 +5,7 @@ CREATE TABLE `books` (
 	`publisher` text NOT NULL,
 	`thumbnail` text,
 	`isbn` text NOT NULL,
-	`stock` integer DEFAULT 1
+	`stock` integer DEFAULT 1 NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `books_isbn_unique` ON `books` (`isbn`);--> statement-breakpoint
