@@ -7,6 +7,7 @@ npx orval
 ```
 
 ## Prism
+
 ```
 npm install -g @stoplight/prism-cli
 ```

@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { InferSelectModel } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
-import { getBooksQueryParams, getBooksResponse } from '../schema';
+import { createBookBody, getBooksQueryParams, getBooksResponse } from '../schema';
 
 type Book = InferSelectModel<typeof bookTable>;
 
@@ -47,6 +47,36 @@ app.get(
 		}
 
 		return ctx.json(result.data);
+	}
+);
+
+app.post(
+	'/',
+	zValidator('json', createBookBody, (result, ctx) => {
+		if (!result.success) {
+			console.log(result.error);
+			return ctx.json(
+				{
+					message: 'Bad Request',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
+		const book = ctx.req.valid('json');
+
+		const db = drizzle(ctx.env.DB);
+		await db.insert(bookTable).values(book);
+
+		return ctx.json(
+			{
+				message: 'Created',
+			},
+			201
+		);
 	}
 );
 
