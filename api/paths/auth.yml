@@ -19,6 +19,9 @@ login:
               password:
                 type: string
                 format: password
+            required:
+              - email
+              - password
           example:
             email: "username@example.com"
             password: "password"

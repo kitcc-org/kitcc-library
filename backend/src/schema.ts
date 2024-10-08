@@ -44,12 +44,12 @@ export const createBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
 
 
 export const createBookBody = zod.object({
-  "title": zod.string().optional(),
-  "author": zod.string().optional(),
-  "publisher": zod.array(zod.string()).optional(),
+  "title": zod.string(),
+  "author": zod.array(zod.string()),
+  "publisher": zod.string(),
   "thumbnail": zod.string().optional(),
-  "isbn": zod.string().regex(createBookBodyIsbnRegExp).optional(),
-  "stock": zod.number().optional()
+  "isbn": zod.string().regex(createBookBodyIsbnRegExp),
+  "stock": zod.number()
 })
 
 
@@ -167,9 +167,9 @@ export const getUsersResponse = zod.array(getUsersResponseItem)
  * @summary ユーザーを追加する
  */
 export const createUserBody = zod.object({
-  "name": zod.string().optional(),
-  "email": zod.string().email().optional(),
-  "password": zod.string().optional()
+  "name": zod.string(),
+  "email": zod.string().email(),
+  "password": zod.string()
 })
 
 
@@ -248,9 +248,9 @@ export const getLoansResponse = zod.array(getLoansResponseItem)
  * @summary 貸出履歴を追加する
  */
 export const createLoansBodyItem = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().min(1).optional()
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number().min(1)
 })
 export const createLoansBody = zod.array(createLoansBodyItem)
 
@@ -269,9 +269,9 @@ export const createLoansResponse = zod.object({
  * @summary 貸出履歴を更新する
  */
 export const updateLoansBodyItem = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().optional()
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number()
 })
 export const updateLoansBody = zod.array(updateLoansBodyItem)
 
@@ -290,8 +290,8 @@ export const updateLoansResponse = zod.object({
  * @summary ログインする
  */
 export const loginBody = zod.object({
-  "email": zod.string().email().optional(),
-  "password": zod.string().optional()
+  "email": zod.string().email(),
+  "password": zod.string()
 })
 
 export const loginResponse = zod.object({

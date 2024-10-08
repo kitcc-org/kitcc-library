@@ -81,11 +81,11 @@ books:
               title:
                 type: string
               author:
-                type: string
-              publisher:
                 type: array
                 items:
                   type: string
+              publisher:
+                type: string
               thumbnail:
                 type: string
               isbn:
@@ -93,6 +93,12 @@ books:
                 pattern: '^\d{13}$'
               stock:
                 type: integer
+            required:
+              - title
+              - author
+              - publisher
+              - isbn
+              - stock
             example:
               title: "計算機プログラムの構造と解釈"
               author:

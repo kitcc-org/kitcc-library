@@ -77,6 +77,10 @@ loans:
                 volume:
                   type: integer
                   minimum: 1
+              required:
+                - userId
+                - bookId
+                - volume
     responses:
       '200':
         description: OK
@@ -114,6 +118,10 @@ loans:
                   type: integer
                 volume:
                   type: integer
+              required:
+                - userId
+                - bookId
+                - volume
     responses:
       '200':
         description: OK
