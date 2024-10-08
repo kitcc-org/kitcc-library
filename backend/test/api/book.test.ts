@@ -17,6 +17,8 @@ describe('GET /books', () => {
 		for (const book of books) {
 			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
 		}
+
+		bookFactory.resetSequenceNumber();
 	});
 
 	it('should return 1 page', async () => {
@@ -45,6 +47,10 @@ describe('GET /books', () => {
 
 describe('POST /books', () => {
 	const db = drizzle(env.DB);
+
+	afterAll(() => {
+		bookFactory.resetSequenceNumber();
+	});
 
 	it('should create new book', async () => {
 		const book = bookFactory.build();
@@ -198,6 +204,7 @@ describe('GET /books/:bookId', () => {
 
 	afterAll(async () => {
 		await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+		bookFactory.resetSequenceNumber();
 	});
 
 	it('should return correct book', async () => {
@@ -233,6 +240,10 @@ describe('PUT /books/:bookId', () => {
 		for (const book of books) {
 			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
 		}
+	});
+
+	afterAll(() => {
+		bookFactory.resetSequenceNumber();
 	});
 
 	it('should update book', async () => {
@@ -289,6 +300,8 @@ describe('PUT /books/:bookId', () => {
 		expect(response.status).toBe(400);
 	});
 
+	// TODO:未ログインの時
+
 	it('should return 404 when book is not found', async () => {
 		const response = await app.request(
 			`/books/100`,
@@ -304,6 +317,67 @@ describe('PUT /books/:bookId', () => {
 
 		expect(response.status).toBe(404);
 	});
+});
+
+describe('DELETE /books/:bookId', () => {
+	const db = drizzle(env.DB);
+	const book = bookFactory.build();
+
+	beforeEach(async () => {
+		await db.insert(bookTable).values(book);
+	});
+
+	afterEach(async () => {
+		await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+	});
+
+	afterAll(() => {
+		bookFactory.resetSequenceNumber();
+	});
+
+	it('should delete book', async () => {
+		const books = await db.select().from(bookTable);
+
+		const response = await app.request(
+			`/books/${books[0].id}`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(204);
+
+		const deletedBook = await db
+			.select()
+			.from(bookTable)
+			.where(eq(bookTable.id, books[0].id));
+		expect(deletedBook).toHaveLength(0);
+	});
+
+	it('should return 400 when bookId is not a number', async () => {
+		const response = await app.request(
+			`/books/id`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
 
 	// TODO:未ログインの時
+
+	it('should return 404 when book is not found', async () => {
+		const response = await app.request(
+			`/books/100`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(404);
+	});
 });

@@ -250,11 +250,7 @@ book:
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
-        description: Unauthorized
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':

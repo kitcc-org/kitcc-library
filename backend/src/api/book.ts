@@ -5,6 +5,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
 	createBookBody,
+	deleteBookParams,
 	getBookParams,
 	getBookResponse,
 	getBooksQueryParams,
@@ -127,12 +128,7 @@ app.get(
 			.where(eq(bookTable.id, id));
 
 		if (books.length === 0) {
-			return ctx.json(
-				{
-					message: 'Not Found',
-				},
-				404
-			);
+			return ctx.notFound();
 		}
 
 		const result = getBookResponse.safeParse(books[0]);
@@ -172,6 +168,8 @@ app.put(
 		}
 	}),
 	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['bookId']);
 
@@ -184,15 +182,7 @@ app.put(
 				.update(bookTable)
 				.set(book)
 				.where(eq(bookTable.id, id))
-				.returning({
-					id: bookTable.id,
-					title: bookTable.title,
-					author: bookTable.author,
-					publisher: bookTable.publisher,
-					thumbnail: bookTable.thumbnail,
-					isbn: bookTable.isbn,
-					stock: bookTable.stock,
-				});
+				.returning();
 		} catch (err) {
 			if (err instanceof Error) {
 				return ctx.json(
@@ -205,12 +195,7 @@ app.put(
 		}
 
 		if (updatedBook.length === 0) {
-			return ctx.json(
-				{
-					message: 'Not Found',
-				},
-				404
-			);
+			return ctx.notFound();
 		}
 
 		const result = updateBookResponse.safeParse(updatedBook[0]);
@@ -224,6 +209,38 @@ app.put(
 		} else {
 			return ctx.json(result.data);
 		}
+	}
+);
+
+app.delete(
+	'/:bookId',
+	zValidator('param', deleteBookParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Bad Request',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
+		const param = ctx.req.valid('param');
+		const id = parseInt(param['bookId']);
+
+		const db = drizzle(ctx.env.DB);
+		const deletedBook = await db
+			.delete(bookTable)
+			.where(eq(bookTable.id, id))
+			.returning();
+
+		if (deletedBook.length === 0) {
+			return ctx.notFound();
+		}
+
+		return ctx.body(null, 204);
 	}
 );
 
