@@ -15,11 +15,16 @@ import {
  */
 export const getBooksQueryPageRegExp = new RegExp('^\\d+$');
 export const getBooksQueryLimitRegExp = new RegExp('^\\d+$');
+export const getBooksQueryIsbnRegExp = new RegExp('^\\d{13}$');
 
 
 export const getBooksQueryParams = zod.object({
   "page": zod.string().min(1).regex(getBooksQueryPageRegExp).optional(),
-  "limit": zod.string().min(1).regex(getBooksQueryLimitRegExp).optional()
+  "limit": zod.string().min(1).regex(getBooksQueryLimitRegExp).optional(),
+  "title": zod.string().optional(),
+  "author": zod.string().optional(),
+  "publisher": zod.string().optional(),
+  "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional()
 })
 
 export const getBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
@@ -78,7 +83,8 @@ export const getBookResponse = zod.object({
 
 
 /**
- * リクエストボディで指定された情報のみ更新する
+ * リクエストボディで指定された情報のみ更新する． 書籍が登録済みの場合は蔵書数を+1する．
+
  * @summary 特定の書籍の情報を更新する
  */
 export const updateBookPathBookIdRegExp = new RegExp('^\\d+$');

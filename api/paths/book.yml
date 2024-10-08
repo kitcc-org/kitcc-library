@@ -49,7 +49,7 @@ books:
         required: false
         schema:
           type: string
-          pattern: '^\\d{13}$'
+          pattern: '^\d{13}$'
     responses:
       '200':
         description: 情報の取得に成功した

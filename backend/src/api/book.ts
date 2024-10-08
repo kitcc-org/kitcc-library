@@ -1,6 +1,6 @@
 import { bookTable, SelectBook } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { eq } from 'drizzle-orm';
+import { and, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -39,8 +39,23 @@ app.get(
 		const books: SelectBook[] = await db
 			.select()
 			.from(bookTable)
-			// TODO:ここに絞り込み条件を追加する
-			// .where()
+			.where(
+				and(
+					query['title']
+						? like(bookTable.title, `%${query['title']}%`)
+						: undefined,
+					query['author']
+						? like(bookTable.author, `%${query['author']}%`)
+						: undefined,
+					query['publisher']
+						? like(bookTable.publisher, `%${query['publisher']}%`)
+						: undefined,
+					// prettier-ignore
+					query['isbn']
+						? eq(bookTable.isbn, `%${query['isbn']}%`)
+						: undefined
+				)
+			)
 			.limit(limit)
 			.offset((page - 1) * limit);
 

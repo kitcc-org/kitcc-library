@@ -30,6 +30,17 @@ describe('GET /books', () => {
 		expect(books).toHaveLength(5);
 	});
 
+	it('should return specified book', async () => {
+		const firstBook = { id: 1, ...books[0] };
+
+		const params = new URLSearchParams({ title: firstBook.title }).toString();
+		const response = await app.request(`/books?${params}`, {}, env);
+		const result = await response.json();
+
+		expect(response.status).toBe(200);
+		expect(result).toContainEqual(firstBook);
+	});
+
 	it('should return 400 when page is not a number', async () => {
 		const params = new URLSearchParams({ page: 'a' }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
