@@ -156,3 +156,36 @@ describe('POST /books', () => {
 		expect(response.status).toBe(400);
 	});
 });
+
+describe('GET /books/:bookId', () => {
+	const db = drizzle(env.DB);
+	const book = bookFactory.build();
+
+	beforeAll(async () => {
+		await db.insert(bookTable).values(book);
+	});
+
+	afterAll(async () => {
+		await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+	});
+
+	it('should return correct book', async () => {
+		const response = await app.request(`/books/1`, {}, env);
+		const result = await response.json();
+
+		expect(response.status).toBe(200);
+		expect(result).toMatchObject(book);
+	});
+
+	it('should return 400 when bookId is not a number', async () => {
+		const response = await app.request(`/books/id`, {}, env);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 404 when book is not found', async () => {
+		const response = await app.request(`/books/100`, {}, env);
+
+		expect(response.status).toBe(404);
+	});
+});

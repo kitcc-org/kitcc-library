@@ -1,9 +1,15 @@
 import { bookTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { InferSelectModel } from 'drizzle-orm';
+import { eq, InferSelectModel } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
-import { createBookBody, getBooksQueryParams, getBooksResponse } from '../schema';
+import {
+	createBookBody,
+	getBookParams,
+	getBookResponse,
+	getBooksQueryParams,
+	getBooksResponse,
+} from '../schema';
 
 type Book = InferSelectModel<typeof bookTable>;
 
@@ -77,6 +83,48 @@ app.post(
 			},
 			201
 		);
+	}
+);
+
+app.get(
+	'/:bookId',
+	zValidator('param', getBookParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Bad Request',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		const param = ctx.req.valid('param');
+		const id = parseInt(param['bookId']);
+
+		const db = drizzle(ctx.env.DB);
+		const book: Book[] = await db.select().from(bookTable).where(eq(bookTable.id, id));
+
+		if (book.length === 0) {
+			return ctx.json(
+				{
+					message: 'Not Found',
+				},
+				404
+			);
+		}
+
+		const result = getBookResponse.safeParse(book[0]);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Internal Server Error',
+				},
+				500
+			);
+		}
+
+		return ctx.json(result.data);
 	}
 );
 
