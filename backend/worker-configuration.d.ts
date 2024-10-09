@@ -2,4 +2,5 @@
 
 interface Env {
 	DB: D1Database;
+	GOOGLE_BOOKS_API_KEY: string;
 }

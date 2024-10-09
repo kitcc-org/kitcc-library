@@ -10,6 +10,8 @@ import {
 	getBookResponse,
 	getBooksQueryParams,
 	getBooksResponse,
+	searchBooksQueryParams,
+	searchBooksResponse,
 	updateBookBody,
 	updateBookParams,
 	updateBookResponse,
@@ -17,13 +19,120 @@ import {
 
 const app = new Hono<{ Bindings: Env }>();
 
+type GBAResult = {
+	items?: [
+		{
+			volumeInfo: {
+				title: string;
+				authors?: string[];
+				publisher?: string;
+				imageLinks?: {
+					thumbnail: string;
+				};
+				industryIdentifiers?: {
+					type: string;
+					identifier: string;
+				}[];
+			};
+		}
+	];
+};
+
+type GoogleBook = {
+	title: string;
+	authors: string[];
+	publisher: string;
+	thumbnail: string;
+	isbn: string;
+};
+
+app.get(
+	'/search',
+	zValidator('query', searchBooksQueryParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Query Parameter Validation Error',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		const query = ctx.req.valid('query');
+
+		const page = parseInt(query['page'] ?? '1');
+		const limit = parseInt(query['limit'] ?? '10');
+
+		delete query['page'];
+		delete query['limit'];
+
+		let terms = '';
+		for (const [key, value] of Object.entries(query)) {
+			if (value) {
+				terms += `+${key}:${value}`;
+			}
+		}
+
+		const params = new URLSearchParams({
+			q: terms,
+			startIndex: String((page - 1) * limit),
+			maxResults: String(limit),
+			key: ctx.env.GOOGLE_BOOKS_API_KEY,
+		});
+
+		// prettier-ignore
+		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
+		const body: GBAResult = await response.json();
+
+		const hitBooks: GoogleBook[] = [];
+
+		if (body.hasOwnProperty('items')) {
+			for (const item of body.items ?? []) {
+				const book = item.volumeInfo;
+
+				let isbn = undefined;
+				if (book.hasOwnProperty('industryIdentifiers')) {
+					// prettier-ignore
+					const identifier = book.industryIdentifiers!.find(
+						(identifier) => {
+							return identifier.type === 'ISBN_13'
+						}
+					);
+					isbn = identifier?.identifier;
+				}
+
+				hitBooks.push({
+					title: book.title,
+					authors: book.authors ?? [],
+					publisher: book.publisher ?? '',
+					thumbnail: book.imageLinks?.thumbnail ?? '',
+					isbn: isbn ?? '',
+				});
+			}
+		}
+
+		const result = searchBooksResponse.safeParse(hitBooks);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data);
+		}
+	}
+);
+
 app.get(
 	'/',
 	zValidator('query', getBooksQueryParams, (result, ctx) => {
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Query Parameter Validation Error',
 				},
 				400
 			);
@@ -45,7 +154,7 @@ app.get(
 						? like(bookTable.title, `%${query['title']}%`)
 						: undefined,
 					query['author']
-						? like(bookTable.author, `%${query['author']}%`)
+						? like(bookTable.authors, `%${query['author']}%`)
 						: undefined,
 					query['publisher']
 						? like(bookTable.publisher, `%${query['publisher']}%`)
@@ -63,7 +172,7 @@ app.get(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Internal Server Error',
+					message: 'Response Validation Error',
 				},
 				500
 			);
@@ -77,10 +186,9 @@ app.post(
 	'/',
 	zValidator('json', createBookBody, (result, ctx) => {
 		if (!result.success) {
-			console.log(result.error);
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Request Body Validation Error',
 				},
 				400
 			);
@@ -126,7 +234,7 @@ app.get(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Path Paramter Validation Error',
 				},
 				400
 			);
@@ -150,7 +258,7 @@ app.get(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Internal Server Error',
+					message: 'Response Validation Error',
 				},
 				500
 			);
@@ -166,7 +274,7 @@ app.put(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Path Paramter Validation Error',
 				},
 				400
 			);
@@ -176,7 +284,7 @@ app.put(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Request Body Validation Error',
 				},
 				400
 			);
@@ -217,7 +325,7 @@ app.put(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Internal Server Error',
+					message: 'Response Validation Error',
 				},
 				500
 			);
