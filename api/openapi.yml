@@ -5,7 +5,7 @@ info:
     name: KITCC
     url: "https://www.kitcc.org/"
     email: "question@kitcc.org"
-  license: 
+  license:
     name: MIT
     url: https://en.wikipedia.org/wiki/MIT_License
   version: "1.0.0"

@@ -42,10 +42,11 @@ enabled = true
 
 # Bind a D1 database. D1 is Cloudflare’s native serverless SQL database.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#d1-databases
-# [[d1_databases]]
-# binding = "MY_DB"
-# database_name = "my-database"
-# database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "kitcc-lib-db"
+database_id = "5858b2d1-70ff-4fc5-a6d5-a025deff43c9"
+migrations_dir = "drizzle/migrations"
 
 # Bind a dispatch namespace. Use Workers for Platforms to deploy serverless functions programmatically on behalf of your customers.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#dispatch-namespace-bindings-workers-for-platforms

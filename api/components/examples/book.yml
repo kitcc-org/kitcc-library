@@ -1,7 +1,7 @@
 value:
   id: 1
   title: "計算機プログラムの構造と解釈"
-  author:
+  authors:
     - "Harold Abelson"
     - "Gerald Jay Sussman"
     - "Julie Sussman"

@@ -1,10 +1,11 @@
 ## pnpm
+
 ```
 pnpm install
 ```
 
 ```
-pnpm add <pkg>
+pnpm add [-D] <pkg>
 ```
 
 ```
@@ -19,16 +20,8 @@ pnpm run dev
 pnpm run deploy
 ```
 
-## Supabase
-```
-npx supabase start
-```
+## drizzle-orm
 
 ```
-npx supabase stop [--no-backup]
-```
-
-## Orval
-```
-npx orval
+pnpm drizzle-kit drop
 ```

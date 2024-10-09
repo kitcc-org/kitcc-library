@@ -12,7 +12,8 @@ users:
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -20,7 +21,8 @@ users:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
     responses:
@@ -32,6 +34,8 @@ users:
               type: array
               items:
                 $ref: "../components/schemas/User.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -57,6 +61,10 @@ users:
               password:
                 type: string
                 format: password
+            required:
+              - name
+              - email
+              - password
           example:
             name: "比企谷八幡"
             email: "hikigaya@oregairu.com"
@@ -69,17 +77,9 @@ users:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 201
               message: "Created"
       '400':
-        description: リクエストボディにユーザーの情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -98,7 +98,8 @@ user:
         description: "取得するユーザーのID"
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -109,6 +110,8 @@ user:
             examples:
               user:
                 $ref: "../components/examples/user.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -128,7 +131,8 @@ user:
         description: 更新するユーザーのID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     requestBody:
       required: true
       content:
@@ -159,14 +163,7 @@ user:
               user:
                 $ref: "../components/examples/user.yml"
       '400':
-        description: リクエストボディにユーザーの情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
@@ -187,7 +184,8 @@ user:
         description: 削除するユーザーのID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '204':
         description: ユーザーの削除に成功した
@@ -196,8 +194,9 @@ user:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 204
               message: "No Content"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         description: Unauthorized
         content:

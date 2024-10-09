@@ -13,19 +13,22 @@ loans:
         description: 貸出履歴を取得するユーザーのID
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
       - name: bookId
         in: query
         description: 貸出履歴を取得する書籍のID
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
       - name: page
         in: query
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -33,7 +36,8 @@ loans:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
     responses:
@@ -45,6 +49,8 @@ loans:
               type: array
               items:
                 $ref: "../components/schemas/Loan.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -73,6 +79,10 @@ loans:
                 volume:
                   type: integer
                   minimum: 1
+              required:
+                - userId
+                - bookId
+                - volume
     responses:
       '200':
         description: OK
@@ -81,14 +91,7 @@ loans:
             schema:
               $ref: "../components/schemas/Loan.yml"
       '400':
-        description: リクエストボディに貸借の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -117,6 +120,9 @@ loans:
                   type: integer
                 volume:
                   type: integer
+              required:
+                - userId
+                - bookId
     responses:
       '200':
         description: OK
@@ -125,14 +131,7 @@ loans:
             schema:
               $ref: "../components/schemas/Loan.yml"
       '400':
-        description: リクエストボディに貸出履歴の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':

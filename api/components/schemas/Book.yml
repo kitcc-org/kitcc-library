@@ -4,7 +4,7 @@ properties:
     type: integer
   title:
     type: string
-  author:
+  authors:
     type: array
     items:
       type: string
@@ -12,6 +12,7 @@ properties:
     type: string
   thumbnail:
     type: string
+    format: uri
   isbn:
     type: string
     pattern: '^\d{13}$'
@@ -20,7 +21,7 @@ properties:
 required:
   - id
   - title
-  - author
+  - authors
   - publisher
   - isbn
   - stock

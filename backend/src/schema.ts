@@ -13,9 +13,18 @@ import {
  * ページ番号が指定されなかった場合は1ページ目を返す
  * @summary 書籍の情報を取得する
  */
+export const getBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
+export const getBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
+export const getBooksQueryIsbnRegExp = new RegExp('^\\d{13}$');
+
+
 export const getBooksQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "page": zod.string().min(1).regex(getBooksQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getBooksQueryLimitRegExp).optional(),
+  "title": zod.string().optional(),
+  "author": zod.string().optional(),
+  "publisher": zod.string().optional(),
+  "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional()
 })
 
 export const getBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
@@ -24,9 +33,9 @@ export const getBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
 export const getBooksResponseItem = zod.object({
   "id": zod.number(),
   "title": zod.string(),
-  "author": zod.array(zod.string()),
+  "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseIsbnRegExp),
   "stock": zod.number()
 })
@@ -40,20 +49,23 @@ export const createBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
 
 
 export const createBookBody = zod.object({
-  "title": zod.string().optional(),
-  "author": zod.string().optional(),
-  "publisher": zod.array(zod.string()).optional(),
+  "title": zod.string(),
+  "authors": zod.array(zod.string()),
+  "publisher": zod.string(),
   "thumbnail": zod.string().optional(),
-  "isbn": zod.string().regex(createBookBodyIsbnRegExp).optional(),
-  "stock": zod.number().optional()
+  "isbn": zod.string().regex(createBookBodyIsbnRegExp),
+  "stock": zod.number()
 })
 
 
 /**
  * @summary 特定の書籍の情報を取得する
  */
+export const getBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const getBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(getBookPathBookIdRegExp)
 })
 
 export const getBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
@@ -62,26 +74,34 @@ export const getBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
 export const getBookResponse = zod.object({
   "id": zod.number(),
   "title": zod.string(),
-  "author": zod.array(zod.string()),
+  "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBookResponseIsbnRegExp),
   "stock": zod.number()
 })
 
 
 /**
- * リクエストボディで指定された情報のみ更新する
+ * リクエストボディで指定された情報のみ更新する． 書籍が登録済みの場合は蔵書数を+1する．
+
  * @summary 特定の書籍の情報を更新する
  */
+export const updateBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const updateBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(updateBookPathBookIdRegExp)
 })
+
+export const updateBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
+
 
 export const updateBookBody = zod.object({
   "title": zod.string().optional(),
-  "author": zod.array(zod.string()).optional(),
+  "authors": zod.array(zod.string()).optional(),
   "publisher": zod.string().optional(),
+  "isbn": zod.string().regex(updateBookBodyIsbnRegExp).optional(),
   "stock": zod.number().optional()
 })
 
@@ -91,9 +111,9 @@ export const updateBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
 export const updateBookResponse = zod.object({
   "id": zod.number(),
   "title": zod.string(),
-  "author": zod.array(zod.string()),
+  "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "thumbnail": zod.string().optional(),
+  "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(updateBookResponseIsbnRegExp),
   "stock": zod.number()
 })
@@ -102,35 +122,39 @@ export const updateBookResponse = zod.object({
 /**
  * @summary 特定の書籍を削除する
  */
+export const deleteBookPathBookIdRegExp = new RegExp('^\\d+$');
+
+
 export const deleteBookParams = zod.object({
-  "bookId": zod.number()
+  "bookId": zod.string().regex(deleteBookPathBookIdRegExp)
 })
 
 
 /**
  * @summary 書籍を検索する
  */
-export const searchBooksQueryIsbnRegExp = new RegExp('^\\\\d{13}$');
+export const searchBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
+export const searchBooksQueryLimitMax = 40;
+
+export const searchBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
+export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{13}$');
 
 
 export const searchBooksQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional(),
-  "title": zod.string().optional(),
-  "author": zod.string().optional(),
-  "publisher": zod.string().optional(),
+  "page": zod.string().min(1).regex(searchBooksQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).max(searchBooksQueryLimitMax).regex(searchBooksQueryLimitRegExp).optional(),
+  "intitle": zod.string().optional(),
+  "inauthor": zod.string().optional(),
+  "inpublisher": zod.string().optional(),
   "isbn": zod.string().regex(searchBooksQueryIsbnRegExp).optional()
 })
 
-export const searchBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
-
-
 export const searchBooksResponseItem = zod.object({
-  "title": zod.string().optional(),
-  "author": zod.array(zod.string()).optional(),
+  "title": zod.string(),
+  "authors": zod.array(zod.string()),
   "publisher": zod.string().optional(),
   "thumbnail": zod.string().optional(),
-  "isbn": zod.string().regex(searchBooksResponseIsbnRegExp).optional()
+  "isbn": zod.string().optional()
 })
 export const searchBooksResponse = zod.array(searchBooksResponseItem)
 
@@ -139,9 +163,13 @@ export const searchBooksResponse = zod.array(searchBooksResponseItem)
  * ページ番号が指定されなかった場合は1ページ目を返す
  * @summary ユーザーの情報を取得する
  */
+export const getUsersQueryPageRegExp = new RegExp('^[1-9]\\d*$');
+export const getUsersQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
+
+
 export const getUsersQueryParams = zod.object({
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "page": zod.string().min(1).regex(getUsersQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getUsersQueryLimitRegExp).optional()
 })
 
 export const getUsersResponseItem = zod.object({
@@ -157,17 +185,20 @@ export const getUsersResponse = zod.array(getUsersResponseItem)
  * @summary ユーザーを追加する
  */
 export const createUserBody = zod.object({
-  "name": zod.string().optional(),
-  "email": zod.string().email().optional(),
-  "password": zod.string().optional()
+  "name": zod.string(),
+  "email": zod.string().email(),
+  "password": zod.string()
 })
 
 
 /**
  * @summary 特定のユーザーの情報を取得する
  */
+export const getUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const getUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(getUserPathUserIdRegExp)
 })
 
 export const getUserResponse = zod.object({
@@ -182,8 +213,11 @@ export const getUserResponse = zod.object({
  * リクエストボディに含まれている情報のみ更新する
  * @summary 特定のユーザーの情報を更新する
  */
+export const updateUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const updateUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(updateUserPathUserIdRegExp)
 })
 
 export const updateUserBody = zod.object({
@@ -203,8 +237,11 @@ export const updateUserResponse = zod.object({
 /**
  * @summary 特定のユーザーを削除する
  */
+export const deleteUserPathUserIdRegExp = new RegExp('^\\d+$');
+
+
 export const deleteUserParams = zod.object({
-  "userId": zod.number()
+  "userId": zod.string().regex(deleteUserPathUserIdRegExp)
 })
 
 
@@ -212,11 +249,17 @@ export const deleteUserParams = zod.object({
  * 指定された条件に合致する貸出履歴を返す
  * @summary 貸出履歴を取得する
  */
+export const getLoansQueryUserIdRegExp = new RegExp('^\\d+$');
+export const getLoansQueryBookIdRegExp = new RegExp('^\\d+$');
+export const getLoansQueryPageRegExp = new RegExp('^[1-9]\\d*$');
+export const getLoansQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
+
+
 export const getLoansQueryParams = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "page": zod.number().min(1).optional(),
-  "limit": zod.number().min(1).optional()
+  "userId": zod.string().regex(getLoansQueryUserIdRegExp).optional(),
+  "bookId": zod.string().regex(getLoansQueryBookIdRegExp).optional(),
+  "page": zod.string().min(1).regex(getLoansQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional()
 })
 
 export const getLoansResponseItem = zod.object({
@@ -234,9 +277,9 @@ export const getLoansResponse = zod.array(getLoansResponseItem)
  * @summary 貸出履歴を追加する
  */
 export const createLoansBodyItem = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().min(1).optional()
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number().min(1)
 })
 export const createLoansBody = zod.array(createLoansBodyItem)
 
@@ -255,8 +298,8 @@ export const createLoansResponse = zod.object({
  * @summary 貸出履歴を更新する
  */
 export const updateLoansBodyItem = zod.object({
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
+  "userId": zod.number(),
+  "bookId": zod.number(),
   "volume": zod.number().optional()
 })
 export const updateLoansBody = zod.array(updateLoansBodyItem)
@@ -276,8 +319,8 @@ export const updateLoansResponse = zod.object({
  * @summary ログインする
  */
 export const loginBody = zod.object({
-  "email": zod.string().email().optional(),
-  "password": zod.string().optional()
+  "email": zod.string().email(),
+  "password": zod.string()
 })
 
 export const loginResponse = zod.object({

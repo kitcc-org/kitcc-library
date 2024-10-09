@@ -12,7 +12,8 @@ books:
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -20,7 +21,8 @@ books:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
       - name: title
@@ -47,7 +49,7 @@ books:
         required: false
         schema:
           type: string
-          pattern: '^\\d{13}$'
+          pattern: '^\d{13}$'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -57,6 +59,8 @@ books:
               type: array
               items:
                 $ref: "../components/schemas/Book.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -76,12 +80,12 @@ books:
             properties:
               title:
                 type: string
-              author:
-                type: string
-              publisher:
+              authors:
                 type: array
                 items:
                   type: string
+              publisher:
+                type: string
               thumbnail:
                 type: string
               isbn:
@@ -89,6 +93,12 @@ books:
                 pattern: '^\d{13}$'
               stock:
                 type: integer
+            required:
+              - title
+              - authors
+              - publisher
+              - isbn
+              - stock
             example:
               title: "計算機プログラムの構造と解釈"
               author:
@@ -107,17 +117,9 @@ books:
             schema:
               $ref: "../components/schemas/Error.yml"
             example:
-              code: 201
               message: "Created"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':
@@ -136,7 +138,8 @@ book:
         description: "取得する書籍のID"
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -147,6 +150,8 @@ book:
             examples:
               book:
                 $ref: "../components/examples/book.yml"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -157,7 +162,9 @@ book:
       - book
     operationId: updateBook
     summary: 特定の書籍の情報を更新する
-    description: リクエストボディで指定された情報のみ更新する
+    description: >
+      リクエストボディで指定された情報のみ更新する．
+      書籍が登録済みの場合は蔵書数を+1する．
     security:
       - BasicAuth: []
     parameters:
@@ -166,7 +173,8 @@ book:
         description: 更新する書籍のID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     requestBody:
       required: true
       content:
@@ -176,21 +184,25 @@ book:
             properties:
               title:
                 type: string
-              author:
+              authors:
                 type: array
                 items:
                   type: string
               publisher:
                 type: string
+              isbn:
+                type: string
+                pattern: '^\d{13}$'
               stock:
                 type: integer
           example:
             title: "計算機プログラムの構造と解釈"
-            author:
+            authors:
               - "Harold Abelson"
               - "Gerald Jay Sussman"
               - "Julie Sussman"
             publisher: "翔泳社"
+            isbn: "9784798135984"
             stock: 1
     responses:
       '200':
@@ -203,14 +215,7 @@ book:
               book:
                 $ref: "../components/examples/book.yml"
       '400':
-        description: リクエストボディに書籍の情報が含まれていない
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 400
-              message: "Bad Request"
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
@@ -231,23 +236,15 @@ book:
         description: 削除する書籍のID
         required: true
         schema:
-          type: integer
+          type: string
+          pattern: '^\d+$'
     responses:
       '204':
         description: 書籍の削除に成功した
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              code: 204
-              message: "No Content"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
-        description: Unauthorized
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
@@ -266,7 +263,8 @@ search:
         description: ページ番号
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -274,22 +272,24 @@ search:
         description: 1ページあたりの表示数
         required: false
         schema:
-          type: integer
+          type: string
+          pattern: ^[1-9]\d*$
           minimum: 1
+          maximum: 40
           default: 10
-      - name: title
+      - name: intitle
         in: query
         description: タイトル
         required: false
         schema:
           type: string
-      - name: author
+      - name: inauthor
         in: query
         description: 著者
         required: false
         schema:
           type: string
-      - name: publisher
+      - name: inpublisher
         in: query
         description: 出版社
         required: false
@@ -301,7 +301,7 @@ search:
         required: false
         schema:
           type: string
-          pattern: '^\\d{13}$'
+          pattern: '^\d{13}$'
     responses:
       '200':
         description: 検索に成功した
@@ -314,7 +314,7 @@ search:
                 properties:
                   title:
                     type: string
-                  author:
+                  authors:
                     type: array
                     items:
                       type: string
@@ -324,15 +324,19 @@ search:
                     type: string
                   isbn:
                     type: string
-                    pattern: '^\d{13}$'
+                required:
+                  - title
+                  - authors
             example:
               - title: "計算機プログラムの構造と解釈"
-                author:
+                authors:
                   - "Harold Abelson"
                   - "Gerald Jay Sussman"
                   - "Julie Sussman"
                 publisher: "翔泳社"
                 thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                 isbn: "9784798135984"
+      '400':
+        $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
