@@ -130,8 +130,8 @@ describe('POST /books', () => {
 		expect(response.status).toBe(400);
 	});
 
-	it('should return 400 when author is missing', async () => {
-		const book = bookFactory.build({ author: undefined });
+	it('should return 400 when authors is missing', async () => {
+		const book = bookFactory.build({ authors: undefined });
 
 		const response = await app.request(
 			'/books',

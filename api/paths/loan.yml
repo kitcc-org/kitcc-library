@@ -28,7 +28,7 @@ loans:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -37,7 +37,7 @@ loans:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
     responses:

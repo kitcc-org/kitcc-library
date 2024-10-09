@@ -4,7 +4,7 @@ properties:
     type: integer
   title:
     type: string
-  author:
+  authors:
     type: array
     items:
       type: string
@@ -21,7 +21,7 @@ properties:
 required:
   - id
   - title
-  - author
+  - authors
   - publisher
   - isbn
   - stock

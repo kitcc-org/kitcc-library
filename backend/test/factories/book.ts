@@ -4,7 +4,7 @@ import * as Factory from 'factory.ts';
 
 export const bookFactory = Factory.Sync.makeFactory<InsertBook>({
 	title: faker.lorem.words(5),
-	author: [faker.person.fullName()],
+	authors: [faker.person.fullName()],
 	publisher: faker.company.name(),
 	thumbnail: faker.image.url(),
 	isbn: Factory.Sync.each((id) => id.toString().padStart(13, '0')),

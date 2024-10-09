@@ -13,7 +13,7 @@ books:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -22,7 +22,7 @@ books:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
       - name: title
@@ -80,7 +80,7 @@ books:
             properties:
               title:
                 type: string
-              author:
+              authors:
                 type: array
                 items:
                   type: string
@@ -95,7 +95,7 @@ books:
                 type: integer
             required:
               - title
-              - author
+              - authors
               - publisher
               - isbn
               - stock
@@ -184,7 +184,7 @@ book:
             properties:
               title:
                 type: string
-              author:
+              authors:
                 type: array
                 items:
                   type: string
@@ -197,7 +197,7 @@ book:
                 type: integer
           example:
             title: "計算機プログラムの構造と解釈"
-            author:
+            authors:
               - "Harold Abelson"
               - "Gerald Jay Sussman"
               - "Julie Sussman"
@@ -241,12 +241,6 @@ book:
     responses:
       '204':
         description: 書籍の削除に成功した
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              message: "No Content"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
@@ -270,7 +264,7 @@ search:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
           default: 1
       - name: limit
@@ -279,22 +273,23 @@ search:
         required: false
         schema:
           type: string
-          pattern: '^\d+$'
+          pattern: ^[1-9]\d*$
           minimum: 1
+          maximum: 40
           default: 10
-      - name: title
+      - name: intitle
         in: query
         description: タイトル
         required: false
         schema:
           type: string
-      - name: author
+      - name: inauthor
         in: query
         description: 著者
         required: false
         schema:
           type: string
-      - name: publisher
+      - name: inpublisher
         in: query
         description: 出版社
         required: false
@@ -306,7 +301,7 @@ search:
         required: false
         schema:
           type: string
-          pattern: '^\\d{13}$'
+          pattern: '^\d{13}$'
     responses:
       '200':
         description: 検索に成功した
@@ -319,7 +314,7 @@ search:
                 properties:
                   title:
                     type: string
-                  author:
+                  authors:
                     type: array
                     items:
                       type: string
@@ -329,10 +324,12 @@ search:
                     type: string
                   isbn:
                     type: string
-                    pattern: '^\d{13}$'
+                required:
+                  - title
+                  - authors
             example:
               - title: "計算機プログラムの構造と解釈"
-                author:
+                authors:
                   - "Harold Abelson"
                   - "Gerald Jay Sussman"
                   - "Julie Sussman"

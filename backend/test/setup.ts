@@ -8,7 +8,7 @@ await db
     CREATE TABLE IF NOT EXISTS books (
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       title TEXT NOT NULL,
-      author TEXT NOT NULL,
+      authors TEXT NOT NULL,
       publisher TEXT NOT NULL,
       thumbnail TEXT,
       isbn TEXT NOT NULL,

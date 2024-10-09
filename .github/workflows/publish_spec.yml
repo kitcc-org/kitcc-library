@@ -21,8 +21,8 @@ jobs:
           node-version: '22'
 
       - name: Bundle API
+        working-directory: api
         run: |
-          cd api
           npm run bundle
 
       - name: Generate Swagger UI
