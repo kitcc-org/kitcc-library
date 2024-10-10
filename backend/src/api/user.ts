@@ -5,6 +5,8 @@ import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
 	createUserBody,
+	getUserParams,
+	getUserResponse,
 	getUsersQueryParams,
 	getUsersResponse,
 } from '../schema';
@@ -104,6 +106,46 @@ app.post(
 			},
 			201
 		);
+	}
+);
+
+app.get(
+	'/:userId',
+	zValidator('param', getUserParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Path Paramter Validation Error',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		const param = ctx.req.valid('param');
+		const id = parseInt(param['userId']);
+
+		const db = drizzle(ctx.env.DB);
+		const books: SelectUser[] = await db
+			.select()
+			.from(userTable)
+			.where(eq(userTable.id, id));
+
+		if (books.length === 0) {
+			return ctx.notFound();
+		}
+
+		const result = getUserResponse.safeParse(books[0]);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data);
+		}
 	}
 );
 
