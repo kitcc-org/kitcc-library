@@ -15,6 +15,13 @@
       "when": 1728458013670,
       "tag": "0001_glorious_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1728551462871,
+      "tag": "0002_cloudy_paibok",
+      "breakpoints": true
     }
   ]
 }

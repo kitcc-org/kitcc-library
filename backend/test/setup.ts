@@ -25,3 +25,24 @@ await db
     `
 	)
 	.run();
+
+await db
+	.prepare(
+		`
+    CREATE TABLE User (
+      user_id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+      name text NOT NULL,
+      email text NOT NULL,
+      password_digest text NOT NULL
+    );
+    `
+	)
+	.run();
+
+await db
+	.prepare(
+		`
+    CREATE UNIQUE INDEX IF NOT EXISTS email_idx ON User (email)
+    `
+	)
+	.run();

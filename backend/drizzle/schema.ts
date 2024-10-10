@@ -16,10 +16,25 @@ export const bookTable = sqliteTable(
 		isbn: text('isbn').notNull().unique(),
 		stock: integer('stock').notNull().default(1),
 	},
-	(Books) => ({
-		isbnIdx: uniqueIndex('isbn_idx').on(Books.isbn),
+	(table) => ({
+		isbnIdx: uniqueIndex('isbn_idx').on(table.isbn),
 	})
 );
 
 export type SelectBook = typeof bookTable.$inferSelect;
 export type InsertBook = typeof bookTable.$inferInsert;
+
+export const userTable = sqliteTable(
+	'User',
+	{
+		user_id: integer('user_id').primaryKey({ autoIncrement: true }),
+		name: text('name').notNull(),
+		email: text('email').notNull(),
+		password_digest: text('password_digest').notNull(),
+	},
+	(table) => {
+		return {
+			emailIndex: uniqueIndex('email_idx').on(table.email),
+		};
+	}
+);
