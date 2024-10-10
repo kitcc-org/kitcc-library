@@ -25,12 +25,12 @@ export type SelectBook = typeof bookTable.$inferSelect;
 export type InsertBook = typeof bookTable.$inferInsert;
 
 export const userTable = sqliteTable(
-	'User',
+	'users',
 	{
-		user_id: integer('user_id').primaryKey({ autoIncrement: true }),
+		id: integer('id').primaryKey({ autoIncrement: true }),
 		name: text('name').notNull(),
 		email: text('email').notNull(),
-		password_digest: text('password_digest').notNull(),
+		passwordDigest: text('password_digest').notNull(),
 	},
 	(table) => {
 		return {
@@ -38,3 +38,6 @@ export const userTable = sqliteTable(
 		};
 	}
 );
+
+export type SelectUser = typeof userTable.$inferSelect;
+export type InsertUser = typeof userTable.$inferInsert;
