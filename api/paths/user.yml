@@ -88,6 +88,14 @@ users:
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
+      '409':
+        description: すでに同じメールアドレスで登録されたユーザーが存在する
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/Error.yml"
+            example:
+              message: "Conflict"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 

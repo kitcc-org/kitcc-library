@@ -1,7 +1,7 @@
 import { userTable } from '@/drizzle/schema';
 import app from '@/src/index';
 import { env } from 'cloudflare:test';
-import { eq } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { userFactory } from '../factories/user';
 
@@ -14,8 +14,8 @@ describe('GET /users', () => {
 	});
 
 	afterAll(async () => {
-		for (const book of users) {
-			await db.delete(userTable).where(eq(userTable.email, book.email));
+		for (const user of users) {
+			await db.delete(userTable).where(eq(userTable.email, user.email));
 		}
 
 		userFactory.resetSequenceNumber();
@@ -33,7 +33,7 @@ describe('GET /users', () => {
 		expect(users).toHaveLength(limit);
 	});
 
-	it('should return specified book', async () => {
+	it('should return specified user', async () => {
 		const firstUser = { id: 1, ...users[0] };
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
@@ -56,5 +56,116 @@ describe('GET /users', () => {
 		const response = await app.request(`/users?${params}`, {}, env);
 
 		expect(response.status).toBe(400);
+	});
+});
+
+describe('POST /users', () => {
+	const db = drizzle(env.DB);
+
+	afterAll(() => {
+		userFactory.resetSequenceNumber();
+	});
+
+	it('should create new user', async () => {
+		const response = await app.request(
+			'/users',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					name: 'username',
+					email: 'username@example.com',
+					password: 'password',
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(201);
+
+		const totalUser = await db.select({ count: count() }).from(userTable);
+		expect(totalUser[0].count).toBe(1);
+	});
+
+	it('should return 400 when name is missing', async () => {
+		const user = userFactory.build({ name: undefined });
+
+		const response = await app.request(
+			'/users',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(user),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when email is missing', async () => {
+		const user = userFactory.build({ email: undefined });
+
+		const response = await app.request(
+			'/users',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(user),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when password is missing', async () => {
+		const response = await app.request(
+			'/users',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					name: 'username',
+					email: 'username@example.com',
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	// TODO:未ログインの時
+
+	it('should return 409 when email is already used', async () => {
+		const user = userFactory.build();
+		await db.insert(userTable).values(user);
+
+		const response = await app.request(
+			'/users',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					name: user.name,
+					email: user.email,
+					password: 'password',
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(409);
 	});
 });

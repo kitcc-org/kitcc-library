@@ -1,9 +1,14 @@
 import { SelectUser, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { like } from 'drizzle-orm';
+import { eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
-import { getUsersQueryParams, getUsersResponse } from '../schema';
+import {
+	createUserBody,
+	getUsersQueryParams,
+	getUsersResponse,
+} from '../schema';
+import { generateHash } from '../utils/crypto';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -46,6 +51,59 @@ app.get(
 		} else {
 			return ctx.json(result.data);
 		}
+	}
+);
+
+app.post(
+	'/',
+	zValidator('json', createUserBody, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Request Body Validation Error',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
+		const newUser = ctx.req.valid('json');
+
+		const db = drizzle(ctx.env.DB);
+		const sameUser = await db
+			.select({ id: userTable.id })
+			.from(userTable)
+			.where(eq(userTable.email, newUser.email));
+
+		if (0 < sameUser.length) {
+			// すでに同じメールアドレスのユーザが登録されている
+			return ctx.json(
+				{
+					message: 'Conflict',
+				},
+				409
+			);
+		} else {
+			// 新規登録
+			const hash = await generateHash(newUser.password);
+			// prettier-ignore
+			await db
+        .insert(userTable)
+        .values({
+          name: newUser.name,
+          email: newUser.email,
+          passwordDigest: hash,
+        });
+		}
+
+		return ctx.json(
+			{
+				message: 'Created',
+			},
+			201
+		);
 	}
 );
 
