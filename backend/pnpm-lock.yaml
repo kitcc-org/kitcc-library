@@ -22,8 +22,8 @@ importers:
         version: 3.23.8
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: ^0.5.15
-        version: 0.5.15(@cloudflare/workers-types@4.20241004.0)(@vitest/runner@2.0.5)(@vitest/snapshot@2.0.5)(vitest@2.0.5(@types/node@22.7.5))
+        specifier: ^0.5.16
+        version: 0.5.16(@cloudflare/workers-types@4.20241004.0)(@vitest/runner@2.0.5)(@vitest/snapshot@2.0.5)(vitest@2.0.5(@types/node@22.7.5))
       '@cloudflare/workers-types':
         specifier: ^4.20241004.0
         version: 4.20241004.0
@@ -44,19 +44,19 @@ importers:
         version: 1.4.1
       orval:
         specifier: ^7.1.1
-        version: 7.1.1(openapi-types@12.1.3)(typescript@5.6.2)
+        version: 7.1.1(openapi-types@12.1.3)(typescript@5.6.3)
       tsx:
         specifier: ^4.19.1
         version: 4.19.1
       typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
+        specifier: ^5.6.3
+        version: 5.6.3
       vitest:
         specifier: 2.0.5
         version: 2.0.5(@types/node@22.7.5)
       wrangler:
-        specifier: ^3.80.1
-        version: 3.80.1(@cloudflare/workers-types@4.20241004.0)
+        specifier: ^3.80.2
+        version: 3.80.2(@cloudflare/workers-types@4.20241004.0)
 
 packages:
 
@@ -86,8 +86,8 @@ packages:
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
     engines: {node: '>=16.13'}
 
-  '@cloudflare/vitest-pool-workers@0.5.15':
-    resolution: {integrity: sha512-TpTgz9YR9tnMj2OwXW/kSAjGHrni8WB5achKxtJiAJ2p6D2/dnHpuBiE+ART5GJA19GpUQSKmh76yXHqFCE23g==}
+  '@cloudflare/vitest-pool-workers@0.5.16':
+    resolution: {integrity: sha512-djrFlOHEV2KB8H4lNMFHQE03J2F3c/H4x3Wp439gqRzc/zB20YUuJf4DSynqr1mqRmBleg2/2iQ+vVcR1mwGww==}
     peerDependencies:
       '@vitest/runner': 2.0.x - 2.1.x
       '@vitest/snapshot': 2.0.x - 2.1.x
@@ -2469,8 +2469,8 @@ packages:
     resolution: {integrity: sha512-/OxDN6OtAk5KBpGb28T+HZc2M+ADtvRxXrKKbUwtsLgdoxgX13hyy7ek6bFRl5+aBs2yZzB0c4CnQfAtVypW/g==}
     engines: {node: '>= 0.4'}
 
-  typescript@5.6.2:
-    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
+  typescript@5.6.3:
+    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2597,8 +2597,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@3.80.1:
-    resolution: {integrity: sha512-5pBZpzrGpfAtIzF3iBXfZZ9DoP8OjwfIUYjYmddfkmoe6fSyY5r/+IFP56fb/biK5q6FV5HxUnonDiuNyJKnug==}
+  wrangler@3.80.2:
+    resolution: {integrity: sha512-WSMDXoNcg+DjZ4i0RMJpz2TKrCbTtsxNsQAwyYg7LRZlfmTZQZOPbHWhATVa4fCsNL6eElN050fMHOW9MptM9g==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -2696,7 +2696,7 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
-  '@cloudflare/vitest-pool-workers@0.5.15(@cloudflare/workers-types@4.20241004.0)(@vitest/runner@2.0.5)(@vitest/snapshot@2.0.5)(vitest@2.0.5(@types/node@22.7.5))':
+  '@cloudflare/vitest-pool-workers@0.5.16(@cloudflare/workers-types@4.20241004.0)(@vitest/runner@2.0.5)(@vitest/snapshot@2.0.5)(vitest@2.0.5(@types/node@22.7.5))':
     dependencies:
       '@vitest/runner': 2.0.5
       '@vitest/snapshot': 2.0.5
@@ -2707,7 +2707,7 @@ snapshots:
       miniflare: 3.20240925.1
       semver: 7.6.3
       vitest: 2.0.5(@types/node@22.7.5)
-      wrangler: 3.80.1(@cloudflare/workers-types@4.20241004.0)
+      wrangler: 3.80.2(@cloudflare/workers-types@4.20241004.0)
       zod: 3.23.8
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
@@ -3342,7 +3342,7 @@ snapshots:
     dependencies:
       '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
-      '@stoplight/types': 13.6.0
+      '@stoplight/types': 13.20.0
       '@types/urijs': 1.19.25
       dependency-graph: 0.11.0
       fast-memoize: 2.5.2
@@ -4564,7 +4564,7 @@ snapshots:
     dependencies:
       yaml: 2.5.1
 
-  orval@7.1.1(openapi-types@12.1.3)(typescript@5.6.2):
+  orval@7.1.1(openapi-types@12.1.3)(typescript@5.6.3):
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       '@orval/angular': 7.1.1(openapi-types@12.1.3)
@@ -4587,7 +4587,7 @@ snapshots:
       lodash.uniq: 4.5.0
       openapi3-ts: 4.2.2
       string-argv: 0.3.2
-      tsconfck: 2.1.2(typescript@5.6.2)
+      tsconfck: 2.1.2(typescript@5.6.3)
     transitivePeerDependencies:
       - encoding
       - openapi-types
@@ -4957,9 +4957,9 @@ snapshots:
 
   tr46@0.0.3: {}
 
-  tsconfck@2.1.2(typescript@5.6.2):
+  tsconfck@2.1.2(typescript@5.6.3):
     optionalDependencies:
-      typescript: 5.6.2
+      typescript: 5.6.3
 
   tslib@1.14.1: {}
 
@@ -5008,7 +5008,7 @@ snapshots:
       is-typed-array: 1.1.13
       possible-typed-array-names: 1.0.0
 
-  typescript@5.6.2: {}
+  typescript@5.6.3: {}
 
   ufo@1.5.4: {}
 
@@ -5142,7 +5142,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20240925.0
       '@cloudflare/workerd-windows-64': 1.20240925.0
 
-  wrangler@3.80.1(@cloudflare/workers-types@4.20241004.0):
+  wrangler@3.80.2(@cloudflare/workers-types@4.20241004.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@cloudflare/workers-shared': 0.5.4

@@ -169,7 +169,8 @@ export const getUsersQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
 
 export const getUsersQueryParams = zod.object({
   "page": zod.string().min(1).regex(getUsersQueryPageRegExp).optional(),
-  "limit": zod.string().min(1).regex(getUsersQueryLimitRegExp).optional()
+  "limit": zod.string().min(1).regex(getUsersQueryLimitRegExp).optional(),
+  "name": zod.string().optional()
 })
 
 export const getUsersResponseItem = zod.object({
