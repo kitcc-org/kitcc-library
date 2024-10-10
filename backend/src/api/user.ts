@@ -9,6 +9,9 @@ import {
 	getUserResponse,
 	getUsersQueryParams,
 	getUsersResponse,
+	updateUserBody,
+	updateUserParams,
+	updateUserResponse,
 } from '../schema';
 import { generateHash } from '../utils/crypto';
 
@@ -126,16 +129,83 @@ app.get(
 		const id = parseInt(param['userId']);
 
 		const db = drizzle(ctx.env.DB);
-		const books: SelectUser[] = await db
+		const users: SelectUser[] = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.id, id));
 
-		if (books.length === 0) {
+		if (users.length === 0) {
 			return ctx.notFound();
 		}
 
-		const result = getUserResponse.safeParse(books[0]);
+		const result = getUserResponse.safeParse(users[0]);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data);
+		}
+	}
+);
+
+app.put(
+	'/:userId',
+	zValidator('param', updateUserParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Path Paramter Validation Error',
+				},
+				400
+			);
+		}
+	}),
+	zValidator('json', updateUserBody, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Request Body Validation Error',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
+		const param = ctx.req.valid('param');
+		const id = parseInt(param['userId']);
+
+		const user = ctx.req.valid('json');
+
+		const db = drizzle(ctx.env.DB);
+		let updatedBook: SelectUser[] = [];
+		try {
+			updatedBook = await db
+				.update(userTable)
+				.set(user)
+				.where(eq(userTable.id, id))
+				.returning();
+		} catch (err) {
+			if (err instanceof Error) {
+				return ctx.json(
+					{
+						message: err.message,
+					},
+					400
+				);
+			}
+		}
+
+		if (updatedBook.length === 0) {
+			return ctx.notFound();
+		}
+
+		const result = updateUserResponse.safeParse(updatedBook[0]);
 		if (!result.success) {
 			return ctx.json(
 				{
