@@ -187,3 +187,66 @@ describe('PUT /users/:userId', () => {
 		expect(response.status).toBe(404);
 	});
 });
+
+describe('DELETE /users/:userId', () => {
+	const db = drizzle(env.DB);
+	const user = userFactory.build();
+
+	beforeEach(async () => {
+		await db.insert(userTable).values(user);
+	});
+
+	afterEach(async () => {
+		await db.delete(userTable).where(eq(userTable.email, user.email));
+	});
+
+	afterAll(() => {
+		userFactory.resetSequenceNumber();
+	});
+
+	it('should delete user', async () => {
+		const users = await db.select().from(userTable);
+
+		const response = await app.request(
+			`/users/${users[0].id}`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(204);
+
+		const deletedBook = await db
+			.select()
+			.from(userTable)
+			.where(eq(userTable.id, users[0].id));
+		expect(deletedBook).toHaveLength(0);
+	});
+
+	it('should return 400 when userId is not a number', async () => {
+		const response = await app.request(
+			`/users/id`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	// TODO:未ログインの時
+
+	it('should return 404 when user is not found', async () => {
+		const response = await app.request(
+			`/users/100`,
+			{
+				method: 'DELETE',
+			},
+			env
+		);
+
+		expect(response.status).toBe(404);
+	});
+});

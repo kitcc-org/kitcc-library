@@ -5,6 +5,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
 	createUserBody,
+	deleteUserParams,
 	getUserParams,
 	getUserResponse,
 	getUsersQueryParams,
@@ -216,6 +217,38 @@ app.put(
 		} else {
 			return ctx.json(result.data);
 		}
+	}
+);
+
+app.delete(
+	'/:userId',
+	zValidator('param', deleteUserParams, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Bad Request',
+				},
+				400
+			);
+		}
+	}),
+	async (ctx) => {
+		// TODO:ログイン済みか確認する
+
+		const param = ctx.req.valid('param');
+		const id = parseInt(param['userId']);
+
+		const db = drizzle(ctx.env.DB);
+		const deletedBook = await db
+			.delete(userTable)
+			.where(eq(userTable.id, id))
+			.returning();
+
+		if (deletedBook.length === 0) {
+			return ctx.notFound();
+		}
+
+		return ctx.body(null, 204);
 	}
 );
 
