@@ -15,7 +15,7 @@ properties:
     format: uri
   isbn:
     type: string
-    pattern: '^\d{13}$'
+    pattern: '^\d{10}(\d{3})?$'
   stock:
     type: integer
 required:
