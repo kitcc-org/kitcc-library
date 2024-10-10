@@ -25,6 +25,12 @@ users:
           pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
+      - name: name
+        in: query
+        description: ユーザー名
+        required: false
+        schema:
+          type: string
     responses:
       '200':
         description: 情報の取得に成功した
