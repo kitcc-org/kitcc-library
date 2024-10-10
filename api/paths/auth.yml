@@ -1,4 +1,4 @@
-login:
+auth:
   post:
     tags:
       - auth
@@ -48,7 +48,6 @@ login:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-logout:
   delete:
     tags:
       - auth
@@ -70,8 +69,6 @@ logout:
               $ref: "../components/schemas/Error.yml"
             example:
               message: "No Content"
-      '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
       '500':

@@ -39,10 +39,8 @@ paths:
   /loans:
     $ref: "./paths/loan.yml#/loans"
 
-  /login:
-    $ref: "./paths/auth.yml#/login"
-  /logout:
-    $ref: "./paths/auth.yml#/logout"
+  /auth:
+    $ref: "./paths/auth.yml#/auth"
 
 components:
   securitySchemes:
