@@ -42,7 +42,7 @@ await db
 await db
 	.prepare(
 		`
-    CREATE UNIQUE INDEX IF NOT EXISTS email_idx ON User (email)
+    CREATE UNIQUE INDEX IF NOT EXISTS email_idx ON users (email)
     `
 	)
 	.run();
