@@ -1,5 +1,7 @@
 # KITCC Library
 
+[API仕様書](https://kitcc-library-api-doc.pages.dev/)
+
 ## Orval
 
 OpenAPIからzodのスキーマを生成する
