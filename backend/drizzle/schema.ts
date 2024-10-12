@@ -1,5 +1,7 @@
+import { relations } from 'drizzle-orm';
 import {
 	integer,
+	primaryKey,
 	sqliteTable,
 	text,
 	uniqueIndex,
@@ -24,6 +26,14 @@ export const bookTable = sqliteTable(
 export type SelectBook = typeof bookTable.$inferSelect;
 export type InsertBook = typeof bookTable.$inferInsert;
 
+// prettier-ignore
+export const booksRelation = relations(
+	bookTable,
+	({ many }) => ({
+		booksToUsers: many(loanTable),
+	})
+);
+
 export const userTable = sqliteTable(
 	'users',
 	{
@@ -42,3 +52,33 @@ export const userTable = sqliteTable(
 
 export type SelectUser = typeof userTable.$inferSelect;
 export type InsertUser = typeof userTable.$inferInsert;
+
+// prettier-ignore
+export const usersRelation = relations(
+	userTable,
+	({ many }) => ({
+		usersToBooks: many(loanTable),
+	})
+);
+
+export const loanTable = sqliteTable(
+	'loans',
+	{
+		bookId: integer('book_id')
+			.notNull()
+			.references(() => {
+				return bookTable.id;
+			}),
+		userId: integer('user_id')
+			.notNull()
+			.references(() => {
+				return userTable.id;
+			}),
+		volume: integer('volume').notNull().default(1),
+	},
+	(table) => {
+		return {
+			pk: primaryKey({ columns: [table.bookId, table.userId] }),
+		};
+	}
+);
