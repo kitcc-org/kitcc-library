@@ -19,8 +19,14 @@
     "@remix-run/cloudflare-pages": "2.12.0",
     "@remix-run/react": "2.12.0",
     "isbot": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "19.0.0-rc-09111202-20241011",
+    "react-dom": "19.0.0-rc-09111202-20241011",
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241004.0",
