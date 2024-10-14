@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
+import { Button, Center } from "@mantine/core";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,7 +10,12 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div>Hello</div>
+    <Center
+      h='100vh'
+      w='100vw'
+    >
+      <Button>Hello</Button>
+    </Center>
   );
 }
 
