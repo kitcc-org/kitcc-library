@@ -12,7 +12,7 @@ const user = userFactory.build({ passwordDigest: digest });
 
 export const loggedInTest = test.extend({
 	password,
-	user,
+	currentUser: user,
 	sessionToken: async ({}, use) => {
 		const db = drizzle(env.DB);
 		const sessionToken = crypto.randomUUID();

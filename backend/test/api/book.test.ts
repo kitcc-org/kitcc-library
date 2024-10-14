@@ -56,7 +56,7 @@ describe('PUT /books/:bookId', () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	loggedInTest('should update book', async ({ user, sessionToken }) => {
+	loggedInTest('should update book', async ({ currentUser, sessionToken }) => {
 		const book = {
 			title: '計算機プログラムの構造と解釈',
 			// prettier-ignore
@@ -78,7 +78,7 @@ describe('PUT /books/:bookId', () => {
 				headers: {
 					'Content-Type': 'application/json',
 					Cookie: [
-						`__Secure-user_id=${user.id}`,
+						`__Secure-user_id=${currentUser.id}`,
 						`__Secure-session_token=${sessionToken}`,
 					].join('; '),
 				},
@@ -98,7 +98,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when bookId is not a number',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				// bookIdに数以外を指定する
 				`/books/id`,
@@ -107,7 +107,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -122,7 +122,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when title is not a string',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				`/books/1`,
 				{
@@ -130,7 +130,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -146,7 +146,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when authors is not an array',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				`/books/1`,
 				{
@@ -154,7 +154,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -170,7 +170,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when publisher is not a string',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				`/books/1`,
 				{
@@ -178,7 +178,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -194,7 +194,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when isbn is not a string',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				`/books/1`,
 				{
@@ -202,7 +202,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -218,7 +218,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when violate ISBN unique constraint',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const books = await db.select().from(bookTable);
 
 			const response = await app.request(
@@ -228,7 +228,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -261,7 +261,7 @@ describe('PUT /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 404 when book is not found',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				// 存在しないbookIdを指定する
 				`/books/100`,
@@ -270,7 +270,7 @@ describe('PUT /books/:bookId', () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -300,7 +300,7 @@ describe('DELETE /books/:bookId', () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	loggedInTest('should delete book', async ({ user, sessionToken }) => {
+	loggedInTest('should delete book', async ({ currentUser, sessionToken }) => {
 		const books = await db.select().from(bookTable);
 
 		const response = await app.request(
@@ -309,7 +309,7 @@ describe('DELETE /books/:bookId', () => {
 				method: 'DELETE',
 				headers: {
 					Cookie: [
-						`__Secure-user_id=${user.id}`,
+						`__Secure-user_id=${currentUser.id}`,
 						`__Secure-session_token=${sessionToken}`,
 					].join('; '),
 				},
@@ -329,7 +329,7 @@ describe('DELETE /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 400 when bookId is not a number',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				// bookIdに数以外を指定する
 				`/books/id`,
@@ -337,7 +337,7 @@ describe('DELETE /books/:bookId', () => {
 					method: 'DELETE',
 					headers: {
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -360,7 +360,7 @@ describe('DELETE /books/:bookId', () => {
 
 	loggedInTest(
 		'should return 404 when book is not found',
-		async ({ user, sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				// 存在しないbookIdを指定する
 				`/books/100`,
@@ -368,7 +368,7 @@ describe('DELETE /books/:bookId', () => {
 					method: 'DELETE',
 					headers: {
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},

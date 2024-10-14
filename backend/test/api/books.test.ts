@@ -66,34 +66,37 @@ describe('POST /books', async () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	loggedInTest('should create new book', async ({ user, sessionToken }) => {
-		const book = bookFactory.build();
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Cookie: [
-						`__Secure-user_id=${user.id}`,
-						`__Secure-session_token=${sessionToken}`,
-					].join('; '),
+	loggedInTest(
+		'should create new book',
+		async ({ currentUser, sessionToken }) => {
+			const book = bookFactory.build();
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
 				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(201);
+			expect(response.status).toBe(201);
 
-		// データベースに書籍が登録されていることを確認する
-		const totalBook = await db.select({ count: count() }).from(bookTable);
-		expect(totalBook[0].count).toBe(1);
-	});
+			// データベースに書籍が登録されていることを確認する
+			const totalBook = await db.select({ count: count() }).from(bookTable);
+			expect(totalBook[0].count).toBe(1);
+		}
+	);
 
 	loggedInTest(
 		'should increase stock when book is already registered',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			const book = bookFactory.build();
 			// 先にデータベースに書籍を登録しておく
 			await db.insert(bookTable).values(book);
@@ -105,7 +108,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -133,7 +136,7 @@ describe('POST /books', async () => {
 
 	loggedInTest(
 		'should return 400 when title is missing',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			// タイトルを指定しない
 			const book = bookFactory.build({ title: undefined });
 
@@ -144,7 +147,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -159,7 +162,7 @@ describe('POST /books', async () => {
 
 	loggedInTest(
 		'should return 400 when authors is missing',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			// 著者を指定しない
 			const book = bookFactory.build({ authors: undefined });
 
@@ -170,7 +173,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -185,7 +188,7 @@ describe('POST /books', async () => {
 
 	loggedInTest(
 		'should return 400 when publisher is missing',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			// 出版社を指定しない
 			const book = bookFactory.build({ publisher: undefined });
 
@@ -196,7 +199,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -211,7 +214,7 @@ describe('POST /books', async () => {
 
 	loggedInTest(
 		'should return 400 when isbn is missing',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			// ISBNを指定しない
 			const book = bookFactory.build({ isbn: undefined });
 
@@ -222,7 +225,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
@@ -237,7 +240,7 @@ describe('POST /books', async () => {
 
 	loggedInTest(
 		'should return 400 when stock is missing',
-		async ({ sessionToken }) => {
+		async ({ currentUser, sessionToken }) => {
 			// 蔵書数を指定しない
 			const book = bookFactory.build({ stock: undefined });
 
@@ -248,7 +251,7 @@ describe('POST /books', async () => {
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
-							'__Secure-user_id=1',
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
