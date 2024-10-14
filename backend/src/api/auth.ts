@@ -26,7 +26,7 @@ app.post(
 
 		const db = drizzle(ctx.env.DB);
 		// データベースからユーザを取得する
-		const user = await db
+		let user = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.email, credential.email));
@@ -42,7 +42,7 @@ app.post(
 			// パスワードが正しいか確認する
 			const hash = await generateHash(credential.password);
 			if (hash === user[0].passwordDigest) {
-				await login(ctx, user[0].id);
+				user = await login(ctx, user[0].id);
 			} else {
 				return ctx.json(
 					{

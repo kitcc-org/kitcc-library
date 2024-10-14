@@ -56,10 +56,11 @@ export const login = async (ctx: Context, userId: number) => {
 	const sessionToken = crypto.randomUUID();
 	const db = drizzle(ctx.env.DB);
 	// データベースにセッショントークンを保存する
-	await db
+	const currentUser = await db
 		.update(userTable)
 		.set({ sessionToken: sessionToken })
-		.where(eq(userTable.id, userId));
+		.where(eq(userTable.id, userId))
+		.returning();
 	// Cookieにセッショントークンを保存する
 	// prettier-ignore
 	setCookie(
@@ -71,6 +72,8 @@ export const login = async (ctx: Context, userId: number) => {
 			prefix: 'secure'
 		}
 	);
+
+	return currentUser;
 };
 
 export const logout = async (ctx: Context) => {
