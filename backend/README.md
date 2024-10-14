@@ -10,7 +10,7 @@ pnpm install
 pnpm add [-D] <pkg>
 ```
 
-パッケージの追加
+パッケージの削除
 ```
 pnpm remove <pkg>
 ```
