@@ -14,6 +14,7 @@ import {
 	updateUserParams,
 	updateUserResponse,
 } from '../schema';
+import { isLoggedIn } from '../utils/auth';
 import { generateHash } from '../utils/crypto';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -81,7 +82,15 @@ app.post(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const newUser = ctx.req.valid('json');
 
@@ -185,7 +194,15 @@ app.put(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);
@@ -242,7 +259,15 @@ app.delete(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);

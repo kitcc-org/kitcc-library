@@ -23,14 +23,14 @@ app.post(
 		}
 	}),
 	async (ctx) => {
-		const credential = ctx.req.valid('json');
+		const credentials = ctx.req.valid('json');
 
 		const db = drizzle(ctx.env.DB);
 		// データベースからユーザを取得する
 		let selectUser = await db
 			.select()
 			.from(userTable)
-			.where(eq(userTable.email, credential.email));
+			.where(eq(userTable.email, credentials.email));
 
 		// ユーザが存在しない場合
 		if (selectUser.length === 0) {
@@ -42,7 +42,7 @@ app.post(
 		if (!loggedIn) {
 			// 未ログインの場合
 			// パスワードが正しいか確認する
-			const hash = await generateHash(credential.password);
+			const hash = await generateHash(credentials.password);
 			if (hash === selectUser[0].passwordDigest) {
 				selectUser = await login(ctx, selectUser[0].id);
 			} else {
