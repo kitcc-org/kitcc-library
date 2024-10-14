@@ -1,7 +1,7 @@
 import { userTable } from '@/drizzle/schema';
 import app from '@/src/index';
 import { env } from 'cloudflare:test';
-import { count, eq } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { userFactory } from '../factories/user';
 
@@ -14,10 +14,7 @@ describe('GET /users', () => {
 	});
 
 	afterAll(async () => {
-		for (const user of users) {
-			await db.delete(userTable).where(eq(userTable.email, user.email));
-		}
-
+		await db.delete(userTable);
 		userFactory.resetSequenceNumber();
 	});
 

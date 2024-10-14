@@ -14,7 +14,7 @@ describe('GET /users/:userId', () => {
 	});
 
 	afterAll(async () => {
-		await db.delete(userTable).where(eq(userTable.email, user.email));
+		await db.delete(userTable);
 		userFactory.resetSequenceNumber();
 	});
 
@@ -48,9 +48,7 @@ describe('PUT /users/:userId', () => {
 	});
 
 	afterEach(async () => {
-		for (const user of users) {
-			await db.delete(userTable).where(eq(userTable.email, user.email));
-		}
+		await db.delete(userTable);
 	});
 
 	afterAll(() => {
@@ -197,7 +195,7 @@ describe('DELETE /users/:userId', () => {
 	});
 
 	afterEach(async () => {
-		await db.delete(userTable).where(eq(userTable.email, user.email));
+		await db.delete(userTable);
 	});
 
 	afterAll(() => {
