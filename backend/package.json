@@ -19,7 +19,7 @@
     "db:studio": "drizzle-kit studio --config drizzle.config.local.ts"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.5.15",
+    "@cloudflare/vitest-pool-workers": "^0.5.16",
     "@cloudflare/workers-types": "^4.20241004.0",
     "@faker-js/faker": "^9.0.3",
     "@types/node": "^22.7.5",
@@ -28,9 +28,9 @@
     "factory.ts": "^1.4.1",
     "orval": "^7.1.1",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2",
+    "typescript": "^5.6.3",
     "vitest": "2.0.5",
-    "wrangler": "^3.80.1"
+    "wrangler": "^3.80.2"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.3.0",

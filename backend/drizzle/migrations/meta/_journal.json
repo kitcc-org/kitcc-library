@@ -15,6 +15,27 @@
       "when": 1728458013670,
       "tag": "0001_glorious_james_howlett",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1728551462871,
+      "tag": "0002_cloudy_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1728552495814,
+      "tag": "0003_illegal_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1728553057658,
+      "tag": "0004_flaky_sister_grimm",
+      "breakpoints": true
     }
   ]
 }

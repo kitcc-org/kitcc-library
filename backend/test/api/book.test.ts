@@ -93,6 +93,86 @@ describe('PUT /books/:bookId', () => {
 		expect(updatedBook[0]).toMatchObject(book);
 	});
 
+	it('should return 400 when bookId is not a number', async () => {
+		const response = await app.request(
+			`/books/id`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ title: 'title' }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when title is not a string', async () => {
+		const response = await app.request(
+			`/books/1`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ title: 1 }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when authors is not an array', async () => {
+		const response = await app.request(
+			`/books/1`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ authors: 'author' }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when publisher is not a string', async () => {
+		const response = await app.request(
+			`/books/1`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ publisher: 1 }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 400 when isbn is not a string', async () => {
+		const response = await app.request(
+			`/books/1`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ isbn: 1234567890 }),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
 	it('should return 400 when violate ISBN unique constraint', async () => {
 		const books = await db.select().from(bookTable);
 

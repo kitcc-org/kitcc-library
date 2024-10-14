@@ -7,7 +7,7 @@ import { bookFactory } from '../factories/book';
 
 describe('GET /books', () => {
 	const db = drizzle(env.DB);
-	const books = bookFactory.buildList(10);
+	const books = bookFactory.buildList(5);
 
 	beforeAll(async () => {
 		await db.insert(bookTable).values(books);
@@ -21,13 +21,16 @@ describe('GET /books', () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should return 1 page', async () => {
-		const params = new URLSearchParams({ page: '1', limit: '5' }).toString();
+	it('should return correct number of books', async () => {
+		const limit = 3;
+
+		// prettier-ignore
+		const params = new URLSearchParams({ page: '1', limit: limit.toString() }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
 		const books = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(books).toHaveLength(5);
+		expect(books).toHaveLength(limit);
 	});
 
 	it('should return specified book', async () => {
