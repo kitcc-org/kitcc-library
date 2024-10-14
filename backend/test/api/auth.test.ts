@@ -61,8 +61,8 @@ describe('POST /auth', async () => {
 	});
 
 	loggedInTest(
-		'should login successfully even if already logged in',
-		async ({ password, user, sessionToken }) => {
+		'should login successfully when try to log in as same user',
+		async ({ password, currentUser, sessionToken }) => {
 			const response = await app.request(
 				'/auth',
 				{
@@ -71,12 +71,13 @@ describe('POST /auth', async () => {
 						'Content-Type': 'application/json',
 						// Cookieを指定してログイン済みの状態を再現する
 						Cookie: [
-							`__Secure-user_id=${user.id}`,
+							`__Secure-user_id=${currentUser.id}`,
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// 他のユーザとしてログインを試みる
 					body: JSON.stringify({
-						email: user.email,
+						email: currentUser.email,
 						password: password,
 					}),
 				},
@@ -87,8 +88,37 @@ describe('POST /auth', async () => {
 			expect(response.status).toBe(200);
 
 			// レスポンスボディ
-			const currentUser = await response.json();
-			expect(currentUser).toMatchObject(user);
+			const selectUser = await response.json();
+			expect(selectUser).toMatchObject(currentUser);
+		}
+	);
+
+	loggedInTest(
+		'should fail to login when try to login as other user',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				'/auth',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						// Cookieを指定してログイン済みの状態を再現する
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 他のユーザとしてログインを試みる
+					body: JSON.stringify({
+						email: user.email,
+						password: password,
+					}),
+				},
+				env
+			);
+
+			// ステータスコード
+			expect(response.status).toBe(401);
 		}
 	);
 
@@ -174,30 +204,33 @@ describe('POST /auth', async () => {
 describe('DELETE /auth', async () => {
 	const db = drizzle(env.DB);
 
-	loggedInTest('should logout successfully', async ({ user, sessionToken }) => {
-		const response = await app.request(
-			'/auth',
-			{
-				method: 'DELETE',
-				headers: {
-					Cookie: [
-						`__Secure-user_id=${user.id}`,
-						`__Secure-session_token=${sessionToken}`,
-					].join('; '),
+	loggedInTest(
+		'should logout successfully',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				'/auth',
+				{
+					method: 'DELETE',
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
 				},
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(200);
+			expect(response.status).toBe(200);
 
-		// データベースのsesson_tokenが削除されていることをテストする
-		const selectUser = await db
-			.select()
-			.from(userTable)
-			.where(eq(userTable.email, user.email));
-		expect(selectUser[0].sessionToken).toBeNull();
-	});
+			// データベースのsesson_tokenが削除されていることをテストする
+			const selectUser = await db
+				.select()
+				.from(userTable)
+				.where(eq(userTable.email, currentUser.email));
+			expect(selectUser[0].sessionToken).toBeNull();
+		}
+	);
 
 	it('should logout successfully even when not logged in', async () => {
 		const response = await app.request(

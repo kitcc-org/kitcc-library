@@ -3,6 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
+import { getCookie } from 'hono/cookie';
 import { loginBody, loginResponse } from '../schema';
 import { isLoggedIn, login, logout } from '../utils/auth';
 import { generateHash } from '../utils/crypto';
@@ -26,24 +27,38 @@ app.post(
 
 		const db = drizzle(ctx.env.DB);
 		// データベースからユーザを取得する
-		let user = await db
+		let selectUser = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.email, credential.email));
 
 		// ユーザが存在しない場合
-		if (user.length === 0) {
+		if (selectUser.length === 0) {
 			return ctx.notFound();
 		}
 
 		// ログイン済みか確認する
 		const loggedIn = await isLoggedIn(ctx);
 		if (!loggedIn) {
+			// 未ログインの場合
 			// パスワードが正しいか確認する
 			const hash = await generateHash(credential.password);
-			if (hash === user[0].passwordDigest) {
-				user = await login(ctx, user[0].id);
+			if (hash === selectUser[0].passwordDigest) {
+				selectUser = await login(ctx, selectUser[0].id);
 			} else {
+				return ctx.json(
+					{
+						message: 'Unauthorized',
+					},
+					401
+				);
+			}
+		} else {
+			// ログイン済みの場合
+			const cookie = getCookie(ctx, 'user_id', 'secure');
+			const currentUserId = Number(cookie);
+			if (currentUserId !== selectUser[0].id) {
+				// 他のユーザとしてログインしようとした
 				return ctx.json(
 					{
 						message: 'Unauthorized',
@@ -53,7 +68,7 @@ app.post(
 			}
 		}
 
-		const result = loginResponse.safeParse(user[0]);
+		const result = loginResponse.safeParse(selectUser[0]);
 		if (!result.success) {
 			return ctx.json(
 				{
