@@ -3,6 +3,7 @@ import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { count, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
 
 describe('GET /books', () => {
@@ -14,10 +15,7 @@ describe('GET /books', () => {
 	});
 
 	afterAll(async () => {
-		for (const book of books) {
-			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
-		}
-
+		await db.delete(bookTable);
 		bookFactory.resetSequenceNumber();
 	});
 
@@ -34,7 +32,7 @@ describe('GET /books', () => {
 	});
 
 	it('should return specified book', async () => {
-		const firstBook = { id: 1, ...books[0] };
+		const firstBook = { ...books[0], id: 1 };
 
 		const params = new URLSearchParams({ title: firstBook.title }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
@@ -59,14 +57,14 @@ describe('GET /books', () => {
 	});
 });
 
-describe('POST /books', () => {
+describe('POST /books', async () => {
 	const db = drizzle(env.DB);
 
-	afterAll(() => {
+	afterAll(async () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should create new book', async () => {
+	loggedInTest('should create new book', async ({ user, sessionToken }) => {
 		const book = bookFactory.build();
 		const response = await app.request(
 			'/books',
@@ -74,6 +72,10 @@ describe('POST /books', () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Cookie: [
+						`__Secure-user_id=${user.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
 				},
 				body: JSON.stringify(book),
 			},
@@ -86,9 +88,169 @@ describe('POST /books', () => {
 		expect(totalBook[0].count).toBe(1);
 	});
 
-	it('should increase stock when book is already registered', async () => {
+	loggedInTest(
+		'should increase stock when book is already registered',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build();
+			await db.insert(bookTable).values(book);
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(201);
+
+			const totalBook = await db
+				.select({
+					count: count(),
+					stock: bookTable.stock,
+				})
+				.from(bookTable)
+				.where(eq(bookTable.isbn, book.isbn));
+			expect(totalBook[0].count).toBe(1);
+			expect(totalBook[0].stock).toBe(book.stock! + 1);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when title is missing',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build({ title: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when authors is missing',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build({ authors: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when publisher is missing',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build({ publisher: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when isbn is missing',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build({ isbn: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when stock is missing',
+		async ({ sessionToken }) => {
+			const book = bookFactory.build({ stock: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							'__Secure-user_id=1',
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
 		const book = bookFactory.build();
-		await db.insert(bookTable).values(book);
 
 		const response = await app.request(
 			'/books',
@@ -102,110 +264,8 @@ describe('POST /books', () => {
 			env
 		);
 
-		expect(response.status).toBe(201);
-
-		const totalBook = await db
-			.select({
-				count: count(),
-				stock: bookTable.stock,
-			})
-			.from(bookTable)
-			.where(eq(bookTable.isbn, book.isbn));
-		expect(totalBook[0].count).toBe(1);
-		expect(totalBook[0].stock).toBe(book.stock! + 1);
+		expect(response.status).toBe(401);
 	});
-
-	it('should return 400 when title is missing', async () => {
-		const book = bookFactory.build({ title: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when authors is missing', async () => {
-		const book = bookFactory.build({ authors: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when publisher is missing', async () => {
-		const book = bookFactory.build({ publisher: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when isbn is missing', async () => {
-		const book = bookFactory.build({ isbn: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when stock is missing', async () => {
-		const book = bookFactory.build({ stock: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	// TODO:未ログインの時
 });
 
 describe('GET /books/search', () => {
@@ -223,7 +283,7 @@ describe('GET /books/search', () => {
 
 	it('should return 400 when isbn is not 13 digits number', async () => {
 		// prettier-ignore
-		const response = await app.request('/books/search?isbn=0123456789', {}, env);
+		const response = await app.request('/books/search?isbn=123456789', {}, env);
 
 		expect(response.status).toBe(400);
 	});

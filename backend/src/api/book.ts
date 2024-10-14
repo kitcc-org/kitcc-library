@@ -16,6 +16,7 @@ import {
 	updateBookParams,
 	updateBookResponse,
 } from '../schema';
+import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -207,7 +208,15 @@ app.post(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const newBook = ctx.req.valid('json');
 
@@ -304,7 +313,15 @@ app.put(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['bookId']);
@@ -361,7 +378,15 @@ app.delete(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['bookId']);
