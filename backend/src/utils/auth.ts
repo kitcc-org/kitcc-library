@@ -17,7 +17,7 @@ export const isLoggedIn = async (ctx: Context) => {
 
 	const db = drizzle(ctx.env.DB);
 	const user = await db
-		.select(userTable.sessionToken)
+		.select({ sessionToken: userTable.sessionToken })
 		.from(userTable)
 		.where(eq(userTable.id, parseInt(userId)));
 
@@ -28,8 +28,16 @@ export const isLoggedIn = async (ctx: Context) => {
 	}
 };
 
-export const login = async (ctx: Context, userId: string) => {
-	setCookie(ctx, 'user_id', userId, { secure: true, prefix: 'secure' });
+export const login = async (ctx: Context, userId: number) => {
+	// prettier-ignore
+	setCookie(
+		ctx,
+		'user_id',
+		userId.toString(), {
+			secure: true,
+			prefix: 'secure',
+		}
+	);
 
 	const sessionToken = crypto.randomUUID();
 	const db = drizzle(ctx.env.DB);
@@ -42,8 +50,12 @@ export const login = async (ctx: Context, userId: string) => {
 };
 
 export const logout = async (ctx: Context) => {
-	const userId = getCookie(ctx, 'user_id', 'secure');
-	if (userId === undefined) {
+	const cookie = getCookie(ctx, 'user_id', 'secure');
+	if (cookie === undefined) {
+		return;
+	}
+	const userId = Number(cookie);
+	if (isNaN(userId)) {
 		return;
 	}
 

@@ -31,6 +31,7 @@ export const userTable = sqliteTable(
 		name: text('name').notNull(),
 		email: text('email').notNull(),
 		passwordDigest: text('password_digest').notNull(),
+		sessionToken: text('session_token'),
 	},
 	(table) => {
 		return {

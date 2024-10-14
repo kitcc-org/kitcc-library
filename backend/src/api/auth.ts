@@ -32,7 +32,7 @@ app.post(
 
 		const loggedIn = await isLoggedIn(ctx);
 		if (!loggedIn) {
-			const hash = generateHash(credential.password);
+			const hash = await generateHash(credential.password);
 			if (hash === user[0].passwordDigest) {
 				login(ctx, user[0].id);
 			} else {
