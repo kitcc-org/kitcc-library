@@ -78,6 +78,7 @@ app.post(
 		const newUser = ctx.req.valid('json');
 
 		const db = drizzle(ctx.env.DB);
+		// データベースから同じメールアドレスのユーザを検索する
 		const sameUser = await db
 			.select({ id: userTable.id })
 			.from(userTable)
@@ -92,7 +93,7 @@ app.post(
 				409
 			);
 		} else {
-			// 新規登録
+			// 同じメールアドレスのユーザがいない場合は新規登録する
 			const hash = await generateHash(newUser.password);
 			// prettier-ignore
 			await db
