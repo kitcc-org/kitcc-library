@@ -4,29 +4,24 @@ import { generateHash } from '@/src/utils/crypto';
 import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
+import { userFactory } from '../factories/user';
 
 describe('POST /auth', async () => {
 	const db = drizzle(env.DB);
-	const account = {
-		name: '比企谷八幡',
-		email: 'hikigaya@oregairu.com',
-		password: 'password',
-	};
-	const digest = await generateHash(account.password);
+
+	const password = 'password';
+	const digest = await generateHash(password);
+	const user = userFactory.build({ passwordDigest: digest });
 
 	beforeAll(async () => {
 		// prettier-ignore
-		await db
-      .insert(userTable)
-      .values({
-        name: account.name,
-        email: account.email,
-        passwordDigest: digest,
-      });
+		await db.insert(userTable).values(user);
 	});
 
 	afterAll(async () => {
 		await db.delete(userTable);
+		userFactory.resetSequenceNumber();
 	});
 
 	it('should login successfully', async () => {
@@ -38,50 +33,62 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					email: account.email,
-					password: account.password,
+					email: user.email,
+					password: password,
 				}),
 			},
 			env
 		);
 
+		// ステータスコード
 		expect(response.status).toBe(200);
 
+		// レスポンスボディ
+		const currentUser = await response.json();
+		expect(currentUser).toMatchObject(user);
+
+		// Cookie
 		const cookies = response.headers.get('Set-Cookie');
 		expect(cookies).toContain('user_id=');
 		expect(cookies).toContain('session_token=');
 
-		const user = await db
+		// データベースの値
+		const selectUser = await db
 			.select()
 			.from(userTable)
-			.where(eq(userTable.email, account.email));
+			.where(eq(userTable.email, user.email));
 
-		expect(user[0].sessionToken).not.toBeNull();
+		expect(selectUser[0].sessionToken).not.toBeNull();
 	});
 
-	it('should login successfully even if already logged in', async () => {
-		const response = await app.request(
-			'/auth',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Set-Cookie': `__Secure-user_id=1; __Secure-session_token=${digest}`,
+	loggedInTest(
+		'should login successfully even if already logged in',
+		async ({ password, user, sessionToken }) => {
+			const response = await app.request(
+				'/auth',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${user.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						email: user.email,
+						password: password,
+					}),
 				},
-				body: JSON.stringify({
-					email: account.email,
-					password: account.password,
-				}),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(200);
+			expect(response.status).toBe(200);
 
-		const cookies = response.headers.get('Set-Cookie');
-		expect(cookies).toContain('user_id=');
-		expect(cookies).toContain('session_token=');
-	});
+			const currentUser = await response.json();
+			expect(currentUser).toMatchObject(user);
+		}
+	);
 
 	it('should return 400 when email is missing', async () => {
 		const response = await app.request(
@@ -92,7 +99,7 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					password: account.password,
+					password: password,
 				}),
 			},
 			env
@@ -110,7 +117,7 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					email: account.email,
+					email: user.email,
 				}),
 			},
 			env
@@ -128,7 +135,7 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					email: account.email,
+					email: user.email,
 					password: 'hoge',
 				}),
 			},
@@ -148,7 +155,7 @@ describe('POST /auth', async () => {
 				},
 				body: JSON.stringify({
 					email: 'hoge@example.com',
-					password: account.password,
+					password: password,
 				}),
 			},
 			env
@@ -160,36 +167,17 @@ describe('POST /auth', async () => {
 
 describe('DELETE /auth', async () => {
 	const db = drizzle(env.DB);
-	const account = {
-		name: '比企谷八幡',
-		email: 'hikigaya@oregairu.com',
-		password: 'password',
-	};
-	const digest = await generateHash(account.password);
 
-	beforeAll(async () => {
-		// prettier-ignore
-		await db
-			.insert(userTable)
-			.values({
-				name: account.name,
-				email: account.email,
-				passwordDigest: digest,
-				sessionToken: crypto.randomUUID(),
-			});
-	});
-
-	afterAll(async () => {
-		await db.delete(userTable);
-	});
-
-	it('should logout successfully', async () => {
+	loggedInTest('should logout successfully', async ({ user, sessionToken }) => {
 		const response = await app.request(
 			'/auth',
 			{
 				method: 'DELETE',
 				headers: {
-					Cookie: `__Secure-user_id=1; __Secure-session_token=${digest}`,
+					Cookie: [
+						`__Secure-user_id=${user.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
 				},
 			},
 			env
@@ -197,12 +185,12 @@ describe('DELETE /auth', async () => {
 
 		expect(response.status).toBe(200);
 
-		const user = await db
+		const selectUser = await db
 			.select()
 			.from(userTable)
-			.where(eq(userTable.email, account.email));
+			.where(eq(userTable.email, user.email));
 
-		expect(user[0].sessionToken).toBeNull();
+		expect(selectUser[0].sessionToken).toBeNull();
 	});
 
 	it('should logout successfully even when not logged in', async () => {
