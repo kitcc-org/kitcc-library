@@ -44,6 +44,7 @@ paths:
 
 components:
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: __Secure-session_token

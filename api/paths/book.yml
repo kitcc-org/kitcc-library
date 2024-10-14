@@ -70,7 +70,7 @@ books:
     operationId: createBook
     summary: 書籍を追加する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     requestBody:
       required: true
       content:
@@ -166,7 +166,7 @@ book:
       リクエストボディで指定された情報のみ更新する．
       書籍が登録済みの場合は蔵書数を+1する．
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     parameters:
       - name: bookId
         in: path
@@ -229,7 +229,7 @@ book:
     operationId: deleteBook
     summary: 特定の書籍を削除する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     parameters:
       - name: bookId
         in: path
