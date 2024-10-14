@@ -18,11 +18,11 @@
     "@remix-run/cloudflare": "2.12.0",
     "@remix-run/cloudflare-pages": "2.12.0",
     "@remix-run/react": "2.12.0",
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc",
     "isbot": "^4.1.0",
     "react": "19.0.0-rc-09111202-20241011",
-    "react-dom": "19.0.0-rc-09111202-20241011",
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc"
+    "react-dom": "19.0.0-rc-09111202-20241011"
   },
   "overrides": {
     "@types/react": "npm:types-react@rc",
@@ -43,7 +43,6 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1",
