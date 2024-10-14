@@ -30,10 +30,11 @@ await db
 	.prepare(
 		`
     CREATE TABLE users (
-      id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-      name text NOT NULL,
-      email text NOT NULL,
-      password_digest text NOT NULL
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      password_digest TEXT NOT NULL,
+      session_token TEXT
     );
     `
 	)

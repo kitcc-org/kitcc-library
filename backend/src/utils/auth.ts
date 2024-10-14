@@ -43,7 +43,8 @@ export const login = async (ctx: Context, userId: number) => {
 	setCookie(
 		ctx,
 		'user_id',
-		userId.toString(), {
+		userId.toString(),
+		{
 			// HTTPS通信時のみCookieが送信される
 			secure: true,
 			// Secure属性が付与されていることを強要する
@@ -61,11 +62,20 @@ export const login = async (ctx: Context, userId: number) => {
 		.where(eq(userTable.id, userId));
 	// Cookieにセッショントークンを保存する
 	// prettier-ignore
-	setCookie(ctx, 'session_token', sessionToken, { secure: true, prefix: 'secure' });
+	setCookie(
+		ctx,
+		'session_token',
+		sessionToken,
+		{
+			secure: true,
+			prefix: 'secure'
+		}
+	);
 };
 
 export const logout = async (ctx: Context) => {
 	const userIdCookie = getCookie(ctx, 'user_id', 'secure');
+	console.log(userIdCookie);
 	// Cookieが存在しない場合
 	if (userIdCookie === undefined) {
 		return;

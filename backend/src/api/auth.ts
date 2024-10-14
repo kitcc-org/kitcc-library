@@ -31,13 +31,18 @@ app.post(
 			.from(userTable)
 			.where(eq(userTable.email, credential.email));
 
+		// ユーザが存在しない場合
+		if (user.length === 0) {
+			return ctx.notFound();
+		}
+
 		// ログイン済みか確認する
 		const loggedIn = await isLoggedIn(ctx);
 		if (!loggedIn) {
 			// パスワードが正しいか確認する
 			const hash = await generateHash(credential.password);
 			if (hash === user[0].passwordDigest) {
-				login(ctx, user[0].id);
+				await login(ctx, user[0].id);
 			} else {
 				return ctx.json(
 					{
@@ -63,8 +68,13 @@ app.post(
 );
 
 app.delete('/', async (ctx) => {
-	logout(ctx);
-	return ctx.body(null, 204);
+	await logout(ctx);
+	return ctx.json(
+		{
+			message: 'Goodbye',
+		},
+		200
+	);
 });
 
 export default app;

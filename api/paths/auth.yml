@@ -45,6 +45,8 @@ auth:
                 $ref: "../components/examples/user.yml"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
+      '404':
+        $ref: "../components/responses/4xx.yml#/NotFound"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
@@ -56,7 +58,7 @@ auth:
     description: CookieからセッションIDを削除する
     security: []
     responses:
-      '204':
+      '200':
         description: ログアウトに成功した
         headers:
           Set-Cookie:
@@ -66,10 +68,11 @@ auth:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
+              type: object
+              properties:
+                message:
+                  type: string
             example:
-              message: "No Content"
-      '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+              message: "OK"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"

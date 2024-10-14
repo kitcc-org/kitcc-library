@@ -81,7 +81,10 @@ users:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
+              type: object
+              properties:
+                message:
+                  type: string
             example:
               message: "Created"
       '400':
@@ -206,7 +209,10 @@ user:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
+              type: object
+              properties:
+                message:
+                  type: string
             example:
               message: "No Content"
       '400':
