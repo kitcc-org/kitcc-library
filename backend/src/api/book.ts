@@ -94,12 +94,14 @@ app.get(
 				let isbn = undefined;
 				if (book.hasOwnProperty('industryIdentifiers')) {
 					// prettier-ignore
-					const identifier = book.industryIdentifiers!.find(
-						(identifier) => {
-							return identifier.type === 'ISBN_13'
+					for(const identifier of book.industryIdentifiers!) {
+						if (identifier.type === 'ISBN_13') {
+							isbn = identifier.identifier;
+							break;
+						} else if (identifier.type === 'ISBN_10') {
+							isbn = identifier.identifier;
 						}
-					);
-					isbn = identifier?.identifier;
+					}
 				}
 
 				hitBooks.push({
@@ -161,7 +163,7 @@ app.get(
 						: undefined,
 					// prettier-ignore
 					query['isbn']
-						? eq(bookTable.isbn, `%${query['isbn']}%`)
+						? eq(bookTable.isbn, query['isbn'])
 						: undefined
 				)
 			)
