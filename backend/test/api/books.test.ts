@@ -21,7 +21,7 @@ describe('GET /books', () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should return 1 page', async () => {
+	it('should return correct number of books', async () => {
 		const limit = 3;
 
 		// prettier-ignore
