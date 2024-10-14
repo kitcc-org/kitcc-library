@@ -100,6 +100,7 @@ describe('PUT /books/:bookId', () => {
 		'should return 400 when bookId is not a number',
 		async ({ user, sessionToken }) => {
 			const response = await app.request(
+				// bookIdに数以外を指定する
 				`/books/id`,
 				{
 					method: 'PUT',
@@ -133,6 +134,7 @@ describe('PUT /books/:bookId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// タイトルに文字列以外を指定する
 					body: JSON.stringify({ title: 1 }),
 				},
 				env
@@ -156,6 +158,7 @@ describe('PUT /books/:bookId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// 著者に配列以外を指定する
 					body: JSON.stringify({ authors: 'author' }),
 				},
 				env
@@ -179,6 +182,7 @@ describe('PUT /books/:bookId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// 出版社に文字列以外を指定する
 					body: JSON.stringify({ publisher: 1 }),
 				},
 				env
@@ -202,6 +206,7 @@ describe('PUT /books/:bookId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// ISBNに文字列以外を指定する
 					body: JSON.stringify({ isbn: 123456789 }),
 				},
 				env
@@ -227,6 +232,7 @@ describe('PUT /books/:bookId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
+					// 既に登録されているISBNを指定する
 					body: JSON.stringify({ isbn: books[0].isbn }),
 				},
 				env
@@ -243,6 +249,7 @@ describe('PUT /books/:bookId', () => {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					// Cookieを指定しない
 				},
 				body: JSON.stringify({ title: '計算機プログラムの構造と解釈' }),
 			},
@@ -256,6 +263,7 @@ describe('PUT /books/:bookId', () => {
 		'should return 404 when book is not found',
 		async ({ user, sessionToken }) => {
 			const response = await app.request(
+				// 存在しないbookIdを指定する
 				`/books/100`,
 				{
 					method: 'PUT',
@@ -311,6 +319,7 @@ describe('DELETE /books/:bookId', () => {
 
 		expect(response.status).toBe(204);
 
+		// データベースから削除されていることを確認する
 		const deletedBook = await db
 			.select()
 			.from(bookTable)
@@ -322,6 +331,7 @@ describe('DELETE /books/:bookId', () => {
 		'should return 400 when bookId is not a number',
 		async ({ user, sessionToken }) => {
 			const response = await app.request(
+				// bookIdに数以外を指定する
 				`/books/id`,
 				{
 					method: 'DELETE',
@@ -342,6 +352,7 @@ describe('DELETE /books/:bookId', () => {
 	it('should return 401 when not logged in', async () => {
 		const response = await app.request(`/books/1`, {
 			method: 'DELETE',
+			// Cookieを指定しない
 		});
 
 		expect(response.status).toBe(401);
@@ -351,6 +362,7 @@ describe('DELETE /books/:bookId', () => {
 		'should return 404 when book is not found',
 		async ({ user, sessionToken }) => {
 			const response = await app.request(
+				// 存在しないbookIdを指定する
 				`/books/100`,
 				{
 					method: 'DELETE',

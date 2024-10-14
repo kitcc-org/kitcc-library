@@ -27,12 +27,14 @@ describe('GET /users/:userId', () => {
 	});
 
 	it('should return 400 when userId is not a number', async () => {
+		// userIdに数字以外を指定する
 		const response = await app.request(`/users/id`, {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 404 when user is not found', async () => {
+		// 存在しないuserIdを指定する
 		const response = await app.request(`/users/100`, {}, env);
 
 		expect(response.status).toBe(404);
@@ -77,6 +79,7 @@ describe('PUT /users/:userId', () => {
 
 		expect(response.status).toBe(200);
 
+		// データベースの値が更新されていることを確認する
 		const updatedUser = await db
 			.select()
 			.from(userTable)
@@ -87,6 +90,7 @@ describe('PUT /users/:userId', () => {
 
 	it('should return 400 when userId is not a number', async () => {
 		const response = await app.request(
+			// userIdに数字以外を指定する
 			`/users/id`,
 			{
 				method: 'PUT',
@@ -109,6 +113,7 @@ describe('PUT /users/:userId', () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				// ユーザ名に文字列以外を指定する
 				body: JSON.stringify({ name: 1 }),
 			},
 			env
@@ -125,6 +130,7 @@ describe('PUT /users/:userId', () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				// メールアドレスに文字列以外を指定する
 				body: JSON.stringify({ email: 1 }),
 			},
 			env
@@ -141,6 +147,7 @@ describe('PUT /users/:userId', () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				// パスワードに文字列以外を指定する
 				body: JSON.stringify({ password: 1 }),
 			},
 			env
@@ -159,6 +166,7 @@ describe('PUT /users/:userId', () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+				// 既に存在するメールアドレスを指定する
 				body: JSON.stringify({ email: users[0].email }),
 			},
 			env
@@ -171,6 +179,7 @@ describe('PUT /users/:userId', () => {
 
 	it('should return 404 when user is not found', async () => {
 		const response = await app.request(
+			// 存在しないuserIdを指定する
 			`/users/100`,
 			{
 				method: 'PUT',
@@ -224,6 +233,7 @@ describe('DELETE /users/:userId', () => {
 
 	it('should return 400 when userId is not a number', async () => {
 		const response = await app.request(
+			// userIdに数字以外を指定する
 			`/users/id`,
 			{
 				method: 'DELETE',
@@ -238,6 +248,7 @@ describe('DELETE /users/:userId', () => {
 
 	it('should return 404 when user is not found', async () => {
 		const response = await app.request(
+			// 存在しないuserIdを指定する
 			`/users/100`,
 			{
 				method: 'DELETE',

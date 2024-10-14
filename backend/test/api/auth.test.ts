@@ -52,12 +52,11 @@ describe('POST /auth', async () => {
 		expect(cookies).toContain('user_id=');
 		expect(cookies).toContain('session_token=');
 
-		// データベースの値
+		// データベースのsession_token
 		const selectUser = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.email, user.email));
-
 		expect(selectUser[0].sessionToken).not.toBeNull();
 	});
 
@@ -70,6 +69,7 @@ describe('POST /auth', async () => {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						// Cookieを指定してログイン済みの状態を再現する
 						Cookie: [
 							`__Secure-user_id=${user.id}`,
 							`__Secure-session_token=${sessionToken}`,
@@ -83,8 +83,10 @@ describe('POST /auth', async () => {
 				env
 			);
 
+			// ステータスコード
 			expect(response.status).toBe(200);
 
+			// レスポンスボディ
 			const currentUser = await response.json();
 			expect(currentUser).toMatchObject(user);
 		}
@@ -99,6 +101,7 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
+					// メールアドレスを指定しない
 					password: password,
 				}),
 			},
@@ -118,6 +121,7 @@ describe('POST /auth', async () => {
 				},
 				body: JSON.stringify({
 					email: user.email,
+					// パスワードを指定しない
 				}),
 			},
 			env
@@ -136,6 +140,7 @@ describe('POST /auth', async () => {
 				},
 				body: JSON.stringify({
 					email: user.email,
+					// 間違ったパスワードを指定する
 					password: 'hoge',
 				}),
 			},
@@ -154,6 +159,7 @@ describe('POST /auth', async () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
+					// 存在しないメールアドレスを指定する
 					email: 'hoge@example.com',
 					password: password,
 				}),
@@ -185,11 +191,11 @@ describe('DELETE /auth', async () => {
 
 		expect(response.status).toBe(200);
 
+		// データベースのsesson_tokenが削除されていることをテストする
 		const selectUser = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.email, user.email));
-
 		expect(selectUser[0].sessionToken).toBeNull();
 	});
 
@@ -198,6 +204,7 @@ describe('DELETE /auth', async () => {
 			'/auth',
 			{
 				method: 'DELETE',
+				// Cookieを指定しない
 			},
 			env
 		);

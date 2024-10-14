@@ -42,6 +42,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return 400 when page is not a number', async () => {
+		// pageに数字以外を指定する
 		const params = new URLSearchParams({ page: 'a' }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
 
@@ -49,6 +50,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return 400 when limit is not a number', async () => {
+		// limitに数字以外を指定する
 		const params = new URLSearchParams({ limit: 'a' }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
 
@@ -87,6 +89,7 @@ describe('POST /users', () => {
 	});
 
 	it('should return 400 when name is missing', async () => {
+		// ユーザ名を指定しない
 		const user = userFactory.build({ name: undefined });
 
 		const response = await app.request(
@@ -105,6 +108,7 @@ describe('POST /users', () => {
 	});
 
 	it('should return 400 when email is missing', async () => {
+		// メールアドレスを指定しない
 		const user = userFactory.build({ email: undefined });
 
 		const response = await app.request(
@@ -133,6 +137,7 @@ describe('POST /users', () => {
 				body: JSON.stringify({
 					name: 'username',
 					email: 'username@example.com',
+					// パスワードを指定しない
 				}),
 			},
 			env
@@ -145,6 +150,7 @@ describe('POST /users', () => {
 
 	it('should return 409 when email is already used', async () => {
 		const user = userFactory.build();
+		// 先にデータベースに登録しておく
 		await db.insert(userTable).values(user);
 
 		const response = await app.request(
@@ -156,6 +162,7 @@ describe('POST /users', () => {
 				},
 				body: JSON.stringify({
 					name: user.name,
+					// すでに登録されているメールアドレスを指定する
 					email: user.email,
 					password: 'password',
 				}),
