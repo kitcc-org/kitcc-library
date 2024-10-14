@@ -66,7 +66,7 @@ describe('POST /auth', async () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'Set-Cookie': `user_id=1; session_token=${digest}`,
+					'Set-Cookie': `__Secure-user_id=1; __Secure-session_token=${digest}`,
 				},
 				body: JSON.stringify({
 					email: account.email,
@@ -129,7 +129,7 @@ describe('POST /auth', async () => {
 				},
 				body: JSON.stringify({
 					email: account.email,
-					password: 'wrong password',
+					password: 'hoge',
 				}),
 			},
 			env
