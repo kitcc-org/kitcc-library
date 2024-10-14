@@ -1,6 +1,6 @@
 import { SelectUser, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { eq, like } from 'drizzle-orm';
+import { and, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -41,7 +41,15 @@ app.get(
 			.select()
 			.from(userTable)
 			.where(
-				query['name'] ? like(userTable.name, `%${query['name']}%`) : undefined
+				and(
+					query['name']
+						? like(userTable.name, `%${query['name']}%`)
+						: undefined,
+					// prettier-ignore
+					query['email']
+						? eq(userTable.email, query['email'])
+						: undefined
+				)
 			)
 			.limit(limit)
 			.offset((page - 1) * limit);

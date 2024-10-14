@@ -9,6 +9,9 @@ properties:
     format: email
   passwordDigest:
     type: string
+  sessionToken:
+    type: string
+    nullable: true
 required:
   - id
   - name

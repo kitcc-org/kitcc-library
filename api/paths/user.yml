@@ -31,6 +31,13 @@ users:
         required: false
         schema:
           type: string
+      - name: email
+        in: query
+        description: メールアドレス
+        required: false
+        schema:
+          type: string
+          format: email
     responses:
       '200':
         description: 情報の取得に成功した

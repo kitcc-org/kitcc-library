@@ -34,7 +34,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return specified user', async () => {
-		const firstUser = { id: 1, ...users[0] };
+		const firstUser = { ...users[0], id: 1, sessionToken: null };
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
