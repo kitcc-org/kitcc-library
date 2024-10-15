@@ -11,7 +11,7 @@ const digest = await generateHash(password);
 const user = userFactory.build({ passwordDigest: digest });
 
 export const loggedInTest = test.extend({
-	password,
+	password: password,
 	currentUser: user,
 	sessionToken: async ({}, use) => {
 		const db = drizzle(env.DB);
