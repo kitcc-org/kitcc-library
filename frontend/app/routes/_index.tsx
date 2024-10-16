@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
-import { Button, Center } from "@mantine/core";
+import { Text } from "@mantine/core";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,14 +9,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  return (
-    <Center
-      h='100vh'
-      w='100vw'
-    >
-      <Button>Hello</Button>
-    </Center>
-  );
+  return (<Text>いずれログインページ(auth/login)にリダイレクトする予定のページ</Text>);
 }
 
 // const resources = [
