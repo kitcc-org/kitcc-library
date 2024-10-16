@@ -84,7 +84,7 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -117,7 +117,7 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -146,7 +146,7 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -194,7 +194,7 @@ describe('POST /users', () => {
 				},
 				body: JSON.stringify({
 					...newUser,
-					password: 'password',
+					password: 'passw0rd',
 				}),
 			},
 			env
@@ -225,7 +225,7 @@ describe('POST /users', () => {
 						name: newUser.name,
 						// すでに登録されているメールアドレスを指定する
 						email: newUser.email,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env

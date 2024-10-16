@@ -6,7 +6,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { test } from 'vitest';
 import { userFactory } from '../factories/user';
 
-const password = 'password';
+const password = 'passw0rd';
 const digest = await generateHash(password);
 const user = userFactory.build({ passwordDigest: digest });
 

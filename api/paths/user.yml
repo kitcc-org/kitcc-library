@@ -74,6 +74,7 @@ users:
               password:
                 type: string
                 format: password
+                pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
             required:
               - name
               - email
@@ -81,7 +82,7 @@ users:
           example:
             name: "比企谷八幡"
             email: "hikigaya@oregairu.com"
-            password: "password"
+            password: "passw0rd"
     responses:
       '201':
         description: ユーザーの追加に成功した

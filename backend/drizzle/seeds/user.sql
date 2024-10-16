@@ -6,4 +6,4 @@ VALUES
     ('高橋花子', 'hanako.takahashi@example.com', '5f4dcc3b5aa765d61d8327deb882cf99'),
     ('田中一郎', 'ichiro.tanaka@example.com', '6cb75f652a9b52798ebc5f8b9b9b57e9'),
     ('山田美咲', 'misaki.yamada@example.com', '2c6ee24b19816a6f14f95d1698b24ead'),
-    ('比企谷八幡', 'hikigaya@oregairu.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8');
+    ('比企谷八幡', 'hikigaya@oregairu.com', '8f0e2f76e22b43e2855189877e7dc1e1e7d98c226c95db247cd1d547928334a9');

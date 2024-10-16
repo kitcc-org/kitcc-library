@@ -10,7 +10,7 @@ import { userFactory } from '../factories/user';
 describe('POST /auth', async () => {
 	const db = drizzle(env.DB);
 
-	const password = 'password';
+	const password = 'passw0rd';
 	const digest = await generateHash(password);
 	const user = userFactory.build({ passwordDigest: digest });
 
@@ -171,7 +171,7 @@ describe('POST /auth', async () => {
 				body: JSON.stringify({
 					email: user.email,
 					// 間違ったパスワードを指定する
-					password: 'hoge',
+					password: 'hoge1227',
 				}),
 			},
 			env
