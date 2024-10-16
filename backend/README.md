@@ -1,3 +1,24 @@
+## 動作確認の手順
+
+```bash
+# パッケージのインストール
+pnpm install
+
+# データベースのマイグレーション
+pnpm run db:mig:gen
+pnpm run db:mig:apply:local
+
+# サンプルデータの追加
+file=user.sql pnpm run db:seed:local
+file=book.sql pnpm run db:seed:local
+
+# ローカルサーバの起動
+pnpm run dev
+
+# Drizzle Studioの起動
+pnpm run db:studio
+```
+
 ## pnpm
 
 パッケージの一括インストール
