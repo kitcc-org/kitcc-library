@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@mantine/core": "^7.13.2",
+    "@mantine/form": "^7.13.2",
     "@mantine/hooks": "^7.13.2",
     "@remix-run/cloudflare": "2.12.0",
     "@remix-run/cloudflare-pages": "2.12.0",
