@@ -1,8 +1,9 @@
 import { userTable } from '@/drizzle/schema';
 import app from '@/src/index';
 import { env } from 'cloudflare:test';
-import { count, eq } from 'drizzle-orm';
+import { count } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
 import { userFactory } from '../factories/user';
 
 describe('GET /users', () => {
@@ -14,10 +15,7 @@ describe('GET /users', () => {
 	});
 
 	afterAll(async () => {
-		for (const user of users) {
-			await db.delete(userTable).where(eq(userTable.email, user.email));
-		}
-
+		await db.delete(userTable);
 		userFactory.resetSequenceNumber();
 	});
 
@@ -34,7 +32,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return specified user', async () => {
-		const firstUser = { id: 1, ...users[0] };
+		const firstUser = { ...users[0], id: 1, sessionToken: null };
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
@@ -45,6 +43,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return 400 when page is not a number', async () => {
+		// pageに数字以外を指定する
 		const params = new URLSearchParams({ page: 'a' }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
 
@@ -52,6 +51,7 @@ describe('GET /users', () => {
 	});
 
 	it('should return 400 when limit is not a number', async () => {
+		// limitに数字以外を指定する
 		const params = new URLSearchParams({ limit: 'a' }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
 
@@ -66,106 +66,172 @@ describe('POST /users', () => {
 		userFactory.resetSequenceNumber();
 	});
 
-	it('should create new user', async () => {
+	loggedInTest(
+		'should create new user',
+		async ({ currentUser, sessionToken }) => {
+			const newUser = userFactory.build();
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						password: 'password',
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(201);
+
+			// データベースにユーザが登録されていることを確認する
+			const totalUser = await db.select({ count: count() }).from(userTable);
+			expect(totalUser[0].count).toBe(2);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when name is missing',
+		async ({ currentUser, sessionToken }) => {
+			// ユーザ名を指定しない
+			const newUser = userFactory.build({ name: undefined });
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						password: 'password',
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when email is missing',
+		async ({ currentUser, sessionToken }) => {
+			// メールアドレスを指定しない
+			const newUser = userFactory.build({ email: undefined });
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						password: 'password',
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when password is missing',
+		async ({ currentUser, sessionToken }) => {
+			const newUser = userFactory.build();
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(newUser),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
+		const newUser = userFactory.build();
+
 		const response = await app.request(
 			'/users',
 			{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					// Cookieを指定しない
 				},
 				body: JSON.stringify({
-					name: 'username',
-					email: 'username@example.com',
+					...newUser,
 					password: 'password',
 				}),
 			},
 			env
 		);
 
-		expect(response.status).toBe(201);
-
-		const totalUser = await db.select({ count: count() }).from(userTable);
-		expect(totalUser[0].count).toBe(1);
+		expect(response.status).toBe(401);
 	});
 
-	it('should return 400 when name is missing', async () => {
-		const user = userFactory.build({ name: undefined });
+	loggedInTest(
+		'should return 409 when email is already used',
+		async ({ currentUser, sessionToken }) => {
+			const newUser = userFactory.build();
+			// 先にデータベースに登録しておく
+			await db.insert(userTable).values(newUser);
 
-		const response = await app.request(
-			'/users',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						name: newUser.name,
+						// すでに登録されているメールアドレスを指定する
+						email: newUser.email,
+						password: 'password',
+					}),
 				},
-				body: JSON.stringify(user),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when email is missing', async () => {
-		const user = userFactory.build({ email: undefined });
-
-		const response = await app.request(
-			'/users',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(user),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when password is missing', async () => {
-		const response = await app.request(
-			'/users',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					name: 'username',
-					email: 'username@example.com',
-				}),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	// TODO:未ログインの時
-
-	it('should return 409 when email is already used', async () => {
-		const user = userFactory.build();
-		await db.insert(userTable).values(user);
-
-		const response = await app.request(
-			'/users',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					name: user.name,
-					email: user.email,
-					password: 'password',
-				}),
-			},
-			env
-		);
-
-		expect(response.status).toBe(409);
-	});
+			expect(response.status).toBe(409);
+		}
+	);
 });

@@ -3,6 +3,7 @@ import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { count, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
 
 describe('GET /books', () => {
@@ -14,10 +15,7 @@ describe('GET /books', () => {
 	});
 
 	afterAll(async () => {
-		for (const book of books) {
-			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
-		}
-
+		await db.delete(bookTable);
 		bookFactory.resetSequenceNumber();
 	});
 
@@ -34,7 +32,7 @@ describe('GET /books', () => {
 	});
 
 	it('should return specified book', async () => {
-		const firstBook = { id: 1, ...books[0] };
+		const firstBook = { ...books[0], id: 1 };
 
 		const params = new URLSearchParams({ title: firstBook.title }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
@@ -45,6 +43,7 @@ describe('GET /books', () => {
 	});
 
 	it('should return 400 when page is not a number', async () => {
+		// pageに数字以外を指定する
 		const params = new URLSearchParams({ page: 'a' }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
 
@@ -52,6 +51,7 @@ describe('GET /books', () => {
 	});
 
 	it('should return 400 when limit is not a number', async () => {
+		// limitに数字以外を指定する
 		const params = new URLSearchParams({ limit: 'a' }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
 
@@ -59,36 +59,213 @@ describe('GET /books', () => {
 	});
 });
 
-describe('POST /books', () => {
+describe('POST /books', async () => {
 	const db = drizzle(env.DB);
 
-	afterAll(() => {
+	afterAll(async () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should create new book', async () => {
+	loggedInTest(
+		'should create new book',
+		async ({ currentUser, sessionToken }) => {
+			const book = bookFactory.build();
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(201);
+
+			// データベースに書籍が登録されていることを確認する
+			const totalBook = await db.select({ count: count() }).from(bookTable);
+			expect(totalBook[0].count).toBe(1);
+		}
+	);
+
+	loggedInTest(
+		'should increase stock when book is already registered',
+		async ({ currentUser, sessionToken }) => {
+			const book = bookFactory.build();
+			// 先にデータベースに書籍を登録しておく
+			await db.insert(bookTable).values(book);
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 同じ書籍を登録する
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(201);
+
+			const totalBook = await db
+				.select({
+					count: count(),
+					stock: bookTable.stock,
+				})
+				.from(bookTable)
+				.where(eq(bookTable.isbn, book.isbn));
+			// 書籍が1冊しか登録されていないことを確認する
+			expect(totalBook[0].count).toBe(1);
+			// 蔵書数が1冊増えていることを確認する
+			expect(totalBook[0].stock).toBe(book.stock! + 1);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when title is missing',
+		async ({ currentUser, sessionToken }) => {
+			// タイトルを指定しない
+			const book = bookFactory.build({ title: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when authors is missing',
+		async ({ currentUser, sessionToken }) => {
+			// 著者を指定しない
+			const book = bookFactory.build({ authors: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when publisher is missing',
+		async ({ currentUser, sessionToken }) => {
+			// 出版社を指定しない
+			const book = bookFactory.build({ publisher: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when isbn is missing',
+		async ({ currentUser, sessionToken }) => {
+			// ISBNを指定しない
+			const book = bookFactory.build({ isbn: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when stock is missing',
+		async ({ currentUser, sessionToken }) => {
+			// 蔵書数を指定しない
+			const book = bookFactory.build({ stock: undefined });
+
+			const response = await app.request(
+				'/books',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify(book),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
 		const book = bookFactory.build();
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(201);
-
-		const totalBook = await db.select({ count: count() }).from(bookTable);
-		expect(totalBook[0].count).toBe(1);
-	});
-
-	it('should increase stock when book is already registered', async () => {
-		const book = bookFactory.build();
-		await db.insert(bookTable).values(book);
 
 		const response = await app.request(
 			'/books',
@@ -96,134 +273,36 @@ describe('POST /books', () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					// Cookieを指定しない
 				},
 				body: JSON.stringify(book),
 			},
 			env
 		);
 
-		expect(response.status).toBe(201);
-
-		const totalBook = await db
-			.select({
-				count: count(),
-				stock: bookTable.stock,
-			})
-			.from(bookTable)
-			.where(eq(bookTable.isbn, book.isbn));
-		expect(totalBook[0].count).toBe(1);
-		expect(totalBook[0].stock).toBe(book.stock! + 1);
+		expect(response.status).toBe(401);
 	});
-
-	it('should return 400 when title is missing', async () => {
-		const book = bookFactory.build({ title: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when authors is missing', async () => {
-		const book = bookFactory.build({ authors: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when publisher is missing', async () => {
-		const book = bookFactory.build({ publisher: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when isbn is missing', async () => {
-		const book = bookFactory.build({ isbn: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when stock is missing', async () => {
-		const book = bookFactory.build({ stock: undefined });
-
-		const response = await app.request(
-			'/books',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(book),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	// TODO:未ログインの時
 });
 
 describe('GET /books/search', () => {
 	it('should return 400 when page is not a number', async () => {
+		// pageに数字以外を指定する
 		const response = await app.request('/books/search?page=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 400 when limit is not a number', async () => {
+		// limitに数字以外を指定する
 		const response = await app.request('/books/search?limit=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
-	it('should return 400 when isbn is not 13 digits number', async () => {
+	it('should return 400 when isbn is not 10|13 digits number', async () => {
+		// ISBNに10 or 13桁以外の数字を指定する
 		// prettier-ignore
-		const response = await app.request('/books/search?isbn=0123456789', {}, env);
+		const response = await app.request('/books/search?isbn=123456789', {}, env);
 
 		expect(response.status).toBe(400);
 	});

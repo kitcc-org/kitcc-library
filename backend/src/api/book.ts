@@ -16,9 +16,11 @@ import {
 	updateBookParams,
 	updateBookResponse,
 } from '../schema';
+import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
 
+// Google Books APIのレスポンス
 type GBAResult = {
 	items?: [
 		{
@@ -38,6 +40,7 @@ type GBAResult = {
 	];
 };
 
+// GET /search のレスポンス
 type GoogleBook = {
 	title: string;
 	authors: string[];
@@ -67,6 +70,7 @@ app.get(
 		delete query['page'];
 		delete query['limit'];
 
+		// 絞り込み条件を作成する
 		let terms = '';
 		for (const [key, value] of Object.entries(query)) {
 			if (value) {
@@ -74,6 +78,7 @@ app.get(
 			}
 		}
 
+		// クエリパラメータを作成する
 		const params = new URLSearchParams({
 			q: terms,
 			startIndex: String((page - 1) * limit),
@@ -81,16 +86,21 @@ app.get(
 			key: ctx.env.GOOGLE_BOOKS_API_KEY,
 		});
 
+		// Google Books APIにリクエストを送信する
 		// prettier-ignore
 		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
 		const body: GBAResult = await response.json();
 
+		// ヒットした書籍を格納する配列
 		const hitBooks: GoogleBook[] = [];
 
+		// 書籍がヒットしたか確認する
 		if (body.hasOwnProperty('items')) {
+			// ヒットした書籍を配列に格納する
 			for (const item of body.items ?? []) {
 				const book = item.volumeInfo;
 
+				// ISBNを取得する
 				let isbn = undefined;
 				if (book.hasOwnProperty('industryIdentifiers')) {
 					// prettier-ignore
@@ -104,6 +114,7 @@ app.get(
 					}
 				}
 
+				// 書籍を配列に追加する
 				hitBooks.push({
 					title: book.title,
 					authors: book.authors ?? [],
@@ -197,11 +208,20 @@ app.post(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const newBook = ctx.req.valid('json');
 
 		const db = drizzle(ctx.env.DB);
+		// データベースから同じISBNの書籍を検索する
 		const sameBook = await db
 			.select({
 				id: bookTable.id,
@@ -211,13 +231,13 @@ app.post(
 			.where(eq(bookTable.isbn, newBook.isbn));
 
 		if (0 < sameBook.length) {
-			// すでに同じISBNの本が登録されている
+			// すでに同じISBNの本が登録されている場合は在庫を増やす
 			await db
 				.update(bookTable)
 				.set({ stock: sameBook[0].stock + 1 })
 				.where(eq(bookTable.id, sameBook[0].id));
 		} else {
-			// 新規登録
+			//　同じISBNの本が存在しない場合は新規登録する
 			await db.insert(bookTable).values(newBook);
 		}
 
@@ -293,7 +313,15 @@ app.put(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['bookId']);
@@ -350,7 +378,15 @@ app.delete(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['bookId']);

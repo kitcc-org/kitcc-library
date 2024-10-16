@@ -15,7 +15,7 @@ import {
  */
 export const getBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
 export const getBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
-export const getBooksQueryIsbnRegExp = new RegExp('^\\d{13}$');
+export const getBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const getBooksQueryParams = zod.object({
@@ -27,7 +27,7 @@ export const getBooksQueryParams = zod.object({
   "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional()
 })
 
-export const getBooksResponseIsbnRegExp = new RegExp('^\\d{13}$');
+export const getBooksResponseIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const getBooksResponseItem = zod.object({
@@ -45,7 +45,7 @@ export const getBooksResponse = zod.array(getBooksResponseItem)
 /**
  * @summary 書籍を追加する
  */
-export const createBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
+export const createBookBodyIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const createBookBody = zod.object({
@@ -68,7 +68,7 @@ export const getBookParams = zod.object({
   "bookId": zod.string().regex(getBookPathBookIdRegExp)
 })
 
-export const getBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
+export const getBookResponseIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const getBookResponse = zod.object({
@@ -94,7 +94,7 @@ export const updateBookParams = zod.object({
   "bookId": zod.string().regex(updateBookPathBookIdRegExp)
 })
 
-export const updateBookBodyIsbnRegExp = new RegExp('^\\d{13}$');
+export const updateBookBodyIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const updateBookBody = zod.object({
@@ -105,7 +105,7 @@ export const updateBookBody = zod.object({
   "stock": zod.number().optional()
 })
 
-export const updateBookResponseIsbnRegExp = new RegExp('^\\d{13}$');
+export const updateBookResponseIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const updateBookResponse = zod.object({
@@ -137,7 +137,7 @@ export const searchBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
 export const searchBooksQueryLimitMax = 40;
 
 export const searchBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
-export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{13}$');
+export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
 export const searchBooksQueryParams = zod.object({
@@ -170,14 +170,16 @@ export const getUsersQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
 export const getUsersQueryParams = zod.object({
   "page": zod.string().min(1).regex(getUsersQueryPageRegExp).optional(),
   "limit": zod.string().min(1).regex(getUsersQueryLimitRegExp).optional(),
-  "name": zod.string().optional()
+  "name": zod.string().optional(),
+  "email": zod.string().email().optional()
 })
 
 export const getUsersResponseItem = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string().optional()
+  "passwordDigest": zod.string(),
+  "sessionToken": zod.string().nullish()
 })
 export const getUsersResponse = zod.array(getUsersResponseItem)
 
@@ -206,7 +208,8 @@ export const getUserResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string().optional()
+  "passwordDigest": zod.string(),
+  "sessionToken": zod.string().nullish()
 })
 
 
@@ -231,7 +234,8 @@ export const updateUserResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string().optional()
+  "passwordDigest": zod.string(),
+  "sessionToken": zod.string().nullish()
 })
 
 
@@ -264,10 +268,10 @@ export const getLoansQueryParams = zod.object({
 })
 
 export const getLoansResponseItem = zod.object({
-  "id": zod.number().optional(),
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().optional(),
+  "id": zod.number(),
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number(),
   "createdAt": zod.string().datetime().optional(),
   "updatedAt": zod.string().datetime().optional()
 })
@@ -285,10 +289,10 @@ export const createLoansBodyItem = zod.object({
 export const createLoansBody = zod.array(createLoansBodyItem)
 
 export const createLoansResponse = zod.object({
-  "id": zod.number().optional(),
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().optional(),
+  "id": zod.number(),
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number(),
   "createdAt": zod.string().datetime().optional(),
   "updatedAt": zod.string().datetime().optional()
 })
@@ -306,10 +310,10 @@ export const updateLoansBodyItem = zod.object({
 export const updateLoansBody = zod.array(updateLoansBodyItem)
 
 export const updateLoansResponse = zod.object({
-  "id": zod.number().optional(),
-  "userId": zod.number().optional(),
-  "bookId": zod.number().optional(),
-  "volume": zod.number().optional(),
+  "id": zod.number(),
+  "userId": zod.number(),
+  "bookId": zod.number(),
+  "volume": zod.number(),
   "createdAt": zod.string().datetime().optional(),
   "updatedAt": zod.string().datetime().optional()
 })
@@ -328,7 +332,17 @@ export const loginResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string().optional()
+  "passwordDigest": zod.string(),
+  "sessionToken": zod.string().nullish()
+})
+
+
+/**
+ * CookieからセッションIDを削除する
+ * @summary ログアウトする
+ */
+export const logoutResponse = zod.object({
+  "message": zod.string().optional()
 })
 
 

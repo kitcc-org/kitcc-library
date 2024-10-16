@@ -3,6 +3,7 @@ import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
 import { userFactory } from '../factories/user';
 
 describe('GET /users/:userId', () => {
@@ -14,7 +15,7 @@ describe('GET /users/:userId', () => {
 	});
 
 	afterAll(async () => {
-		await db.delete(userTable).where(eq(userTable.email, user.email));
+		await db.delete(userTable);
 		userFactory.resetSequenceNumber();
 	});
 
@@ -27,12 +28,14 @@ describe('GET /users/:userId', () => {
 	});
 
 	it('should return 400 when userId is not a number', async () => {
+		// userIdに数字以外を指定する
 		const response = await app.request(`/users/id`, {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 404 when user is not found', async () => {
+		// 存在しないuserIdを指定する
 		const response = await app.request(`/users/100`, {}, env);
 
 		expect(response.status).toBe(404);
@@ -48,17 +51,15 @@ describe('PUT /users/:userId', () => {
 	});
 
 	afterEach(async () => {
-		for (const user of users) {
-			await db.delete(userTable).where(eq(userTable.email, user.email));
-		}
+		await db.delete(userTable);
 	});
 
 	afterAll(() => {
 		userFactory.resetSequenceNumber();
 	});
 
-	it('should update user', async () => {
-		const user = {
+	loggedInTest('should update user', async ({ currentUser, sessionToken }) => {
+		const credentials = {
 			name: '比企谷八幡',
 			email: 'hikigaya@oregairu.com',
 			password: 'password',
@@ -71,121 +72,185 @@ describe('PUT /users/:userId', () => {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Cookie: [
+						`__Secure-user_id=${currentUser.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
 				},
-				body: JSON.stringify(user),
+				body: JSON.stringify(credentials),
 			},
 			env
 		);
 
 		expect(response.status).toBe(200);
 
+		// データベースの値が更新されていることを確認する
 		const updatedUser = await db
 			.select()
 			.from(userTable)
 			.where(eq(userTable.id, users[0].id));
-		const { password, ...rest } = user;
+		const { password, ...rest } = credentials;
 		expect(updatedUser[0]).toMatchObject(rest);
 	});
 
-	it('should return 400 when userId is not a number', async () => {
-		const response = await app.request(
-			`/users/id`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
+	loggedInTest(
+		'should return 400 when userId is not a number',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// userIdに数字以外を指定する
+				`/users/id`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ name: 'username' }),
 				},
-				body: JSON.stringify({ name: 'username' }),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(400);
-	});
+			expect(response.status).toBe(400);
+		}
+	);
 
-	it('should return 400 when name is not a string', async () => {
+	loggedInTest(
+		'should return 400 when name is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/users/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// ユーザ名に文字列以外を指定する
+					body: JSON.stringify({ name: 1 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when email is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/users/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// メールアドレスに文字列以外を指定する
+					body: JSON.stringify({ email: 1 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when password is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/users/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// パスワードに文字列以外を指定する
+					body: JSON.stringify({ password: 1 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when violate email unique constraint',
+		async ({ currentUser, sessionToken }) => {
+			const users = await db.select().from(userTable);
+
+			const response = await app.request(
+				`/users/${users[1].id}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 既に存在するメールアドレスを指定する
+					body: JSON.stringify({ email: users[0].email }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
+		// prettier-ignore
 		const response = await app.request(
 			`/users/1`,
 			{
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ name: 1 }),
-			},
-			env
+				body: JSON.stringify({ name: '比企谷八幡' }),
+			}
 		);
 
-		expect(response.status).toBe(400);
+		expect(response.status).toBe(401);
 	});
 
-	it('should return 400 when email is not a string', async () => {
-		const response = await app.request(
-			`/users/1`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
+	loggedInTest(
+		'should return 404 when user is not found',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// 存在しないuserIdを指定する
+				`/users/100`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ name: 'username' }),
 				},
-				body: JSON.stringify({ email: 1 }),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when password is not a string', async () => {
-		const response = await app.request(
-			`/users/1`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ password: 1 }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when violate email unique constraint', async () => {
-		const users = await db.select().from(userTable);
-
-		const response = await app.request(
-			`/users/${users[1].id}`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email: users[0].email }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	// TODO:未ログインの時
-
-	it('should return 404 when user is not found', async () => {
-		const response = await app.request(
-			`/users/100`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ name: 'username' }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(404);
-	});
+			expect(response.status).toBe(404);
+		}
+	);
 });
 
 describe('DELETE /users/:userId', () => {
@@ -197,26 +262,33 @@ describe('DELETE /users/:userId', () => {
 	});
 
 	afterEach(async () => {
-		await db.delete(userTable).where(eq(userTable.email, user.email));
+		await db.delete(userTable);
 	});
 
 	afterAll(() => {
 		userFactory.resetSequenceNumber();
 	});
 
-	it('should delete user', async () => {
+	loggedInTest('should delete user', async ({ currentUser, sessionToken }) => {
 		const users = await db.select().from(userTable);
 
 		const response = await app.request(
 			`/users/${users[0].id}`,
 			{
 				method: 'DELETE',
+				headers: {
+					Cookie: [
+						`__Secure-user_id=${currentUser.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
+				},
 			},
 			env
 		);
 
 		expect(response.status).toBe(204);
 
+		// データベースからユーザが削除されていることを確認する
 		const deletedBook = await db
 			.select()
 			.from(userTable)
@@ -224,29 +296,60 @@ describe('DELETE /users/:userId', () => {
 		expect(deletedBook).toHaveLength(0);
 	});
 
-	it('should return 400 when userId is not a number', async () => {
+	loggedInTest(
+		'should return 400 when userId is not a number',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// userIdに数字以外を指定する
+				`/users/id`,
+				{
+					method: 'DELETE',
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
 		const response = await app.request(
-			`/users/id`,
+			`/users/1`,
 			{
 				method: 'DELETE',
+				// Cookieを指定しない
 			},
 			env
 		);
 
-		expect(response.status).toBe(400);
+		expect(response.status).toBe(401);
 	});
 
-	// TODO:未ログインの時
+	loggedInTest(
+		'should return 404 when user is not found',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// 存在しないuserIdを指定する
+				`/users/100`,
+				{
+					method: 'DELETE',
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env
+			);
 
-	it('should return 404 when user is not found', async () => {
-		const response = await app.request(
-			`/users/100`,
-			{
-				method: 'DELETE',
-			},
-			env
-		);
-
-		expect(response.status).toBe(404);
-	});
+			expect(response.status).toBe(404);
+		}
+	);
 });

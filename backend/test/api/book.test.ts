@@ -3,6 +3,7 @@ import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
+import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
 
 describe('GET /books/:bookId', () => {
@@ -14,7 +15,7 @@ describe('GET /books/:bookId', () => {
 	});
 
 	afterAll(async () => {
-		await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+		await db.delete(bookTable);
 		bookFactory.resetSequenceNumber();
 	});
 
@@ -48,16 +49,14 @@ describe('PUT /books/:bookId', () => {
 	});
 
 	afterEach(async () => {
-		for (const book of books) {
-			await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
-		}
+		await db.delete(bookTable);
 	});
 
 	afterAll(() => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should update book', async () => {
+	loggedInTest('should update book', async ({ currentUser, sessionToken }) => {
 		const book = {
 			title: '計算機プログラムの構造と解釈',
 			// prettier-ignore
@@ -78,6 +77,10 @@ describe('PUT /books/:bookId', () => {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Cookie: [
+						`__Secure-user_id=${currentUser.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
 				},
 				body: JSON.stringify(book),
 			},
@@ -93,121 +96,192 @@ describe('PUT /books/:bookId', () => {
 		expect(updatedBook[0]).toMatchObject(book);
 	});
 
-	it('should return 400 when bookId is not a number', async () => {
-		const response = await app.request(
-			`/books/id`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
+	loggedInTest(
+		'should return 400 when bookId is not a number',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// bookIdに数以外を指定する
+				`/books/id`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ title: 'title' }),
 				},
-				body: JSON.stringify({ title: 'title' }),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(400);
-	});
+			expect(response.status).toBe(400);
+		}
+	);
 
-	it('should return 400 when title is not a string', async () => {
+	loggedInTest(
+		'should return 400 when title is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/books/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// タイトルに文字列以外を指定する
+					body: JSON.stringify({ title: 1 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when authors is not an array',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/books/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 著者に配列以外を指定する
+					body: JSON.stringify({ authors: 'author' }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when publisher is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/books/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 出版社に文字列以外を指定する
+					body: JSON.stringify({ publisher: 1 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when isbn is not a string',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/books/1`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// ISBNに文字列以外を指定する
+					body: JSON.stringify({ isbn: 123456789 }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when violate ISBN unique constraint',
+		async ({ currentUser, sessionToken }) => {
+			const books = await db.select().from(bookTable);
+
+			const response = await app.request(
+				`/books/${books[1].id}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					// 既に登録されているISBNを指定する
+					body: JSON.stringify({ isbn: books[0].isbn }),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
 		const response = await app.request(
 			`/books/1`,
 			{
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					// Cookieを指定しない
 				},
-				body: JSON.stringify({ title: 1 }),
+				body: JSON.stringify({ title: '計算機プログラムの構造と解釈' }),
 			},
 			env
 		);
 
-		expect(response.status).toBe(400);
+		expect(response.status).toBe(401);
 	});
 
-	it('should return 400 when authors is not an array', async () => {
-		const response = await app.request(
-			`/books/1`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
+	loggedInTest(
+		'should return 404 when book is not found',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// 存在しないbookIdを指定する
+				`/books/100`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ title: '計算機プログラムの構造と解釈' }),
 				},
-				body: JSON.stringify({ authors: 'author' }),
-			},
-			env
-		);
+				env
+			);
 
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when publisher is not a string', async () => {
-		const response = await app.request(
-			`/books/1`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ publisher: 1 }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when isbn is not a string', async () => {
-		const response = await app.request(
-			`/books/1`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ isbn: 1234567890 }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 400 when violate ISBN unique constraint', async () => {
-		const books = await db.select().from(bookTable);
-
-		const response = await app.request(
-			`/books/${books[1].id}`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ isbn: books[0].isbn }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(400);
-	});
-
-	// TODO:未ログインの時
-
-	it('should return 404 when book is not found', async () => {
-		const response = await app.request(
-			`/books/100`,
-			{
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ title: 'New Title' }),
-			},
-			env
-		);
-
-		expect(response.status).toBe(404);
-	});
+			expect(response.status).toBe(404);
+		}
+	);
 });
 
 describe('DELETE /books/:bookId', () => {
@@ -219,26 +293,33 @@ describe('DELETE /books/:bookId', () => {
 	});
 
 	afterEach(async () => {
-		await db.delete(bookTable).where(eq(bookTable.isbn, book.isbn));
+		await db.delete(bookTable);
 	});
 
 	afterAll(() => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	it('should delete book', async () => {
+	loggedInTest('should delete book', async ({ currentUser, sessionToken }) => {
 		const books = await db.select().from(bookTable);
 
 		const response = await app.request(
 			`/books/${books[0].id}`,
 			{
 				method: 'DELETE',
+				headers: {
+					Cookie: [
+						`__Secure-user_id=${currentUser.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
+				},
 			},
 			env
 		);
 
 		expect(response.status).toBe(204);
 
+		// データベースから削除されていることを確認する
 		const deletedBook = await db
 			.select()
 			.from(bookTable)
@@ -246,29 +327,56 @@ describe('DELETE /books/:bookId', () => {
 		expect(deletedBook).toHaveLength(0);
 	});
 
-	it('should return 400 when bookId is not a number', async () => {
-		const response = await app.request(
-			`/books/id`,
-			{
-				method: 'DELETE',
-			},
-			env
-		);
+	loggedInTest(
+		'should return 400 when bookId is not a number',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// bookIdに数以外を指定する
+				`/books/id`,
+				{
+					method: 'DELETE',
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env
+			);
 
-		expect(response.status).toBe(400);
+			expect(response.status).toBe(400);
+		}
+	);
+
+	it('should return 401 when not logged in', async () => {
+		const response = await app.request(`/books/1`, {
+			method: 'DELETE',
+			// Cookieを指定しない
+		});
+
+		expect(response.status).toBe(401);
 	});
 
-	// TODO:未ログインの時
+	loggedInTest(
+		'should return 404 when book is not found',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// 存在しないbookIdを指定する
+				`/books/100`,
+				{
+					method: 'DELETE',
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env
+			);
 
-	it('should return 404 when book is not found', async () => {
-		const response = await app.request(
-			`/books/100`,
-			{
-				method: 'DELETE',
-			},
-			env
-		);
-
-		expect(response.status).toBe(404);
-	});
+			expect(response.status).toBe(404);
+		}
+	);
 });

@@ -31,6 +31,13 @@ users:
         required: false
         schema:
           type: string
+      - name: email
+        in: query
+        description: メールアドレス
+        required: false
+        schema:
+          type: string
+          format: email
     responses:
       '200':
         description: 情報の取得に成功した
@@ -51,7 +58,7 @@ users:
     operationId: createUser
     summary: ユーザーを追加する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     requestBody:
       required: true
       content:
@@ -81,7 +88,10 @@ users:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
+              type: object
+              properties:
+                message:
+                  type: string
             example:
               message: "Created"
       '400':
@@ -138,7 +148,7 @@ user:
     summary: 特定のユーザーの情報を更新する
     description: リクエストボディに含まれている情報のみ更新する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     parameters:
       - name: userId
         in: path
@@ -191,7 +201,7 @@ user:
     operationId: deleteUser
     summary: 特定のユーザーを削除する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     parameters:
       - name: userId
         in: path
@@ -206,7 +216,10 @@ user:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
+              type: object
+              properties:
+                message:
+                  type: string
             example:
               message: "No Content"
       '400':

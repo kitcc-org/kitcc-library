@@ -39,13 +39,12 @@ paths:
   /loans:
     $ref: "./paths/loan.yml#/loans"
 
-  /login:
-    $ref: "./paths/auth.yml#/login"
-  /logout:
-    $ref: "./paths/auth.yml#/logout"
+  /auth:
+    $ref: "./paths/auth.yml#/auth"
 
 components:
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: __Secure-session_token

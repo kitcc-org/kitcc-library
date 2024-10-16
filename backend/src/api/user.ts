@@ -1,6 +1,6 @@
 import { SelectUser, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { eq, like } from 'drizzle-orm';
+import { and, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -14,6 +14,7 @@ import {
 	updateUserParams,
 	updateUserResponse,
 } from '../schema';
+import { isLoggedIn } from '../utils/auth';
 import { generateHash } from '../utils/crypto';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -41,7 +42,15 @@ app.get(
 			.select()
 			.from(userTable)
 			.where(
-				query['name'] ? like(userTable.name, `%${query['name']}%`) : undefined
+				and(
+					query['name']
+						? like(userTable.name, `%${query['name']}%`)
+						: undefined,
+					// prettier-ignore
+					query['email']
+						? eq(userTable.email, query['email'])
+						: undefined
+				)
 			)
 			.limit(limit)
 			.offset((page - 1) * limit);
@@ -73,11 +82,20 @@ app.post(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const newUser = ctx.req.valid('json');
 
 		const db = drizzle(ctx.env.DB);
+		// データベースから同じメールアドレスのユーザを検索する
 		const sameUser = await db
 			.select({ id: userTable.id })
 			.from(userTable)
@@ -92,7 +110,7 @@ app.post(
 				409
 			);
 		} else {
-			// 新規登録
+			// 同じメールアドレスのユーザがいない場合は新規登録する
 			const hash = await generateHash(newUser.password);
 			// prettier-ignore
 			await db
@@ -176,7 +194,15 @@ app.put(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);
@@ -233,7 +259,15 @@ app.delete(
 		}
 	}),
 	async (ctx) => {
-		// TODO:ログイン済みか確認する
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401
+			);
+		}
 
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);

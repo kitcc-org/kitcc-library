@@ -6,7 +6,7 @@ loans:
     summary: 貸出履歴を取得する
     description: 指定された条件に合致する貸出履歴を返す
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     parameters:
       - name: userId
         in: query
@@ -62,7 +62,7 @@ loans:
     operationId: createLoans
     summary: 貸出履歴を追加する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     requestBody:
       required: true
       content:
@@ -104,7 +104,7 @@ loans:
     summary: 貸出履歴を更新する
     description: リクエストボディに含まれている情報のみ更新する
     security:
-      - BasicAuth: []
+      - CookieAuth: []
     requestBody:
       required: true
       content:
