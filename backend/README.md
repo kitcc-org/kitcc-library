@@ -4,8 +4,7 @@
 # パッケージのインストール
 pnpm install
 
-# データベースのマイグレーション
-pnpm run db:mig:gen
+# マイグレーションの実行
 pnpm run db:mig:apply:local
 
 # サンプルデータの追加
