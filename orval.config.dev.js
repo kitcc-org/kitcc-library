@@ -18,6 +18,7 @@ module.exports = {
       httpClient: 'fetch',
       mode: 'split',
       target: './frontend/orval',
+      baseUrl: 'http://localhost:8787' // build時には削除
     },
   },
 };
