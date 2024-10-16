@@ -157,6 +157,35 @@ describe('POST /users', () => {
 	);
 
 	loggedInTest(
+		'should return 400 when email is invalid',
+		async ({ currentUser, sessionToken }) => {
+			// 不正な形式のメールアドレス
+			const newUser = userFactory.build({ email: 'user@invalid' });
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						password: 'passw0rd',
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
 		'should return 400 when password is missing',
 		async ({ currentUser, sessionToken }) => {
 			const newUser = userFactory.build();
@@ -173,6 +202,36 @@ describe('POST /users', () => {
 						].join('; '),
 					},
 					body: JSON.stringify(newUser),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when password is invalid',
+		async ({ currentUser, sessionToken }) => {
+			const newUser = userFactory.build();
+
+			// パスワードが短すぎる
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						// 数字が含まれていない
+						password: 'password',
+					}),
 				},
 				env
 			);

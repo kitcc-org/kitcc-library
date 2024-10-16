@@ -141,6 +141,26 @@ describe('POST /auth', async () => {
 		expect(response.status).toBe(400);
 	});
 
+	it('should return 400 when email is invalid', async () => {
+		const response = await app.request(
+			'/auth',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					// 不正な形式のメールアドレス
+					email: 'user@invalid',
+					password: password,
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
 	it('should return 400 when password is missing', async () => {
 		const response = await app.request(
 			'/auth',
@@ -152,6 +172,26 @@ describe('POST /auth', async () => {
 				body: JSON.stringify({
 					email: user.email,
 					// パスワードを指定しない
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 401 when password is invalid', async () => {
+		const response = await app.request(
+			'/auth',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					email: user.email,
+					// 数字が含まれていない
+					password: 'password',
 				}),
 			},
 			env
