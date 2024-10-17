@@ -71,12 +71,12 @@ export const loanTable = sqliteTable(
 			.notNull()
 			.references(() => bookTable.id, { onDelete: 'cascade' }),
 		volume: integer('volume').notNull().default(1),
-		createdAt: text('created_at')
+		createdAt: integer('created_at', { mode: 'number' })
 			.notNull()
-			.default(sql`(datetime(current_timestamp, '+9 hours'))`),
-		updatedAt: text('updated_at')
+			.default(sql`(unixepoch())`),
+		updatedAt: integer('updated_at', { mode: 'number' })
 			.notNull()
-			.default(sql`(datetime(current_timestamp, '+9 hours'))`),
+			.default(sql`(unixepoch())`),
 	},
 	(table) => {
 		return {

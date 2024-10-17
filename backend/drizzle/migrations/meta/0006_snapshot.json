@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "22b51ce3-97a9-40af-8271-cea46f1daf68",
+  "id": "918dee07-debf-48ab-9658-616933d0a0d1",
   "prevId": "69f74fa0-6b9a-4f27-8446-9ac14bbed137",
   "tables": {
     "books": {
@@ -81,15 +81,15 @@
     "loans": {
       "name": "loans",
       "columns": {
-        "book_id": {
-          "name": "book_id",
+        "user_id": {
+          "name": "user_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "book_id": {
+          "name": "book_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -105,29 +105,29 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(datetime(current_timestamp, '+9 hours'))"
+          "default": "(unixepoch())"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "(datetime(current_timestamp, '+9 hours'))"
+          "default": "(unixepoch())"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "loans_book_id_books_id_fk": {
-          "name": "loans_book_id_books_id_fk",
+        "loans_user_id_users_id_fk": {
+          "name": "loans_user_id_users_id_fk",
           "tableFrom": "loans",
-          "tableTo": "books",
+          "tableTo": "users",
           "columnsFrom": [
-            "book_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -135,12 +135,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "loans_user_id_users_id_fk": {
-          "name": "loans_user_id_users_id_fk",
+        "loans_book_id_books_id_fk": {
+          "name": "loans_book_id_books_id_fk",
           "tableFrom": "loans",
-          "tableTo": "users",
+          "tableTo": "books",
           "columnsFrom": [
-            "user_id"
+            "book_id"
           ],
           "columnsTo": [
             "id"
