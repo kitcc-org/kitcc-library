@@ -4,8 +4,16 @@
  * KITCC Library API
  * OpenAPI spec version: 1.0.0
  */
+export type Logout200 = {
+  message?: string;
+};
+
 export type LoginBody = {
   email: string;
+  /**
+   * @minLength 8
+   * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+   */
   password: string;
 };
 
@@ -41,15 +49,31 @@ page?: string;
 limit?: string;
 };
 
+export type DeleteUser204 = {
+  message?: string;
+};
+
 export type UpdateUserBody = {
   email?: string;
   name?: string;
+  /**
+   * @minLength 8
+   * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+   */
   password?: string;
+};
+
+export type CreateUser201 = {
+  message?: string;
 };
 
 export type CreateUserBody = {
   email: string;
   name: string;
+  /**
+   * @minLength 8
+   * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+   */
   password: string;
 };
 
@@ -62,15 +86,22 @@ page?: string;
  * 1ページあたりの表示数
  */
 limit?: string;
+/**
+ * ユーザー名
+ */
+name?: string;
+/**
+ * メールアドレス
+ */
+email?: string;
 };
 
 export type SearchBooks200Item = {
-  author?: string[];
-  /** @pattern ^\d{13}$ */
+  authors: string[];
   isbn?: string;
   publisher?: string;
   thumbnail?: string;
-  title?: string;
+  title: string;
 };
 
 export type SearchBooksParams = {
@@ -85,15 +116,15 @@ limit?: string;
 /**
  * タイトル
  */
-title?: string;
+intitle?: string;
 /**
  * 著者
  */
-author?: string;
+inauthor?: string;
 /**
  * 出版社
  */
-publisher?: string;
+inpublisher?: string;
 /**
  * ISBN
  */
@@ -101,8 +132,8 @@ isbn?: string;
 };
 
 export type UpdateBookBody = {
-  author?: string[];
-  /** @pattern ^\d{13}$ */
+  authors?: string[];
+  /** @pattern ^\d{10}(\d{3})?$ */
   isbn?: string;
   publisher?: string;
   stock?: number;
@@ -110,8 +141,8 @@ export type UpdateBookBody = {
 };
 
 export type CreateBookBody = {
-  author: string[];
-  /** @pattern ^\d{13}$ */
+  authors: string[];
+  /** @pattern ^\d{10}(\d{3})?$ */
   isbn: string;
   publisher: string;
   stock: number;
@@ -167,19 +198,21 @@ export type InternalServerErrorResponse = Error;
 export type BadRequestResponse = Error;
 
 export interface Loan {
-  bookId?: number;
+  bookId: number;
   createdAt?: string;
-  id?: number;
+  id: number;
   updatedAt?: string;
-  userId?: number;
-  volume?: number;
+  userId: number;
+  volume: number;
 }
 
 export interface User {
   email: string;
   id: number;
   name: string;
-  passwordDigest?: string;
+  passwordDigest: string;
+  /** @nullable */
+  sessionToken?: string | null;
 }
 
 export interface Error {
@@ -187,9 +220,9 @@ export interface Error {
 }
 
 export interface Book {
-  author: string[];
+  authors: string[];
   id: number;
-  /** @pattern ^\d{13}$ */
+  /** @pattern ^\d{10}(\d{3})?$ */
   isbn: string;
   publisher: string;
   stock: number;

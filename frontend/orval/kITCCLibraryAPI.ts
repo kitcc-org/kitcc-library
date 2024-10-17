@@ -22,7 +22,9 @@ import type {
   Book,
   CreateBookBody,
   CreateLoansBodyItem,
+  CreateUser201,
   CreateUserBody,
+  DeleteUser204,
   Error,
   GetBooksParams,
   GetLoansParams,
@@ -30,6 +32,7 @@ import type {
   InternalServerErrorResponse,
   Loan,
   LoginBody,
+  Logout200,
   NotFoundResponse,
   SearchBooks200Item,
   SearchBooksParams,
@@ -369,7 +372,7 @@ export const useUpdateBook = <TError = BadRequestResponse | UnauthorizedResponse
  * @summary 特定の書籍を削除する
  */
 export type deleteBookResponse = {
-  data: Error;
+  data: void;
   status: number;
 }
 
@@ -617,7 +620,7 @@ export function useGetUsers<TData = Awaited<ReturnType<typeof getUsers>>, TError
  * @summary ユーザーを追加する
  */
 export type createUserResponse = {
-  data: Error;
+  data: CreateUser201;
   status: number;
 }
 
@@ -647,7 +650,7 @@ export const createUser = async (createUserBody: CreateUserBody, options?: Reque
 
 
 
-export const getCreateUserMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+export const getCreateUserMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | Error | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserBody}, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserBody}, TContext> => {
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
@@ -668,12 +671,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
     export type CreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof createUser>>>
     export type CreateUserMutationBody = CreateUserBody
-    export type CreateUserMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
+    export type CreateUserMutationError = BadRequestResponse | UnauthorizedResponse | Error | InternalServerErrorResponse
 
     /**
  * @summary ユーザーを追加する
  */
-export const useCreateUser = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+export const useCreateUser = <TError = BadRequestResponse | UnauthorizedResponse | Error | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserBody}, TContext>, fetch?: RequestInit}
 ): UseMutationResult<
         Awaited<ReturnType<typeof createUser>>,
@@ -847,7 +850,7 @@ export const useUpdateUser = <TError = BadRequestResponse | UnauthorizedResponse
  * @summary 特定のユーザーを削除する
  */
 export type deleteUserResponse = {
-  data: Error;
+  data: DeleteUser204;
   status: number;
 }
 
@@ -1165,7 +1168,7 @@ export type loginResponse = {
 export const getLoginUrl = () => {
 
 
-  return `http://localhost:8787/login`
+  return `http://localhost:8787/auth`
 }
 
 export const login = async (loginBody: LoginBody, options?: RequestInit): Promise<loginResponse> => {
@@ -1188,7 +1191,7 @@ export const login = async (loginBody: LoginBody, options?: RequestInit): Promis
 
 
 
-export const getLoginMutationOptions = <TError = BadRequestResponse | InternalServerErrorResponse,
+export const getLoginMutationOptions = <TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext> => {
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
@@ -1209,12 +1212,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
     export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
     export type LoginMutationBody = LoginBody
-    export type LoginMutationError = BadRequestResponse | InternalServerErrorResponse
+    export type LoginMutationError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
 
     /**
  * @summary ログインする
  */
-export const useLogin = <TError = BadRequestResponse | InternalServerErrorResponse,
+export const useLogin = <TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, fetch?: RequestInit}
 ): UseMutationResult<
         Awaited<ReturnType<typeof login>>,
@@ -1233,14 +1236,14 @@ export const useLogin = <TError = BadRequestResponse | InternalServerErrorRespon
  * @summary ログアウトする
  */
 export type logoutResponse = {
-  data: Error;
+  data: Logout200;
   status: number;
 }
 
 export const getLogoutUrl = () => {
 
 
-  return `http://localhost:8787/logout`
+  return `http://localhost:8787/auth`
 }
 
 export const logout = async ( options?: RequestInit): Promise<logoutResponse> => {
@@ -1262,7 +1265,7 @@ export const logout = async ( options?: RequestInit): Promise<logoutResponse> =>
 
 
 
-export const getLogoutMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+export const getLogoutMutationOptions = <TError = InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext> => {
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
@@ -1283,12 +1286,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
     export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
     
-    export type LogoutMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
+    export type LogoutMutationError = InternalServerErrorResponse
 
     /**
  * @summary ログアウトする
  */
-export const useLogout = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+export const useLogout = <TError = InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, fetch?: RequestInit}
 ): UseMutationResult<
         Awaited<ReturnType<typeof logout>>,
