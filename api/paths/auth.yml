@@ -20,6 +20,7 @@ auth:
                 type: string
                 format: password
                 pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                minLength: 8
             required:
               - email
               - password

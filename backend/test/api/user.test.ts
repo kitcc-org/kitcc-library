@@ -62,7 +62,7 @@ describe('PUT /users/:userId', () => {
 		const credentials = {
 			name: '比企谷八幡',
 			email: 'hikigaya@oregairu.com',
-			password: 'password',
+			password: 'passw0rd',
 		};
 
 		const users = await db.select().from(userTable);

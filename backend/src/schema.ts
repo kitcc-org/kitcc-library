@@ -187,13 +187,15 @@ export const getUsersResponse = zod.array(getUsersResponseItem)
 /**
  * @summary ユーザーを追加する
  */
+export const createUserBodyPasswordMin = 8;
+
 export const createUserBodyPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
 
 
 export const createUserBody = zod.object({
   "name": zod.string(),
   "email": zod.string().email(),
-  "password": zod.string().regex(createUserBodyPasswordRegExp)
+  "password": zod.string().min(createUserBodyPasswordMin).regex(createUserBodyPasswordRegExp)
 })
 
 
@@ -227,10 +229,15 @@ export const updateUserParams = zod.object({
   "userId": zod.string().regex(updateUserPathUserIdRegExp)
 })
 
+export const updateUserBodyPasswordMin = 8;
+
+export const updateUserBodyPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
+
+
 export const updateUserBody = zod.object({
   "name": zod.string().optional(),
   "email": zod.string().email().optional(),
-  "password": zod.string().optional()
+  "password": zod.string().min(updateUserBodyPasswordMin).regex(updateUserBodyPasswordRegExp).optional()
 })
 
 export const updateUserResponse = zod.object({
@@ -326,12 +333,14 @@ export const updateLoansResponse = zod.object({
  * セッションIDをCookieに保存する
  * @summary ログインする
  */
+export const loginBodyPasswordMin = 8;
+
 export const loginBodyPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
 
 
 export const loginBody = zod.object({
   "email": zod.string().email(),
-  "password": zod.string().regex(loginBodyPasswordRegExp)
+  "password": zod.string().min(loginBodyPasswordMin).regex(loginBodyPasswordRegExp)
 })
 
 export const loginResponse = zod.object({
