@@ -22,7 +22,7 @@ app.use(
 		// リクエストに含めることができるヘッダ
 		allowHeaders: ['Cookie', 'Content-Type'],
 		// 許可するメソッド
-		// OPTIONSはCORSのプリフライトリクエストで使われる
+		// OPTIONSはプリフライトリクエストで使われる
 		allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 		// アクセスできるレスポンスのヘッダ
 		exposeHeaders: ['Content-Type', 'Content-Length', 'Set-Cookie'],
