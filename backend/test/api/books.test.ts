@@ -86,7 +86,13 @@ describe('POST /books', async () => {
 				env
 			);
 
+			// ステータスコード
 			expect(response.status).toBe(201);
+
+			// レスポンスボディ
+			const createdBook = await response.json();
+			const { stock, ...rest } = book;
+			expect(createdBook).toMatchObject(rest);
 
 			// データベースに書籍が登録されていることを確認する
 			const totalBook = await db.select({ count: count() }).from(bookTable);

@@ -230,23 +230,30 @@ app.post(
 			.from(bookTable)
 			.where(eq(bookTable.isbn, newBook.isbn));
 
+		let createdBook = undefined;
 		if (0 < sameBook.length) {
 			// すでに同じISBNの本が登録されている場合は在庫を増やす
-			await db
+			createdBook = await db
 				.update(bookTable)
 				.set({ stock: sameBook[0].stock + 1 })
-				.where(eq(bookTable.id, sameBook[0].id));
+				.where(eq(bookTable.id, sameBook[0].id))
+				.returning();
 		} else {
 			//　同じISBNの本が存在しない場合は新規登録する
-			await db.insert(bookTable).values(newBook);
+			createdBook = await db.insert(bookTable).values(newBook).returning();
 		}
 
-		return ctx.json(
-			{
-				message: 'Created',
-			},
-			201
-		);
+		const result = getBookResponse.safeParse(createdBook[0]);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data, 201);
+		}
 	}
 );
 
