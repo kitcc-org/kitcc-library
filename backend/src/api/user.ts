@@ -101,6 +101,7 @@ app.post(
 			.from(userTable)
 			.where(eq(userTable.email, newUser.email));
 
+		let createdUser = undefined;
 		if (0 < sameUser.length) {
 			// すでに同じメールアドレスのユーザが登録されている
 			return ctx.json(
@@ -113,21 +114,27 @@ app.post(
 			// 同じメールアドレスのユーザがいない場合は新規登録する
 			const hash = await generateHash(newUser.password);
 			// prettier-ignore
-			await db
+			createdUser = await db
         .insert(userTable)
         .values({
           name: newUser.name,
           email: newUser.email,
           passwordDigest: hash,
-        });
+        })
+				.returning();
 		}
 
-		return ctx.json(
-			{
-				message: 'Created',
-			},
-			201
-		);
+		const result = getUserResponse.safeParse(createdUser[0]);
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data, 201);
+		}
 	}
 );
 
