@@ -278,12 +278,11 @@ export const getLoansQueryParams = zod.object({
 })
 
 export const getLoansResponseItem = zod.object({
-  "id": zod.number(),
   "userId": zod.number(),
   "bookId": zod.number(),
   "volume": zod.number(),
-  "createdAt": zod.string().datetime().optional(),
-  "updatedAt": zod.string().datetime().optional()
+  "createdAt": zod.number().optional(),
+  "updatedAt": zod.number().optional()
 })
 export const getLoansResponse = zod.array(getLoansResponseItem)
 
@@ -299,12 +298,11 @@ export const createLoansBodyItem = zod.object({
 export const createLoansBody = zod.array(createLoansBodyItem)
 
 export const createLoansResponse = zod.object({
-  "id": zod.number(),
   "userId": zod.number(),
   "bookId": zod.number(),
   "volume": zod.number(),
-  "createdAt": zod.string().datetime().optional(),
-  "updatedAt": zod.string().datetime().optional()
+  "createdAt": zod.number().optional(),
+  "updatedAt": zod.number().optional()
 })
 
 
@@ -320,12 +318,11 @@ export const updateLoansBodyItem = zod.object({
 export const updateLoansBody = zod.array(updateLoansBodyItem)
 
 export const updateLoansResponse = zod.object({
-  "id": zod.number(),
   "userId": zod.number(),
   "bookId": zod.number(),
   "volume": zod.number(),
-  "createdAt": zod.string().datetime().optional(),
-  "updatedAt": zod.string().datetime().optional()
+  "createdAt": zod.number().optional(),
+  "updatedAt": zod.number().optional()
 })
 
 
