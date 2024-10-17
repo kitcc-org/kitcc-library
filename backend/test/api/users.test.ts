@@ -31,7 +31,7 @@ describe('GET /users', () => {
 		expect(users).toHaveLength(limit);
 	});
 
-	it('should return specified user', async () => {
+	it('should return correct user', async () => {
 		const firstUser = { ...users[0], id: 1, sessionToken: null };
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();

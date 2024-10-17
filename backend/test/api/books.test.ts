@@ -31,7 +31,7 @@ describe('GET /books', () => {
 		expect(books).toHaveLength(limit);
 	});
 
-	it('should return specified book', async () => {
+	it('should return correct book', async () => {
 		const firstBook = { ...books[0], id: 1 };
 
 		const params = new URLSearchParams({ title: firstBook.title }).toString();
