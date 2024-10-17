@@ -66,14 +66,10 @@ export const loanTable = sqliteTable(
 	{
 		bookId: integer('book_id')
 			.notNull()
-			.references(() => {
-				return bookTable.id;
-			}),
+			.references(() => bookTable.id, { onDelete: 'cascade' }),
 		userId: integer('user_id')
 			.notNull()
-			.references(() => {
-				return userTable.id;
-			}),
+			.references(() => userTable.id, { onDelete: 'cascade' }),
 		volume: integer('volume').notNull().default(1),
 	},
 	(table) => {
