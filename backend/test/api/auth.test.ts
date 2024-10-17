@@ -180,24 +180,31 @@ describe('POST /auth', async () => {
 		expect(response.status).toBe(400);
 	});
 
-	it('should return 401 when password is invalid', async () => {
-		const response = await app.request(
-			'/auth',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					email: user.email,
-					// 数字が含まれていない
-					password: 'password',
-				}),
-			},
-			env
-		);
+	it('should return 400 when password is invalid', async () => {
+		const invalidPassword = [
+			'abc123', // 文字数が8未満
+			'12345678', // 英字が含まれていない
+			'password', // 数字が含まれていない
+		];
 
-		expect(response.status).toBe(400);
+		for (const password of invalidPassword) {
+			const response = await app.request(
+				'/auth',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						email: user.email,
+						password: password,
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
 	});
 
 	it('should return 401 when password is wrong', async () => {

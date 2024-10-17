@@ -214,29 +214,34 @@ describe('POST /users', () => {
 		'should return 400 when password is invalid',
 		async ({ currentUser, sessionToken }) => {
 			const newUser = userFactory.build();
+			const invalidPassword = [
+				'abc123', // 文字数が8未満
+				'12345678', // 英字が含まれていない
+				'password', // 数字が含まれていない
+			];
 
-			// パスワードが短すぎる
-			const response = await app.request(
-				'/users',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Cookie: [
-							`__Secure-user_id=${currentUser.id}`,
-							`__Secure-session_token=${sessionToken}`,
-						].join('; '),
+			for (const password of invalidPassword) {
+				const response = await app.request(
+					'/users',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Cookie: [
+								`__Secure-user_id=${currentUser.id}`,
+								`__Secure-session_token=${sessionToken}`,
+							].join('; '),
+						},
+						body: JSON.stringify({
+							...newUser,
+							password: password,
+						}),
 					},
-					body: JSON.stringify({
-						...newUser,
-						// 数字が含まれていない
-						password: 'password',
-					}),
-				},
-				env
-			);
+					env
+				);
 
-			expect(response.status).toBe(400);
+				expect(response.status).toBe(400);
+			}
 		}
 	);
 
