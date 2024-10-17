@@ -1,5 +1,5 @@
 INSERT INTO
-    books (title, author, publisher, thumbnail, isbn, stock)
+    books (title, authors, publisher, thumbnail, isbn, stock)
 VALUES
     ('コンピュータプログラミングの基礎', json_array('山田 太郎', '佐藤 花子'), '技術評論社', 'https://example.com/thumbnail1.jpg', '9781234567890', 3),
     ('ソフトウェア設計入門', json_array('高橋 一郎'), 'オーム社', 'https://example.com/thumbnail2.jpg', '9780987654321', 2),
