@@ -80,7 +80,7 @@ export const loanTable = sqliteTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.bookId, table.userId] }),
+			pk: primaryKey({ columns: [table.userId, table.bookId] }),
 		};
 	}
 );

@@ -52,14 +52,14 @@ await db
 	.prepare(
 		`
     CREATE TABLE loans (
-      book_id INTEGER NOT NULL,
       user_id INTEGER NOT NULL,
+      book_id INTEGER NOT NULL,
       volume INTEGER DEFAULT 1 NOT NULL,
-      created_at TEXT DEFAULT (datetime(current_timestamp, '+9 hours')) NOT NULL,
-      updated_at TEXT DEFAULT (datetime(current_timestamp, '+9 hours')) NOT NULL,
-      PRIMARY KEY(book_id, user_id),
-      FOREIGN KEY (book_id) REFERENCES books(id) ON UPDATE no action ON DELETE cascade,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE no action ON DELETE cascade
+      created_at INTEGER DEFAULT (unixepoch()) NOT NULL,
+      updated_at INTEGER DEFAULT (unixepoch()) NOT NULL,
+      PRIMARY KEY(user_id, book_id),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE NO ACTION ON DELETE CASCADE,
+      FOREIGN KEY (book_id) REFERENCES books(id) ON UPDATE NO ACTION ON DELETE CASCADE
     );
     `
 	)
