@@ -64,12 +64,12 @@ export const usersRelation = relations(
 export const loanTable = sqliteTable(
 	'loans',
 	{
-		bookId: integer('book_id')
-			.notNull()
-			.references(() => bookTable.id, { onDelete: 'cascade' }),
 		userId: integer('user_id')
 			.notNull()
 			.references(() => userTable.id, { onDelete: 'cascade' }),
+		bookId: integer('book_id')
+			.notNull()
+			.references(() => bookTable.id, { onDelete: 'cascade' }),
 		volume: integer('volume').notNull().default(1),
 		createdAt: text('created_at')
 			.notNull()
@@ -87,3 +87,18 @@ export const loanTable = sqliteTable(
 
 export type SelectLoan = typeof loanTable.$inferSelect;
 export type InsertLoan = typeof loanTable.$inferInsert;
+
+// prettier-ignore
+export const usersToBooksRelations = relations(
+	loanTable,
+	({ one }) => ({
+		user: one(userTable, {
+			fields: [loanTable.userId],
+			references: [userTable.id],
+		}),
+		book: one(bookTable, {
+			fields: [loanTable.bookId],
+			references: [bookTable.id],
+		}),
+	})
+);
