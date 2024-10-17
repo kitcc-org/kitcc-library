@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
 	integer,
 	primaryKey,
@@ -71,6 +71,12 @@ export const loanTable = sqliteTable(
 			.notNull()
 			.references(() => userTable.id, { onDelete: 'cascade' }),
 		volume: integer('volume').notNull().default(1),
+		createdAt: text('created_at')
+			.notNull()
+			.default(sql`(datetime(current_timestamp, '+9 hours'))`),
+		updatedAt: text('updated_at')
+			.notNull()
+			.default(sql`(datetime(current_timestamp, '+9 hours'))`),
 	},
 	(table) => {
 		return {
@@ -78,3 +84,6 @@ export const loanTable = sqliteTable(
 		};
 	}
 );
+
+export type SelectLoan = typeof loanTable.$inferSelect;
+export type InsertLoan = typeof loanTable.$inferInsert;
