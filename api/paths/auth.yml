@@ -19,12 +19,14 @@ auth:
               password:
                 type: string
                 format: password
+                pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                minLength: 8
             required:
               - email
               - password
           example:
             email: "username@example.com"
-            password: "password"
+            password: "passw0rd"
     responses:
       '200':
         description: >

@@ -62,7 +62,7 @@ describe('PUT /users/:userId', () => {
 		const credentials = {
 			name: '比企谷八幡',
 			email: 'hikigaya@oregairu.com',
-			password: 'password',
+			password: 'passw0rd',
 		};
 
 		const users = await db.select().from(userTable);
@@ -142,7 +142,7 @@ describe('PUT /users/:userId', () => {
 	);
 
 	loggedInTest(
-		'should return 400 when email is not a string',
+		'should return 400 when email is invalid',
 		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
 				`/users/1`,
@@ -156,7 +156,7 @@ describe('PUT /users/:userId', () => {
 						].join('; '),
 					},
 					// メールアドレスに文字列以外を指定する
-					body: JSON.stringify({ email: 1 }),
+					body: JSON.stringify({ email: 'user@invalid' }),
 				},
 				env
 			);
@@ -166,26 +166,34 @@ describe('PUT /users/:userId', () => {
 	);
 
 	loggedInTest(
-		'should return 400 when password is not a string',
+		'should return 400 when password is invalid',
 		async ({ currentUser, sessionToken }) => {
-			const response = await app.request(
-				`/users/1`,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-						Cookie: [
-							`__Secure-user_id=${currentUser.id}`,
-							`__Secure-session_token=${sessionToken}`,
-						].join('; '),
-					},
-					// パスワードに文字列以外を指定する
-					body: JSON.stringify({ password: 1 }),
-				},
-				env
-			);
+			const invalidPassword = [
+				'abc123', // 文字数が8未満
+				'12345678', // 英字が含まれていない
+				'password', // 数字が含まれていない
+			];
 
-			expect(response.status).toBe(400);
+			for (const password of invalidPassword) {
+				const response = await app.request(
+					`/users/1`,
+					{
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Cookie: [
+								`__Secure-user_id=${currentUser.id}`,
+								`__Secure-session_token=${sessionToken}`,
+							].join('; '),
+						},
+						// パスワードに文字列以外を指定する
+						body: JSON.stringify({ password: 1 }),
+					},
+					env
+				);
+
+				expect(response.status).toBe(400);
+			}
 		}
 	);
 

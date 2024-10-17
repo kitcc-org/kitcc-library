@@ -84,7 +84,7 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -117,7 +117,7 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -146,7 +146,36 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify({
 						...newUser,
-						password: 'password',
+						password: 'passw0rd',
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	);
+
+	loggedInTest(
+		'should return 400 when email is invalid',
+		async ({ currentUser, sessionToken }) => {
+			// 不正な形式のメールアドレス
+			const newUser = userFactory.build({ email: 'user@invalid' });
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						...newUser,
+						password: 'passw0rd',
 					}),
 				},
 				env
@@ -181,6 +210,41 @@ describe('POST /users', () => {
 		}
 	);
 
+	loggedInTest(
+		'should return 400 when password is invalid',
+		async ({ currentUser, sessionToken }) => {
+			const newUser = userFactory.build();
+			const invalidPassword = [
+				'abc123', // 文字数が8未満
+				'12345678', // 英字が含まれていない
+				'password', // 数字が含まれていない
+			];
+
+			for (const password of invalidPassword) {
+				const response = await app.request(
+					'/users',
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							Cookie: [
+								`__Secure-user_id=${currentUser.id}`,
+								`__Secure-session_token=${sessionToken}`,
+							].join('; '),
+						},
+						body: JSON.stringify({
+							...newUser,
+							password: password,
+						}),
+					},
+					env
+				);
+
+				expect(response.status).toBe(400);
+			}
+		}
+	);
+
 	it('should return 401 when not logged in', async () => {
 		const newUser = userFactory.build();
 
@@ -194,7 +258,7 @@ describe('POST /users', () => {
 				},
 				body: JSON.stringify({
 					...newUser,
-					password: 'password',
+					password: 'passw0rd',
 				}),
 			},
 			env
@@ -225,7 +289,7 @@ describe('POST /users', () => {
 						name: newUser.name,
 						// すでに登録されているメールアドレスを指定する
 						email: newUser.email,
-						password: 'password',
+						password: 'passw0rd',
 					}),
 				},
 				env

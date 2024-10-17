@@ -10,7 +10,7 @@ import { userFactory } from '../factories/user';
 describe('POST /auth', async () => {
 	const db = drizzle(env.DB);
 
-	const password = 'password';
+	const password = 'passw0rd';
 	const digest = await generateHash(password);
 	const user = userFactory.build({ passwordDigest: digest });
 
@@ -141,6 +141,26 @@ describe('POST /auth', async () => {
 		expect(response.status).toBe(400);
 	});
 
+	it('should return 400 when email is invalid', async () => {
+		const response = await app.request(
+			'/auth',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					// 不正な形式のメールアドレス
+					email: 'user@invalid',
+					password: password,
+				}),
+			},
+			env
+		);
+
+		expect(response.status).toBe(400);
+	});
+
 	it('should return 400 when password is missing', async () => {
 		const response = await app.request(
 			'/auth',
@@ -160,6 +180,33 @@ describe('POST /auth', async () => {
 		expect(response.status).toBe(400);
 	});
 
+	it('should return 400 when password is invalid', async () => {
+		const invalidPassword = [
+			'abc123', // 文字数が8未満
+			'12345678', // 英字が含まれていない
+			'password', // 数字が含まれていない
+		];
+
+		for (const password of invalidPassword) {
+			const response = await app.request(
+				'/auth',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						email: user.email,
+						password: password,
+					}),
+				},
+				env
+			);
+
+			expect(response.status).toBe(400);
+		}
+	});
+
 	it('should return 401 when password is wrong', async () => {
 		const response = await app.request(
 			'/auth',
@@ -171,7 +218,7 @@ describe('POST /auth', async () => {
 				body: JSON.stringify({
 					email: user.email,
 					// 間違ったパスワードを指定する
-					password: 'hoge',
+					password: 'hoge1227',
 				}),
 			},
 			env
