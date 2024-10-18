@@ -17,6 +17,7 @@ app.post(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -70,6 +71,7 @@ app.post(
 
 		const result = loginResponse.safeParse(selectUser[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -84,12 +86,7 @@ app.post(
 
 app.delete('/', async (ctx) => {
 	await logout(ctx);
-	return ctx.json(
-		{
-			message: 'Goodbye',
-		},
-		200
-	);
+	return ctx.json({ message: 'Goodbye' }, 200);
 });
 
 export default app;

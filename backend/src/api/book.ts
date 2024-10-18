@@ -56,6 +56,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Query Parameter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -127,6 +128,7 @@ app.get(
 
 		const result = searchBooksResponse.safeParse(hitBooks);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -146,6 +148,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Query Parameter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -183,6 +186,7 @@ app.get(
 
 		const result = getBooksResponse.safeParse(books);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -202,6 +206,7 @@ app.post(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -245,6 +250,7 @@ app.post(
 
 		const result = getBookResponse.safeParse(createdBook[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -264,6 +270,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -285,6 +292,7 @@ app.get(
 
 		const result = getBookResponse.safeParse(books[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -304,6 +312,7 @@ app.put(
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -314,6 +323,7 @@ app.put(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -360,6 +370,7 @@ app.put(
 
 		const result = updateBookResponse.safeParse(updatedBook[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -378,7 +389,8 @@ app.delete(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);

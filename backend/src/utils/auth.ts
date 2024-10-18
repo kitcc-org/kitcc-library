@@ -78,7 +78,6 @@ export const login = async (ctx: Context, userId: number) => {
 
 export const logout = async (ctx: Context) => {
 	const userIdCookie = getCookie(ctx, 'user_id', 'secure');
-	console.log(userIdCookie);
 	// Cookieが存在しない場合
 	if (userIdCookie === undefined) {
 		return;
