@@ -37,6 +37,8 @@ const LoginPage = () => {
           switch(response.status){
             case 200:
               successNotifications('ログインに成功しました')
+              document.cookie = `user_id=${response.data.id}; path=/`
+              document.cookie = `session_token=${response.data.sessionToken}; path=/`
               navigate('/home/mypage')
               break
             case 400:
@@ -52,7 +54,7 @@ const LoginPage = () => {
               errorNotifications('サーバーエラーが発生しました')
               break
             default:
-              errorNotifications('エラーが発生しました'+response.data)
+              errorNotifications('エラーが発生しました')
           }
         },
         onError: (error) => {
