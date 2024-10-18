@@ -56,7 +56,7 @@ const LoginPage = () => {
           }
         },
         onError: (error) => {
-          errorNotifications('APIに問題が発生しています。サーバが起動されているか確認してください。'+error.message)
+          errorNotifications('APIに問題が発生しています。サーバが起動されているか確認してください。')
         }
       }
     )
