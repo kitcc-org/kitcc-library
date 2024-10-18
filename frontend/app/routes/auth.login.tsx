@@ -33,7 +33,6 @@ const LoginPage = () => {
         data: props
       },{
         onSuccess: (response) => {
-          console.log("response",response)
           switch(response.status){
             case 200:
               successNotifications('ログインに成功しました')
