@@ -1,3 +1,5 @@
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import type { LinksFunction } from "@remix-run/cloudflare";
 import {
   Links,
@@ -6,8 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
-import "./tailwind.css";
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,6 +25,8 @@ export const links: LinksFunction = () => [
   },
 ];
 
+const queryClient = new QueryClient();
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -30,9 +35,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <ColorSchemeScript />
       </head>
       <body>
-        {children}
+        <QueryClientProvider client={queryClient}>
+          <MantineProvider>
+            <Notifications />
+            {children}
+          </MantineProvider>
+        </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
