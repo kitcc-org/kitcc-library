@@ -1,9 +1,9 @@
-import React from 'react'
 import { useForm } from '@mantine/form'
 import { Button, Center, Paper, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
 import type { LoginBody } from 'orval/kITCCLibraryAPI.schemas';
 import { useLogin } from 'orval/kITCCLibraryAPI';
 import { useNavigate } from '@remix-run/react';
+import { errorNotifications, successNotifications } from '~/utils/notification';
 
 const LoginPage = () => {
   const loginTask = useLogin()
@@ -16,7 +16,14 @@ const LoginPage = () => {
     },
     validate: {
       email: (value) => (/^[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+$/i.test(value) ? null : '有効でないメールアドレスです'),
-      password: (value) => (value.length < 8 ? 'パスワードは8文字以上で入力してください' : null)
+      password: (value) => {
+        if(value.length < 8) 
+          return 'パスワードは8文字以上で入力してください'
+        else if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value))
+          return null
+        else  
+          return 'パスワードにはアルファベットと数字を含んでください'
+        }
     }
   })
 
@@ -25,8 +32,31 @@ const LoginPage = () => {
       {
         data: props
       },{
-        onSuccess: () => {
-          navigate('/home/mypage')
+        onSuccess: (response) => {
+          console.log("response",response)
+          switch(response.status){
+            case 200:
+              successNotifications('ログインに成功しました')
+              navigate('/home/mypage')
+              break
+            case 400:
+              errorNotifications('メールアドレスまたはパスワードが間違っています')
+              break
+            case 401:
+              errorNotifications('メールアドレスまたはパスワードが間違っています')
+              break
+            case 404:
+              errorNotifications("ユーザーが見つかりません")
+              break
+            case 500:
+              errorNotifications('サーバーエラーが発生しました')
+              break
+            default:
+              errorNotifications('エラーが発生しました'+response.data)
+          }
+        },
+        onError: (error) => {
+          errorNotifications('APIに問題が発生しています。サーバが起動されているか確認してください。'+error.message)
         }
       }
     )
