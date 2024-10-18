@@ -305,7 +305,7 @@ app.get(
 	}
 );
 
-app.put(
+app.patch(
 	'/:bookId',
 	zValidator('param', updateBookParams, (result, ctx) => {
 		if (!result.success) {

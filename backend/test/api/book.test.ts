@@ -40,7 +40,7 @@ describe('GET /books/:bookId', () => {
 	});
 });
 
-describe('PUT /books/:bookId', () => {
+describe('PATCH /books/:bookId', () => {
 	const db = drizzle(env.DB);
 	const books = bookFactory.buildList(2);
 
@@ -74,7 +74,7 @@ describe('PUT /books/:bookId', () => {
 		const response = await app.request(
 			`/books/${books[0].id}`,
 			{
-				method: 'PUT',
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
 					Cookie: [
@@ -103,7 +103,7 @@ describe('PUT /books/:bookId', () => {
 				// bookIdに数以外を指定する
 				`/books/id`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -126,7 +126,7 @@ describe('PUT /books/:bookId', () => {
 			const response = await app.request(
 				`/books/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -150,7 +150,7 @@ describe('PUT /books/:bookId', () => {
 			const response = await app.request(
 				`/books/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -174,7 +174,7 @@ describe('PUT /books/:bookId', () => {
 			const response = await app.request(
 				`/books/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -198,7 +198,7 @@ describe('PUT /books/:bookId', () => {
 			const response = await app.request(
 				`/books/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -224,7 +224,7 @@ describe('PUT /books/:bookId', () => {
 			const response = await app.request(
 				`/books/${books[1].id}`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -246,7 +246,7 @@ describe('PUT /books/:bookId', () => {
 		const response = await app.request(
 			`/books/1`,
 			{
-				method: 'PUT',
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
 					// Cookieを指定しない
@@ -266,7 +266,7 @@ describe('PUT /books/:bookId', () => {
 				// 存在しないbookIdを指定する
 				`/books/100`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [

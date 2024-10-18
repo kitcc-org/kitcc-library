@@ -158,7 +158,7 @@ book:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  put:
+  patch:
     tags:
       - book
     operationId: updateBook
