@@ -141,7 +141,7 @@ user:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  put:
+  patch:
     tags:
       - user
     operationId: updateUser

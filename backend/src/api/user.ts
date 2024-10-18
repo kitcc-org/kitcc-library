@@ -184,7 +184,7 @@ app.get(
 	}
 );
 
-app.put(
+app.patch(
 	'/:userId',
 	zValidator('param', updateUserParams, (result, ctx) => {
 		if (!result.success) {
