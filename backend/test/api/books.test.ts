@@ -53,16 +53,14 @@ describe('GET /books', () => {
 
 	it('should return 400 when page is not a number', async () => {
 		// pageに数字以外を指定する
-		const params = new URLSearchParams({ page: 'a' }).toString();
-		const response = await app.request(`/books?${params}`, {}, env);
+		const response = await app.request('/books?page=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 400 when limit is not a number', async () => {
 		// limitに数字以外を指定する
-		const params = new URLSearchParams({ limit: 'a' }).toString();
-		const response = await app.request(`/books?${params}`, {}, env);
+		const response = await app.request('/books?limit=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
