@@ -85,7 +85,7 @@ describe('GET /loans', () => {
 		'should return correct number of loans',
 		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
-				'/loans',
+				'/loans?page=1&limit=10',
 				{
 					headers: {
 						Cookie: [
