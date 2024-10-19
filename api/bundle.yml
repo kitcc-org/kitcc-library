@@ -88,6 +88,9 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+                required:
+                  - totalPage
+                  - books
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -421,9 +424,17 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
+                type: object
+                properties:
+                  totalPage:
+                    type: integer
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                required:
+                  - totalPage
+                  - users
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':

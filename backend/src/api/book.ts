@@ -166,6 +166,7 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		const db = drizzle(ctx.env.DB);
+		// 書籍を検索する
 		const hitBooks: SelectBook[] = await db
 			.select()
 			.from(bookTable)

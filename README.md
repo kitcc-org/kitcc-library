@@ -6,7 +6,7 @@
 
 OpenAPIからzodのスキーマを生成する
 ```
-npx orval
+npx orval [--config <config.js>]
 ```
 
 ## Prism

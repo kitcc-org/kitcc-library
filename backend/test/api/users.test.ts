@@ -6,6 +6,11 @@ import { drizzle } from 'drizzle-orm/d1';
 import { loggedInTest } from '../context/login';
 import { userFactory } from '../factories/user';
 
+interface GetUsersResponse {
+	totalPage: number;
+	users: SelectUser[];
+}
+
 describe('GET /users', () => {
 	const db = drizzle(env.DB);
 	const users = userFactory.buildList(5);
@@ -25,10 +30,12 @@ describe('GET /users', () => {
 		// prettier-ignore
 		const params = new URLSearchParams({ page: '1', limit: limit.toString() }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
-		const users = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(users).toHaveLength(limit);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.totalPage).toBe(2);
+		expect(body.users).toHaveLength(limit);
 	});
 
 	it('should return correct user', async () => {
@@ -36,10 +43,12 @@ describe('GET /users', () => {
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
-		const result = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(result).toContainEqual(firstUser);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.totalPage).toBe(1);
+		expect(body.users[0]).toMatchObject(firstUser);
 	});
 
 	it('should return 400 when page is not a number', async () => {

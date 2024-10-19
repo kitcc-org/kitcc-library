@@ -31,7 +31,7 @@ export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?
 
 
 export const getBooksResponse = zod.object({
-  "totalPage": zod.number().optional(),
+  "totalPage": zod.number(),
   "books": zod.array(zod.object({
   "id": zod.number(),
   "title": zod.string(),
@@ -40,7 +40,7 @@ export const getBooksResponse = zod.object({
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseBooksItemIsbnRegExp),
   "stock": zod.number()
-})).optional()
+}))
 })
 
 
@@ -178,14 +178,16 @@ export const getUsersQueryParams = zod.object({
   "email": zod.string().email().optional()
 })
 
-export const getUsersResponseItem = zod.object({
+export const getUsersResponse = zod.object({
+  "totalPage": zod.number(),
+  "users": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
   "passwordDigest": zod.string(),
   "sessionToken": zod.string().nullish()
+}))
 })
-export const getUsersResponse = zod.array(getUsersResponseItem)
 
 
 /**

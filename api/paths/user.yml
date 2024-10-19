@@ -44,9 +44,17 @@ users:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/User.yml"
+              type: object
+              properties:
+                totalPage:
+                  type: integer
+                users:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/User.yml"
+              required:
+                - totalPage
+                - users
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':

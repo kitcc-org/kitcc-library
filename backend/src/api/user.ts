@@ -39,7 +39,8 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		const db = drizzle(ctx.env.DB);
-		const users: SelectUser[] = await db
+		// ユーザを検索する
+		const hitUsers: SelectUser[] = await db
 			.select()
 			.from(userTable)
 			.where(
@@ -52,11 +53,19 @@ app.get(
 						? eq(userTable.email, query['email'])
 						: undefined
 				)
-			)
-			.limit(limit)
-			.offset((page - 1) * limit);
+			);
 
-		const result = getUsersResponse.safeParse(users);
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(hitUsers.length / limit);
+		if (totalPage < page) {
+			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		}
+
+		// 指定されたページのユーザを取得する
+		const slicedUsers = hitUsers.slice((page - 1) * limit, page * limit);
+
+		const responseBody = { totalPage: totalPage, users: slicedUsers };
+		const result = getUsersResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
