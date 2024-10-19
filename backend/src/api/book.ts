@@ -20,8 +20,8 @@ import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
 
-// Google Books APIのレスポンス
-interface GBAResult {
+// Google Books APIsのレスポンスボディ
+interface VolumeResult {
 	totalItems: number;
 	items?: [
 		{
@@ -88,21 +88,21 @@ app.get(
 			key: ctx.env.GOOGLE_BOOKS_API_KEY,
 		});
 
-		// Google Books APIにリクエストを送信する
+		// Google Books APIsにリクエストを送信する
 		// prettier-ignore
 		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
-		const body: GBAResult = await response.json();
+		const volumeResult: VolumeResult = await response.json();
 
 		// 総ページ数を計算する
-		const totalPage = Math.ceil(body.totalItems / limit);
+		const totalPage = Math.ceil(volumeResult.totalItems / limit);
 
 		// ヒットした書籍を格納する配列
 		const hitBooks: GoogleBook[] = [];
 
 		// 書籍がヒットしたか確認する
-		if (body.hasOwnProperty('items')) {
+		if (volumeResult.hasOwnProperty('items')) {
 			// ヒットした書籍を配列に格納する
-			for (const item of body.items ?? []) {
+			for (const item of volumeResult.items ?? []) {
 				const book = item.volumeInfo;
 
 				// ISBNを取得する
@@ -130,8 +130,8 @@ app.get(
 			}
 		}
 
-		// prettier-ignore
-		const result = searchBooksResponse.safeParse({ totalPage: totalPage, books: hitBooks });
+		const responseBody = { totalPage: totalPage, books: hitBooks };
+		const result = searchBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
@@ -197,8 +197,8 @@ app.get(
 		// 指定されたページの書籍を取得する
 		const slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
 
-		// prettier-ignore
-		const result = getBooksResponse.safeParse({ totalPage: totalPage, books: slicedBooks });
+		const responseBody = { totalPage: totalPage, books: slicedBooks };
+		const result = getBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
