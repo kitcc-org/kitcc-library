@@ -1,6 +1,6 @@
 import { bookTable, SelectBook } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, like } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -161,7 +161,7 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		const db = drizzle(ctx.env.DB);
-		const books: SelectBook[] = await db
+		const hitBooks: SelectBook[] = await db
 			.select()
 			.from(bookTable)
 			.where(
@@ -181,10 +181,16 @@ app.get(
 						: undefined
 				)
 			)
-			.limit(limit)
-			.offset((page - 1) * limit);
+			.orderBy(asc(bookTable.id));
 
-		const result = getBooksResponse.safeParse(books);
+		const totalPage = Math.ceil(hitBooks.length / limit);
+		if (totalPage < page) {
+			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		}
+
+		const slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
+
+		const result = getBooksResponse.safeParse(slicedBooks);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
@@ -194,7 +200,10 @@ app.get(
 				500
 			);
 		} else {
-			return ctx.json(result.data);
+			return ctx.json({
+				totalPage: totalPage,
+				books: result.data,
+			});
 		}
 	}
 );
