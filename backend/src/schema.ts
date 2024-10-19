@@ -283,14 +283,16 @@ export const getLoansQueryParams = zod.object({
   "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional()
 })
 
-export const getLoansResponseItem = zod.object({
+export const getLoansResponse = zod.object({
+  "totalPage": zod.number(),
+  "loans": zod.array(zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),
   "volume": zod.number(),
   "createdAt": zod.number().optional(),
   "updatedAt": zod.number().optional()
+}))
 })
-export const getLoansResponse = zod.array(getLoansResponseItem)
 
 
 /**

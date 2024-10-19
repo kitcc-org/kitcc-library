@@ -13,6 +13,11 @@ import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
 import { userFactory } from '../factories/user';
 
+interface GetLoansResponse {
+	totalPage: number;
+	loans: SelectLoan[];
+}
+
 describe('GET /loans', () => {
 	const db = drizzle(env.DB);
 
@@ -48,10 +53,39 @@ describe('GET /loans', () => {
 	});
 
 	loggedInTest(
+		'should return correct number of loans',
+		async ({ currentUser, sessionToken }) => {
+			const limit = 3;
+
+			const response = await app.request(
+				`/loans?page=1&limit=${limit}`,
+				{
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env
+			);
+
+			expect(response.status).toBe(200);
+
+			const body: GetLoansResponse = await response.json();
+			const totalLoan = (users.length - 1) * books.length;
+			const totalPage = Math.ceil(totalLoan / limit);
+
+			expect(body.totalPage).toBe(totalPage);
+			expect(body.loans).toHaveLength(limit);
+		}
+	);
+
+	loggedInTest(
 		'should return correct loan',
 		async ({ currentUser, sessionToken }) => {
 			const userId = 1;
-			const bookId = 1;
+			const bookId = 2;
 
 			const params = new URLSearchParams({
 				userId: userId.toString(),
@@ -72,36 +106,13 @@ describe('GET /loans', () => {
 
 			expect(response.status).toBe(200);
 
-			const loans: SelectLoan[] = await response.json();
-			for (const loan of loans) {
-				expect(loan.userId).toBe(userId);
-				expect(loan.bookId).toBe(bookId);
-				expect(loan.volume).toBe(1);
-			}
-		}
-	);
+			const body: GetLoansResponse = await response.json();
+			expect(body.totalPage).toBe(1);
 
-	loggedInTest(
-		'should return correct number of loans',
-		async ({ currentUser, sessionToken }) => {
-			const response = await app.request(
-				'/loans?page=1&limit=10',
-				{
-					headers: {
-						Cookie: [
-							`__Secure-user_id=${currentUser.id}`,
-							`__Secure-session_token=${sessionToken}`,
-						].join('; '),
-					},
-				},
-				env
-			);
-
-			expect(response.status).toBe(200);
-
-			const loans: SelectLoan[] = await response.json();
-			const totalLoans = users.length * (books.length - 1);
-			expect(loans).toHaveLength(totalLoans);
+			const loan = body.loans[0];
+			expect(loan.userId).toBe(userId);
+			expect(loan.bookId).toBe(bookId);
+			expect(loan.volume).toBe(1);
 		}
 	);
 

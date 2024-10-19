@@ -1,6 +1,6 @@
 import { SelectUser, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, like } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -53,7 +53,8 @@ app.get(
 						? eq(userTable.email, query['email'])
 						: undefined
 				)
-			);
+			)
+			.orderBy(asc(userTable.id));
 
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitUsers.length / limit);
