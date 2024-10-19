@@ -65,6 +65,9 @@ books:
                   type: array
                   items:
                     $ref: "../components/schemas/Book.yml"
+              required:
+                - totalPage
+                - books
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':

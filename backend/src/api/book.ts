@@ -188,14 +188,17 @@ app.get(
 			)
 			.orderBy(asc(bookTable.id));
 
+		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitBooks.length / limit);
 		if (totalPage < page) {
 			return ctx.json({ message: `Page ${page} is out of range` }, 400);
 		}
 
+		// 指定されたページの書籍を取得する
 		const slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
 
-		const result = getBooksResponse.safeParse(slicedBooks);
+		// prettier-ignore
+		const result = getBooksResponse.safeParse({ totalPage: totalPage, books: slicedBooks });
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
@@ -205,10 +208,7 @@ app.get(
 				500
 			);
 		} else {
-			return ctx.json({
-				totalPage: totalPage,
-				books: result.data,
-			});
+			return ctx.json(result.data);
 		}
 	}
 );
