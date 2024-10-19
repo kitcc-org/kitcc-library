@@ -48,7 +48,7 @@ describe('GET /users', () => {
 
 		const body: GetUsersResponse = await response.json();
 		expect(body.totalPage).toBe(1);
-		expect(body.users[0]).toMatchObject(firstUser);
+		expect(body.users).toContainEqual(firstUser);
 	});
 
 	it('should return 400 when page is not a number', async () => {

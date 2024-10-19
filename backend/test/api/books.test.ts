@@ -48,7 +48,7 @@ describe('GET /books', () => {
 
 		const body: GetBooksResponse = await response.json();
 		expect(body.totalPage).toBe(1);
-		expect(body.books[0]).toMatchObject(firstBook);
+		expect(body.books).toContainEqual(firstBook);
 	});
 
 	it('should return 400 when page is not a number', async () => {
