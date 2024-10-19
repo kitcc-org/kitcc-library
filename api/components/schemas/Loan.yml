@@ -1,7 +1,5 @@
 type: object
 properties:
-  id:
-    type: integer
   userId:
     type: integer
   bookId:
@@ -9,13 +7,12 @@ properties:
   volume:
     type: integer
   createdAt:
-    type: string
-    format: date-time
+    type: integer
+    description: レコードが作成されたUNIX時間
   updatedAt:
-    type: string
-    format: date-time
+    type: integer
+    description: レコードが最後に更新されたUNIX時間
 required:
-  - id
   - userId
   - bookId
   - volume

@@ -21,7 +21,7 @@ import { isLoggedIn } from '../utils/auth';
 const app = new Hono<{ Bindings: Env }>();
 
 // Google Books APIのレスポンス
-type GBAResult = {
+interface GBAResult {
 	items?: [
 		{
 			volumeInfo: {
@@ -38,16 +38,16 @@ type GBAResult = {
 			};
 		}
 	];
-};
+}
 
 // GET /search のレスポンス
-type GoogleBook = {
+interface GoogleBook {
 	title: string;
 	authors: string[];
 	publisher: string;
 	thumbnail: string;
 	isbn: string;
-};
+}
 
 app.get(
 	'/search',
@@ -56,6 +56,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Query Parameter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -127,6 +128,7 @@ app.get(
 
 		const result = searchBooksResponse.safeParse(hitBooks);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -146,6 +148,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Query Parameter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -183,6 +186,7 @@ app.get(
 
 		const result = getBooksResponse.safeParse(books);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -202,6 +206,7 @@ app.post(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -230,23 +235,31 @@ app.post(
 			.from(bookTable)
 			.where(eq(bookTable.isbn, newBook.isbn));
 
+		let createdBook = undefined;
 		if (0 < sameBook.length) {
 			// すでに同じISBNの本が登録されている場合は在庫を増やす
-			await db
+			createdBook = await db
 				.update(bookTable)
 				.set({ stock: sameBook[0].stock + 1 })
-				.where(eq(bookTable.id, sameBook[0].id));
+				.where(eq(bookTable.id, sameBook[0].id))
+				.returning();
 		} else {
 			//　同じISBNの本が存在しない場合は新規登録する
-			await db.insert(bookTable).values(newBook);
+			createdBook = await db.insert(bookTable).values(newBook).returning();
 		}
 
-		return ctx.json(
-			{
-				message: 'Created',
-			},
-			201
-		);
+		const result = getBookResponse.safeParse(createdBook[0]);
+		if (!result.success) {
+			console.error(result.error);
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data, 201);
+		}
 	}
 );
 
@@ -257,6 +270,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -278,6 +292,7 @@ app.get(
 
 		const result = getBookResponse.safeParse(books[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -290,13 +305,14 @@ app.get(
 	}
 );
 
-app.put(
+app.patch(
 	'/:bookId',
 	zValidator('param', updateBookParams, (result, ctx) => {
 		if (!result.success) {
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -307,6 +323,7 @@ app.put(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -353,6 +370,7 @@ app.put(
 
 		const result = updateBookResponse.safeParse(updatedBook[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -371,7 +389,8 @@ app.delete(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);

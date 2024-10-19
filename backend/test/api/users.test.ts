@@ -1,4 +1,4 @@
-import { userTable } from '@/drizzle/schema';
+import { SelectUser, userTable } from '@/drizzle/schema';
 import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { count } from 'drizzle-orm';
@@ -31,7 +31,7 @@ describe('GET /users', () => {
 		expect(users).toHaveLength(limit);
 	});
 
-	it('should return specified user', async () => {
+	it('should return correct user', async () => {
 		const firstUser = { ...users[0], id: 1, sessionToken: null };
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
@@ -90,7 +90,13 @@ describe('POST /users', () => {
 				env
 			);
 
+			// ステータスコード
 			expect(response.status).toBe(201);
+
+			// レスポンスボディ
+			const createdUser: SelectUser = await response.json();
+			const { passwordDigest, ...rest } = newUser;
+			expect(createdUser).toMatchObject(rest);
 
 			// データベースにユーザが登録されていることを確認する
 			const totalUser = await db.select({ count: count() }).from(userTable);

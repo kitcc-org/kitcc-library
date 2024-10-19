@@ -56,11 +56,11 @@ loans:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  post:
+  patch:
     tags:
       - loan
-    operationId: createLoans
-    summary: 貸出履歴を追加する
+    operationId: upsertLoans
+    summary: 貸出履歴を更新する
     security:
       - CookieAuth: []
     requestBody:
@@ -78,7 +78,6 @@ loans:
                   type: integer
                 volume:
                   type: integer
-                  minimum: 1
               required:
                 - userId
                 - bookId
@@ -89,29 +88,35 @@ loans:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Loan.yml"
+              type: array
+              items:
+                $ref: "../components/schemas/Loan.yml"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
         $ref: "../components/responses/4xx.yml#/Unauthorized"
-      '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
-
-  put:
-    tags:
-      - loan
-    operationId: updateLoans
-    summary: 貸出履歴を更新する
-    description: リクエストボディに含まれている情報のみ更新する
-    security:
-      - CookieAuth: []
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
+      '404':
+        description: ユーザーまたは書籍が存在しない
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                bookId:
+                  type: integer
+              required:
+                - userId
+                - bookId
+      '409':
+        description: >
+          貸出数が在庫数を超えている．
+          返却数が貸出数を超えている．
+        content:
+          application/json:
+            schema:
+              description: 貸出数が在庫数を超えているリクエスト
               type: object
               properties:
                 userId:
@@ -123,16 +128,6 @@ loans:
               required:
                 - userId
                 - bookId
-    responses:
-      '200':
-        description: OK
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/Loan.yml"
-      '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
-      '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+                - volume
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"

@@ -47,6 +47,8 @@ auth:
                 $ref: "../components/examples/user.yml"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
+      '401':
+        $ref: "../components/responses/4xx.yml#/Unauthorized"
       '404':
         $ref: "../components/responses/4xx.yml#/NotFound"
       '500':

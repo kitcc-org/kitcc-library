@@ -26,6 +26,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Query Parameter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -57,6 +58,7 @@ app.get(
 
 		const result = getUsersResponse.safeParse(users);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -76,6 +78,7 @@ app.post(
 			return ctx.json(
 				{
 					message: 'Request Body Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -101,6 +104,7 @@ app.post(
 			.from(userTable)
 			.where(eq(userTable.email, newUser.email));
 
+		let createdUser = undefined;
 		if (0 < sameUser.length) {
 			// すでに同じメールアドレスのユーザが登録されている
 			return ctx.json(
@@ -113,21 +117,28 @@ app.post(
 			// 同じメールアドレスのユーザがいない場合は新規登録する
 			const hash = await generateHash(newUser.password);
 			// prettier-ignore
-			await db
+			createdUser = await db
         .insert(userTable)
         .values({
           name: newUser.name,
           email: newUser.email,
           passwordDigest: hash,
-        });
+        })
+				.returning();
 		}
 
-		return ctx.json(
-			{
-				message: 'Created',
-			},
-			201
-		);
+		const result = getUserResponse.safeParse(createdUser[0]);
+		if (!result.success) {
+			console.error(result.error);
+			return ctx.json(
+				{
+					message: 'Response Validation Error',
+				},
+				500
+			);
+		} else {
+			return ctx.json(result.data, 201);
+		}
 	}
 );
 
@@ -138,6 +149,7 @@ app.get(
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -159,6 +171,7 @@ app.get(
 
 		const result = getUserResponse.safeParse(users[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -171,13 +184,14 @@ app.get(
 	}
 );
 
-app.put(
+app.patch(
 	'/:userId',
 	zValidator('param', updateUserParams, (result, ctx) => {
 		if (!result.success) {
 			return ctx.json(
 				{
 					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);
@@ -234,6 +248,7 @@ app.put(
 
 		const result = updateUserResponse.safeParse(updatedBook[0]);
 		if (!result.success) {
+			console.error(result.error);
 			return ctx.json(
 				{
 					message: 'Response Validation Error',
@@ -252,7 +267,8 @@ app.delete(
 		if (!result.success) {
 			return ctx.json(
 				{
-					message: 'Bad Request',
+					message: 'Path Paramter Validation Error',
+					error: result.error,
 				},
 				400
 			);

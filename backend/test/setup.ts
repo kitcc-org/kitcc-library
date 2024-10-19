@@ -47,3 +47,20 @@ await db
     `
 	)
 	.run();
+
+await db
+	.prepare(
+		`
+    CREATE TABLE loans (
+      user_id INTEGER NOT NULL,
+      book_id INTEGER NOT NULL,
+      volume INTEGER DEFAULT 1 NOT NULL,
+      created_at INTEGER DEFAULT (unixepoch()) NOT NULL,
+      updated_at INTEGER DEFAULT (unixepoch()) NOT NULL,
+      PRIMARY KEY(user_id, book_id),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE NO ACTION ON DELETE CASCADE,
+      FOREIGN KEY (book_id) REFERENCES books(id) ON UPDATE NO ACTION ON DELETE CASCADE
+    );
+    `
+	)
+	.run();

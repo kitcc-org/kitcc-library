@@ -42,7 +42,7 @@ describe('GET /users/:userId', () => {
 	});
 });
 
-describe('PUT /users/:userId', () => {
+describe('PATCH /users/:userId', () => {
 	const db = drizzle(env.DB);
 	const users = userFactory.buildList(2);
 
@@ -69,7 +69,7 @@ describe('PUT /users/:userId', () => {
 		const response = await app.request(
 			`/users/${users[0].id}`,
 			{
-				method: 'PUT',
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
 					Cookie: [
@@ -100,7 +100,7 @@ describe('PUT /users/:userId', () => {
 				// userIdに数字以外を指定する
 				`/users/id`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -123,7 +123,7 @@ describe('PUT /users/:userId', () => {
 			const response = await app.request(
 				`/users/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -147,7 +147,7 @@ describe('PUT /users/:userId', () => {
 			const response = await app.request(
 				`/users/1`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -178,7 +178,7 @@ describe('PUT /users/:userId', () => {
 				const response = await app.request(
 					`/users/1`,
 					{
-						method: 'PUT',
+						method: 'PATCH',
 						headers: {
 							'Content-Type': 'application/json',
 							Cookie: [
@@ -205,7 +205,7 @@ describe('PUT /users/:userId', () => {
 			const response = await app.request(
 				`/users/${users[1].id}`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [
@@ -228,7 +228,7 @@ describe('PUT /users/:userId', () => {
 		const response = await app.request(
 			`/users/1`,
 			{
-				method: 'PUT',
+				method: 'PATCH',
 				body: JSON.stringify({ name: '比企谷八幡' }),
 			}
 		);
@@ -243,7 +243,7 @@ describe('PUT /users/:userId', () => {
 				// 存在しないuserIdを指定する
 				`/users/100`,
 				{
-					method: 'PUT',
+					method: 'PATCH',
 					headers: {
 						'Content-Type': 'application/json',
 						Cookie: [

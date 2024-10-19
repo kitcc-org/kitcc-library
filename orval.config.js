@@ -1,5 +1,5 @@
 module.exports = {
-  library: {
+  zod: {
     input: {
       target: './api/bundle.yml',
     },

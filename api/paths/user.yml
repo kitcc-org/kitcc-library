@@ -90,12 +90,10 @@ users:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: "Created"
+              $ref: "../components/schemas/User.yml"
+            examples:
+              user:
+                $ref: "../components/examples/user.yml"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
@@ -143,7 +141,7 @@ user:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  put:
+  patch:
     tags:
       - user
     operationId: updateUser

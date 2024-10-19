@@ -115,9 +115,10 @@ books:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Error.yml"
-            example:
-              message: "Created"
+              $ref: "../components/schemas/Book.yml"
+            examples:
+              book:
+                $ref: "../components/examples/book.yml"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':
@@ -157,7 +158,7 @@ book:
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"
 
-  put:
+  patch:
     tags:
       - book
     operationId: updateBook

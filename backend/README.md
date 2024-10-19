@@ -50,6 +50,14 @@ pnpm run test
 pnpm run deploy
 ```
 
+## wrangler
+
+### d1
+
+```
+npx wrangler d1 execute <database_name> (--command=<query> | --file=*.sql)
+```
+
 ## drizzle-orm
 
 マイグレーションのロールバック
