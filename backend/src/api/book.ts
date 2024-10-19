@@ -21,7 +21,7 @@ import { isLoggedIn } from '../utils/auth';
 const app = new Hono<{ Bindings: Env }>();
 
 // Google Books APIのレスポンス
-type GBAResult = {
+interface GBAResult {
 	items?: [
 		{
 			volumeInfo: {
@@ -38,16 +38,16 @@ type GBAResult = {
 			};
 		}
 	];
-};
+}
 
 // GET /search のレスポンス
-type GoogleBook = {
+interface GoogleBook {
 	title: string;
 	authors: string[];
 	publisher: string;
 	thumbnail: string;
 	isbn: string;
-};
+}
 
 app.get(
 	'/search',
