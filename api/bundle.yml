@@ -1,0 +1,944 @@
+openapi: 3.0.3
+info:
+  title: KITCC Library API
+  contact:
+    name: KITCC
+    url: https://www.kitcc.org/
+    email: question@kitcc.org
+  license:
+    name: MIT
+    url: https://en.wikipedia.org/wiki/MIT_License
+  version: 1.0.0
+servers:
+  - url: https://kitcc-library.kitcc.workers.dev
+tags:
+  - name: book
+    description: 書籍に関するAPI
+  - name: user
+    description: ユーザーに関するAPI
+  - name: loan
+    description: 貸出履歴に関するAPI
+  - name: auth
+    description: 認証に関するAPI
+paths:
+  /books:
+    get:
+      tags:
+        - book
+      operationId: getBooks
+      summary: 書籍の情報を取得する
+      description: ページ番号が指定されなかった場合は1ページ目を返す
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 1ページあたりの表示数
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 10
+        - name: title
+          in: query
+          description: タイトル
+          required: false
+          schema:
+            type: string
+        - name: author
+          in: query
+          description: 著者
+          required: false
+          schema:
+            type: string
+        - name: publisher
+          in: query
+          description: 出版社
+          required: false
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          description: ISBN
+          required: false
+          schema:
+            type: string
+            pattern: ^\d{10}(\d{3})?$
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - book
+      operationId: createBook
+      summary: 書籍を追加する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                authors:
+                  type: array
+                  items:
+                    type: string
+                publisher:
+                  type: string
+                thumbnail:
+                  type: string
+                isbn:
+                  type: string
+                  pattern: ^\d{10}(\d{3})?$
+                stock:
+                  type: integer
+              required:
+                - title
+                - authors
+                - publisher
+                - isbn
+                - stock
+              example:
+                title: 計算機プログラムの構造と解釈
+                author:
+                  - Harold Abelson
+                  - Gerald Jay Sussman
+                  - Julie Sussman
+                publisher: 翔泳社
+                thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
+                isbn: '9784798135984'
+                stock: 1
+      responses:
+        '201':
+          description: 書籍の追加に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Created
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /books/{bookId}:
+    get:
+      tags:
+        - book
+      operationId: getBook
+      summary: 特定の書籍の情報を取得する
+      security: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 取得する書籍のID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+              examples:
+                book:
+                  $ref: '#/components/examples/book'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - book
+      operationId: updateBook
+      summary: 特定の書籍の情報を更新する
+      description: |
+        リクエストボディで指定された情報のみ更新する． 書籍が登録済みの場合は蔵書数を+1する．
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 更新する書籍のID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                authors:
+                  type: array
+                  items:
+                    type: string
+                publisher:
+                  type: string
+                isbn:
+                  type: string
+                  pattern: ^\d{10}(\d{3})?$
+                stock:
+                  type: integer
+            example:
+              title: 計算機プログラムの構造と解釈
+              authors:
+                - Harold Abelson
+                - Gerald Jay Sussman
+                - Julie Sussman
+              publisher: 翔泳社
+              isbn: '9784798135984'
+              stock: 1
+      responses:
+        '200':
+          description: 情報の更新に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+              examples:
+                book:
+                  $ref: '#/components/examples/book'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - book
+      operationId: deleteBook
+      summary: 特定の書籍を削除する
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: bookId
+          in: path
+          description: 削除する書籍のID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      responses:
+        '204':
+          description: 書籍の削除に成功した
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /books/search:
+    get:
+      tags:
+        - book
+      operationId: searchBooks
+      summary: 書籍を検索する
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 1ページあたりの表示数
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            maximum: 40
+            default: 10
+        - name: intitle
+          in: query
+          description: タイトル
+          required: false
+          schema:
+            type: string
+        - name: inauthor
+          in: query
+          description: 著者
+          required: false
+          schema:
+            type: string
+        - name: inpublisher
+          in: query
+          description: 出版社
+          required: false
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          description: ISBN
+          required: false
+          schema:
+            type: string
+            pattern: ^\d{10}(\d{3})?$
+      responses:
+        '200':
+          description: 検索に成功した
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    authors:
+                      type: array
+                      items:
+                        type: string
+                    publisher:
+                      type: string
+                    thumbnail:
+                      type: string
+                    isbn:
+                      type: string
+                  required:
+                    - title
+                    - authors
+              example:
+                - title: 計算機プログラムの構造と解釈
+                  authors:
+                    - Harold Abelson
+                    - Gerald Jay Sussman
+                    - Julie Sussman
+                  publisher: 翔泳社
+                  thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
+                  isbn: '9784798135984'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users:
+    get:
+      tags:
+        - user
+      operationId: getUsers
+      summary: ユーザーの情報を取得する
+      description: ページ番号が指定されなかった場合は1ページ目を返す
+      security: []
+      parameters:
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 1ページあたりの表示数
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 10
+        - name: name
+          in: query
+          description: ユーザー名
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: メールアドレス
+          required: false
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - user
+      operationId: createUser
+      summary: ユーザーを追加する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                  minLength: 8
+              required:
+                - name
+                - email
+                - password
+            example:
+              name: 比企谷八幡
+              email: hikigaya@oregairu.com
+              password: passw0rd
+      responses:
+        '201':
+          description: ユーザーの追加に成功した
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: Created
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: すでに同じメールアドレスで登録されたユーザーが存在する
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: Conflict
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      operationId: getUser
+      summary: 特定のユーザーの情報を取得する
+      security: []
+      parameters:
+        - name: userId
+          in: path
+          description: 取得するユーザーのID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  $ref: '#/components/examples/user'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - user
+      operationId: updateUser
+      summary: 特定のユーザーの情報を更新する
+      description: リクエストボディに含まれている情報のみ更新する
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: userId
+          in: path
+          description: 更新するユーザーのID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                  minLength: 8
+            example:
+              name: 比企谷八幡
+              email: hikigaya@oregairu.com
+              password: passw0rd
+      responses:
+        '200':
+          description: 情報の更新に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  $ref: '#/components/examples/user'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - user
+      operationId: deleteUser
+      summary: 特定のユーザーを削除する
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: userId
+          in: path
+          description: 削除するユーザーのID
+          required: true
+          schema:
+            type: string
+            pattern: ^\d+$
+      responses:
+        '204':
+          description: ユーザーの削除に成功した
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /loans:
+    get:
+      tags:
+        - loan
+      operationId: getLoans
+      summary: 貸出履歴を取得する
+      description: 指定された条件に合致する貸出履歴を返す
+      security:
+        - CookieAuth: []
+      parameters:
+        - name: userId
+          in: query
+          description: 貸出履歴を取得するユーザーのID
+          required: false
+          schema:
+            type: string
+            pattern: ^\d+$
+        - name: bookId
+          in: query
+          description: 貸出履歴を取得する書籍のID
+          required: false
+          schema:
+            type: string
+            pattern: ^\d+$
+        - name: page
+          in: query
+          description: ページ番号
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: 1ページあたりの表示数
+          required: false
+          schema:
+            type: string
+            pattern: ^[1-9]\d*$
+            minimum: 1
+            default: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - loan
+      operationId: createLoans
+      summary: 貸出履歴を追加する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  bookId:
+                    type: integer
+                  volume:
+                    type: integer
+                    minimum: 1
+                required:
+                  - userId
+                  - bookId
+                  - volume
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - loan
+      operationId: updateLoans
+      summary: 貸出履歴を更新する
+      description: リクエストボディに含まれている情報のみ更新する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  bookId:
+                    type: integer
+                  volume:
+                    type: integer
+                required:
+                  - userId
+                  - bookId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth:
+    post:
+      tags:
+        - auth
+      operationId: login
+      summary: ログインする
+      description: セッションIDをCookieに保存する
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                  minLength: 8
+              required:
+                - email
+                - password
+            example:
+              email: username@example.com
+              password: passw0rd
+      responses:
+        '200':
+          description: |
+            ログインに成功した． `session_token`という名前のCookieにセッションIDが保存される． 以降のリクエストにはこのCookieを含める必要がある．
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session_token=abcde12345; Path=/; HttpOnly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  $ref: '#/components/examples/user'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - auth
+      operationId: logout
+      summary: ログアウトする
+      description: CookieからセッションIDを削除する
+      security: []
+      responses:
+        '200':
+          description: ログアウトに成功した
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: session_token=; Path=/; Max-Age=0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: OK
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: __Secure-session_token
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        publisher:
+          type: string
+        thumbnail:
+          type: string
+          format: uri
+        isbn:
+          type: string
+          pattern: ^\d{10}(\d{3})?$
+        stock:
+          type: integer
+      required:
+        - id
+        - title
+        - authors
+        - publisher
+        - isbn
+        - stock
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        passwordDigest:
+          type: string
+        sessionToken:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - email
+        - passwordDigest
+    Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        bookId:
+          type: integer
+        volume:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - bookId
+        - volume
+  responses:
+    BadRequest:
+      description: リクエストの構文が誤っている
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Bad Request
+    InternalServerError:
+      description: サーバ内部でエラーが発生した
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Internal Server Error
+    Unauthorized:
+      description: 適切な認証情報を持たずにリソースにアクセスしようとした
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Unauthorized
+    NotFound:
+      description: 指定されたリソースが存在しない
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: Not Found
+  examples:
+    book:
+      value:
+        id: 1
+        title: 計算機プログラムの構造と解釈
+        authors:
+          - Harold Abelson
+          - Gerald Jay Sussman
+          - Julie Sussman
+        publisher: 翔泳社
+        thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
+        isbn: '9784798135984'
+        stock: 1
+    user:
+      value:
+        id: 1
+        name: 比企谷八幡
+        email: hikigaya@oregairu.com
+        passwordDigest: d41d8cd98f00b204e9800998ecf8427e
