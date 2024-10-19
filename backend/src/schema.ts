@@ -27,19 +27,21 @@ export const getBooksQueryParams = zod.object({
   "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional()
 })
 
-export const getBooksResponseIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
+export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
-export const getBooksResponseItem = zod.object({
+export const getBooksResponse = zod.object({
+  "totalPage": zod.number().optional(),
+  "books": zod.array(zod.object({
   "id": zod.number(),
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
   "thumbnail": zod.string().url().optional(),
-  "isbn": zod.string().regex(getBooksResponseIsbnRegExp),
+  "isbn": zod.string().regex(getBooksResponseBooksItemIsbnRegExp),
   "stock": zod.number()
+})).optional()
 })
-export const getBooksResponse = zod.array(getBooksResponseItem)
 
 
 /**
@@ -149,14 +151,16 @@ export const searchBooksQueryParams = zod.object({
   "isbn": zod.string().regex(searchBooksQueryIsbnRegExp).optional()
 })
 
-export const searchBooksResponseItem = zod.object({
+export const searchBooksResponse = zod.object({
+  "totalPage": zod.number(),
+  "books": zod.array(zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string().optional(),
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().optional()
+}))
 })
-export const searchBooksResponse = zod.array(searchBooksResponseItem)
 
 
 /**

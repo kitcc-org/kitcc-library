@@ -22,6 +22,7 @@ const app = new Hono<{ Bindings: Env }>();
 
 // Google Books APIのレスポンス
 interface GBAResult {
+	totalItems: number;
 	items?: [
 		{
 			volumeInfo: {
@@ -92,6 +93,9 @@ app.get(
 		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
 		const body: GBAResult = await response.json();
 
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(body.totalItems / limit);
+
 		// ヒットした書籍を格納する配列
 		const hitBooks: GoogleBook[] = [];
 
@@ -126,7 +130,8 @@ app.get(
 			}
 		}
 
-		const result = searchBooksResponse.safeParse(hitBooks);
+		// prettier-ignore
+		const result = searchBooksResponse.safeParse({ totalPage: totalPage, books: hitBooks });
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
