@@ -6,6 +6,7 @@ import LoginSubmitButton from './LoginSubmitButton'
 import type { UseFormReturnType } from '@mantine/form'
 import type { LoginBody } from 'orval/kITCCLibraryAPI.schemas'
 import LoginFormTItle from './LoginFormTItle'
+import LoginFormHelpText from './LoginFormHelpText'
 
 interface LoginFormComponentProps {
   isPending: boolean;
@@ -27,12 +28,7 @@ const LoginFormComponent = ({
         <LoginEmailForm form={form}/>
         <LoginPasswordForm form={form}/>
         <LoginSubmitButton isPending={isPending}/>
-        <Text
-            c='dimmed'
-            size='sm'
-        >
-          アカウントが無い場合、またはパスワードを忘れた場合は、<br/>管理者にお問い合わせください。
-        </Text>
+        <LoginFormHelpText />
     </FormLayout>
   )
 }
