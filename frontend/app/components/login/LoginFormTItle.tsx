@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core'
 
-const LoginFormTItle = () => {
+const LoginFormTitle = () => {
   return (
     <Text
       ta='center'
@@ -12,4 +12,4 @@ const LoginFormTItle = () => {
   )
 }
 
-export default LoginFormTItle
+export default LoginFormTitle
