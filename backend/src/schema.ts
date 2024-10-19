@@ -288,42 +288,23 @@ export const getLoansResponse = zod.array(getLoansResponseItem)
 
 
 /**
- * @summary 貸出履歴を追加する
- */
-export const createLoansBodyItem = zod.object({
-  "userId": zod.number(),
-  "bookId": zod.number(),
-  "volume": zod.number().min(1)
-})
-export const createLoansBody = zod.array(createLoansBodyItem)
-
-export const createLoansResponse = zod.object({
-  "userId": zod.number(),
-  "bookId": zod.number(),
-  "volume": zod.number(),
-  "createdAt": zod.number().optional(),
-  "updatedAt": zod.number().optional()
-})
-
-
-/**
- * リクエストボディに含まれている情報のみ更新する
  * @summary 貸出履歴を更新する
  */
-export const updateLoansBodyItem = zod.object({
+export const upsertLoansBodyItem = zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),
-  "volume": zod.number().optional()
+  "volume": zod.number()
 })
-export const updateLoansBody = zod.array(updateLoansBodyItem)
+export const upsertLoansBody = zod.array(upsertLoansBodyItem)
 
-export const updateLoansResponse = zod.object({
+export const upsertLoansResponseItem = zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),
   "volume": zod.number(),
   "createdAt": zod.number().optional(),
   "updatedAt": zod.number().optional()
 })
+export const upsertLoansResponse = zod.array(upsertLoansResponseItem)
 
 
 /**
