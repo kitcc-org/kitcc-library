@@ -17,8 +17,7 @@ app.use(
 		origin: (origin: string) => {
 			return origin.includes('localhost')
 				? origin
-				: // TODO: フロントエンドのデプロイ先のURLを指定
-				  'https://frontend.pages.dev';
+				: 'https://kitcc-library-web.pages.dev/';
 		},
 		// リクエストに含めることができるヘッダ
 		allowHeaders: ['Cookie', 'Content-Type'],
