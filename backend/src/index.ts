@@ -24,7 +24,7 @@ app.use(
 		allowHeaders: ['Cookie', 'Content-Type'],
 		// 許可するメソッド
 		// OPTIONSはプリフライトリクエストで使われる
-		allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+		allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 		// アクセスできるレスポンスのヘッダ
 		exposeHeaders: ['Content-Type', 'Content-Length', 'Set-Cookie'],
 		// 資格情報をフロントエンドのJSに公開するか
