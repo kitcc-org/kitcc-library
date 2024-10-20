@@ -1,7 +1,7 @@
 import { createJSONStorage, atomWithStorage } from "jotai/utils";
 import type { User } from "orval/client.schemas";
 
-const storage = createJSONStorage(() => sessionStorage)
+const storage = createJSONStorage<User>(() => sessionStorage)
 export const noUser: User = {
   id: -1,
   email: '',
@@ -9,4 +9,4 @@ export const noUser: User = {
   sessionToken: ''
 }
 
-export const userAtom = atomWithStorage('user', noUser, storage);
+export const userAtom = atomWithStorage<User>('user', noUser, storage);

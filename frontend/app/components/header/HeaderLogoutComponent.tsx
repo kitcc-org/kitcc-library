@@ -1,6 +1,13 @@
+import { Group } from "@mantine/core"
+import HeaderBookMenu from "./HeaderBookMenu"
+import HeaderLoginButton from "./HeaderLoginButton"
+
 const HeaderLogoutComponent = () => {
   return (
-    <div>HeaderLogoutComponent</div>
+    <Group>
+      <HeaderBookMenu />
+      <HeaderLoginButton />
+    </Group>
   )
 }
 

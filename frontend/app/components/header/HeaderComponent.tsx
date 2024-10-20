@@ -34,6 +34,8 @@ const HeaderComponent = () => {
       <Group
         h='100%'
         justify='space-between'
+        ml={30}
+        mr={30}
       >
         <HeaderTitleLogo />
         <HeaderMainComponent />
