@@ -19,7 +19,7 @@ app.post(
 					message: 'Request Body Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -51,7 +51,7 @@ app.post(
 					{
 						message: 'Unauthorized',
 					},
-					401
+					401,
 				);
 			}
 		} else {
@@ -64,7 +64,7 @@ app.post(
 					{
 						message: 'Unauthorized',
 					},
-					401
+					401,
 				);
 			}
 		}
@@ -76,17 +76,17 @@ app.post(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.delete('/', async (ctx) => {
 	await logout(ctx);
-	return ctx.json({ message: 'Goodbye' }, 200);
+	return ctx.body(null, 204);
 });
 
 export default app;
