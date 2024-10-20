@@ -1,5 +1,5 @@
 import { AspectRatio, Image, rem } from '@mantine/core'
-import Logo from 'public/kitcc.png'
+import Logo from '~/img/kitcc.png'
 
 const HeaderTitleLogo = () => {
   return (
