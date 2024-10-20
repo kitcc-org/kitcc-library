@@ -1,6 +1,6 @@
 import { useForm } from '@mantine/form'
-import type { LoginBody } from 'orval/kITCCLibraryAPI.schemas';
-import { useLogin } from 'orval/kITCCLibraryAPI';
+import type { LoginBody } from 'orval/client.schemas';
+import { useLogin } from 'orval/client';
 import { useNavigate } from '@remix-run/react';
 import { errorNotifications, successNotifications } from '~/utils/notification';
 import LoginFormComponent from '~/components/login/LoginFormComponent';

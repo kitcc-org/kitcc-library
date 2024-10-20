@@ -21,27 +21,30 @@ import type {
   BadRequestResponse,
   Book,
   CreateBookBody,
-  CreateLoansBodyItem,
-  CreateUser201,
   CreateUserBody,
   DeleteUser204,
   Error,
+  GetBooks200,
   GetBooksParams,
+  GetLoans200,
   GetLoansParams,
+  GetUsers200,
   GetUsersParams,
   InternalServerErrorResponse,
   Loan,
   LoginBody,
   Logout200,
   NotFoundResponse,
-  SearchBooks200Item,
+  SearchBooks200,
   SearchBooksParams,
   UnauthorizedResponse,
   UpdateBookBody,
-  UpdateLoansBodyItem,
   UpdateUserBody,
+  UpsertLoans404,
+  UpsertLoans409,
+  UpsertLoansBodyItem,
   User
-} from './kITCCLibraryAPI.schemas'
+} from './client.schemas'
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -54,7 +57,7 @@ type AwaitedInput<T> = PromiseLike<T> | T;
  * @summary 書籍の情報を取得する
  */
 export type getBooksResponse = {
-  data: Book[];
+  data: GetBooks200;
   status: number;
 }
 
@@ -141,7 +144,7 @@ export function useGetBooks<TData = Awaited<ReturnType<typeof getBooks>>, TError
  * @summary 書籍を追加する
  */
 export type createBookResponse = {
-  data: Error;
+  data: Book;
   status: number;
 }
 
@@ -313,7 +316,7 @@ export const updateBook = async (bookId: string,
   const res = await fetch(getUpdateBookUrl(bookId),
   {      
     ...options,
-    method: 'PUT',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
       updateBookBody,)
@@ -445,7 +448,7 @@ export const useDeleteBook = <TError = BadRequestResponse | UnauthorizedResponse
  * @summary 書籍を検索する
  */
 export type searchBooksResponse = {
-  data: SearchBooks200Item[];
+  data: SearchBooks200;
   status: number;
 }
 
@@ -533,7 +536,7 @@ export function useSearchBooks<TData = Awaited<ReturnType<typeof searchBooks>>, 
  * @summary ユーザーの情報を取得する
  */
 export type getUsersResponse = {
-  data: User[];
+  data: GetUsers200;
   status: number;
 }
 
@@ -620,7 +623,7 @@ export function useGetUsers<TData = Awaited<ReturnType<typeof getUsers>>, TError
  * @summary ユーザーを追加する
  */
 export type createUserResponse = {
-  data: CreateUser201;
+  data: User;
   status: number;
 }
 
@@ -791,7 +794,7 @@ export const updateUser = async (userId: string,
   const res = await fetch(getUpdateUserUrl(userId),
   {      
     ...options,
-    method: 'PUT',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
       updateUserBody,)
@@ -924,7 +927,7 @@ export const useDeleteUser = <TError = BadRequestResponse | Error | NotFoundResp
  * @summary 貸出履歴を取得する
  */
 export type getLoansResponse = {
-  data: Loan[];
+  data: GetLoans200;
   status: number;
 }
 
@@ -1008,28 +1011,28 @@ export function useGetLoans<TData = Awaited<ReturnType<typeof getLoans>>, TError
 
 
 /**
- * @summary 貸出履歴を追加する
+ * @summary 貸出履歴を更新する
  */
-export type createLoansResponse = {
-  data: Loan;
+export type upsertLoansResponse = {
+  data: Loan[];
   status: number;
 }
 
-export const getCreateLoansUrl = () => {
+export const getUpsertLoansUrl = () => {
 
 
   return `http://localhost:8787/loans`
 }
 
-export const createLoans = async (createLoansBodyItem: CreateLoansBodyItem[], options?: RequestInit): Promise<createLoansResponse> => {
+export const upsertLoans = async (upsertLoansBodyItem: UpsertLoansBodyItem[], options?: RequestInit): Promise<upsertLoansResponse> => {
   
-  const res = await fetch(getCreateLoansUrl(),
+  const res = await fetch(getUpsertLoansUrl(),
   {      
     ...options,
-    method: 'POST',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      createLoansBodyItem,)
+      upsertLoansBodyItem,)
   }
 
   )
@@ -1041,18 +1044,18 @@ export const createLoans = async (createLoansBodyItem: CreateLoansBodyItem[], op
 
 
 
-export const getCreateLoansMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createLoans>>, TError,{data: CreateLoansBodyItem[]}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof createLoans>>, TError,{data: CreateLoansBodyItem[]}, TContext> => {
+export const getUpsertLoansMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | UpsertLoans404 | UpsertLoans409 | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof upsertLoans>>, TError,{data: UpsertLoansBodyItem[]}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof upsertLoans>>, TError,{data: UpsertLoansBodyItem[]}, TContext> => {
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createLoans>>, {data: CreateLoansBodyItem[]}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof upsertLoans>>, {data: UpsertLoansBodyItem[]}> = (props) => {
           const {data} = props ?? {};
 
-          return  createLoans(data,fetchOptions)
+          return  upsertLoans(data,fetchOptions)
         }
 
         
@@ -1060,98 +1063,23 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type CreateLoansMutationResult = NonNullable<Awaited<ReturnType<typeof createLoans>>>
-    export type CreateLoansMutationBody = CreateLoansBodyItem[]
-    export type CreateLoansMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
-
-    /**
- * @summary 貸出履歴を追加する
- */
-export const useCreateLoans = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createLoans>>, TError,{data: CreateLoansBodyItem[]}, TContext>, fetch?: RequestInit}
-): UseMutationResult<
-        Awaited<ReturnType<typeof createLoans>>,
-        TError,
-        {data: CreateLoansBodyItem[]},
-        TContext
-      > => {
-
-      const mutationOptions = getCreateLoansMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * リクエストボディに含まれている情報のみ更新する
- * @summary 貸出履歴を更新する
- */
-export type updateLoansResponse = {
-  data: Loan;
-  status: number;
-}
-
-export const getUpdateLoansUrl = () => {
-
-
-  return `http://localhost:8787/loans`
-}
-
-export const updateLoans = async (updateLoansBodyItem: UpdateLoansBodyItem[], options?: RequestInit): Promise<updateLoansResponse> => {
-  
-  const res = await fetch(getUpdateLoansUrl(),
-  {      
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      updateLoansBodyItem,)
-  }
-
-  )
-  const data = await res.json()
-
-  return { status: res.status, data }
-}
-
-
-
-
-export const getUpdateLoansMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateLoans>>, TError,{data: UpdateLoansBodyItem[]}, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof updateLoans>>, TError,{data: UpdateLoansBodyItem[]}, TContext> => {
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateLoans>>, {data: UpdateLoansBodyItem[]}> = (props) => {
-          const {data} = props ?? {};
-
-          return  updateLoans(data,fetchOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UpdateLoansMutationResult = NonNullable<Awaited<ReturnType<typeof updateLoans>>>
-    export type UpdateLoansMutationBody = UpdateLoansBodyItem[]
-    export type UpdateLoansMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
+    export type UpsertLoansMutationResult = NonNullable<Awaited<ReturnType<typeof upsertLoans>>>
+    export type UpsertLoansMutationBody = UpsertLoansBodyItem[]
+    export type UpsertLoansMutationError = BadRequestResponse | UnauthorizedResponse | UpsertLoans404 | UpsertLoans409 | InternalServerErrorResponse
 
     /**
  * @summary 貸出履歴を更新する
  */
-export const useUpdateLoans = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateLoans>>, TError,{data: UpdateLoansBodyItem[]}, TContext>, fetch?: RequestInit}
+export const useUpsertLoans = <TError = BadRequestResponse | UnauthorizedResponse | UpsertLoans404 | UpsertLoans409 | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof upsertLoans>>, TError,{data: UpsertLoansBodyItem[]}, TContext>, fetch?: RequestInit}
 ): UseMutationResult<
-        Awaited<ReturnType<typeof updateLoans>>,
+        Awaited<ReturnType<typeof upsertLoans>>,
         TError,
-        {data: UpdateLoansBodyItem[]},
+        {data: UpsertLoansBodyItem[]},
         TContext
       > => {
 
-      const mutationOptions = getUpdateLoansMutationOptions(options);
+      const mutationOptions = getUpsertLoansMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1191,7 +1119,7 @@ export const login = async (loginBody: LoginBody, options?: RequestInit): Promis
 
 
 
-export const getLoginMutationOptions = <TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse,
+export const getLoginMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, fetch?: RequestInit}
 ): UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext> => {
 const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
@@ -1212,12 +1140,12 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
 
     export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
     export type LoginMutationBody = LoginBody
-    export type LoginMutationError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
+    export type LoginMutationError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse
 
     /**
  * @summary ログインする
  */
-export const useLogin = <TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse,
+export const useLogin = <TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login>>, TError,{data: LoginBody}, TContext>, fetch?: RequestInit}
 ): UseMutationResult<
         Awaited<ReturnType<typeof login>>,

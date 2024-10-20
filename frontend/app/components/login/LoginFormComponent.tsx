@@ -3,7 +3,7 @@ import LoginEmailForm from './LoginEmailForm'
 import LoginPasswordForm from './LoginPasswordForm'
 import LoginSubmitButton from './LoginSubmitButton'
 import type { UseFormReturnType } from '@mantine/form'
-import type { LoginBody } from 'orval/kITCCLibraryAPI.schemas'
+import type { LoginBody } from 'orval/client.schemas'
 import LoginFormTitle from './LoginFormTitle'
 import LoginFormHelpText from './LoginFormHelpText'
 
