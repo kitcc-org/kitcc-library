@@ -1,5 +1,5 @@
 module.exports = {
-  frontend: {
+  client: {
     input: {
       target: './api/bundle.yml',
     },
@@ -7,7 +7,7 @@ module.exports = {
       client: 'react-query',
       httpClient: 'fetch',
       mode: 'split',
-      target: './frontend/orval',
+      target: './frontend/orval/client.ts',
       baseUrl: 'http://localhost:8787' // build時には削除
     },
   },

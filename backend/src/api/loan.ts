@@ -1,7 +1,7 @@
 import { bookTable, loanTable, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
 import camelCase from 'camelcase';
-import { and, eq, Query } from 'drizzle-orm';
+import { and, asc, eq, Query } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -54,7 +54,7 @@ app.get(
 
 		const db = drizzle(ctx.env.DB);
 
-		const loans = await db
+		const hitLoans = await db
 			.select()
 			.from(loanTable)
 			.where(
@@ -67,10 +67,19 @@ app.get(
 						: undefined
 				)
 			)
-			.limit(limit)
-			.offset((page - 1) * limit);
+			.orderBy(asc(loanTable.userId), asc(loanTable.bookId));
 
-		const result = getLoansResponse.safeParse(loans);
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(hitLoans.length / limit);
+		if (totalPage < page) {
+			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		}
+
+		// 指定されたページの貸出履歴を取得する
+		const slicedLoans = hitLoans.slice((page - 1) * limit, page * limit);
+
+		const responseBody = { totalPage: totalPage, loans: slicedLoans };
+		const result = getLoansResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(

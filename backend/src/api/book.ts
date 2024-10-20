@@ -1,6 +1,6 @@
 import { bookTable, SelectBook } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, like } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -20,8 +20,9 @@ import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
 
-// Google Books APIのレスポンス
-interface GBAResult {
+// Google Books APIsのレスポンスボディ
+interface VolumeResult {
+	totalItems: number;
 	items?: [
 		{
 			volumeInfo: {
@@ -87,18 +88,21 @@ app.get(
 			key: ctx.env.GOOGLE_BOOKS_API_KEY,
 		});
 
-		// Google Books APIにリクエストを送信する
+		// Google Books APIsにリクエストを送信する
 		// prettier-ignore
 		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
-		const body: GBAResult = await response.json();
+		const volumeResult: VolumeResult = await response.json();
+
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(volumeResult.totalItems / limit);
 
 		// ヒットした書籍を格納する配列
 		const hitBooks: GoogleBook[] = [];
 
 		// 書籍がヒットしたか確認する
-		if (body.hasOwnProperty('items')) {
+		if (volumeResult.hasOwnProperty('items')) {
 			// ヒットした書籍を配列に格納する
-			for (const item of body.items ?? []) {
+			for (const item of volumeResult.items ?? []) {
 				const book = item.volumeInfo;
 
 				// ISBNを取得する
@@ -126,7 +130,8 @@ app.get(
 			}
 		}
 
-		const result = searchBooksResponse.safeParse(hitBooks);
+		const responseBody = { totalPage: totalPage, books: hitBooks };
+		const result = searchBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
@@ -161,7 +166,8 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		const db = drizzle(ctx.env.DB);
-		const books: SelectBook[] = await db
+		// 書籍を検索する
+		const hitBooks: SelectBook[] = await db
 			.select()
 			.from(bookTable)
 			.where(
@@ -181,10 +187,19 @@ app.get(
 						: undefined
 				)
 			)
-			.limit(limit)
-			.offset((page - 1) * limit);
+			.orderBy(asc(bookTable.id));
 
-		const result = getBooksResponse.safeParse(books);
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(hitBooks.length / limit);
+		if (totalPage < page) {
+			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		}
+
+		// 指定されたページの書籍を取得する
+		const slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
+
+		const responseBody = { totalPage: totalPage, books: slicedBooks };
+		const result = getBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(

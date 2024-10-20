@@ -56,9 +56,18 @@ books:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/Book.yml"
+              type: object
+              properties:
+                totalPage:
+                  description: 総ページ数
+                  type: integer
+                books:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Book.yml"
+              required:
+                - totalPage
+                - books
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':
@@ -309,34 +318,45 @@ search:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  title:
-                    type: string
-                  authors:
-                    type: array
-                    items:
-                      type: string
-                  publisher:
-                    type: string
-                  thumbnail:
-                    type: string
-                  isbn:
-                    type: string
-                required:
-                  - title
-                  - authors
+              type: object
+              properties:
+                totalPage:
+                  description: 総ページ数
+                  type: integer
+                books:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      authors:
+                        type: array
+                        items:
+                          type: string
+                      publisher:
+                        type: string
+                      thumbnail:
+                        type: string
+                      isbn:
+                        type: string
+                    required:
+                      - title
+                      - authors
+              required:
+                - totalPage
+                - books
             example:
-              - title: "計算機プログラムの構造と解釈"
-                authors:
-                  - "Harold Abelson"
-                  - "Gerald Jay Sussman"
-                  - "Julie Sussman"
-                publisher: "翔泳社"
-                thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                isbn: "9784798135984"
+              totalPage: 3
+              books:
+                - title: "計算機プログラムの構造と解釈"
+                  authors:
+                    - "Harold Abelson"
+                    - "Gerald Jay Sussman"
+                    - "Julie Sussman"
+                  publisher: "翔泳社"
+                  thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                  isbn: "9784798135984"
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '500':

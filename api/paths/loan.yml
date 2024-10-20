@@ -46,9 +46,17 @@ loans:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "../components/schemas/Loan.yml"
+              type: object
+              properties:
+                totalPage:
+                  type: integer
+                loans:
+                  type: array
+                  items:
+                    $ref: "../components/schemas/Loan.yml"
+              required:
+                - totalPage
+                - loans
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
       '401':

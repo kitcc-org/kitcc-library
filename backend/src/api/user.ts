@@ -1,6 +1,6 @@
 import { SelectUser, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, eq, like } from 'drizzle-orm';
+import { and, asc, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -39,7 +39,8 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		const db = drizzle(ctx.env.DB);
-		const users: SelectUser[] = await db
+		// ユーザを検索する
+		const hitUsers: SelectUser[] = await db
 			.select()
 			.from(userTable)
 			.where(
@@ -53,10 +54,19 @@ app.get(
 						: undefined
 				)
 			)
-			.limit(limit)
-			.offset((page - 1) * limit);
+			.orderBy(asc(userTable.id));
 
-		const result = getUsersResponse.safeParse(users);
+		// 総ページ数を計算する
+		const totalPage = Math.ceil(hitUsers.length / limit);
+		if (totalPage < page) {
+			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		}
+
+		// 指定されたページのユーザを取得する
+		const slicedUsers = hitUsers.slice((page - 1) * limit, page * limit);
+
+		const responseBody = { totalPage: totalPage, users: slicedUsers };
+		const result = getUsersResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(

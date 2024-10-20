@@ -6,6 +6,11 @@ import { drizzle } from 'drizzle-orm/d1';
 import { loggedInTest } from '../context/login';
 import { userFactory } from '../factories/user';
 
+interface GetUsersResponse {
+	totalPage: number;
+	users: SelectUser[];
+}
+
 describe('GET /users', () => {
 	const db = drizzle(env.DB);
 	const users = userFactory.buildList(5);
@@ -25,10 +30,12 @@ describe('GET /users', () => {
 		// prettier-ignore
 		const params = new URLSearchParams({ page: '1', limit: limit.toString() }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
-		const users = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(users).toHaveLength(limit);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.totalPage).toBe(2);
+		expect(body.users).toHaveLength(limit);
 	});
 
 	it('should return correct user', async () => {
@@ -41,24 +48,24 @@ describe('GET /users', () => {
 
 		const params = new URLSearchParams({ email: firstUser.email }).toString();
 		const response = await app.request(`/users?${params}`, {}, env);
-		const result = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(result).toContainEqual(firstUser);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.totalPage).toBe(1);
+		expect(body.users).toContainEqual(firstUser);
 	});
 
 	it('should return 400 when page is not a number', async () => {
 		// pageに数字以外を指定する
-		const params = new URLSearchParams({ page: 'a' }).toString();
-		const response = await app.request(`/users?${params}`, {}, env);
+		const response = await app.request(`/users?page=a`, {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 400 when limit is not a number', async () => {
 		// limitに数字以外を指定する
-		const params = new URLSearchParams({ limit: 'a' }).toString();
-		const response = await app.request(`/users?${params}`, {}, env);
+		const response = await app.request('/users?limit=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});

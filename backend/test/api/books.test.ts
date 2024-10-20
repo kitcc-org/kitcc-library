@@ -1,10 +1,15 @@
-import { bookTable } from '@/drizzle/schema';
+import { bookTable, SelectBook } from '@/drizzle/schema';
 import app from '@/src/index';
 import { env } from 'cloudflare:test';
 import { count, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
+
+interface GetBooksResponse {
+	totalPage: number;
+	books: SelectBook[];
+}
 
 describe('GET /books', () => {
 	const db = drizzle(env.DB);
@@ -25,10 +30,12 @@ describe('GET /books', () => {
 		// prettier-ignore
 		const params = new URLSearchParams({ page: '1', limit: limit.toString() }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
-		const books = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(books).toHaveLength(limit);
+
+		const body: GetBooksResponse = await response.json();
+		expect(body.totalPage).toBe(2);
+		expect(body.books).toHaveLength(limit);
 	});
 
 	it('should return correct book', async () => {
@@ -36,24 +43,24 @@ describe('GET /books', () => {
 
 		const params = new URLSearchParams({ title: firstBook.title }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
-		const result = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(result).toContainEqual(firstBook);
+
+		const body: GetBooksResponse = await response.json();
+		expect(body.totalPage).toBe(1);
+		expect(body.books).toContainEqual(firstBook);
 	});
 
 	it('should return 400 when page is not a number', async () => {
 		// pageに数字以外を指定する
-		const params = new URLSearchParams({ page: 'a' }).toString();
-		const response = await app.request(`/books?${params}`, {}, env);
+		const response = await app.request('/books?page=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
 
 	it('should return 400 when limit is not a number', async () => {
 		// limitに数字以外を指定する
-		const params = new URLSearchParams({ limit: 'a' }).toString();
-		const response = await app.request(`/books?${params}`, {}, env);
+		const response = await app.request('/books?limit=a', {}, env);
 
 		expect(response.status).toBe(400);
 	});
