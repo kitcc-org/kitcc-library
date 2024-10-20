@@ -17,4 +17,11 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  server: {
+    proxy: {},
+    https: {
+      key: "./certs/key.pem",
+      cert: "./certs/cert.pem",
+    },
+  },
 });
