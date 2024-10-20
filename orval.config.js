@@ -8,6 +8,12 @@ module.exports = {
       httpClient: 'fetch',
       mode: 'split',
       target: './frontend/orval/client.ts',
+      override: {
+        mutator: {
+          path: './frontend/orval/mutator.ts',
+          name: 'customFetch',
+        },
+      },
     },
   },
   zod: {

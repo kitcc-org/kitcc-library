@@ -8,7 +8,13 @@ module.exports = {
       httpClient: 'fetch',
       mode: 'split',
       target: './frontend/orval/client.ts',
-      baseUrl: 'http://localhost:8787' // build時には削除
+      baseUrl: 'http://localhost:8787',
+      override: {
+        mutator: {
+          path: './frontend/orval/mutator.ts',
+          name: 'customFetch',
+        },
+      },
     },
   },
 };
