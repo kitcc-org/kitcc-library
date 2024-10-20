@@ -1,5 +1,3 @@
-
-
 const HeaderLogoutComponent = () => {
   return (
     <div>HeaderLogoutComponent</div>
