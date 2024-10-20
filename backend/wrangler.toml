@@ -113,3 +113,8 @@ migrations_dir = "drizzle/migrations"
 # [[vectorize]]
 # binding = "MY_INDEX"
 # index_name = "my-index"
+
+[dev]
+ip = "localhost"
+port = 8787
+local_protocol = "https"
