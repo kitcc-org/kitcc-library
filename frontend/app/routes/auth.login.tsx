@@ -4,10 +4,13 @@ import { useLogin } from 'orval/client';
 import { useNavigate } from '@remix-run/react';
 import { errorNotifications, successNotifications } from '~/utils/notification';
 import LoginFormComponent from '~/components/login/LoginFormComponent';
+import { useAtom } from 'jotai';
+import { userAtom } from '~/stores/userAtom';
 
 const LoginPage = () => {
   const loginTask = useLogin()
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [_, setUser] = useAtom(userAtom)
   const form = useForm<LoginBody>({
     mode: 'uncontrolled',
     initialValues: {
@@ -38,6 +41,7 @@ const LoginPage = () => {
               successNotifications('ログインに成功しました')
               document.cookie = `user_id=${response.data.id}; path=/`
               document.cookie = `session_token=${response.data.sessionToken}; path=/`
+              setUser(response.data)
               navigate('/home/mypage')
               break
             case 400:
