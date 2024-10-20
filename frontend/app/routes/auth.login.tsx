@@ -10,7 +10,7 @@ import { userAtom } from '~/stores/userAtom';
 const LoginPage = () => {
   const loginTask = useLogin()
   const navigate = useNavigate()
-  const [_, setUser] = useAtom(userAtom)
+  const [, setUser] = useAtom(userAtom)
   const form = useForm<LoginBody>({
     mode: 'uncontrolled',
     initialValues: {
