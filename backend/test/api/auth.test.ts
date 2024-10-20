@@ -45,7 +45,8 @@ describe('POST /auth', async () => {
 
 		// レスポンスボディ
 		const currentUser = await response.json();
-		expect(currentUser).toMatchObject(user);
+		const { passwordDigest, ...rest } = user;
+		expect(currentUser).toMatchObject(rest);
 
 		// Cookie
 		const cookies = response.headers.get('Set-Cookie');
@@ -89,7 +90,8 @@ describe('POST /auth', async () => {
 
 			// レスポンスボディ
 			const selectUser = await response.json();
-			expect(selectUser).toMatchObject(currentUser);
+			const { passwordDigest, ...rest } = currentUser;
+			expect(selectUser).toMatchObject(rest);
 		}
 	);
 

@@ -137,9 +137,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                message: Created
+                $ref: '#/components/schemas/Book'
+              examples:
+                book:
+                  $ref: '#/components/examples/book'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -177,7 +178,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-    put:
+    patch:
       tags:
         - book
       operationId: updateBook
@@ -448,12 +449,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: Created
+                $ref: '#/components/schemas/User'
+              examples:
+                user:
+                  $ref: '#/components/examples/user'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -499,7 +498,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-    put:
+    patch:
       tags:
         - user
       operationId: updateUser
@@ -650,11 +649,11 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalServerError'
-    post:
+    patch:
       tags:
         - loan
-      operationId: createLoans
-      summary: 貸出履歴を追加する
+      operationId: upsertLoans
+      summary: 貸出履歴を更新する
       security:
         - CookieAuth: []
       requestBody:
@@ -672,7 +671,6 @@ paths:
                     type: integer
                   volume:
                     type: integer
-                    minimum: 1
                 required:
                   - userId
                   - bookId
@@ -683,28 +681,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Loan'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loan'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-    put:
-      tags:
-        - loan
-      operationId: updateLoans
-      summary: 貸出履歴を更新する
-      description: リクエストボディに含まれている情報のみ更新する
-      security:
-        - CookieAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
+        '404':
+          description: ユーザーまたは書籍が存在しない
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  bookId:
+                    type: integer
+                required:
+                  - userId
+                  - bookId
+        '409':
+          description: |
+            貸出数が在庫数を超えている． 返却数が貸出数を超えている．
+          content:
+            application/json:
+              schema:
+                description: 貸出数が在庫数を超えているリクエスト
                 type: object
                 properties:
                   userId:
@@ -716,17 +720,7 @@ paths:
                 required:
                   - userId
                   - bookId
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Loan'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                  - volume
         '500':
           $ref: '#/components/responses/InternalServerError'
   /auth:
@@ -776,6 +770,8 @@ paths:
                   $ref: '#/components/examples/user'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -858,8 +854,6 @@ components:
         email:
           type: string
           format: email
-        passwordDigest:
-          type: string
         sessionToken:
           type: string
           nullable: true
@@ -867,12 +861,9 @@ components:
         - id
         - name
         - email
-        - passwordDigest
     Loan:
       type: object
       properties:
-        id:
-          type: integer
         userId:
           type: integer
         bookId:
@@ -880,13 +871,12 @@ components:
         volume:
           type: integer
         createdAt:
-          type: string
-          format: date-time
+          type: integer
+          description: レコードが作成されたUNIX時間
         updatedAt:
-          type: string
-          format: date-time
+          type: integer
+          description: レコードが最後に更新されたUNIX時間
       required:
-        - id
         - userId
         - bookId
         - volume
@@ -941,4 +931,3 @@ components:
         id: 1
         name: 比企谷八幡
         email: hikigaya@oregairu.com
-        passwordDigest: d41d8cd98f00b204e9800998ecf8427e

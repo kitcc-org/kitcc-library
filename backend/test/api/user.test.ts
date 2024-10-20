@@ -24,7 +24,9 @@ describe('GET /users/:userId', () => {
 		const result = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(result).toMatchObject(user);
+
+		const { passwordDigest, ...rest } = user;
+		expect(result).toMatchObject(rest);
 	});
 
 	it('should return 400 when userId is not a number', async () => {

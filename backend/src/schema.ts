@@ -178,7 +178,6 @@ export const getUsersResponseItem = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string(),
   "sessionToken": zod.string().nullish()
 })
 export const getUsersResponse = zod.array(getUsersResponseItem)
@@ -213,7 +212,6 @@ export const getUserResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string(),
   "sessionToken": zod.string().nullish()
 })
 
@@ -244,7 +242,6 @@ export const updateUserResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string(),
   "sessionToken": zod.string().nullish()
 })
 
@@ -325,7 +322,6 @@ export const loginResponse = zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string().email(),
-  "passwordDigest": zod.string(),
   "sessionToken": zod.string().nullish()
 })
 
