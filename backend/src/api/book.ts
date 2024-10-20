@@ -37,7 +37,7 @@ interface VolumeResult {
 					identifier: string;
 				}[];
 			};
-		}
+		},
 	];
 }
 
@@ -59,7 +59,7 @@ app.get(
 					message: 'Query Parameter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -138,12 +138,12 @@ app.get(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.get(
@@ -155,7 +155,7 @@ app.get(
 					message: 'Query Parameter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -184,8 +184,8 @@ app.get(
 					// prettier-ignore
 					query['isbn']
 						? eq(bookTable.isbn, query['isbn'])
-						: undefined
-				)
+						: undefined,
+				),
 			)
 			.orderBy(asc(bookTable.id));
 
@@ -206,12 +206,12 @@ app.get(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.post(
@@ -223,7 +223,7 @@ app.post(
 					message: 'Request Body Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -234,7 +234,7 @@ app.post(
 				{
 					message: 'Unauthorized',
 				},
-				401
+				401,
 			);
 		}
 
@@ -270,12 +270,12 @@ app.post(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data, 201);
 		}
-	}
+	},
 );
 
 app.get(
@@ -287,7 +287,7 @@ app.get(
 					message: 'Path Paramter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -312,12 +312,12 @@ app.get(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.patch(
@@ -329,7 +329,7 @@ app.patch(
 					message: 'Path Paramter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -340,7 +340,7 @@ app.patch(
 					message: 'Request Body Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -351,7 +351,7 @@ app.patch(
 				{
 					message: 'Unauthorized',
 				},
-				401
+				401,
 			);
 		}
 
@@ -374,7 +374,7 @@ app.patch(
 					{
 						message: err.message,
 					},
-					400
+					400,
 				);
 			}
 		}
@@ -390,12 +390,12 @@ app.patch(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.delete(
@@ -407,7 +407,7 @@ app.delete(
 					message: 'Path Paramter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -418,7 +418,7 @@ app.delete(
 				{
 					message: 'Unauthorized',
 				},
-				401
+				401,
 			);
 		}
 
@@ -436,7 +436,7 @@ app.delete(
 		}
 
 		return ctx.body(null, 204);
-	}
+	},
 );
 
 export default app;

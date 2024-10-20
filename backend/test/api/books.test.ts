@@ -90,7 +90,7 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			// ステータスコード
@@ -104,7 +104,7 @@ describe('POST /books', async () => {
 			// データベースに書籍が登録されていることを確認する
 			const totalBook = await db.select({ count: count() }).from(bookTable);
 			expect(totalBook[0].count).toBe(1);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -128,7 +128,7 @@ describe('POST /books', async () => {
 					// 同じ書籍を登録する
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(201);
@@ -144,7 +144,7 @@ describe('POST /books', async () => {
 			expect(totalBook[0].count).toBe(1);
 			// 蔵書数が1冊増えていることを確認する
 			expect(totalBook[0].stock).toBe(book.stock! + 1);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -166,11 +166,11 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -192,11 +192,11 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -218,11 +218,11 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -244,11 +244,11 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -270,11 +270,11 @@ describe('POST /books', async () => {
 					},
 					body: JSON.stringify(book),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -290,7 +290,7 @@ describe('POST /books', async () => {
 				},
 				body: JSON.stringify(book),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);

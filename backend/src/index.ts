@@ -29,7 +29,7 @@ app.use(
 		// 資格情報をフロントエンドのJSに公開するか
 		// 資格情報とはCookie, 認証ヘッダー, TLSクライアント証明書
 		credentials: true,
-	})
+	}),
 );
 
 app.route('/books', book);

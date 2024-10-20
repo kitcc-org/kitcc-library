@@ -1,0 +1,10 @@
+node_modules/
+
+drizzle/migrations/
+
+src/schema.ts
+
+eslint.config.mjs
+package.json
+pnpm-lock.yaml
+tsconfig.json

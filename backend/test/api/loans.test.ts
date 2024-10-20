@@ -67,7 +67,7 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(200);
@@ -78,7 +78,7 @@ describe('GET /loans', () => {
 
 			expect(body.totalPage).toBe(totalPage);
 			expect(body.loans).toHaveLength(limit);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -101,7 +101,7 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(200);
@@ -113,7 +113,7 @@ describe('GET /loans', () => {
 			expect(loan.userId).toBe(userId);
 			expect(loan.bookId).toBe(bookId);
 			expect(loan.volume).toBe(1);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -133,11 +133,11 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -157,11 +157,11 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -177,11 +177,11 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -197,11 +197,11 @@ describe('GET /loans', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -260,7 +260,7 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			// ステータスコード
@@ -280,8 +280,8 @@ describe('PATCH /loans', () => {
 				.where(
 					and(
 						eq(loanTable.userId, newLoan.userId!),
-						eq(loanTable.bookId, newLoan.bookId)
-					)
+						eq(loanTable.bookId, newLoan.bookId),
+					),
 				);
 			expect(createdLoan[0].volume).toBe(newLoan.volume);
 
@@ -291,7 +291,7 @@ describe('PATCH /loans', () => {
 				.from(bookTable)
 				.where(eq(bookTable.id, newLoan.bookId));
 			expect(updatedBook[0].stock).toBe(books[0].stock! - 1);
-		}
+		},
 	);
 
 	loggedInTest('should update loan', async ({ currentUser, sessionToken }) => {
@@ -314,7 +314,7 @@ describe('PATCH /loans', () => {
 				},
 				body: JSON.stringify([newLoan]),
 			},
-			env
+			env,
 		);
 
 		// ステータスコード
@@ -333,8 +333,8 @@ describe('PATCH /loans', () => {
 			.where(
 				and(
 					eq(loanTable.userId, newLoan.userId),
-					eq(loanTable.bookId, newLoan.bookId)
-				)
+					eq(loanTable.bookId, newLoan.bookId),
+				),
 			);
 		expect(updatedLoan[0].volume).toBe(newLoan.volume + 1);
 
@@ -368,11 +368,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -398,11 +398,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -428,14 +428,14 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
 
 			const body: { userId: number } = await response.json();
 			expect(body.userId).toBe(100);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -460,11 +460,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -490,11 +490,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -520,14 +520,14 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
 
 			const body: { bookId: number } = await response.json();
 			expect(body.bookId).toBe(100);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -552,11 +552,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -582,11 +582,11 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -606,7 +606,7 @@ describe('PATCH /loans', () => {
 				},
 				body: JSON.stringify([newLoan]),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);
@@ -635,7 +635,7 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(409);
@@ -644,7 +644,7 @@ describe('PATCH /loans', () => {
 			expect(body.userId).toBe(newLoan.userId);
 			expect(body.bookId).toBe(newLoan.bookId);
 			expect(body.volume).toBe(newLoan.volume);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -670,7 +670,7 @@ describe('PATCH /loans', () => {
 					},
 					body: JSON.stringify([newLoan]),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(409);
@@ -679,6 +679,6 @@ describe('PATCH /loans', () => {
 			expect(body.userId).toBe(newLoan.userId);
 			expect(body.bookId).toBe(newLoan.bookId);
 			expect(body.volume).toBe(newLoan.volume);
-		}
+		},
 	);
 });

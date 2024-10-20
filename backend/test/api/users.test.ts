@@ -99,7 +99,7 @@ describe('POST /users', () => {
 						password: 'passw0rd',
 					}),
 				},
-				env
+				env,
 			);
 
 			// ステータスコード
@@ -113,7 +113,7 @@ describe('POST /users', () => {
 			// データベースにユーザが登録されていることを確認する
 			const totalUser = await db.select({ count: count() }).from(userTable);
 			expect(totalUser[0].count).toBe(2);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -138,11 +138,11 @@ describe('POST /users', () => {
 						password: 'passw0rd',
 					}),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -167,11 +167,11 @@ describe('POST /users', () => {
 						password: 'passw0rd',
 					}),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -196,11 +196,11 @@ describe('POST /users', () => {
 						password: 'passw0rd',
 					}),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -221,11 +221,11 @@ describe('POST /users', () => {
 					},
 					body: JSON.stringify(newUser),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -255,12 +255,12 @@ describe('POST /users', () => {
 							password: password,
 						}),
 					},
-					env
+					env,
 				);
 
 				expect(response.status).toBe(400);
 			}
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -279,7 +279,7 @@ describe('POST /users', () => {
 					password: 'passw0rd',
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);
@@ -310,10 +310,10 @@ describe('POST /users', () => {
 						password: 'passw0rd',
 					}),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(409);
-		}
+		},
 	);
 });

@@ -14,7 +14,7 @@ await db
       isbn TEXT NOT NULL,
       stock INTEGER NOT NULL DEFAULT 1
     )
-    `
+    `,
 	)
 	.run();
 
@@ -22,7 +22,7 @@ await db
 	.prepare(
 		`
     CREATE UNIQUE INDEX IF NOT EXISTS isbn_idx ON books (isbn)
-    `
+    `,
 	)
 	.run();
 
@@ -36,7 +36,7 @@ await db
       password_digest TEXT NOT NULL,
       session_token TEXT
     );
-    `
+    `,
 	)
 	.run();
 
@@ -44,7 +44,7 @@ await db
 	.prepare(
 		`
     CREATE UNIQUE INDEX IF NOT EXISTS email_idx ON users (email)
-    `
+    `,
 	)
 	.run();
 
@@ -61,6 +61,6 @@ await db
       FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE NO ACTION ON DELETE CASCADE,
       FOREIGN KEY (book_id) REFERENCES books(id) ON UPDATE NO ACTION ON DELETE CASCADE
     );
-    `
+    `,
 	)
 	.run();
