@@ -5,12 +5,12 @@
 pnpm install
 
 # マイグレーションの実行
-pnpm run db:mig:apply:local
+pnpm run db:mig:apply
 
 # サンプルデータの追加
-file=user.sql pnpm run db:seed:local
-file=book.sql pnpm run db:seed:local
-file=loan.sql pnpm run db:seed:local
+file=user.sql pnpm run db:seed
+file=book.sql pnpm run db:seed
+file=loan.sql pnpm run db:seed
 
 # ローカルサーバの起動
 pnpm run dev
