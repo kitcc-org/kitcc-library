@@ -62,7 +62,7 @@ auth:
     description: CookieからセッションIDを削除する
     security: []
     responses:
-      '200':
+      '204':
         description: ログアウトに成功した
         headers:
           Set-Cookie:

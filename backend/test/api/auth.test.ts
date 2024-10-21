@@ -270,7 +270,7 @@ describe('DELETE /auth', async () => {
 				env,
 			);
 
-			expect(response.status).toBe(200);
+			expect(response.status).toBe(204);
 
 			// データベースのsesson_tokenが削除されていることをテストする
 			const selectUser = await db
@@ -291,6 +291,6 @@ describe('DELETE /auth', async () => {
 			env,
 		);
 
-		expect(response.status).toBe(200);
+		expect(response.status).toBe(204);
 	});
 });

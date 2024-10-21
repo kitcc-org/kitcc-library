@@ -86,7 +86,7 @@ app.post(
 
 app.delete('/', async (ctx) => {
 	await logout(ctx);
-	return ctx.json({ message: 'Goodbye' }, 200);
+	return ctx.body(null, 204);
 });
 
 export default app;
