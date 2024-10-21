@@ -1,7 +1,7 @@
 import { Card } from '@mantine/core'
 import BookCardThumbnail from './BookCardThumbnail'
 import BookCardTitle from './BookCardTitle'
-import type { Book } from 'orval/kITCCLibraryAPI.schemas'
+import type { Book } from 'orval/client.schemas'
 import BookCardContent from './BookCardContent'
 
 interface BookCardProps {

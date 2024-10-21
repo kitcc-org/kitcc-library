@@ -1,5 +1,5 @@
-import { AppShell } from '@mantine/core'
-import { getBooksResponse } from 'orval/kITCCLibraryAPI'
+import { AppShell, Stack } from '@mantine/core'
+import { getBooksResponse } from 'orval/client'
 import ErrorBookComponent from './ErrorBookComponent'
 import BookCards from './BookCards'
 
@@ -10,7 +10,15 @@ interface BookListComponentProps {
 const BookListComponent = ({ booksResponse }: BookListComponentProps) => {
   return (
     <AppShell.Main>
-      {booksResponse.status !== 200 ? <ErrorBookComponent /> : <BookCards books={booksResponse.data} />}
+      <Stack
+        h='70vh'
+        bg="var(--mantine-color-body)"
+        align="stretch"
+        justify="center"
+        gap="md"
+      >
+        {booksResponse.status !== 200 ? <ErrorBookComponent /> : <BookCards books={booksResponse.data.books} />}
+      </Stack>
     </AppShell.Main>
   )
 }

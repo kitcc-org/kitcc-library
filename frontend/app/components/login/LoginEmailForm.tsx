@@ -6,7 +6,7 @@ interface LoginEmailFormProps {
   form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>
 }
 
-const LoginEmailForm = ({form}: LoginEmailFormProps) => {
+const LoginEmailForm = ({ form }: LoginEmailFormProps) => {
   return (
     <TextInput
       label="メールアドレス"

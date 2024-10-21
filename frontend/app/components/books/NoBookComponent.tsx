@@ -1,11 +1,11 @@
 import { Blockquote, Center } from '@mantine/core'
-import { CiWarning } from "react-icons/ci";
+import { FaInfoCircle } from "react-icons/fa";
 
 const NoBookComponent = () => {
   return (
     <Center h='70dh' w='100%'>
-      <Blockquote color="yellow" icon={<CiWarning />} mt="xl">
-        本が登録されていません。
+      <Blockquote color="blue" icon={<FaInfoCircle />} mt="xl">
+        本が見つかりませんでした。
       </Blockquote>
     </Center>
   )

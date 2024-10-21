@@ -1,5 +1,5 @@
 import { Table } from '@mantine/core'
-import { Book } from 'orval/kITCCLibraryAPI.schemas'
+import { Book } from 'orval/client.schemas'
 import BookCardContentrBadge from './BookCardContentBadge'
 
 interface BookCardContentProps {

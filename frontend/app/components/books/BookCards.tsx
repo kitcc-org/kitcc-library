@@ -1,4 +1,4 @@
-import { Book } from 'orval/kITCCLibraryAPI.schemas'
+import { Book } from 'orval/client.schemas'
 import BookCard from './BookCard'
 import { SimpleGrid } from '@mantine/core'
 import NoBookComponent from './NoBookComponent'

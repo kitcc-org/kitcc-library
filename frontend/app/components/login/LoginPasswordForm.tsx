@@ -6,7 +6,7 @@ interface LoginPasswordFormProps {
   form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>
 }
 
-const LoginPasswordForm = ({form}: LoginPasswordFormProps) => {
+const LoginPasswordForm = ({ form }: LoginPasswordFormProps) => {
   return (
     <PasswordInput
       label="パスワード"
