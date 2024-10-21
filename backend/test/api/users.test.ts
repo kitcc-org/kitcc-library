@@ -38,6 +38,16 @@ describe('GET /users', () => {
 		expect(body.users).toHaveLength(limit);
 	});
 
+	it('should return empty array when page is out of range', async () => {
+		const params = new URLSearchParams({ page: '3', limit: '3' }).toString();
+		const response = await app.request(`/users?${params}`, {}, env);
+
+		expect(response.status).toBe(200);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.users).toHaveLength(0);
+	});
+
 	it('should return correct user', async () => {
 		const firstUser = {
 			id: 1,

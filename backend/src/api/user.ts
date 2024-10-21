@@ -56,14 +56,13 @@ app.get(
 			)
 			.orderBy(asc(userTable.id));
 
+		let slicedUsers: SelectUser[] = [];
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitUsers.length / limit);
-		if (totalPage < page) {
-			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		if (page <= totalPage) {
+			// 指定されたページのユーザを取得する
+			slicedUsers = hitUsers.slice((page - 1) * limit, page * limit);
 		}
-
-		// 指定されたページのユーザを取得する
-		const slicedUsers = hitUsers.slice((page - 1) * limit, page * limit);
 
 		const responseBody = { totalPage: totalPage, users: slicedUsers };
 		const result = getUsersResponse.safeParse(responseBody);

@@ -189,9 +189,9 @@ app.get(
 			)
 			.orderBy(asc(bookTable.id));
 
+		let slicedBooks: SelectBook[] = [];
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitBooks.length / limit);
-		let slicedBooks: SelectBook[] = [];
 		if (page <= totalPage) {
 			// 指定されたページの書籍を取得する
 			slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
