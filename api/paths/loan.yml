@@ -48,7 +48,7 @@ loans:
             schema:
               type: object
               properties:
-                totalPage:
+                totalLoan:
                   type: integer
                 loans:
                   type: array

@@ -281,7 +281,7 @@ export const getLoansQueryParams = zod.object({
 })
 
 export const getLoansResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalLoan": zod.number().optional(),
   "loans": zod.array(zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),

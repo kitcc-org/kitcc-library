@@ -14,7 +14,7 @@ import { bookFactory } from '../factories/book';
 import { userFactory } from '../factories/user';
 
 interface GetLoansResponse {
-	totalPage: number;
+	totalLoan: number;
 	loans: SelectLoan[];
 }
 
@@ -74,9 +74,8 @@ describe('GET /loans', () => {
 
 			const body: GetLoansResponse = await response.json();
 			const totalLoan = (users.length - 1) * books.length;
-			const totalPage = Math.ceil(totalLoan / limit);
 
-			expect(body.totalPage).toBe(totalPage);
+			expect(body.totalLoan).toBe(totalLoan);
 			expect(body.loans).toHaveLength(limit);
 		},
 	);
@@ -130,7 +129,7 @@ describe('GET /loans', () => {
 			expect(response.status).toBe(200);
 
 			const body: GetLoansResponse = await response.json();
-			expect(body.totalPage).toBe(1);
+			expect(body.totalLoan).toBe(1);
 
 			const loan = body.loans[0];
 			expect(loan.userId).toBe(userId);

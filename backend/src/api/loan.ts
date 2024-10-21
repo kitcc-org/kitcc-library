@@ -77,7 +77,7 @@ app.get(
 			slicedLoans = hitLoans.slice((page - 1) * limit, page * limit);
 		}
 
-		const responseBody = { totalPage: totalPage, loans: slicedLoans };
+		const responseBody = { totalLoan: hitLoans.length, loans: slicedLoans };
 		const result = getLoansResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
