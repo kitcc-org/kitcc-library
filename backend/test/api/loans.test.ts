@@ -82,6 +82,29 @@ describe('GET /loans', () => {
 	);
 
 	loggedInTest(
+		'should return empty array when page is out of range',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/loans?page=3&limit=3`,
+				{
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env,
+			);
+
+			expect(response.status).toBe(200);
+
+			const body: GetLoansResponse = await response.json();
+			expect(body.loans).toHaveLength(0);
+		},
+	);
+
+	loggedInTest(
 		'should return correct loan',
 		async ({ currentUser, sessionToken }) => {
 			const userId = 1;
