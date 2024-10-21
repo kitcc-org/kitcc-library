@@ -39,8 +39,6 @@ const LoginPage = () => {
         switch (response.status) {
           case 200:
             successNotifications('ログインに成功しました')
-            document.cookie = `user_id=${response.data.id}; path=/`
-            document.cookie = `session_token=${response.data.sessionToken}; path=/`
             setUser(response.data)
             navigate('/home/mypage')
             break
