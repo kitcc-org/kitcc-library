@@ -6,6 +6,7 @@ import { useLogout } from 'orval/client';
 import { useNavigate } from '@remix-run/react';
 import { LuLogOut } from "react-icons/lu";
 import { errorNotifications, successNotifications } from '~/utils/notification';
+import HeaderUsersMenu from './HeaderUsersMenu';
 
 const HeaderLoginComponent = () => {
   const [opened, { open, close }] =  useDisclosure()
@@ -37,6 +38,7 @@ const HeaderLoginComponent = () => {
     <>
     <Group>
       <HeaderBookMenu />
+      <HeaderUsersMenu />
       <HeaderUserMenu open={open} />
     </Group>
     <Modal opened={opened && !(logoutTask.isPending)} onClose={close} >
