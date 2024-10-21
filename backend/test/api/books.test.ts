@@ -38,6 +38,16 @@ describe('GET /books', () => {
 		expect(body.books).toHaveLength(limit);
 	});
 
+	it('should return empty array when page is out of range', async () => {
+		const params = new URLSearchParams({ page: '3', limit: '3' }).toString();
+		const response = await app.request(`/books?${params}`, {}, env);
+
+		expect(response.status).toBe(200);
+
+		const body: GetBooksResponse = await response.json();
+		expect(body.books).toHaveLength(0);
+	});
+
 	it('should return correct book', async () => {
 		const firstBook = { ...books[0], id: 1 };
 

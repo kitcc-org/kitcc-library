@@ -191,12 +191,11 @@ app.get(
 
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitBooks.length / limit);
-		if (totalPage < page) {
-			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		let slicedBooks: SelectBook[] = [];
+		if (page <= totalPage) {
+			// 指定されたページの書籍を取得する
+			slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
 		}
-
-		// 指定されたページの書籍を取得する
-		const slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
 
 		const responseBody = { totalPage: totalPage, books: slicedBooks };
 		const result = getBooksResponse.safeParse(responseBody);
