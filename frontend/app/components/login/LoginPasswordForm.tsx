@@ -1,5 +1,5 @@
 import type { UseFormReturnType } from '@mantine/form'
-import type { LoginBody } from 'orval/kITCCLibraryAPI.schemas'
+import type { LoginBody } from 'orval/client.schemas'
 import { PasswordInput } from '@mantine/core'
 
 interface LoginPasswordFormProps {

@@ -44,12 +44,18 @@ importers:
       isbot:
         specifier: ^4.1.0
         version: 4.4.0
+      jotai:
+        specifier: ^2.10.1
+        version: 2.10.1(react@19.0.0-rc-09111202-20241011)(types-react@19.0.0-rc.1)
       react:
         specifier: 19.0.0-rc-09111202-20241011
         version: 19.0.0-rc-09111202-20241011
       react-dom:
         specifier: 19.0.0-rc-09111202-20241011
         version: 19.0.0-rc-09111202-20241011(react@19.0.0-rc-09111202-20241011)
+      react-icons:
+        specifier: ^5.3.0
+        version: 5.3.0(react@19.0.0-rc-09111202-20241011)
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20241004.0
@@ -2739,6 +2745,18 @@ packages:
   javascript-stringify@2.1.0:
     resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
 
+  jotai@2.10.1:
+    resolution: {integrity: sha512-4FycO+BOTl2auLyF2Chvi6KTDqdsdDDtpaL/WHQMs8f3KS1E3loiUShQzAzFA/sMU5cJ0hz/RT1xum9YbG/zaA==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -3587,6 +3605,11 @@ packages:
     resolution: {integrity: sha512-iGX/aJR6YjAHHUtmPNf2YmR8e2pYmlRL28tR/PO6VdIGBqNzzLMNnTEcgjlPPQ0rXBjI0IL7SJnOFYWmk3ZGjw==}
     peerDependencies:
       react: 19.0.0-rc-09111202-20241011
+
+  react-icons@5.3.0:
+    resolution: {integrity: sha512-DnUk8aFbTyQPSkCfF8dbX6kQjXA9DktMeJqfjrg6cK9vwQVMxmcA3BfP4QoiztVmEHtwlTgLFsPuH2NskKT6eg==}
+    peerDependencies:
+      react: '*'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -7512,6 +7535,11 @@ snapshots:
 
   javascript-stringify@2.1.0: {}
 
+  jotai@2.10.1(react@19.0.0-rc-09111202-20241011)(types-react@19.0.0-rc.1):
+    optionalDependencies:
+      '@types/react': types-react@19.0.0-rc.1
+      react: 19.0.0-rc-09111202-20241011
+
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.1:
@@ -8542,6 +8570,10 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-09111202-20241011
       scheduler: 0.25.0-rc-09111202-20241011
+
+  react-icons@5.3.0(react@19.0.0-rc-09111202-20241011):
+    dependencies:
+      react: 19.0.0-rc-09111202-20241011
 
   react-is@16.13.1: {}
 

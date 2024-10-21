@@ -17,17 +17,29 @@ export type LoginBody = {
   password: string;
 };
 
-export type UpdateLoansBodyItem = {
+/**
+ * 貸出数が在庫数を超えているリクエスト
+ */
+export type UpsertLoans409 = {
   bookId: number;
   userId: number;
-  volume?: number;
+  volume: number;
 };
 
-export type CreateLoansBodyItem = {
+export type UpsertLoans404 = {
   bookId: number;
   userId: number;
-  /** @minimum 1 */
+};
+
+export type UpsertLoansBodyItem = {
+  bookId: number;
+  userId: number;
   volume: number;
+};
+
+export type GetLoans200 = {
+  loans: Loan[];
+  totalPage: number;
 };
 
 export type GetLoansParams = {
@@ -63,10 +75,6 @@ export type UpdateUserBody = {
   password?: string;
 };
 
-export type CreateUser201 = {
-  message?: string;
-};
-
 export type CreateUserBody = {
   email: string;
   name: string;
@@ -75,6 +83,11 @@ export type CreateUserBody = {
    * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
    */
   password: string;
+};
+
+export type GetUsers200 = {
+  totalPage: number;
+  users: User[];
 };
 
 export type GetUsersParams = {
@@ -96,12 +109,18 @@ name?: string;
 email?: string;
 };
 
-export type SearchBooks200Item = {
+export type SearchBooks200BooksItem = {
   authors: string[];
   isbn?: string;
   publisher?: string;
   thumbnail?: string;
   title: string;
+};
+
+export type SearchBooks200 = {
+  books: SearchBooks200BooksItem[];
+  /** 総ページ数 */
+  totalPage: number;
 };
 
 export type SearchBooksParams = {
@@ -148,6 +167,12 @@ export type CreateBookBody = {
   stock: number;
   thumbnail?: string;
   title: string;
+};
+
+export type GetBooks200 = {
+  books: Book[];
+  /** 総ページ数 */
+  totalPage: number;
 };
 
 export type GetBooksParams = {
@@ -199,9 +224,10 @@ export type BadRequestResponse = Error;
 
 export interface Loan {
   bookId: number;
-  createdAt?: string;
-  id: number;
-  updatedAt?: string;
+  /** レコードが作成されたUNIX時間 */
+  createdAt?: number;
+  /** レコードが最後に更新されたUNIX時間 */
+  updatedAt?: number;
   userId: number;
   volume: number;
 }
@@ -210,7 +236,6 @@ export interface User {
   email: string;
   id: number;
   name: string;
-  passwordDigest: string;
   /** @nullable */
   sessionToken?: string | null;
 }
