@@ -426,7 +426,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
+                  totalUser:
+                    description: 総ユーザー数
                     type: integer
                   users:
                     type: array

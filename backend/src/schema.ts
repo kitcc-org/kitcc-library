@@ -179,7 +179,7 @@ export const getUsersQueryParams = zod.object({
 })
 
 export const getUsersResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalUser": zod.number().optional(),
   "users": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string(),

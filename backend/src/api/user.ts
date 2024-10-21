@@ -64,7 +64,7 @@ app.get(
 			slicedUsers = hitUsers.slice((page - 1) * limit, page * limit);
 		}
 
-		const responseBody = { totalPage: totalPage, users: slicedUsers };
+		const responseBody = { totalUser: hitUsers.length, users: slicedUsers };
 		const result = getUsersResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
