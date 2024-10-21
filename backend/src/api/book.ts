@@ -21,7 +21,8 @@ import { isLoggedIn } from '../utils/auth';
 const app = new Hono<{ Bindings: Env }>();
 
 // Google Books APIsのレスポンスボディ
-interface VolumeResult {
+// 200(OK)の場合
+interface GoogleBookVolume {
 	totalItems: number;
 	items?: [
 		{
@@ -29,6 +30,8 @@ interface VolumeResult {
 				title: string;
 				authors?: string[];
 				publisher?: string;
+				publishedDate?: string;
+				description?: string;
 				imageLinks?: {
 					thumbnail: string;
 				};
@@ -40,12 +43,26 @@ interface VolumeResult {
 		},
 	];
 }
+// 400(Bad Request)の場合
+interface GoogleApiError {
+	error: {
+		code: number;
+		message: string;
+		errors: {
+			message: string;
+			domain: string;
+			reason: string;
+		}[];
+	};
+}
 
 // GET /search のレスポンス
 interface GoogleBook {
 	title: string;
 	authors: string[];
 	publisher: string;
+	publishedDate: string;
+	description: string;
 	thumbnail: string;
 	isbn: string;
 }
@@ -91,11 +108,12 @@ app.get(
 		// Google Books APIsにリクエストを送信する
 		// prettier-ignore
 		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
-		const volumeResult: VolumeResult = await response.json();
+		if (response.status !== 200) {
+			const error: GoogleApiError = await response.json();
+			return ctx.json(error, 400);
+		}
 
-		// 総ページ数を計算する
-		const totalPage = Math.ceil(volumeResult.totalItems / limit);
-
+		const volumeResult: GoogleBookVolume = await response.json();
 		// ヒットした書籍を格納する配列
 		const hitBooks: GoogleBook[] = [];
 
@@ -124,13 +142,18 @@ app.get(
 					title: book.title,
 					authors: book.authors ?? [],
 					publisher: book.publisher ?? '',
+					publishedDate: book.publishedDate ?? '',
+					description: book.description ?? '',
 					thumbnail: book.imageLinks?.thumbnail ?? '',
 					isbn: isbn ?? '',
 				});
 			}
 		}
 
-		const responseBody = { totalPage: totalPage, books: hitBooks };
+		const responseBody = {
+			totalBook: volumeResult.totalItems,
+			books: hitBooks,
+		};
 		const result = searchBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);

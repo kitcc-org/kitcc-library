@@ -337,8 +337,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
-                    description: 総ページ数
+                  totalBook:
+                    description: 総書籍数
                     type: integer
                   books:
                     type: array
@@ -353,6 +353,10 @@ paths:
                             type: string
                         publisher:
                           type: string
+                        publishedDate:
+                          type: string
+                        description:
+                          type: string
                         thumbnail:
                           type: string
                         isbn:
@@ -361,10 +365,10 @@ paths:
                         - title
                         - authors
                 required:
-                  - totalPage
+                  - totalBook
                   - books
               example:
-                totalPage: 3
+                totalBook: 30
                 books:
                   - title: 計算機プログラムの構造と解釈
                     authors:
