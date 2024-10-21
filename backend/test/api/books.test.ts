@@ -7,7 +7,7 @@ import { loggedInTest } from '../context/login';
 import { bookFactory } from '../factories/book';
 
 interface GetBooksResponse {
-	totalPage: number;
+	totalBook: number;
 	books: SelectBook[];
 }
 
@@ -34,7 +34,7 @@ describe('GET /books', () => {
 		expect(response.status).toBe(200);
 
 		const body: GetBooksResponse = await response.json();
-		expect(body.totalPage).toBe(2);
+		expect(body.totalBook).toBe(5);
 		expect(body.books).toHaveLength(limit);
 	});
 
@@ -51,13 +51,13 @@ describe('GET /books', () => {
 	it('should return correct book', async () => {
 		const firstBook = { ...books[0], id: 1 };
 
-		const params = new URLSearchParams({ title: firstBook.title }).toString();
+		const params = new URLSearchParams({ isbn: firstBook.isbn }).toString();
 		const response = await app.request(`/books?${params}`, {}, env);
 
 		expect(response.status).toBe(200);
 
 		const body: GetBooksResponse = await response.json();
-		expect(body.totalPage).toBe(1);
+		expect(body.totalBook).toBe(1);
 		expect(body.books).toContainEqual(firstBook);
 	});
 

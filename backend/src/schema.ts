@@ -31,7 +31,7 @@ export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?
 
 
 export const getBooksResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalBook": zod.number().optional(),
   "books": zod.array(zod.object({
   "id": zod.number(),
   "title": zod.string(),
@@ -331,15 +331,6 @@ export const loginResponse = zod.object({
   "name": zod.string(),
   "email": zod.string().email(),
   "sessionToken": zod.string().nullish()
-})
-
-
-/**
- * CookieからセッションIDを削除する
- * @summary ログアウトする
- */
-export const logoutResponse = zod.object({
-  "message": zod.string().optional()
 })
 
 

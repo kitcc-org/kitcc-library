@@ -81,8 +81,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
-                    description: 総ページ数
+                  totalBook:
+                    description: 総書籍数
                     type: integer
                   books:
                     type: array
@@ -820,7 +820,7 @@ paths:
       description: CookieからセッションIDを削除する
       security: []
       responses:
-        '200':
+        '204':
           description: ログアウトに成功した
           headers:
             Set-Cookie:

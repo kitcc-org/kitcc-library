@@ -58,8 +58,8 @@ books:
             schema:
               type: object
               properties:
-                totalPage:
-                  description: 総ページ数
+                totalBook:
+                  description: 総書籍数
                   type: integer
                 books:
                   type: array

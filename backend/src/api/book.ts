@@ -197,7 +197,7 @@ app.get(
 			slicedBooks = hitBooks.slice((page - 1) * limit, page * limit);
 		}
 
-		const responseBody = { totalPage: totalPage, books: slicedBooks };
+		const responseBody = { totalBook: hitBooks.length, books: slicedBooks };
 		const result = getBooksResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);
