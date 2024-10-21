@@ -7,26 +7,40 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
+    "format": "npx prettier . --write",
+    "lint": "npx eslint --fix --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "wrangler dev",
     "test": "vitest",
     "cf-typegen": "wrangler types",
     "db:mig:gen": "pnpm drizzle-kit generate",
     "db:mig:ls": "wrangler d1 migrations list kitcc-lib-db",
-    "db:mig:apply:local": "wrangler d1 migrations apply kitcc-lib-db --local",
-    "db:mig:apply:remote": "wrangler d1 migrations apply kitcc-lib-db --remote",
-    "db:seed:local": "wrangler d1 execute kitcc-lib-db --local  --file=./drizzle/seeds/${file}",
-    "db:seed:remote": "wrangler d1 execute kitcc-lib-db --remote --file=./drizzle/seeds/${file}",
-    "db:studio": "drizzle-kit studio --config drizzle.config.local.ts"
+    "db:mig:apply": "wrangler d1 migrations apply kitcc-lib-db",
+    "db:seed": "wrangler d1 execute kitcc-lib-db --file=./drizzle/seeds/${file}",
+    "db:studio": "drizzle-kit studio --config drizzle.config.local.ts",
+    "prepare": "husky"
   },
+	"lint-staged": {
+		"*.{ts, tsx, js, jsx}": [
+			"prettier --write",
+			"eslint --fix"
+		]
+	},
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.16",
     "@cloudflare/workers-types": "^4.20241004.0",
+    "@eslint/compat": "^1.2.1",
+    "@eslint/js": "^9.13.0",
     "@faker-js/faker": "^9.0.3",
     "@types/node": "^22.7.5",
     "better-sqlite3": "^11.3.0",
     "drizzle-kit": "^0.24.2",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
     "factory.ts": "^1.4.1",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "orval": "^7.1.1",
+    "prettier": "3.3.3",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "vitest": "2.0.5",

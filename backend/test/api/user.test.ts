@@ -81,7 +81,7 @@ describe('PATCH /users/:userId', () => {
 				},
 				body: JSON.stringify(credentials),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(200);
@@ -112,11 +112,11 @@ describe('PATCH /users/:userId', () => {
 					},
 					body: JSON.stringify({ name: 'username' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -136,11 +136,11 @@ describe('PATCH /users/:userId', () => {
 					// ユーザ名に文字列以外を指定する
 					body: JSON.stringify({ name: 1 }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -160,11 +160,11 @@ describe('PATCH /users/:userId', () => {
 					// メールアドレスに文字列以外を指定する
 					body: JSON.stringify({ email: 'user@invalid' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -191,12 +191,12 @@ describe('PATCH /users/:userId', () => {
 						// パスワードに文字列以外を指定する
 						body: JSON.stringify({ password: 1 }),
 					},
-					env
+					env,
 				);
 
 				expect(response.status).toBe(400);
 			}
-		}
+		},
 	);
 
 	loggedInTest(
@@ -218,11 +218,11 @@ describe('PATCH /users/:userId', () => {
 					// 既に存在するメールアドレスを指定する
 					body: JSON.stringify({ email: users[0].email }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -255,11 +255,11 @@ describe('PATCH /users/:userId', () => {
 					},
 					body: JSON.stringify({ name: 'username' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
-		}
+		},
 	);
 });
 
@@ -293,7 +293,7 @@ describe('DELETE /users/:userId', () => {
 					].join('; '),
 				},
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(204);
@@ -321,11 +321,11 @@ describe('DELETE /users/:userId', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -335,7 +335,7 @@ describe('DELETE /users/:userId', () => {
 				method: 'DELETE',
 				// Cookieを指定しない
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);
@@ -356,10 +356,10 @@ describe('DELETE /users/:userId', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
-		}
+		},
 	);
 });

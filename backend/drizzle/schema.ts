@@ -20,7 +20,7 @@ export const bookTable = sqliteTable(
 	},
 	(table) => ({
 		isbnIdx: uniqueIndex('isbn_idx').on(table.isbn),
-	})
+	}),
 );
 
 export type SelectBook = typeof bookTable.$inferSelect;
@@ -47,7 +47,7 @@ export const userTable = sqliteTable(
 		return {
 			emailIndex: uniqueIndex('email_idx').on(table.email),
 		};
-	}
+	},
 );
 
 export type SelectUser = typeof userTable.$inferSelect;
@@ -82,7 +82,7 @@ export const loanTable = sqliteTable(
 		return {
 			pk: primaryKey({ columns: [table.userId, table.bookId] }),
 		};
-	}
+	},
 );
 
 export type SelectLoan = typeof loanTable.$inferSelect;

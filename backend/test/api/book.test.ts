@@ -84,7 +84,7 @@ describe('PATCH /books/:bookId', () => {
 				},
 				body: JSON.stringify(book),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(200);
@@ -113,11 +113,11 @@ describe('PATCH /books/:bookId', () => {
 					},
 					body: JSON.stringify({ title: 'title' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -137,11 +137,11 @@ describe('PATCH /books/:bookId', () => {
 					// タイトルに文字列以外を指定する
 					body: JSON.stringify({ title: 1 }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -161,11 +161,11 @@ describe('PATCH /books/:bookId', () => {
 					// 著者に配列以外を指定する
 					body: JSON.stringify({ authors: 'author' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -185,11 +185,11 @@ describe('PATCH /books/:bookId', () => {
 					// 出版社に文字列以外を指定する
 					body: JSON.stringify({ publisher: 1 }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -209,11 +209,11 @@ describe('PATCH /books/:bookId', () => {
 					// ISBNに文字列以外を指定する
 					body: JSON.stringify({ isbn: 123456789 }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -235,11 +235,11 @@ describe('PATCH /books/:bookId', () => {
 					// 既に登録されているISBNを指定する
 					body: JSON.stringify({ isbn: books[0].isbn }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -253,7 +253,7 @@ describe('PATCH /books/:bookId', () => {
 				},
 				body: JSON.stringify({ title: '計算機プログラムの構造と解釈' }),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);
@@ -276,11 +276,11 @@ describe('PATCH /books/:bookId', () => {
 					},
 					body: JSON.stringify({ title: '計算機プログラムの構造と解釈' }),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
-		}
+		},
 	);
 });
 
@@ -314,7 +314,7 @@ describe('DELETE /books/:bookId', () => {
 					].join('; '),
 				},
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(204);
@@ -342,11 +342,11 @@ describe('DELETE /books/:bookId', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
-		}
+		},
 	);
 
 	it('should return 401 when not logged in', async () => {
@@ -373,10 +373,10 @@ describe('DELETE /books/:bookId', () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(404);
-		}
+		},
 	);
 });

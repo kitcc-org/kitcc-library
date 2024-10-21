@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "42crunch.vscode-openapi",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig"
+    ]
+}

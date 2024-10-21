@@ -37,7 +37,7 @@ describe('POST /auth', async () => {
 					password: password,
 				}),
 			},
-			env
+			env,
 		);
 
 		// ステータスコード
@@ -82,7 +82,7 @@ describe('POST /auth', async () => {
 						password: password,
 					}),
 				},
-				env
+				env,
 			);
 
 			// ステータスコード
@@ -92,7 +92,7 @@ describe('POST /auth', async () => {
 			const selectUser = await response.json();
 			const { passwordDigest, ...rest } = currentUser;
 			expect(selectUser).toMatchObject(rest);
-		}
+		},
 	);
 
 	loggedInTest(
@@ -116,12 +116,12 @@ describe('POST /auth', async () => {
 						password: password,
 					}),
 				},
-				env
+				env,
 			);
 
 			// ステータスコード
 			expect(response.status).toBe(401);
-		}
+		},
 	);
 
 	it('should return 400 when email is missing', async () => {
@@ -137,7 +137,7 @@ describe('POST /auth', async () => {
 					password: password,
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(400);
@@ -157,7 +157,7 @@ describe('POST /auth', async () => {
 					password: password,
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(400);
@@ -176,7 +176,7 @@ describe('POST /auth', async () => {
 					// パスワードを指定しない
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(400);
@@ -202,7 +202,7 @@ describe('POST /auth', async () => {
 						password: password,
 					}),
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(400);
@@ -223,7 +223,7 @@ describe('POST /auth', async () => {
 					password: 'hoge1227',
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(401);
@@ -243,7 +243,7 @@ describe('POST /auth', async () => {
 					password: password,
 				}),
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(404);
@@ -267,7 +267,7 @@ describe('DELETE /auth', async () => {
 						].join('; '),
 					},
 				},
-				env
+				env,
 			);
 
 			expect(response.status).toBe(200);
@@ -278,7 +278,7 @@ describe('DELETE /auth', async () => {
 				.from(userTable)
 				.where(eq(userTable.email, currentUser.email));
 			expect(selectUser[0].sessionToken).toBeNull();
-		}
+		},
 	);
 
 	it('should logout successfully even when not logged in', async () => {
@@ -288,7 +288,7 @@ describe('DELETE /auth', async () => {
 				method: 'DELETE',
 				// Cookieを指定しない
 			},
-			env
+			env,
 		);
 
 		expect(response.status).toBe(200);

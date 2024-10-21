@@ -32,7 +32,7 @@ app.get(
 					message: 'Query Parameter Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -43,7 +43,7 @@ app.get(
 				{
 					message: 'Unauthorized',
 				},
-				401
+				401,
 			);
 		}
 
@@ -64,8 +64,8 @@ app.get(
 						: undefined,
 					query['bookId']
 						? eq(loanTable.bookId, parseInt(query['bookId']))
-						: undefined
-				)
+						: undefined,
+				),
 			)
 			.orderBy(asc(loanTable.userId), asc(loanTable.bookId));
 
@@ -86,12 +86,12 @@ app.get(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data);
 		}
-	}
+	},
 );
 
 app.patch(
@@ -103,7 +103,7 @@ app.patch(
 					message: 'Request Body Validation Error',
 					error: result.error,
 				},
-				400
+				400,
 			);
 		}
 	}),
@@ -114,7 +114,7 @@ app.patch(
 				{
 					message: 'Unauthorized',
 				},
-				401
+				401,
 			);
 		}
 
@@ -157,8 +157,8 @@ app.patch(
 				.where(
 					and(
 						eq(loanTable.userId, newLoan.userId),
-						eq(loanTable.bookId, newLoan.bookId)
-					)
+						eq(loanTable.bookId, newLoan.bookId),
+					),
 				);
 			if (0 < sameLoan.length) {
 				// 既に貸出履歴が存在する場合
@@ -174,8 +174,8 @@ app.patch(
 						.where(
 							and(
 								eq(loanTable.userId, newLoan.userId),
-								eq(loanTable.bookId, newLoan.bookId)
-							)
+								eq(loanTable.bookId, newLoan.bookId),
+							),
 						)
 						.returning()
 						.toSQL();
@@ -188,8 +188,8 @@ app.patch(
 						.where(
 							and(
 								eq(loanTable.userId, newLoan.userId),
-								eq(loanTable.bookId, newLoan.bookId)
-							)
+								eq(loanTable.bookId, newLoan.bookId),
+							),
 						)
 						.returning()
 						.toSQL();
@@ -218,7 +218,7 @@ app.patch(
 		const batchResponse: D1Result<SnakeLoan>[] = await rawDb.batch(
 			batch.map((query) => {
 				return rawDb.prepare(query.sql).bind(...query.params);
-			})
+			}),
 		);
 
 		const upsertedLoans = batchResponse.flatMap((response) => {
@@ -232,7 +232,7 @@ app.patch(
 			return Object.fromEntries(
 				Object.entries(results[0]).map(([key, value]) => {
 					return [camelCase(key), value];
-				})
+				}),
 			);
 		});
 
@@ -243,12 +243,12 @@ app.patch(
 				{
 					message: 'Response Validation Error',
 				},
-				500
+				500,
 			);
 		} else {
 			return ctx.json(result.data, 200);
 		}
-	}
+	},
 );
 
 export default app;
