@@ -25,7 +25,7 @@ export const getBooksQueryParams = zod.object({
   "author": zod.string().optional(),
   "publisher": zod.string().optional(),
   "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional(),
-  "sort": zod.enum(['1', '2', '3', '4']).optional()
+  "sort": zod.enum(['0', '1', '2', '3']).optional()
 })
 
 export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
@@ -192,7 +192,7 @@ export const getUsersQueryParams = zod.object({
 })
 
 export const getUsersResponse = zod.object({
-  "totalUser": zod.number().optional(),
+  "totalUser": zod.number(),
   "users": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string(),
@@ -290,11 +290,12 @@ export const getLoansQueryParams = zod.object({
   "userId": zod.string().regex(getLoansQueryUserIdRegExp).optional(),
   "bookId": zod.string().regex(getLoansQueryBookIdRegExp).optional(),
   "page": zod.string().min(1).regex(getLoansQueryPageRegExp).optional(),
-  "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional()
+  "limit": zod.string().min(1).regex(getLoansQueryLimitRegExp).optional(),
+  "sort": zod.enum(['0', '1', '2', '3', '4', '5']).optional()
 })
 
 export const getLoansResponse = zod.object({
-  "totalLoan": zod.number().optional(),
+  "totalLoan": zod.number(),
   "loans": zod.array(zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),

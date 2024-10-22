@@ -1,7 +1,7 @@
 import { bookTable, loanTable, SelectLoan, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
 import camelCase from 'camelcase';
-import { and, asc, eq, Query } from 'drizzle-orm';
+import { and, asc, desc, eq, Query } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -52,6 +52,30 @@ app.get(
 		const page = parseInt(query['page'] ?? '1');
 		const limit = parseInt(query['limit'] ?? '10');
 
+		let order = asc(loanTable.bookId);
+		if (query['sort']) {
+			switch (query['sort']) {
+				case '0': // ユーザID昇順
+					order = asc(loanTable.userId);
+					break;
+				case '1': // ユーザID降順
+					order = desc(loanTable.userId);
+					break;
+				case '2': // 書籍ID昇順
+					order = asc(loanTable.bookId);
+					break;
+				case '3': // 書籍ID降順
+					order = desc(loanTable.bookId);
+					break;
+				case '4': // 貸出日昇順
+					order = asc(loanTable.createdAt);
+					break;
+				case '5': // 貸出日降順
+					order = desc(loanTable.createdAt);
+					break;
+			}
+		}
+
 		const db = drizzle(ctx.env.DB);
 
 		const hitLoans = await db
@@ -67,7 +91,7 @@ app.get(
 						: undefined,
 				),
 			)
-			.orderBy(asc(loanTable.userId), asc(loanTable.bookId));
+			.orderBy(order);
 
 		let slicedLoans: SelectLoan[] = [];
 		// 総ページ数を計算する

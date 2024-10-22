@@ -81,11 +81,11 @@ paths:
           schema:
             type: string
             enum:
+              - '0'
               - '1'
               - '2'
               - '3'
-              - '4'
-            default: '1'
+            default: '0'
       responses:
         '200':
           description: 情報の取得に成功した
@@ -470,7 +470,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/User'
                 required:
-                  - totalPage
+                  - totalUser
                   - users
         '400':
           $ref: '#/components/responses/BadRequest'
@@ -699,6 +699,20 @@ paths:
             pattern: ^[1-9]\d*$
             minimum: 1
             default: 10
+        - name: sort
+          in: query
+          description: ソート順
+          required: false
+          schema:
+            type: string
+            enum:
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+            default: '2'
       responses:
         '200':
           description: OK
@@ -714,7 +728,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Loan'
                 required:
-                  - totalPage
+                  - totalLoan
                   - loans
         '400':
           $ref: '#/components/responses/BadRequest'

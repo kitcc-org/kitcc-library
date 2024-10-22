@@ -189,20 +189,18 @@ app.get(
 		const limit = parseInt(query['limit'] ?? '10');
 
 		let order = asc(bookTable.id);
-		console.log(query['sort']);
 		if (query['sort']) {
 			switch (query['sort']) {
-				case '1': // ID昇順
+				case '0': // ID昇順
 					order = asc(bookTable.id);
 					break;
-				case '2': // ID降順
+				case '1': // ID降順
 					order = desc(bookTable.id);
 					break;
-				case '3': // 出版日昇順
+				case '2': // 出版日昇順
 					order = asc(bookTable.publishedDate);
 					break;
-				case '4': // 出版日降順
-					console.log('debug');
+				case '3': // 出版日降順
 					order = desc(bookTable.publishedDate);
 					break;
 			}

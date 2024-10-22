@@ -40,6 +40,20 @@ loans:
           pattern: ^[1-9]\d*$
           minimum: 1
           default: 10
+      - name: sort
+        in: query
+        description: ソート順
+        required: false
+        schema:
+          type: string
+          enum:
+            - '0' # ユーザID昇順
+            - '1' # ユーザID降順
+            - '2' # 書籍ID昇順
+            - '3' # 書籍ID降順
+            - '4' # 貸出日昇順
+            - '5' # 貸出日降順
+          default: '2'
     responses:
       '200':
         description: OK
@@ -55,7 +69,7 @@ loans:
                   items:
                     $ref: "../components/schemas/Loan.yml"
               required:
-                - totalPage
+                - totalLoan
                 - loans
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
