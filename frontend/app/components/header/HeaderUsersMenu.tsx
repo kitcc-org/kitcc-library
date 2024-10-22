@@ -7,21 +7,21 @@ import { useNavigate } from '@remix-run/react';
 const HeaderUsersMenu = () => {
   const navigate = useNavigate()
   return (
-  <Menu shadow="md" width='10dw'>
-    <Menu.Target>
-      <Button leftSection={<FaUserFriends />} variant="default" >
-        ユーザー
-      </Button>
-    </Menu.Target>
-    <Menu.Dropdown>
-      <Menu.Item leftSection={<FaUsers />} onClick={() => navigate('/home/users')}>
-        ユーザー一覧
-      </Menu.Item>
-      <Menu.Item leftSection={<FaUserPlus />} onClick={() => navigate('/home/user-add')}>
-        ユーザー追加
-      </Menu.Item>
-    </Menu.Dropdown>
-  </Menu>
+    <Menu shadow="md">
+      <Menu.Target>
+        <Button leftSection={<FaUserFriends />} variant="default" >
+          ユーザー
+        </Button>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item leftSection={<FaUsers />} onClick={() => navigate('/home/users')}>
+          ユーザー一覧
+        </Menu.Item>
+        <Menu.Item leftSection={<FaUserPlus />} onClick={() => navigate('/home/user-add')}>
+          ユーザー追加
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   )
 }
 

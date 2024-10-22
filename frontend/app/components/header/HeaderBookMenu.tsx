@@ -11,7 +11,7 @@ const HeaderBookMenu = () => {
   const navigate = useNavigate()
   const [user,] = useAtom(userAtom)
   return (
-    <Menu shadow="md" width='10dw'>
+    <Menu shadow="md">
       <Menu.Target>
         <Button leftSection={<FaBook />} variant="default">
           書籍

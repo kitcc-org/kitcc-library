@@ -10,11 +10,11 @@ interface HeaderUserMenuProps {
   open: () => void
 }
 
-const HeaderUserMenu = ({open}: HeaderUserMenuProps) => {
+const HeaderUserMenu = ({ open }: HeaderUserMenuProps) => {
   const [user,] = useAtom(userAtom)
   const navigate = useNavigate()
   return (
-    <Menu shadow="md" width='10dw'>
+    <Menu shadow="md">
       <Menu.Target>
         <Button leftSection={<FaUserCircle />} variant="default" >
           {user.name}
