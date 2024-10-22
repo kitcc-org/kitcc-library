@@ -1,9 +1,19 @@
 import { TextInput } from '@mantine/core'
-import React from 'react'
+import type { UseFormReturnType } from '@mantine/form'
+import type { GetBooksParams } from 'orval/client.schemas'
 
-const SearchTitleForm = () => {
+interface SearchTitleFormProps {
+  form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
+}
+
+const SearchTitleForm = ({ form }: SearchTitleFormProps) => {
   return (
-    <TextInput 
+    <TextInput
+      label="タイトル"
+      placeholder="例: Javaプログラミング徹底マスター"
+      key={form.key('title')}
+      {...form.getInputProps('title')}
+    />
   )
 }
 

@@ -9,16 +9,16 @@ import { errorNotifications, successNotifications } from '~/utils/notification';
 import HeaderUsersMenu from './HeaderUsersMenu';
 
 const HeaderLoginComponent = () => {
-  const [opened, { open, close }] =  useDisclosure()
+  const [opened, { open, close }] = useDisclosure()
   const navigate = useNavigate()
   const logoutTask = useLogout()
   const handleLogoout = () => {
     logoutTask.mutate(undefined, {
       onSuccess: (response) => {
-        switch(response.status) {
+        switch (response.status) {
           case 204:
             successNotifications('ログアウトしました')
-            navigate('/home')
+            navigate('/home#search-mode-button')
             break
           case 500:
             errorNotifications('サーバーエラーが発生しました')
@@ -36,26 +36,26 @@ const HeaderLoginComponent = () => {
   }
   return (
     <>
-    <Group>
-      <HeaderBookMenu />
-      <HeaderUsersMenu />
-      <HeaderUserMenu open={open} />
-    </Group>
-    <Modal opened={opened && !(logoutTask.isPending)} onClose={close} >
-      <Stack
-        align='stretch'
-        justify='center'
-        gap='lg'
-      >
-        <Text ta='center' size='xl'>ログアウトしますか？</Text>
-        <Group justify='center' grow>
-          <Button onClick={close} variant='light'>キャンセル</Button>
-          <Button onClick={() => handleLogoout()} leftSection={<LuLogOut />}>
-            ログアウト
-          </Button>
-        </Group>
-      </Stack>
-    </Modal>
+      <Group>
+        <HeaderBookMenu />
+        <HeaderUsersMenu />
+        <HeaderUserMenu open={open} />
+      </Group>
+      <Modal opened={opened && !(logoutTask.isPending)} onClose={close} >
+        <Stack
+          align='stretch'
+          justify='center'
+          gap='lg'
+        >
+          <Text ta='center' size='xl'>ログアウトしますか？</Text>
+          <Group justify='center' grow>
+            <Button onClick={close} variant='light'>キャンセル</Button>
+            <Button onClick={() => handleLogoout()} leftSection={<LuLogOut />}>
+              ログアウト
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
     </>
   )
 }

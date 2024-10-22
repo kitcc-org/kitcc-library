@@ -20,7 +20,6 @@ const BookCard = ({ book }: BookCardProps) => {
     >
       <BookCardThumbnail thumbnail={book.thumbnail} />
       <BookCardTitle title={book.title} volume={book.stock} />
-      <BookCardContent book={book} />
     </Card>
   )
 }

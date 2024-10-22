@@ -8,9 +8,8 @@ interface SearchModeButtonProps {
 }
 
 const SearchModeButton = ({ isOpen, open, close }: SearchModeButtonProps) => {
-  return (
-    isOpen ? <Button onClick={close}>検索モードを閉じる</Button> : <Button onClick={open}>検索モードを開く</Button>
-  )
+  if (isOpen) return <Button id='search-mode-button' onClick={close} variant='light' >検索条件を閉じる</Button>
+  return <Button id='search-mode-button' onClick={open} variant='light' >検索条件を開く</Button>
 }
 
 export default SearchModeButton

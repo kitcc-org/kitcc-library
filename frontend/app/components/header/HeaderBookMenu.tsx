@@ -18,15 +18,15 @@ const HeaderBookMenu = () => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-      <Menu.Item leftSection={<LuBookCopy />} onClick={() => navigate('/home')}>
-        書籍一覧
-      </Menu.Item>
-      <Menu.Item leftSection={<BiSolidBookAdd />} onClick={() => navigate('/home/books/new')}>
-        書籍追加
-      </Menu.Item>
-      {(user !== noUser) && <Menu.Item leftSection={<LuShoppingCart />} onClick={() => navigate('/home/cart')} >
-        カート
-      </Menu.Item>}
+        <Menu.Item leftSection={<LuBookCopy />} onClick={() => navigate('/home#search-mode-button')}>
+          書籍一覧
+        </Menu.Item>
+        <Menu.Item leftSection={<BiSolidBookAdd />} onClick={() => navigate('/home/books/new')}>
+          書籍追加
+        </Menu.Item>
+        {(user !== noUser) && <Menu.Item leftSection={<LuShoppingCart />} onClick={() => navigate('/home/cart')} >
+          カート
+        </Menu.Item>}
       </Menu.Dropdown>
     </Menu>
   )
