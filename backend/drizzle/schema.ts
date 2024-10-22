@@ -14,6 +14,9 @@ export const bookTable = sqliteTable(
 		title: text('title').notNull(),
 		authors: text('authors', { mode: 'json' }).$type<string[]>().notNull(),
 		publisher: text('publisher').notNull(),
+		// prettier-ignore
+		publishedDate: text('published_date').notNull().default(sql`(current_timestamp)`),
+		description: text('description'),
 		thumbnail: text('thumbnail'),
 		isbn: text('isbn').notNull().unique(),
 		stock: integer('stock').notNull().default(1),
