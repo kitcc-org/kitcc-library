@@ -50,6 +50,23 @@ books:
         schema:
           type: string
           pattern: '^\d{10}(\d{3})?$'
+      - name: sort
+        in: query
+        description: >
+          ソート順
+          1: id昇順
+          2: id降順
+          3: 出版日昇順
+          4: 出版日降順
+        required: false
+        schema:
+          type: string
+          enum:
+            - '1' # id昇順
+            - '2' # id降順
+            - '3' # 出版日昇順
+            - '4' # 出版日降順
+          default: '1'
     responses:
       '200':
         description: 情報の取得に成功した

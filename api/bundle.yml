@@ -79,13 +79,13 @@ paths:
             ソート順 1: id昇順 2: id降順 3: 出版日昇順 4: 出版日降順
           required: false
           schema:
-            type: number
+            type: string
             enum:
-              - 1
-              - 2
-              - 3
-              - 4
-            default: 1
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+            default: '1'
       responses:
         '200':
           description: 情報の取得に成功した
@@ -864,15 +864,6 @@ paths:
               schema:
                 type: string
                 example: session_token=; Path=/; Max-Age=0
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: OK
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
