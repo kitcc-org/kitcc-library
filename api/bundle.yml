@@ -81,8 +81,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
-                    description: 総ページ数
+                  totalBook:
+                    description: 総書籍数
                     type: integer
                   books:
                     type: array
@@ -304,6 +304,12 @@ paths:
             minimum: 1
             maximum: 40
             default: 10
+        - name: keyword
+          in: query
+          description: 検索キーワード
+          required: false
+          schema:
+            type: string
         - name: intitle
           in: query
           description: タイトル
@@ -337,8 +343,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
-                    description: 総ページ数
+                  totalBook:
+                    description: 総書籍数
                     type: integer
                   books:
                     type: array
@@ -353,6 +359,10 @@ paths:
                             type: string
                         publisher:
                           type: string
+                        publishedDate:
+                          type: string
+                        description:
+                          type: string
                         thumbnail:
                           type: string
                         isbn:
@@ -361,10 +371,10 @@ paths:
                         - title
                         - authors
                 required:
-                  - totalPage
+                  - totalBook
                   - books
               example:
-                totalPage: 3
+                totalBook: 30
                 books:
                   - title: 計算機プログラムの構造と解釈
                     authors:
@@ -426,7 +436,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
+                  totalUser:
+                    description: 総ユーザー数
                     type: integer
                   users:
                     type: array
@@ -670,7 +681,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  totalPage:
+                  totalLoan:
                     type: integer
                   loans:
                     type: array
@@ -820,7 +831,7 @@ paths:
       description: CookieからセッションIDを削除する
       security: []
       responses:
-        '200':
+        '204':
           description: ログアウトに成功した
           headers:
             Set-Cookie:

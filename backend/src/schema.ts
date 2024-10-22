@@ -31,7 +31,7 @@ export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?
 
 
 export const getBooksResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalBook": zod.number().optional(),
   "books": zod.array(zod.object({
   "id": zod.number(),
   "title": zod.string(),
@@ -145,6 +145,7 @@ export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 export const searchBooksQueryParams = zod.object({
   "page": zod.string().min(1).regex(searchBooksQueryPageRegExp).optional(),
   "limit": zod.string().min(1).max(searchBooksQueryLimitMax).regex(searchBooksQueryLimitRegExp).optional(),
+  "keyword": zod.string().optional(),
   "intitle": zod.string().optional(),
   "inauthor": zod.string().optional(),
   "inpublisher": zod.string().optional(),
@@ -152,11 +153,13 @@ export const searchBooksQueryParams = zod.object({
 })
 
 export const searchBooksResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalBook": zod.number(),
   "books": zod.array(zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string().optional(),
+  "publishedDate": zod.string().optional(),
+  "description": zod.string().optional(),
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().optional()
 }))
@@ -179,7 +182,7 @@ export const getUsersQueryParams = zod.object({
 })
 
 export const getUsersResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalUser": zod.number().optional(),
   "users": zod.array(zod.object({
   "id": zod.number(),
   "name": zod.string(),
@@ -281,7 +284,7 @@ export const getLoansQueryParams = zod.object({
 })
 
 export const getLoansResponse = zod.object({
-  "totalPage": zod.number(),
+  "totalLoan": zod.number().optional(),
   "loans": zod.array(zod.object({
   "userId": zod.number(),
   "bookId": zod.number(),
@@ -331,15 +334,6 @@ export const loginResponse = zod.object({
   "name": zod.string(),
   "email": zod.string().email(),
   "sessionToken": zod.string().nullish()
-})
-
-
-/**
- * CookieからセッションIDを削除する
- * @summary ログアウトする
- */
-export const logoutResponse = zod.object({
-  "message": zod.string().optional()
 })
 
 

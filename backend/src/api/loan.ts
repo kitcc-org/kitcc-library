@@ -1,4 +1,4 @@
-import { bookTable, loanTable, userTable } from '@/drizzle/schema';
+import { bookTable, loanTable, SelectLoan, userTable } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
 import camelCase from 'camelcase';
 import { and, asc, eq, Query } from 'drizzle-orm';
@@ -69,16 +69,15 @@ app.get(
 			)
 			.orderBy(asc(loanTable.userId), asc(loanTable.bookId));
 
+		let slicedLoans: SelectLoan[] = [];
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitLoans.length / limit);
-		if (totalPage < page) {
-			return ctx.json({ message: `Page ${page} is out of range` }, 400);
+		if (page <= totalPage) {
+			// 指定されたページの貸出履歴を取得する
+			slicedLoans = hitLoans.slice((page - 1) * limit, page * limit);
 		}
 
-		// 指定されたページの貸出履歴を取得する
-		const slicedLoans = hitLoans.slice((page - 1) * limit, page * limit);
-
-		const responseBody = { totalPage: totalPage, loans: slicedLoans };
+		const responseBody = { totalLoan: hitLoans.length, loans: slicedLoans };
 		const result = getLoansResponse.safeParse(responseBody);
 		if (!result.success) {
 			console.error(result.error);

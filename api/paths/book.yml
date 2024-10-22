@@ -58,8 +58,8 @@ books:
             schema:
               type: object
               properties:
-                totalPage:
-                  description: 総ページ数
+                totalBook:
+                  description: 総書籍数
                   type: integer
                 books:
                   type: array
@@ -287,6 +287,12 @@ search:
           minimum: 1
           maximum: 40
           default: 10
+      - name: keyword
+        in: query
+        description: 検索キーワード
+        required: false
+        schema:
+          type: string
       - name: intitle
         in: query
         description: タイトル
@@ -320,8 +326,8 @@ search:
             schema:
               type: object
               properties:
-                totalPage:
-                  description: 総ページ数
+                totalBook:
+                  description: 総書籍数
                   type: integer
                 books:
                   type: array
@@ -336,6 +342,10 @@ search:
                           type: string
                       publisher:
                         type: string
+                      publishedDate:
+                        type: string
+                      description:
+                        type: string
                       thumbnail:
                         type: string
                       isbn:
@@ -344,10 +354,10 @@ search:
                       - title
                       - authors
               required:
-                - totalPage
+                - totalBook
                 - books
             example:
-              totalPage: 3
+              totalBook: 30
               books:
                 - title: "計算機プログラムの構造と解釈"
                   authors:

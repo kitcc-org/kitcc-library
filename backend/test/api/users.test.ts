@@ -7,7 +7,7 @@ import { loggedInTest } from '../context/login';
 import { userFactory } from '../factories/user';
 
 interface GetUsersResponse {
-	totalPage: number;
+	totalUser: number;
 	users: SelectUser[];
 }
 
@@ -34,8 +34,18 @@ describe('GET /users', () => {
 		expect(response.status).toBe(200);
 
 		const body: GetUsersResponse = await response.json();
-		expect(body.totalPage).toBe(2);
+		expect(body.totalUser).toBe(5);
 		expect(body.users).toHaveLength(limit);
+	});
+
+	it('should return empty array when page is out of range', async () => {
+		const params = new URLSearchParams({ page: '3', limit: '3' }).toString();
+		const response = await app.request(`/users?${params}`, {}, env);
+
+		expect(response.status).toBe(200);
+
+		const body: GetUsersResponse = await response.json();
+		expect(body.users).toHaveLength(0);
 	});
 
 	it('should return correct user', async () => {
@@ -52,7 +62,7 @@ describe('GET /users', () => {
 		expect(response.status).toBe(200);
 
 		const body: GetUsersResponse = await response.json();
-		expect(body.totalPage).toBe(1);
+		expect(body.totalUser).toBe(1);
 		expect(body.users).toContainEqual(firstUser);
 	});
 
