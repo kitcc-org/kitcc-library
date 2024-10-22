@@ -61,6 +61,62 @@ const BooKListPage = () => {
       count += 1;
       url = (count === 1) ? `${url}?isbn=${props.isbn}` : `${url}&isbn=${props.isbn}`
     }
+    if (limit) {
+      count += 1
+      url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+    }
+    url = `${url}#search-mode-button`
+    navigate(url)
+  }
+
+  const handlePaginationChange = (newPage: number) => {
+    let url = '/home'
+    let count = 0
+    if (title) {
+      count += 1
+      url = (count === 1) ? `${url}?title=${title}` : `${url}&title=${title}`
+    }
+    if (author) {
+      count += 1;
+      url = (count === 1) ? `${url}?author=${author}` : `${url}&author=${author}`
+    }
+    if (publisher) {
+      count += 1;
+      url = (count === 1) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+    }
+    if (isbn) {
+      count += 1;
+      url = (count === 1) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+    }
+    if (limit) {
+      count += 1
+      url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+    }
+    url = (count === 0) ? `${url}?page=${newPage}` : `${url}&page=${newPage}`
+    url = `${url}#search-mode-button`
+    navigate(url)
+  }
+
+  const handleLimitChange = (newLimit: number) => {
+    let url = '/home'
+    let count = 0
+    if (title) {
+      count += 1
+      url = (count === 1) ? `${url}?title=${title}` : `${url}&title=${title}`
+    }
+    if (author) {
+      count += 1;
+      url = (count === 1) ? `${url}?author=${author}` : `${url}&author=${author}`
+    }
+    if (publisher) {
+      count += 1;
+      url = (count === 1) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+    }
+    if (isbn) {
+      count += 1;
+      url = (count === 1) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+    }
+    url = (count === 0) ? `${url}?limit=${newLimit}` : `${url}&limit=${newLimit}`
     url = `${url}#search-mode-button`
     navigate(url)
   }
@@ -73,6 +129,11 @@ const BooKListPage = () => {
       isOpen={opened}
       open={open}
       close={close}
+      handlePaginationChange={handlePaginationChange}
+      handleLimitChange={handleLimitChange}
+      page={Number(page)}
+      limit={Number(limit)}
+      totalBook={booksResponse.data.totalBook}
     />
   )
 }

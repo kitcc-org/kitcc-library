@@ -5,6 +5,8 @@ import BookCards from './BookCards'
 import type { UseFormReturnType } from '@mantine/form'
 import type { GetBooksParams } from 'orval/client.schemas'
 import SearchComponent from '../search/SearchComponent'
+import ContentsHeader from '../common/ContentsHeader'
+import PaginationComponent from '../common/PaginationComponent'
 
 interface BookListComponentProps {
   booksResponse: getBooksResponse
@@ -13,6 +15,11 @@ interface BookListComponentProps {
   isOpen: boolean
   open: () => void
   close: () => void
+  handlePaginationChange: (newPage: number) => void
+  handleLimitChange: (newLimit: number) => void
+  page?: number
+  limit?: number
+  totalBook?: number
 }
 
 const BookListComponent = ({
@@ -21,7 +28,12 @@ const BookListComponent = ({
   handleSubmit,
   isOpen,
   open,
-  close
+  close,
+  handlePaginationChange,
+  handleLimitChange,
+  page,
+  limit,
+  totalBook
 }: BookListComponentProps) => {
   return (
     <AppShell.Main>
@@ -31,7 +43,9 @@ const BookListComponent = ({
         justify='flex-start'
       >
         <SearchComponent isOpen={isOpen} open={open} close={close} form={form} handleSubmit={handleSubmit} />
+        <ContentsHeader page={page} limit={limit} total={totalBook} handleLimitChange={handleLimitChange} />
         {booksResponse.status !== 200 ? <ErrorBookComponent /> : <BookCards books={booksResponse.data.books} />}
+        <PaginationComponent totalNum={totalBook} page={page} limit={limit} handlePaginationChange={handlePaginationChange} />
       </Stack>
     </AppShell.Main>
   )

@@ -13,7 +13,7 @@ const BookCards = ({ books }: BookCardsProps) => {
     <ScrollArea h='70dh'>
       <SimpleGrid
         type="container"
-        cols={{ base: 1, '300px': 2, '400px': 3, '500px': 7 }}
+        cols={{ base: 1, '500px': 3, '700px': 4, '900px': 5, '1200px': 7 }}
         spacing={{ base: 10, '300px': 'xl' }}
       >
         {books.map((book) => <BookCard key={book.id} book={book} />)}

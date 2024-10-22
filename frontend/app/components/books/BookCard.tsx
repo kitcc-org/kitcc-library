@@ -16,7 +16,7 @@ const BookCard = ({ book }: BookCardProps) => {
       radius='md'
       withBorder
       component='a'
-      href={`/home//books/${book.id}`}
+      href={`/home/books/${book.id}`}
     >
       <BookCardThumbnail thumbnail={book.thumbnail} />
       <BookCardTitle title={book.title} volume={book.stock} />
