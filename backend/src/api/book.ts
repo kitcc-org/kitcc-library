@@ -90,7 +90,7 @@ app.get(
 		delete query['limit'];
 
 		// 絞り込み条件を作成する
-		let terms = '';
+		let terms = query['keyword'] ?? '';
 		for (const [key, value] of Object.entries(query)) {
 			if (value) {
 				terms += `+${key}:${value}`;

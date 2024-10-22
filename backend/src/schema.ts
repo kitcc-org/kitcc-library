@@ -145,6 +145,7 @@ export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 export const searchBooksQueryParams = zod.object({
   "page": zod.string().min(1).regex(searchBooksQueryPageRegExp).optional(),
   "limit": zod.string().min(1).max(searchBooksQueryLimitMax).regex(searchBooksQueryLimitRegExp).optional(),
+  "keyword": zod.string().optional(),
   "intitle": zod.string().optional(),
   "inauthor": zod.string().optional(),
   "inpublisher": zod.string().optional(),

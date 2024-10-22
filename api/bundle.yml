@@ -304,6 +304,12 @@ paths:
             minimum: 1
             maximum: 40
             default: 10
+        - name: keyword
+          in: query
+          description: 検索キーワード
+          required: false
+          schema:
+            type: string
         - name: intitle
           in: query
           description: タイトル
