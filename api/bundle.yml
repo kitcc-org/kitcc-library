@@ -73,6 +73,19 @@ paths:
           schema:
             type: string
             pattern: ^\d{10}(\d{3})?$
+        - name: sort
+          in: query
+          description: |
+            ソート順 1: id昇順 2: id降順 3: 出版日昇順 4: 出版日降順
+          required: false
+          schema:
+            type: number
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+            default: 1
       responses:
         '200':
           description: 情報の取得に成功した
@@ -117,6 +130,10 @@ paths:
                     type: string
                 publisher:
                   type: string
+                publishedDate:
+                  type: string
+                description:
+                  type: string
                 thumbnail:
                   type: string
                 isbn:
@@ -128,6 +145,8 @@ paths:
                 - title
                 - authors
                 - publisher
+                - publishedDate
+                - description
                 - isbn
                 - stock
               example:
@@ -137,6 +156,8 @@ paths:
                   - Gerald Jay Sussman
                   - Julie Sussman
                 publisher: 翔泳社
+                publishedDate: '2018-07-01'
+                description: 言わずと知れた計算機科学の古典的名著
                 thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
                 isbn: '9784798135984'
                 stock: 1
@@ -219,6 +240,8 @@ paths:
                     type: string
                 publisher:
                   type: string
+                publishedDate:
+                  type: string
                 isbn:
                   type: string
                   pattern: ^\d{10}(\d{3})?$
@@ -231,6 +254,7 @@ paths:
                 - Gerald Jay Sussman
                 - Julie Sussman
               publisher: 翔泳社
+              publishedDate: '2018-07-01'
               isbn: '9784798135984'
               stock: 1
       responses:
@@ -382,6 +406,8 @@ paths:
                       - Gerald Jay Sussman
                       - Julie Sussman
                     publisher: 翔泳社
+                    publishedDate: '2018-07-01'
+                    description: 言わずと知れた計算機科学の古典的名著
                     thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
                     isbn: '9784798135984'
         '400':
@@ -869,6 +895,10 @@ components:
             type: string
         publisher:
           type: string
+        publishedDate:
+          type: string
+        description:
+          type: string
         thumbnail:
           type: string
           format: uri
@@ -882,6 +912,8 @@ components:
         - title
         - authors
         - publisher
+        - publishedDate
+        - description
         - isbn
         - stock
     Error:
@@ -970,6 +1002,8 @@ components:
           - Gerald Jay Sussman
           - Julie Sussman
         publisher: 翔泳社
+        publishedDate: '2012-07-06'
+        description: 言わずと知れた計算機科学の古典的名著
         thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
         isbn: '9784798135984'
         stock: 1

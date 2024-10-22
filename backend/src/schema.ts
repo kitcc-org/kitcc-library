@@ -24,7 +24,8 @@ export const getBooksQueryParams = zod.object({
   "title": zod.string().optional(),
   "author": zod.string().optional(),
   "publisher": zod.string().optional(),
-  "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional()
+  "isbn": zod.string().regex(getBooksQueryIsbnRegExp).optional(),
+  "sort": zod.number().optional()
 })
 
 export const getBooksResponseBooksItemIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
@@ -37,6 +38,8 @@ export const getBooksResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
+  "publishedDate": zod.string(),
+  "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseBooksItemIsbnRegExp),
   "stock": zod.number()
@@ -54,6 +57,8 @@ export const createBookBody = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
+  "publishedDate": zod.string(),
+  "description": zod.string(),
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().regex(createBookBodyIsbnRegExp),
   "stock": zod.number()
@@ -78,6 +83,8 @@ export const getBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
+  "publishedDate": zod.string(),
+  "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBookResponseIsbnRegExp),
   "stock": zod.number()
@@ -103,6 +110,7 @@ export const updateBookBody = zod.object({
   "title": zod.string().optional(),
   "authors": zod.array(zod.string()).optional(),
   "publisher": zod.string().optional(),
+  "publishedDate": zod.string().optional(),
   "isbn": zod.string().regex(updateBookBodyIsbnRegExp).optional(),
   "stock": zod.number().optional()
 })
@@ -115,6 +123,8 @@ export const updateBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
+  "publishedDate": zod.string(),
+  "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(updateBookResponseIsbnRegExp),
   "stock": zod.number()

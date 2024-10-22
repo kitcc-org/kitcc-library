@@ -6,6 +6,8 @@ value:
     - "Gerald Jay Sussman"
     - "Julie Sussman"
   publisher: "翔泳社"
+  publishedDate: "2012-07-06"
+  description: "言わずと知れた計算機科学の古典的名著"
   thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
   isbn: "9784798135984"
   stock: 1
