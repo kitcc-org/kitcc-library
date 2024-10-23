@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core'
 import { FaSearch } from "react-icons/fa";
 
-const SearchSubmitButton = () => {
+const BookSearchSubmitButton = () => {
   return (
     <Button
       type='submit'
@@ -12,4 +12,4 @@ const SearchSubmitButton = () => {
   )
 }
 
-export default SearchSubmitButton
+export default BookSearchSubmitButton

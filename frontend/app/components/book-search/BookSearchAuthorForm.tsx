@@ -2,11 +2,11 @@ import { TextInput } from '@mantine/core'
 import type { UseFormReturnType } from '@mantine/form'
 import type { GetBooksParams } from 'orval/client.schemas'
 
-interface SearchAuthorFormProps {
+interface BookSearchAuthorFormProps {
   form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
 }
 
-const SearchAuthorForm = ({ form }: SearchAuthorFormProps) => {
+const BookSearchAuthorForm = ({ form }: BookSearchAuthorFormProps) => {
   return (
     <TextInput
       label="筆者"
@@ -17,4 +17,4 @@ const SearchAuthorForm = ({ form }: SearchAuthorFormProps) => {
   )
 }
 
-export default SearchAuthorForm
+export default BookSearchAuthorForm

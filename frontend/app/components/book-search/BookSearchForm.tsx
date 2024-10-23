@@ -2,11 +2,11 @@ import { Collapse } from '@mantine/core'
 import FormLayout from '../layouts/FormLayout'
 import type { UseFormReturnType } from '@mantine/form'
 import type { GetBooksParams } from 'orval/client.schemas'
-import SearchTitleForm from './SearchTitleForm'
-import SearchAuthorForm from './SearchAuthorForm'
-import SearchPublisherForm from './SearchPublisherForm'
-import SearchIsbnForm from './SearchIsbnForm'
-import SearchSubmitButton from './SearchSubmitButton'
+import BookSearchTitleForm from './BookSearchTitleForm'
+import BookSearchAuthorForm from './BookSearchAuthorForm'
+import BookSearchPublisherForm from './BookSearchPublisherForm'
+import BookSearchIsbnForm from './BookSearchIsbnForm'
+import BookSearchSubmitButton from './BookSearchSubmitButton'
 
 interface SearchFormProps {
   isOpen: boolean
@@ -14,7 +14,7 @@ interface SearchFormProps {
   handleSubmit: (props: GetBooksParams) => void
 }
 
-const SearchForm = ({
+const BookSearchForm = ({
   isOpen,
   form,
   handleSubmit
@@ -25,14 +25,14 @@ const SearchForm = ({
         form={form}
         handleSubmit={handleSubmit}
       >
-        <SearchTitleForm form={form} />
-        <SearchAuthorForm form={form} />
-        <SearchPublisherForm form={form} />
-        <SearchIsbnForm form={form} />
-        <SearchSubmitButton />
+        <BookSearchTitleForm form={form} />
+        <BookSearchAuthorForm form={form} />
+        <BookSearchPublisherForm form={form} />
+        <BookSearchIsbnForm form={form} />
+        <BookSearchSubmitButton />
       </FormLayout>
     </Collapse>
   )
 }
 
-export default SearchForm
+export default BookSearchForm

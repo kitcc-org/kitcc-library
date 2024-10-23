@@ -6,7 +6,7 @@ interface SearchTitleFormProps {
   form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
 }
 
-const SearchTitleForm = ({ form }: SearchTitleFormProps) => {
+const BookSearchTitleForm = ({ form }: SearchTitleFormProps) => {
   return (
     <TextInput
       label="タイトル"
@@ -17,4 +17,4 @@ const SearchTitleForm = ({ form }: SearchTitleFormProps) => {
   )
 }
 
-export default SearchTitleForm
+export default BookSearchTitleForm
