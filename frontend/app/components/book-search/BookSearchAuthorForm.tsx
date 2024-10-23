@@ -10,8 +10,8 @@ const BookSearchAuthorForm = ({ form }: BookSearchAuthorFormProps) => {
   return (
     <TextInput
       label="筆者"
-      placeholder="例：竹岡尚三"
-      key={form.key('authot')}
+      placeholder="竹岡尚三"
+      key={form.key('author')}
       {...form.getInputProps('author')}
     />
   )

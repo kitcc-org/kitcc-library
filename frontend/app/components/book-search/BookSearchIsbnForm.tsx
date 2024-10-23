@@ -10,7 +10,7 @@ const BookSearchIsbnForm = ({ form }: SearchIsbnFormProps) => {
   return (
     <TextInput
       label="ISBN"
-      placeholder="13桁のISBNを入力"
+      placeholder="10桁または13桁のISBN"
       key={form.key('isbn')}
       {...form.getInputProps('isbn')}
     />

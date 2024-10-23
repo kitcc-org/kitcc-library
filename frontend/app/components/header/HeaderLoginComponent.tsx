@@ -32,7 +32,7 @@ const HeaderLoginComponent = () => {
             break
         }
       },
-      onError: (error) => {
+      onError: () => {
         errorNotifications('ログアウトに失敗しました')
         close()
       }

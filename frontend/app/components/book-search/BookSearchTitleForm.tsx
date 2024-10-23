@@ -10,7 +10,7 @@ const BookSearchTitleForm = ({ form }: SearchTitleFormProps) => {
   return (
     <TextInput
       label="タイトル"
-      placeholder="例: Javaプログラミング徹底マスター"
+      placeholder="Javaプログラミング徹底マスター"
       key={form.key('title')}
       {...form.getInputProps('title')}
     />

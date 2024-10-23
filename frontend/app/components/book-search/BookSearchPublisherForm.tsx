@@ -10,7 +10,7 @@ const BookSearchPublisherForm = ({ form }: SearchPublisherFormProps) => {
   return (
     <TextInput
       label="出版社"
-      placeholder="例: SOFTBANK"
+      placeholder="SOFTBANK"
       key={form.key('publisher')}
       {...form.getInputProps('publisher')}
     />

@@ -7,7 +7,7 @@ const BookSearchSubmitButton = () => {
       type='submit'
       leftSection={<FaSearch />}
     >
-      検索する。
+      検索
     </Button>
   )
 }
