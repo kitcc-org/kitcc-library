@@ -12,7 +12,7 @@ const LimitSelect = ({ value, handleLimitChange }: LimitSelectProps) => {
       value={(!value || Number.isNaN(value)) ? '10' : value}
       label={'表示件数'}
       data={['3', '5', '10', '25', '50', '100']}
-      onChange={(event => event.currentTarget.value !== '' && handleLimitChange(Number(event.currentTarget.value)))}
+      onChange={(event => handleLimitChange(Number(event.currentTarget.value)))}
     />
   )
 }
