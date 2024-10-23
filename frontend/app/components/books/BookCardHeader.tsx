@@ -19,7 +19,9 @@ const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
   const selectedBookAdd = () => {
     if (selectedBook.some(selectedCheck)) {
       setSelectedBook(selectedBook.filter((element) => element.id !== id))
-    } else setSelectedBook([...selectedBook, { id, stock }])
+    } else {
+      setSelectedBook([...selectedBook, { id, stock }])
+    }
   }
 
   return (
