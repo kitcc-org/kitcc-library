@@ -7,8 +7,11 @@ import { useNavigate } from '@remix-run/react';
 import { LuLogOut } from "react-icons/lu";
 import { errorNotifications, successNotifications } from '~/utils/notification';
 import HeaderUsersMenu from './HeaderUsersMenu';
+import { useAtom } from 'jotai';
+import { userAtom, noUser } from '~/stores/userAtom';
 
 const HeaderLoginComponent = () => {
+  const [user, setUser] = useAtom(userAtom)
   const [opened, { open, close }] = useDisclosure()
   const navigate = useNavigate()
   const logoutTask = useLogout()
@@ -17,6 +20,7 @@ const HeaderLoginComponent = () => {
       onSuccess: (response) => {
         switch (response.status) {
           case 204:
+            setUser(noUser)
             successNotifications('ログアウトしました')
             navigate('/home#search-mode-button')
             break
