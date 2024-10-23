@@ -3,7 +3,6 @@ import { useNavigate } from "@remix-run/react";
 import { FaBook } from "react-icons/fa";
 import { LuBookCopy } from "react-icons/lu";
 import { BiSolidBookAdd } from "react-icons/bi";
-import { LuShoppingCart } from "react-icons/lu";
 import { userAtom, noUser } from "~/stores/userAtom";
 import { useAtom } from "jotai";
 
@@ -21,12 +20,10 @@ const HeaderBookMenu = () => {
         <Menu.Item leftSection={<LuBookCopy />} onClick={() => navigate('/home#search-mode-button')}>
           書籍一覧
         </Menu.Item>
-        <Menu.Item leftSection={<BiSolidBookAdd />} onClick={() => navigate('/home/books/new')}>
+        {(user !== noUser) && <Menu.Item leftSection={<BiSolidBookAdd />} onClick={() => navigate('/home/books/new')}>
           書籍追加
-        </Menu.Item>
-        {(user !== noUser) && <Menu.Item leftSection={<LuShoppingCart />} onClick={() => navigate('/home/cart')} >
-          カート
         </Menu.Item>}
+
       </Menu.Dropdown>
     </Menu>
   )

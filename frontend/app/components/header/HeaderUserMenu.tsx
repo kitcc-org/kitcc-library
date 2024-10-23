@@ -1,6 +1,7 @@
 import { Button, Menu } from '@mantine/core'
 import { FaUserCircle } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import { LuShoppingCart } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { userAtom } from '~/stores/userAtom';
 import { useAtom } from 'jotai';
@@ -23,6 +24,9 @@ const HeaderUserMenu = ({ open }: HeaderUserMenuProps) => {
       <Menu.Dropdown>
         <Menu.Item leftSection={<FaUser />} onClick={() => navigate('/home/mypage')} >
           マイページ
+        </Menu.Item>
+        <Menu.Item leftSection={<LuShoppingCart />} onClick={() => navigate('/home/cart')} >
+          カート
         </Menu.Item>
         <Menu.Item leftSection={<LuLogOut />} onClick={() => open()}>
           ログアウト
