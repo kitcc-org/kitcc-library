@@ -50,6 +50,13 @@
       "when": 1729175828297,
       "tag": "0006_flashy_proteus",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1729591295354,
+      "tag": "0007_elite_winter_soldier",
+      "breakpoints": true
     }
   ]
 }

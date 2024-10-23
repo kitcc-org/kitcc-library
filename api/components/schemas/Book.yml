@@ -10,6 +10,10 @@ properties:
       type: string
   publisher:
     type: string
+  publishedDate:
+    type: string
+  description:
+    type: string
   thumbnail:
     type: string
     format: uri
@@ -23,5 +27,7 @@ required:
   - title
   - authors
   - publisher
+  - publishedDate
+  - description
   - isbn
   - stock

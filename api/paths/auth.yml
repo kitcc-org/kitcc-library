@@ -69,14 +69,5 @@ auth:
             schema:
               type: string
               example: session_token=; Path=/; Max-Age=0
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-            example:
-              message: "OK"
       '500':
         $ref: "../components/responses/5xx.yml#/InternalServerError"

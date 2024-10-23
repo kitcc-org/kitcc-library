@@ -54,7 +54,7 @@ users:
                   items:
                     $ref: "../components/schemas/User.yml"
               required:
-                - totalPage
+                - totalUser
                 - users
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"

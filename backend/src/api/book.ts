@@ -1,6 +1,6 @@
 import { bookTable, SelectBook } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, asc, eq, like } from 'drizzle-orm';
+import { and, asc, desc, eq, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
@@ -188,6 +188,24 @@ app.get(
 		const page = parseInt(query['page'] ?? '1');
 		const limit = parseInt(query['limit'] ?? '10');
 
+		let order = asc(bookTable.id);
+		if (query['sort']) {
+			switch (query['sort']) {
+				case '0': // ID昇順
+					order = asc(bookTable.id);
+					break;
+				case '1': // ID降順
+					order = desc(bookTable.id);
+					break;
+				case '2': // 出版日昇順
+					order = asc(bookTable.publishedDate);
+					break;
+				case '3': // 出版日降順
+					order = desc(bookTable.publishedDate);
+					break;
+			}
+		}
+
 		const db = drizzle(ctx.env.DB);
 		// 書籍を検索する
 		const hitBooks: SelectBook[] = await db
@@ -210,7 +228,7 @@ app.get(
 						: undefined,
 				),
 			)
-			.orderBy(asc(bookTable.id));
+			.orderBy(order);
 
 		let slicedBooks: SelectBook[] = [];
 		// 総ページ数を計算する

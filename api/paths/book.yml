@@ -50,6 +50,23 @@ books:
         schema:
           type: string
           pattern: '^\d{10}(\d{3})?$'
+      - name: sort
+        in: query
+        description: >
+          ソート順
+          1: id昇順
+          2: id降順
+          3: 出版日昇順
+          4: 出版日降順
+        required: false
+        schema:
+          type: string
+          enum:
+            - '0' # ID昇順
+            - '1' # ID降順
+            - '2' # 出版日昇順
+            - '3' # 出版日降順
+          default: '0'
     responses:
       '200':
         description: 情報の取得に成功した
@@ -66,7 +83,7 @@ books:
                   items:
                     $ref: "../components/schemas/Book.yml"
               required:
-                - totalPage
+                - totalBook
                 - books
       '400':
         $ref: "../components/responses/4xx.yml#/BadRequest"
@@ -95,6 +112,10 @@ books:
                   type: string
               publisher:
                 type: string
+              publishedDate:
+                type: string
+              description:
+                type: string
               thumbnail:
                 type: string
               isbn:
@@ -106,6 +127,8 @@ books:
               - title
               - authors
               - publisher
+              - publishedDate
+              - description
               - isbn
               - stock
             example:
@@ -115,6 +138,8 @@ books:
                 - "Gerald Jay Sussman"
                 - "Julie Sussman"
               publisher: "翔泳社"
+              publishedDate: "2018-07-01"
+              description: "言わずと知れた計算機科学の古典的名著"
               thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
               isbn: "9784798135984"
               stock: 1
@@ -200,6 +225,8 @@ book:
                   type: string
               publisher:
                 type: string
+              publishedDate:
+                type: string
               isbn:
                 type: string
                 pattern: '^\d{10}(\d{3})?$'
@@ -212,6 +239,7 @@ book:
               - "Gerald Jay Sussman"
               - "Julie Sussman"
             publisher: "翔泳社"
+            publishedDate: "2018-07-01"
             isbn: "9784798135984"
             stock: 1
     responses:
@@ -365,6 +393,8 @@ search:
                     - "Gerald Jay Sussman"
                     - "Julie Sussman"
                   publisher: "翔泳社"
+                  publishedDate: "2018-07-01"
+                  description: "言わずと知れた計算機科学の古典的名著"
                   thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                   isbn: "9784798135984"
       '400':

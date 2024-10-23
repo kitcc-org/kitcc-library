@@ -6,14 +6,16 @@ await db
 	.prepare(
 		`
     CREATE TABLE IF NOT EXISTS books (
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      title TEXT NOT NULL,
-      authors TEXT NOT NULL,
-      publisher TEXT NOT NULL,
-      thumbnail TEXT,
-      isbn TEXT NOT NULL,
-      stock INTEGER NOT NULL DEFAULT 1
-    )
+			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+			title TEXT NOT NULL,
+			authors TEXT NOT NULL,
+			publisher TEXT NOT NULL,
+			published_date TEXT NOT NULL,
+			description TEXT,
+			thumbnail TEXT,
+			isbn TEXT NOT NULL,
+			stock INTEGER DEFAULT 1 NOT NULL
+		);
     `,
 	)
 	.run();
@@ -29,7 +31,7 @@ await db
 await db
 	.prepare(
 		`
-    CREATE TABLE users (
+    CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       name TEXT NOT NULL,
       email TEXT NOT NULL,
@@ -51,7 +53,7 @@ await db
 await db
 	.prepare(
 		`
-    CREATE TABLE loans (
+    CREATE TABLE IF NOT EXISTS loans (
       user_id INTEGER NOT NULL,
       book_id INTEGER NOT NULL,
       volume INTEGER DEFAULT 1 NOT NULL,
