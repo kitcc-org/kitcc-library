@@ -1,22 +1,25 @@
 import { AspectRatio, Card, Image, rem } from '@mantine/core'
+import { useNavigate } from '@remix-run/react'
 import NoImage from '~/img/noImage.png'
 
 interface BookCardThumbnailProps {
+  id: number
   thumbnail?: string
 }
 
-const BookCardThumbnail = ({ thumbnail }: BookCardThumbnailProps) => {
+const BookCardThumbnail = ({ id, thumbnail }: BookCardThumbnailProps) => {
+  const navigate = useNavigate()
   return (
-    <Card.Section>
-      <AspectRatio ratio={10 / 16}
-        style={{ flex: `0 0 ${rem(400)}` }}
-      >
-        <Image
-          src={thumbnail ? thumbnail : NoImage}
-          alt='Book cover'
-        />
-      </AspectRatio>
-    </Card.Section>
+    <AspectRatio ratio={10 / 16}
+      style={{ flex: `0 0 ${rem(400)}` }}
+      component='div'
+      onClick={() => navigate(`books/${id}`)}
+    >
+      <Image
+        src={thumbnail ? thumbnail : NoImage}
+        alt='Book cover'
+      />
+    </AspectRatio>
   )
 }
 
