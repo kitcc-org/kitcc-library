@@ -14,17 +14,17 @@ interface BookCardHeaderProps {
 const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
   const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom)
   const [user,] = useAtom(userAtom)
-  const cartCheck = (element: CartProps) => element.id === id
+  const selectedCheck = (element: CartProps) => element.id === id
 
   const selectedBookAdd = () => {
-    if (selectedBook.some(cartCheck)) {
+    if (selectedBook.some(selectedCheck)) {
       setSelectedBook(selectedBook.filter((element) => element.id !== id))
     } else setSelectedBook([...selectedBook, { id, stock }])
   }
 
   return (
     <Group justify={user !== noUser ? 'space-between' : 'flex-end'} py={10}>
-      {user !== noUser && <Checkbox value={id} checked={selectedBook.some(cartCheck)} onChange={selectedBookAdd} />}
+      {user !== noUser && <Checkbox value={id} checked={selectedBook.some(selectedCheck)} onChange={selectedBookAdd} />}
       <BookCardHeaderBadge stock={stock} />
     </Group>
   )
