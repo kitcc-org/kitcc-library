@@ -5,7 +5,7 @@ const db = env.DB;
 await db
 	.prepare(
 		`
-    CREATE TABLE books (
+    CREATE TABLE IF NOT EXISTS books (
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 			title TEXT NOT NULL,
 			authors TEXT NOT NULL,
@@ -31,7 +31,7 @@ await db
 await db
 	.prepare(
 		`
-    CREATE TABLE users (
+    CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       name TEXT NOT NULL,
       email TEXT NOT NULL,
@@ -53,7 +53,7 @@ await db
 await db
 	.prepare(
 		`
-    CREATE TABLE loans (
+    CREATE TABLE IF NOT EXISTS loans (
       user_id INTEGER NOT NULL,
       book_id INTEGER NOT NULL,
       volume INTEGER DEFAULT 1 NOT NULL,
