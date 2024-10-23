@@ -22,17 +22,15 @@ const BookSelectedDialog = () => {
             選択中の本が{selectedBook.length}冊あります
           </Text>
         </Center>
-        {/* <Group justify='flex-end'> */}
         <Button fz='xs'>
           選択中の本をカートに入れる
         </Button>
-        <Button fz='xs'>
+        <Button fz='xs' color='red'>
           選択中の本をデータベースから削除する
         </Button>
-        <Button fz='xs' onClick={() => setSelectedBook([])}>
+        <Button fz='xs' variant='light' onClick={() => setSelectedBook([])}>
           選択を解除する
         </Button>
-        {/* </Group> */}
       </Stack>
     </Dialog>
   )
