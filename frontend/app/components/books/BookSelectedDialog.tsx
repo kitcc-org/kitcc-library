@@ -26,7 +26,7 @@ const BookSelectedDialog = () => {
           選択中の本をカートに入れる
         </Button>
         <Button fz='xs' color='red'>
-          選択中の本をデータベースから削除する
+          選択中の本を削除する
         </Button>
         <Button fz='xs' variant='light' onClick={() => setSelectedBook([])}>
           選択を解除する
