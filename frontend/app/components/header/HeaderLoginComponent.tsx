@@ -22,6 +22,8 @@ const HeaderLoginComponent = () => {
           case 204:
             setUser(noUser)
             successNotifications('ログアウトしました')
+            // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
+            // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
             navigate('/home#search-mode-button')
             break
           case 500:

@@ -19,7 +19,7 @@ interface BookListComponentProps {
   handleLimitChange: (newLimit: number) => void
   page?: number
   limit?: number
-  totalBook?: number
+  totalBook: number
 }
 
 const BookListComponent = ({

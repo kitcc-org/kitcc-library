@@ -6,7 +6,7 @@ import CurrentContentNumber from './CurrentContentNumber'
 interface ContentsHeaderProps {
   page?: number,
   limit?: number,
-  total?: number,
+  total: number,
   handleLimitChange: (newLimit: number) => void
 }
 
@@ -16,8 +16,8 @@ const ContentsHeader = ({
   total,
   handleLimitChange
 }: ContentsHeaderProps) => {
-  const truePage = (!page || Number.isNaN(page)) ? 1 : page
-  const trueLimit = (!limit || Number.isNaN(limit)) ? 10 : limit
+  const truePage = page ?? 1
+  const trueLimit = limit ?? 10
   const start = (truePage - 1) * trueLimit + 1
   const stop = truePage * trueLimit
 

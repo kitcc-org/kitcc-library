@@ -65,6 +65,8 @@ const BooKListPage = () => {
       count += 1
       url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
     }
+    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
+    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
     url = `${url}#search-mode-button`
     navigate(url)
   }
@@ -93,6 +95,8 @@ const BooKListPage = () => {
       url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
     }
     url = (count === 0) ? `${url}?page=${newPage}` : `${url}&page=${newPage}`
+    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
+    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
     url = `${url}#search-mode-button`
     navigate(url)
   }
@@ -117,6 +121,8 @@ const BooKListPage = () => {
       url = (count === 1) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
     }
     url = (count === 0) ? `${url}?limit=${newLimit}` : `${url}&limit=${newLimit}`
+    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
+    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
     url = `${url}#search-mode-button`
     navigate(url)
   }
@@ -131,8 +137,8 @@ const BooKListPage = () => {
       close={close}
       handlePaginationChange={handlePaginationChange}
       handleLimitChange={handleLimitChange}
-      page={Number(page)}
-      limit={Number(limit)}
+      page={page ? Number(page) : undefined}
+      limit={limit ? Number(limit) : undefined}
       totalBook={booksResponse.data.totalBook}
     />
   )

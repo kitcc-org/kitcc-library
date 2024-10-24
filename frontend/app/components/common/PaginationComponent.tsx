@@ -2,7 +2,7 @@ import { Center, Pagination } from '@mantine/core'
 import React from 'react'
 
 interface PaginationComponentProps {
-  totalNum?: number
+  totalNum: number
   page?: number
   limit?: number
   handlePaginationChange: (newPage: number) => void
@@ -15,12 +15,12 @@ const PaginationComponent = ({
   handlePaginationChange
 }: PaginationComponentProps) => {
   const limitNum = limit ?? 10
-  const totalPage = (totalNum && limit) ? (totalNum / limitNum) + 1 : undefined
+  const totalPage = (totalNum / limitNum) + 1
   return (
     <Center>
       <Pagination
-        total={totalPage ?? 1}
-        value={(!page || Number.isNaN(page)) ? 1 : page}
+        total={totalPage}
+        value={page ?? 1}
         withEdges
         onChange={handlePaginationChange}
       />
