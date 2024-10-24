@@ -15,11 +15,10 @@ const BookCard = ({ book }: BookCardProps) => {
   return (
     <Card
       shadow='sm'
-      padding='lg'
       radius='md'
       withBorder
     >
-      <Card.Section withBorder inheritPadding py='xs'>
+      <Card.Section withBorder inheritPadding>
         <BookCardHeader id={book.id} stock={book.stock} />
       </Card.Section>
       <Card.Section withBorder inheritPadding py='xs'>

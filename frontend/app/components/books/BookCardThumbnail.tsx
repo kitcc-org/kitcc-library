@@ -10,8 +10,8 @@ interface BookCardThumbnailProps {
 const BookCardThumbnail = ({ id, thumbnail }: BookCardThumbnailProps) => {
   const navigate = useNavigate()
   return (
-    <AspectRatio ratio={10 / 16}
-      style={{ flex: `0 0 ${rem(400)}` }}
+    <AspectRatio ratio={10 / 14}
+      style={{ flex: `0 0 ${rem(400)}`, cursor: 'pointer' }}
       component='div'
       onClick={() => navigate(`books/${id}`)}
     >
