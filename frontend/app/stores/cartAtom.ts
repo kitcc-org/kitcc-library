@@ -7,6 +7,8 @@ export interface CartProps {
   stock: number
 }
 
+// カートの中身を管理するAtom 生存時間: セッションストレージ(タブが閉じられるまで)
 export const cartAtom = atomWithStorage<CartProps[]>('cart', [], storage);
 
+// 選択された本を管理するAtom 生存時間: DOM(ページをリロードするまで)
 export const selectedBooksAtom = atom<CartProps[]>([]);
