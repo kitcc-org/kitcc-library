@@ -7,7 +7,7 @@ VALUES
         '技術評論社',
         '2020-01-15',
         'コンピュータプログラミングの基礎を学ぶための最良の参考書です。',
-        'https://example.com/thumbnail1.jpg',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9781234567890',
         1
     ),
@@ -17,7 +17,7 @@ VALUES
         'オーム社',
         '2019-10-01',
         'ソフトウェア設計の入門書。設計の基本から実践までをカバー。',
-        'https://example.com/thumbnail2.jpg',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9780987654321',
         1
     ),
@@ -27,7 +27,7 @@ VALUES
         '日経BP',
         '2018-05-20',
         'データベースの基礎から応用までを網羅した一冊。',
-        'https://example.com/thumbnail3.jpg',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9782345678901',
         1
     ),
@@ -37,7 +37,7 @@ VALUES
         '翔泳社',
         '2021-07-10',
         'ネットワーク技術の基礎を解説する教科書。',
-        'https://example.com/thumbnail4.jpg',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9783456789012',
         2
     ),
@@ -47,7 +47,7 @@ VALUES
         '森北出版',
         '2017-12-05',
         'アルゴリズムとデータ構造に関する理論と実践を学べる本。',
-        'https://example.com/thumbnail5.jpg',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9784567890123',
         3
     );
