@@ -73,28 +73,28 @@ const BooKListPage = () => {
 
   const handlePaginationChange = (newPage: number) => {
     let url = '/home'
-    let count = 0
+    let initial = true
     if (title) {
-      count += 1
-      url = (count === 1) ? `${url}?title=${title}` : `${url}&title=${title}`
+      url = (initial === true) ? `${url}?title=${title}` : `${url}&title=${title}`
+      initial = false
     }
     if (author) {
-      count += 1;
-      url = (count === 1) ? `${url}?author=${author}` : `${url}&author=${author}`
+      url = (initial === true) ? `${url}?author=${author}` : `${url}&author=${author}`
+      initial = false
     }
     if (publisher) {
-      count += 1;
-      url = (count === 1) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+      url = (initial === true) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+      initial = false
     }
     if (isbn) {
-      count += 1;
-      url = (count === 1) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+      url = (initial === true) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+      initial = false
     }
     if (limit) {
-      count += 1
-      url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+      url = (initial === true) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+      initial = false
     }
-    url = (count === 0) ? `${url}?page=${newPage}` : `${url}&page=${newPage}`
+    url = (initial === true) ? `${url}?page=${newPage}` : `${url}&page=${newPage}`
     // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
     // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
     url = `${url}#search-mode-button`
@@ -103,24 +103,24 @@ const BooKListPage = () => {
 
   const handleLimitChange = (newLimit: number) => {
     let url = '/home'
-    let count = 0
+    let initial = true
     if (title) {
-      count += 1
-      url = (count === 1) ? `${url}?title=${title}` : `${url}&title=${title}`
+      url = (initial === true) ? `${url}?title=${title}` : `${url}&title=${title}`
+      initial = false
     }
     if (author) {
-      count += 1;
-      url = (count === 1) ? `${url}?author=${author}` : `${url}&author=${author}`
+      url = (initial === true) ? `${url}?author=${author}` : `${url}&author=${author}`
+      initial = false
     }
     if (publisher) {
-      count += 1;
-      url = (count === 1) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+      url = (initial === true) ? `${url}?publisher=${publisher}` : `${url}&publisher=${publisher}`
+      initial = false
     }
     if (isbn) {
-      count += 1;
-      url = (count === 1) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+      url = (initial === true) ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`
+      initial = false
     }
-    url = (count === 0) ? `${url}?limit=${newLimit}` : `${url}&limit=${newLimit}`
+    url = (initial === true) ? `${url}?limit=${newLimit}` : `${url}&limit=${newLimit}`
     // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
     // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
     url = `${url}#search-mode-button`
