@@ -20,7 +20,7 @@ const BookCardCartButton = ({ id, stock }: BookCardCartButtonProps) => {
       radius="xl"
       disabled={stock === 0}
       onClick={addCart}
-      leftSection={<BiSolidCartAdd />}
+      leftSection={<BiSolidCartAdd size={23} />}
       fz={10}
     >
       カートに入れる
