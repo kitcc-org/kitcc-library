@@ -15,26 +15,15 @@ const FormLayout = <T,>({
   children
 }: FormLayoutProps<T>) => {
   return (
-    <Center
-      h='100vh'
-      w='100%'
-    >
-      <Paper
-        shadow="xl"
-        p='xl'
-        withBorder
+    <form onSubmit={form.onSubmit((values) => (handleSubmit(values)))}>
+      <Stack
+        align='stretch'
+        gap='md'
+        justify='center'
       >
-        <form onSubmit={form.onSubmit((values) => (handleSubmit(values)))}>
-          <Stack
-            align='stretch'
-            gap='md'
-            justify='center'
-          >
-            {children}
-          </Stack>
-        </form>
-      </Paper>
-    </Center>
+        {children}
+      </Stack>
+    </form>
   )
 }
 

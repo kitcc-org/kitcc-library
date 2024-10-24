@@ -9,9 +9,9 @@ import { userAtom, noUser } from "~/stores/userAtom"
 const getCookieUserId = () => {
   if (typeof document === "undefined") return undefined
   return document.cookie
-  .split("; ")
-  .find((row) => row.startsWith("user_id="))
-  ?.split("=")[1];
+    .split("; ")
+    .find((row) => row.startsWith("__Secure-user_id="))
+    ?.split("=")[1];
 }
 
 const HeaderComponent = () => {

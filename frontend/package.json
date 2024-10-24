@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix vite:build",
     "deploy": "pnpm run build && wrangler pages deploy",
-    "dev": "remix vite:dev",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "wrangler pages dev ./build/client",
     "typecheck": "tsc",

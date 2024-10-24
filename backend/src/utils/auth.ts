@@ -95,6 +95,6 @@ export const logout = async (ctx: Context) => {
 			.where(eq(userTable.id, userId));
 	}
 
-	deleteCookie(ctx, 'user_id', { secure: true });
-	deleteCookie(ctx, 'session_token', { secure: true });
+	deleteCookie(ctx, '__Secure-user_id', { secure: true });
+	deleteCookie(ctx, '__Secure-session_token', { secure: true });
 };

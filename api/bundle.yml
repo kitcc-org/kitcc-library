@@ -102,7 +102,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Book'
                 required:
-                  - totalPage
+                  - totalBook
                   - books
         '400':
           $ref: '#/components/responses/BadRequest'

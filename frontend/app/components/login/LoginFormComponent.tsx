@@ -6,6 +6,7 @@ import type { UseFormReturnType } from '@mantine/form'
 import type { LoginBody } from 'orval/client.schemas'
 import LoginFormTitle from './LoginFormTitle'
 import LoginFormHelpText from './LoginFormHelpText'
+import FormBaseLayout from '../layouts/FormBaseLayout'
 
 interface LoginFormComponentProps {
   isPending: boolean;
@@ -19,16 +20,18 @@ const LoginFormComponent = ({
   handleSubmit
 }: LoginFormComponentProps) => {
   return (
-    <FormLayout<LoginBody>
-      form={form}
-      handleSubmit={handleSubmit}
-    >
+    <FormBaseLayout>
+      <FormLayout<LoginBody>
+        form={form}
+        handleSubmit={handleSubmit}
+      >
         <LoginFormTitle />
-        <LoginEmailForm form={form}/>
-        <LoginPasswordForm form={form}/>
-        <LoginSubmitButton isPending={isPending}/>
+        <LoginEmailForm form={form} />
+        <LoginPasswordForm form={form} />
+        <LoginSubmitButton isPending={isPending} />
         <LoginFormHelpText />
-    </FormLayout>
+      </FormLayout>
+    </FormBaseLayout>
   )
 }
 

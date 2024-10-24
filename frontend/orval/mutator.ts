@@ -8,7 +8,12 @@ export const customFetch = async <T>(
     // 異なるオリジンへCookieを送信する
     credentials: "include",
   });
-  const data = await res.json();
 
-  return { status: res.status, data: data };
+  const response: { status: number; data?: unknown } = { status: res.status };
+
+  if (res.status !== 204) {
+    response.data = await res.json();
+  }
+
+  return response;
 };
