@@ -21,8 +21,11 @@ const BookCard = ({ book }: BookCardProps) => {
     >
       <Card.Section withBorder inheritPadding py='xs'>
         <BookCardHeader id={book.id} stock={book.stock} />
+      </Card.Section>
+      <Card.Section withBorder inheritPadding py='xs'>
         <BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
       </Card.Section>
+
       {user !== noUser && <BookCardFooter id={book.id} stock={book.stock} />}
     </Card >
   )
