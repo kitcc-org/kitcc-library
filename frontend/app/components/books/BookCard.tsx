@@ -1,33 +1,29 @@
-import { Card } from '@mantine/core'
-import BookCardThumbnail from './BookCardThumbnail'
-import type { Book } from 'orval/client.schemas'
-import BookCardHeader from './BookCardHeader'
-import BookCardFooter from './BookCardFooter'
-import { useAtom } from 'jotai'
-import { userAtom, noUser } from '~/stores/userAtom'
+import { Card } from "@mantine/core";
+import { useAtom } from "jotai";
+import type { Book } from "orval/client.schemas";
+import { noUser, userAtom } from "~/stores/userAtom";
+import BookCardFooter from "./BookCardFooter";
+import BookCardHeader from "./BookCardHeader";
+import BookCardThumbnail from "./BookCardThumbnail";
 
 interface BookCardProps {
-  book: Book
+  book: Book;
 }
 
 const BookCard = ({ book }: BookCardProps) => {
-  const [user,] = useAtom(userAtom)
+  const [user] = useAtom(userAtom);
   return (
-    <Card
-      shadow='sm'
-      radius='md'
-      withBorder
-    >
+    <Card shadow="sm" radius="md" pb="xs" withBorder>
       <Card.Section withBorder inheritPadding>
         <BookCardHeader id={book.id} stock={book.stock} />
       </Card.Section>
-      <Card.Section withBorder inheritPadding py='xs'>
+      <Card.Section withBorder inheritPadding py="xs">
         <BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
       </Card.Section>
 
       {user !== noUser && <BookCardFooter id={book.id} stock={book.stock} />}
-    </Card >
-  )
-}
+    </Card>
+  );
+};
 
-export default BookCard
+export default BookCard;
