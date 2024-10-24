@@ -44,26 +44,26 @@ const BooKListPage = () => {
 
   const handleSubmit = (props: GetBooksParams) => {
     let url = '/home'
-    let count = 0
+    let initial = true
     if (props.title !== '') {
-      count += 1;
-      url = (count === 1) ? `${url}?title=${props.title}` : `${url}&title=${props.title}`
+      url = (initial === true) ? `${url}?title=${props.title}` : `${url}&title=${props.title}`
+      initial = false
     }
     if (props.author !== '') {
-      count += 1;
-      url = (count === 1) ? `${url}?author=${props.author}` : `${url}&author=${props.author}`
+      url = (initial === true) ? `${url}?author=${props.author}` : `${url}&author=${props.author}`
+      initial = false
     }
     if (props.publisher !== '') {
-      count += 1;
-      url = (count === 1) ? `${url}?publisher=${props.publisher}` : `${url}&publisher=${props.publisher}`
+      url = (initial === true) ? `${url}?publisher=${props.publisher}` : `${url}&publisher=${props.publisher}`
+      initial = false
     }
     if (props.isbn !== '') {
-      count += 1;
-      url = (count === 1) ? `${url}?isbn=${props.isbn}` : `${url}&isbn=${props.isbn}`
+      url = (initial === true) ? `${url}?isbn=${props.isbn}` : `${url}&isbn=${props.isbn}`
+      initial = false
     }
     if (limit) {
-      count += 1
-      url = (count === 1) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+      url = (initial === true) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
+      initial = false
     }
     // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
     // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
