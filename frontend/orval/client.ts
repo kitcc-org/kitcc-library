@@ -33,7 +33,6 @@ import type {
   InternalServerErrorResponse,
   Loan,
   LoginBody,
-  Logout204,
   NotFoundResponse,
   SearchBooks200,
   SearchBooksParams,
@@ -1097,7 +1096,7 @@ export const useLogin = <TError = BadRequestResponse | UnauthorizedResponse | No
  * @summary ログアウトする
  */
 export type logoutResponse = {
-  data: Logout204;
+  data: void;
   status: number;
 }
 

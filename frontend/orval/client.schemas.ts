@@ -4,10 +4,6 @@
  * KITCC Library API
  * OpenAPI spec version: 1.0.0
  */
-export type Logout204 = {
-  message?: string;
-};
-
 export type LoginBody = {
   email: string;
   /**
@@ -39,8 +35,21 @@ export type UpsertLoansBodyItem = {
 
 export type GetLoans200 = {
   loans: Loan[];
-  totalLoan?: number;
+  totalLoan: number;
 };
+
+export type GetLoansSort = typeof GetLoansSort[keyof typeof GetLoansSort];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetLoansSort = {
+  NUMBER_0: '0',
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+  NUMBER_4: '4',
+  NUMBER_5: '5',
+} as const;
 
 export type GetLoansParams = {
 /**
@@ -59,6 +68,10 @@ page?: string;
  * 1ページあたりの表示数
  */
 limit?: string;
+/**
+ * ソート順
+ */
+sort?: GetLoansSort;
 };
 
 export type DeleteUser204 = {
@@ -87,7 +100,7 @@ export type CreateUserBody = {
 
 export type GetUsers200 = {
   /** 総ユーザー数 */
-  totalUser?: number;
+  totalUser: number;
   users: User[];
 };
 
@@ -161,6 +174,7 @@ export type UpdateBookBody = {
   authors?: string[];
   /** @pattern ^\d{10}(\d{3})?$ */
   isbn?: string;
+  publishedDate?: string;
   publisher?: string;
   stock?: number;
   title?: string;
@@ -168,8 +182,10 @@ export type UpdateBookBody = {
 
 export type CreateBookBody = {
   authors: string[];
+  description: string;
   /** @pattern ^\d{10}(\d{3})?$ */
   isbn: string;
+  publishedDate: string;
   publisher: string;
   stock: number;
   thumbnail?: string;
@@ -179,8 +195,19 @@ export type CreateBookBody = {
 export type GetBooks200 = {
   books: Book[];
   /** 総書籍数 */
-  totalBook?: number;
+  totalBook: number;
 };
+
+export type GetBooksSort = typeof GetBooksSort[keyof typeof GetBooksSort];
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const GetBooksSort = {
+  NUMBER_0: '0',
+  NUMBER_1: '1',
+  NUMBER_2: '2',
+  NUMBER_3: '3',
+} as const;
 
 export type GetBooksParams = {
 /**
@@ -207,6 +234,11 @@ publisher?: string;
  * ISBN
  */
 isbn?: string;
+/**
+ * ソート順 1: id昇順 2: id降順 3: 出版日昇順 4: 出版日降順
+
+ */
+sort?: GetBooksSort;
 };
 
 /**
@@ -253,9 +285,11 @@ export interface Error {
 
 export interface Book {
   authors: string[];
+  description: string;
   id: number;
   /** @pattern ^\d{10}(\d{3})?$ */
   isbn: string;
+  publishedDate: string;
   publisher: string;
   stock: number;
   thumbnail?: string;
