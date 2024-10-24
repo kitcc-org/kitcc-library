@@ -8,7 +8,6 @@ const BookSelectedDialog = () => {
     <Dialog
       opened={selectedBook.length > 0}
       onClose={() => setSelectedBook([])}
-      // size='650px'
     >
       <Stack
         bg="var(--mantine-color-body)"

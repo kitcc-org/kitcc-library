@@ -1,5 +1,5 @@
 import { Outlet } from '@remix-run/react'
-import { AppShell } from '@mantine/core'
+import { AppShell, Container } from '@mantine/core'
 import HeaderComponent from '~/components/header/HeaderComponent'
 
 const Home = () => {
@@ -9,9 +9,11 @@ const Home = () => {
       padding={{ default: 'md', sm: 'sm' }}
     >
       <HeaderComponent />
-      <AppShell.Main>
-        <Outlet />
-      </AppShell.Main>
+      <Container size='xl'>
+        <AppShell.Main>
+          <Outlet />
+        </AppShell.Main>
+      </Container>
     </AppShell>
   )
 }

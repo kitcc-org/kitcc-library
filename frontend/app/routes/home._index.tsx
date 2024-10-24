@@ -6,17 +6,20 @@ import BookListComponent from '~/components/books/BookListComponent'
 import { useForm } from '@mantine/form'
 import { GetBooksParams } from 'orval/client.schemas'
 import { useDisclosure } from '@mantine/hooks'
+import { useAtom } from 'jotai'
+import { selectedBooksAtom } from '~/stores/cartAtom'
+import { useEffect } from 'react'
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url)
   const title = url.searchParams.get('title') ?? undefined
   const publisher = url.searchParams.get('publisher') ?? undefined
   const isbn = url.searchParams.get('isbn') ?? undefined
-  const auther = url.searchParams.get('author') ?? undefined
+  const author = url.searchParams.get('author') ?? undefined
   const page = url.searchParams.get('page') ?? undefined
   const limit = url.searchParams.get('limit') ?? undefined
-  const response = await getBooks({ title: title, author: auther, publisher: publisher, isbn: isbn, page: page, limit: limit })
-  return json({ booksResponse: response, title: title, author: auther, publisher: publisher, isbn: isbn, page: page, limit: limit })
+  const response = await getBooks({ title: title, author: author, publisher: publisher, isbn: isbn, page: page, limit: limit })
+  return json({ booksResponse: response, title: title, author: author, publisher: publisher, isbn: isbn, page: page, limit: limit })
 }
 
 const BooKListPage = () => {
@@ -31,6 +34,7 @@ const BooKListPage = () => {
   } = useLoaderData<typeof loader>()
   const [opened, { open, close }] = useDisclosure()
   const navigate = useNavigate()
+  const [, setSelectedBook] = useAtom(selectedBooksAtom)
   const form = useForm<GetBooksParams>({
     mode: 'uncontrolled',
     initialValues: {
@@ -40,7 +44,9 @@ const BooKListPage = () => {
       isbn: isbn ?? '',
     }
   })
-
+  useEffect(() => {
+    setSelectedBook([])
+  }, [])
 
   const handleSubmit = (props: GetBooksParams) => {
     let url = '/home'
