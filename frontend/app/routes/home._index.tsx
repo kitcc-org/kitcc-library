@@ -65,9 +65,6 @@ const BooKListPage = () => {
       url = (initial === true) ? `${url}?limit=${limit}` : `${url}&limit=${limit}`
       initial = false
     }
-    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
-    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
-    url = `${url}#search-mode-button`
     navigate(url)
   }
 
@@ -95,9 +92,6 @@ const BooKListPage = () => {
       initial = false
     }
     url = (initial === true) ? `${url}?page=${newPage}` : `${url}&page=${newPage}`
-    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
-    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
-    url = `${url}#search-mode-button`
     navigate(url)
   }
 
@@ -121,9 +115,6 @@ const BooKListPage = () => {
       initial = false
     }
     url = (initial === true) ? `${url}?limit=${newLimit}` : `${url}&limit=${newLimit}`
-    // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
-    // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
-    url = `${url}#search-mode-button`
     navigate(url)
   }
 

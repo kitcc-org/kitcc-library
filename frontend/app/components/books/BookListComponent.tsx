@@ -1,6 +1,6 @@
 import { AppShell, Space, Stack } from '@mantine/core'
 import { getBooksResponse } from 'orval/client'
-import ErrorBookComponent from './ErrorBookComponent'
+import ErrorComponent from '../common/ErrorComponent'
 import BookCards from './BookCards'
 import type { UseFormReturnType } from '@mantine/form'
 import type { GetBooksParams } from 'orval/client.schemas'
@@ -36,18 +36,16 @@ const BookListComponent = ({
   totalBook
 }: BookListComponentProps) => {
   return (
-    <AppShell.Main>
-      <Stack
-        bg="var(--mantine-color-body)"
-        align="stretch"
-        justify='flex-start'
-      >
-        <BookSearchComponent isOpen={isOpen} open={open} close={close} form={form} handleSubmit={handleSubmit} />
-        <ContentsHeader page={page} limit={limit} total={totalBook} handleLimitChange={handleLimitChange} />
-        {booksResponse.status !== 200 ? <ErrorBookComponent /> : <BookCards books={booksResponse.data.books} />}
-        <PaginationComponent totalNum={totalBook} page={page} limit={limit} handlePaginationChange={handlePaginationChange} />
-      </Stack>
-    </AppShell.Main>
+    <Stack
+      bg="var(--mantine-color-body)"
+      align="stretch"
+      justify='flex-start'
+    >
+      <BookSearchComponent isOpen={isOpen} open={open} close={close} form={form} handleSubmit={handleSubmit} />
+      <ContentsHeader page={page} limit={limit} total={totalBook} handleLimitChange={handleLimitChange} />
+      {booksResponse.status !== 200 ? <ErrorComponent message={"書籍情報を取得できませんでした。"} /> : <BookCards books={booksResponse.data.books} />}
+      <PaginationComponent totalNum={totalBook} page={page} limit={limit} handlePaginationChange={handlePaginationChange} />
+    </Stack>
   )
 }
 

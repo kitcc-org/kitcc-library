@@ -9,8 +9,6 @@ import { useAtom } from "jotai";
 const HeaderBookMenu = () => {
   const navigate = useNavigate()
   const [user,] = useAtom(userAtom)
-  // 書籍一覧ページ(`/home`)に遷移すると、ヘッダーの部分がMainコンポーネントとして表示されてしまい、ページの頭に空白ができる。
-  // そのため、`/home#search-mode-button`に遷移することで、ヘッダーの部分が表示されないようにする。
   return (
     <Menu shadow="md">
       <Menu.Target>
@@ -19,7 +17,7 @@ const HeaderBookMenu = () => {
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item leftSection={<LuBookCopy />} onClick={() => navigate('/home#search-mode-button')}>
+        <Menu.Item leftSection={<LuBookCopy />} onClick={() => navigate('/home')}>
           書籍一覧
         </Menu.Item>
         {(user !== noUser) && <Menu.Item leftSection={<BiSolidBookAdd />} onClick={() => navigate('/home/books/new')}>
