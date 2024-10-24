@@ -1,7 +1,8 @@
 INSERT INTO
-    books (title, authors, publisher, published_date, description, thumbnail, isbn, stock)
+    books (id, title, authors, publisher, published_date, description, thumbnail, isbn, stock)
 VALUES
     (
+		1
         'コンピュータプログラミングの基礎',
         json_array('山田 太郎', '佐藤 花子'),
         '技術評論社',
@@ -12,6 +13,7 @@ VALUES
         1
     ),
     (
+		2
         'ソフトウェア設計入門',
         json_array('高橋 一郎'),
         'オーム社',
@@ -22,6 +24,7 @@ VALUES
         1
     ),
     (
+		3
         'データベースシステム',
         json_array('鈴木 二郎', '田中 三郎'),
         '日経BP',
@@ -32,6 +35,7 @@ VALUES
         1
     ),
     (
+		4
         'ネットワーク技術の基礎',
         json_array('佐藤 四郎'),
         '翔泳社',
@@ -42,6 +46,7 @@ VALUES
         2
     ),
     (
+		5
         'アルゴリズムとデータ構造',
         json_array('中村 五郎', '伊藤 六郎'),
         '森北出版',
