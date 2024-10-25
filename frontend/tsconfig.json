@@ -5,14 +5,16 @@
     "**/.server/**/*.ts",
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "**/.client/**/*.tsx",
+    "./test/setup.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": [
         "@remix-run/cloudflare",
         "vite/client",
-        "@cloudflare/workers-types/2023-07-01"
+        "@cloudflare/workers-types/2023-07-01",
+        "vitest/globals"
     ],
     "isolatedModules": true,
     "esModuleInterop": true,

@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import {
   vitePlugin as remix,
   cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
@@ -23,5 +24,16 @@ export default defineConfig({
       key: "./certs/key.pem",
       cert: "./certs/cert.pem",
     },
+  },
+  test: {
+    alias: {
+      "~/*": "./app/*",
+    },
+    env: {
+      NODE_TLS_REJECT_UNAUTHORIZED: "0",
+    },
+    environment: "edge-runtime",
+    globals: true,
+    setupFiles: ["./test/setup.ts"],
   },
 });
