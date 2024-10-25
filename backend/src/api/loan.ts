@@ -1,4 +1,11 @@
-import { bookTable, loanTable, SelectLoan, userTable } from '@/drizzle/schema';
+import {
+	bookTable,
+	loanTable,
+	SelectBook,
+	SelectLoan,
+	SelectUser,
+	userTable,
+} from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
 import camelCase from 'camelcase';
 import { and, asc, desc, eq, Query } from 'drizzle-orm';
@@ -13,6 +20,15 @@ import {
 import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
+
+// 結合後の貸出履歴
+interface JoinedLoan {
+	loans: SelectLoan;
+	// 便宜上nullを許容しているが
+	// 外部キー制約があるのでnullになることはない
+	users: SelectUser | null;
+	books: SelectBook | null;
+}
 
 // D1に格納されている生の貸出履歴
 interface SnakeLoan {
@@ -81,6 +97,8 @@ app.get(
 		const hitLoans = await db
 			.select()
 			.from(loanTable)
+			.leftJoin(userTable, eq(loanTable.userId, userTable.id))
+			.leftJoin(bookTable, eq(loanTable.bookId, bookTable.id))
 			.where(
 				and(
 					query['userId']
@@ -93,7 +111,7 @@ app.get(
 			)
 			.orderBy(order);
 
-		let slicedLoans: SelectLoan[] = [];
+		let slicedLoans: JoinedLoan[] = [];
 		// 総ページ数を計算する
 		const totalPage = Math.ceil(hitLoans.length / limit);
 		if (page <= totalPage) {

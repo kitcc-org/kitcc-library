@@ -2,7 +2,9 @@ import {
 	bookTable,
 	InsertLoan,
 	loanTable,
+	SelectBook,
 	SelectLoan,
+	SelectUser,
 	userTable,
 } from '@/drizzle/schema';
 import app from '@/src/index';
@@ -15,7 +17,13 @@ import { userFactory } from '../factories/user';
 
 interface GetLoansResponse {
 	totalLoan: number;
-	loans: SelectLoan[];
+	loans: [
+		{
+			loans: SelectLoan;
+			users: SelectUser | null;
+			books: SelectBook | null;
+		},
+	];
 }
 
 describe('GET /loans', () => {
@@ -132,9 +140,9 @@ describe('GET /loans', () => {
 			expect(body.totalLoan).toBe(1);
 
 			const loan = body.loans[0];
-			expect(loan.userId).toBe(userId);
-			expect(loan.bookId).toBe(bookId);
-			expect(loan.volume).toBe(1);
+			expect(loan.loans.userId).toBe(userId);
+			expect(loan.loans.bookId).toBe(bookId);
+			expect(loan.loans.volume).toBe(1);
 		},
 	);
 
