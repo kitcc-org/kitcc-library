@@ -67,7 +67,14 @@ loans:
                 loans:
                   type: array
                   items:
-                    $ref: "../components/schemas/Loan.yml"
+                    type: object
+                    properties:
+                      loans:
+                        $ref: "../components/schemas/Loan.yml"
+                      users:
+                        $ref: "../components/schemas/User.yml"
+                      books:
+                        $ref: "../components/schemas/Book.yml"
               required:
                 - totalLoan
                 - loans

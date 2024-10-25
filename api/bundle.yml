@@ -726,7 +726,14 @@ paths:
                   loans:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Loan'
+                      type: object
+                      properties:
+                        loans:
+                          $ref: '#/components/schemas/Loan'
+                        users:
+                          $ref: '#/components/schemas/User'
+                        books:
+                          $ref: '#/components/schemas/Book'
                 required:
                   - totalLoan
                   - loans
