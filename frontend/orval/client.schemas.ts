@@ -33,8 +33,14 @@ export type UpsertLoansBodyItem = {
   volume: number;
 };
 
+export type GetLoans200LoansItem = {
+  books?: Book;
+  loans?: Loan;
+  users?: User;
+};
+
 export type GetLoans200 = {
-  loans: Loan[];
+  loans: GetLoans200LoansItem[];
   totalLoan: number;
 };
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { UseFormReturnType } from '@mantine/form'
-import { Center, Paper, Stack } from '@mantine/core'
+import { Stack } from '@mantine/core'
 
 interface FormLayoutProps<T> {
   form: UseFormReturnType<T, (values: T) => T>

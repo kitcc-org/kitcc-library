@@ -1,6 +1,5 @@
 import { Button, Menu } from '@mantine/core'
-import { FaUserFriends } from "react-icons/fa";
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaUserFriends } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa6";
 import { useNavigate } from '@remix-run/react';
 

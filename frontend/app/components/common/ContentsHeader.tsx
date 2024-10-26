@@ -1,5 +1,4 @@
 import { Group } from '@mantine/core'
-import React from 'react'
 import LimitSelect from './LimitSelect'
 import CurrentContentNumber from './CurrentContentNumber'
 

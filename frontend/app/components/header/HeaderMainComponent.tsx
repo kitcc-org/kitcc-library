@@ -1,12 +1,12 @@
 import HeaderLoginComponent from './HeaderLoginComponent'
 import HeaderLogoutComponent from './HeaderLogoutComponent'
 import { useAtom } from "jotai"
-import { userAtom, noUser } from "~/stores/userAtom"
+import { userAtom } from "~/stores/userAtom"
 
 const HeaderMainComponent = () => {
   const [user,] = useAtom(userAtom)
 
-  return <>{(user === noUser) ? <HeaderLogoutComponent /> : <HeaderLoginComponent/>}</>
+  return <>{!user ? <HeaderLogoutComponent /> : <HeaderLoginComponent />}</>
 }
 
 export default HeaderMainComponent

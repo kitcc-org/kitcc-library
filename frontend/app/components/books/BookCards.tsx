@@ -1,7 +1,7 @@
 import { ScrollArea, SimpleGrid } from "@mantine/core";
 import { useAtom } from "jotai";
 import { Book } from "orval/client.schemas";
-import { noUser, userAtom } from "~/stores/userAtom";
+import { userAtom } from "~/stores/userAtom";
 import BookCard from "./BookCard";
 import BookSelectedDialog from "./BookSelectedDialog";
 import NoBookComponent from "./NoBookComponent";
@@ -11,7 +11,7 @@ interface BookCardsProps {
 }
 
 const BookCards = ({ books }: BookCardsProps) => {
-  const [user, _] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
   if (books.length === 0) return <NoBookComponent />;
 
   return (
@@ -34,7 +34,7 @@ const BookCards = ({ books }: BookCardsProps) => {
           ))}
         </SimpleGrid>
       </ScrollArea>
-      {user !== noUser && <BookSelectedDialog />}
+      {!!user && <BookSelectedDialog />}
     </>
   );
 };
