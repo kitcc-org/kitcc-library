@@ -10,8 +10,9 @@ export const customFetch = async <T>(
   });
 
   const response: { status: number; data?: unknown } = { status: res.status };
+  const contentType = res.headers.get("content-type");
 
-  if (res.status !== 204) {
+  if (contentType === "application/json") {
     response.data = await res.json();
   }
 
