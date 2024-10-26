@@ -35,6 +35,7 @@ const BookDetailControlPanel = ({ id, thumbnail }: BookDetailControlPanelProps) 
           color='red'
           leftSection={<MdDeleteForever />}
           fz='lg'
+          // action : home.books.$bookId.tsx
           onClick={() => fetcher.submit({ bookId: id }, { method: 'delete' })}
           disabled={fetcher.state === 'submitting'}
         >
