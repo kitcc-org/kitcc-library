@@ -4,6 +4,7 @@ module.exports = {
       target: './api/bundle.yml',
     },
     output: {
+      baseUrl: 'https://kitcc-library-api.kitcc.workers.dev',
       client: 'react-query',
       httpClient: 'fetch',
       mode: 'split',

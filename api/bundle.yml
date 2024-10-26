@@ -10,7 +10,7 @@ info:
     url: https://en.wikipedia.org/wiki/MIT_License
   version: 1.0.0
 servers:
-  - url: https://kitcc-library.kitcc.workers.dev
+  - url: https://kitcc-library-api.kitcc.workers.dev
 tags:
   - name: book
     description: 書籍に関するAPI
