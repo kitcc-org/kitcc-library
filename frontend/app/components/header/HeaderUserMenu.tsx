@@ -16,7 +16,7 @@ const HeaderUserMenu = ({ open }: HeaderUserMenuProps) => {
     <Menu shadow="md">
       <Menu.Target>
         <Button leftSection={<FaUserCircle />} variant="default" >
-          {user.name}
+          {user?.name}
         </Button>
       </Menu.Target>
       <Menu.Dropdown>

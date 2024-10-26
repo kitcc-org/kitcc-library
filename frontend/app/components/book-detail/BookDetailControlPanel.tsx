@@ -2,7 +2,7 @@ import { Button, Stack } from '@mantine/core'
 import BookDetailThumbnail from './BookDetailThumbnail'
 import { MdEdit, MdDeleteForever } from "react-icons/md";
 import { useAtom } from 'jotai';
-import { noUser, userAtom } from '~/stores/userAtom';
+import { userAtom } from '~/stores/userAtom';
 import { Form, useFetcher, useNavigate } from '@remix-run/react';
 
 interface BookDetailControlPanelProps {
@@ -22,7 +22,7 @@ const BookDetailControlPanel = ({ id, thumbnail }: BookDetailControlPanelProps) 
       gap='md'
     >
       <BookDetailThumbnail thumbnail={thumbnail} />
-      {user !== noUser &&
+      {!!user &&
         <Button
           leftSection={<MdEdit />}
           fz='lg'
@@ -30,7 +30,7 @@ const BookDetailControlPanel = ({ id, thumbnail }: BookDetailControlPanelProps) 
         >
           編集
         </Button>}
-      {user !== noUser &&
+      {!!user &&
         <Button
           color='red'
           leftSection={<MdDeleteForever />}

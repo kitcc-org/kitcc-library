@@ -8,7 +8,7 @@ import { LuLogOut } from "react-icons/lu";
 import { errorNotifications, successNotifications } from '~/utils/notification';
 import HeaderUsersMenu from './HeaderUsersMenu';
 import { useAtom } from 'jotai';
-import { userAtom, noUser } from '~/stores/userAtom';
+import { userAtom } from '~/stores/userAtom';
 
 const HeaderLoginComponent = () => {
   const [, setUser] = useAtom(userAtom)
@@ -20,7 +20,7 @@ const HeaderLoginComponent = () => {
       onSuccess: (response) => {
         switch (response.status) {
           case 204:
-            setUser(noUser)
+            setUser(undefined)
             successNotifications('ログアウトしました')
             navigate('/home')
             break

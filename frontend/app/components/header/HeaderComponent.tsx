@@ -4,7 +4,7 @@ import HeaderMainComponent from './HeaderMainComponent'
 import { useAtom } from "jotai"
 import { getUser } from "orval/client"
 import { User } from "orval/client.schemas"
-import { userAtom, noUser } from "~/stores/userAtom"
+import { userAtom } from "~/stores/userAtom"
 
 const getCookieUserId = () => {
   if (typeof document === "undefined") return undefined
@@ -18,7 +18,7 @@ const HeaderComponent = () => {
   const [user, setUser] = useAtom(userAtom)
   const userId = getCookieUserId()
   if (userId) {
-    if (user === noUser) {
+    if (!user) {
       // ユーザ情報を取得するAPIを呼び出す。
       getUser(userId).then((response) => {
         if (response.status === 200) {

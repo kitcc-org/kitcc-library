@@ -4,7 +4,7 @@ import BookDetailTitle from './BookDetailTitle'
 import BookDetailContentTable from './BookDetailContentTable'
 import BookDetailDescription from './BookDetailDescription'
 import { useAtom } from 'jotai'
-import { noUser, userAtom } from '~/stores/userAtom'
+import { userAtom } from '~/stores/userAtom'
 import BookDetailBorrower from './BookDetailBorrower'
 
 interface BookDetailComponentProps {
@@ -23,7 +23,7 @@ const BookDetailContent = ({ book }: BookDetailComponentProps) => {
       <BookDetailTitle title={book.title} />
       <BookDetailContentTable book={book} />
       <BookDetailDescription description={book.description} />
-      {user !== noUser && <BookDetailBorrower />}
+      {!!user && <BookDetailBorrower />}
     </Stack>
   )
 }

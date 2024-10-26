@@ -1,7 +1,7 @@
 import { Checkbox, Group } from '@mantine/core'
 import { selectedBooksAtom } from '~/stores/cartAtom'
 import { useAtom } from 'jotai'
-import { userAtom, noUser } from '~/stores/userAtom'
+import { userAtom } from '~/stores/userAtom'
 import type { CartProps } from '~/stores/cartAtom'
 import BookCardHeaderBadge from './BookCardHeaderBadge'
 
@@ -27,8 +27,8 @@ const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
   }
 
   return (
-    <Group justify={user !== noUser ? 'space-between' : 'flex-end'} py={10}>
-      {user !== noUser && <Checkbox value={id} checked={selectedBook.some(selectedCheck)} onChange={selectedBookAdd} />}
+    <Group justify={!!user ? 'space-between' : 'flex-end'} py={10}>
+      {!!user && <Checkbox value={id} checked={selectedBook.some(selectedCheck)} onChange={selectedBookAdd} />}
       <BookCardHeaderBadge stock={stock} />
     </Group>
   )
