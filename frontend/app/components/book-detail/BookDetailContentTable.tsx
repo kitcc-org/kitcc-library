@@ -13,10 +13,10 @@ const BookDetailContentTable = ({ book }: BookDetailContentTableProps) => {
       align='stretch'
       justify='flex-start'
     >
-      <Text>書籍情報</Text>
-      <Table>
+      <Text fz={rem(22)}>書籍情報</Text>
+      <Table fz={rem(17)}>
         <Table.Tr key={"author"}>
-          <Table.Th>著者</Table.Th>
+          <Table.Th >著者</Table.Th>
           <Table.Td><Group gap={rem(7)}>{book.authors.map((author, id) => <BookDetailAuthorBadge key={id} name={author} />)}</Group></Table.Td>
         </Table.Tr>
         <Table.Tr key={"publisher"}>

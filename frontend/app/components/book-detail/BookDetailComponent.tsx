@@ -27,7 +27,7 @@ const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
     >
       <Grid gutter={rem(50)}>
         <Grid.Col span={3}>
-          <BookDetailControlPanel thumbnail={bookResponse.data.thumbnail} />
+          <BookDetailControlPanel id={bookResponse.data.id} thumbnail={bookResponse.data.thumbnail} />
         </Grid.Col>
         <Grid.Col span={9}>
           <BookDetailContent book={bookResponse.data} />

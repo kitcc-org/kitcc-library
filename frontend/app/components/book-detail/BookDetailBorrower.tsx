@@ -18,11 +18,15 @@ const BookDetailBorrower = () => {
       align='stretch'
       justify='flex-start'
     >
-      <Text>借りている人</Text>
+      <Text fz={rem(18)}>借りている人</Text>
       {loans.isPending ? <Loader color='blue' type='dots' /> :
         <Group gap={rem(7)}>
           {loans.data.data.loans.map((loan) => loan.users &&
-            <Badge key={loan.users.id} variant="light" color="rgba(0, 0, 0, 1)">
+            <Badge key={`${loan.loans?.userId}-${loan.loans?.bookId}`}
+              variant="light"
+              color="rgba(0, 0, 0, 1)"
+              size='lg'
+            >
               {loan.users.name}
             </Badge>
           )}

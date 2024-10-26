@@ -11,6 +11,7 @@ const BookDetailAuthorBadge = ({ name }: BookDetailAuthorBadgeProps) => {
       href={`/home?author=${name}`}
       style={{ cursor: 'pointer' }}
       variant='outline'
+      size='lg'
     >
       {name}
     </Badge >

@@ -6,7 +6,7 @@ interface BookDetailDescriptionProps {
 
 const BookDetailDescription = ({ description }: BookDetailDescriptionProps) => {
   return (
-    <Text>
+    <Text fz={18}>
       {description}
     </Text>
   )
