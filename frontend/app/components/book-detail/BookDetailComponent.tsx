@@ -26,10 +26,10 @@ const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
       justify='flex-start'
     >
       <Grid gutter={rem(50)}>
-        <Grid.Col span={4}>
+        <Grid.Col span={3}>
           <BookDetailControlPanel thumbnail={bookResponse.data.thumbnail} />
         </Grid.Col>
-        <Grid.Col span={8}>
+        <Grid.Col span={9}>
           <BookDetailContent book={bookResponse.data} />
         </Grid.Col>
       </Grid>
