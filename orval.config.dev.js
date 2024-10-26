@@ -25,7 +25,11 @@ module.exports = {
       baseUrl: 'https://localhost:8787',
       client: 'react-query',
       httpClient: 'fetch',
-      mock: true,
+      mock: {
+        type: 'msw',
+        delay: false,
+        useExamples: true,
+      },
       mode: 'single',
       target: './frontend/test/mocks/mock.ts',
       schemas: './frontend/test/mocks/model',

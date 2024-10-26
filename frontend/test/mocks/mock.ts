@@ -41,7 +41,6 @@ import {
 } from '@faker-js/faker'
 import {
   HttpResponse,
-  delay,
   http
 } from 'msw'
 import type {
@@ -1247,33 +1246,33 @@ export const useLogout = <TError = InternalServerErrorResponse,
 
 export const getGetBooksResponseMock = (overrideResponse: Partial< GetBooks200 > = {}): GetBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
-export const getCreateBookResponseMock = (overrideResponse: Partial< Book > = {}): Book => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample(), ...overrideResponse})
+export const getCreateBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
-export const getGetBookResponseMock = (overrideResponse: Partial< Book > = {}): Book => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample(), ...overrideResponse})
+export const getGetBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
-export const getUpdateBookResponseMock = (overrideResponse: Partial< Book > = {}): Book => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample(), ...overrideResponse})
+export const getUpdateBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
-export const getSearchBooksResponseMock = (overrideResponse: Partial< SearchBooks200 > = {}): SearchBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.helpers.arrayElement([faker.word.sample(), undefined]), isbn: faker.helpers.arrayElement([faker.word.sample(), undefined]), publishedDate: faker.helpers.arrayElement([faker.word.sample(), undefined]), publisher: faker.helpers.arrayElement([faker.word.sample(), undefined]), thumbnail: faker.helpers.arrayElement([faker.word.sample(), undefined]), title: faker.word.sample()})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+export const getSearchBooksResponseMock = (): SearchBooks200 => ({"totalBook":30,"books":[{"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2018-07-01","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984"}]})
 
 export const getGetUsersResponseMock = (overrideResponse: Partial< GetUsers200 > = {}): GetUsers200 => ({totalUser: faker.number.int({min: undefined, max: undefined}), users: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined])})), ...overrideResponse})
 
-export const getCreateUserResponseMock = (overrideResponse: Partial< User > = {}): User => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined]), ...overrideResponse})
+export const getCreateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
 
-export const getGetUserResponseMock = (overrideResponse: Partial< User > = {}): User => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined]), ...overrideResponse})
+export const getGetUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
 
-export const getUpdateUserResponseMock = (overrideResponse: Partial< User > = {}): User => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined]), ...overrideResponse})
+export const getUpdateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
 
-export const getDeleteUserResponseMock = (overrideResponse: Partial< DeleteUser204 > = {}): DeleteUser204 => ({message: faker.helpers.arrayElement([faker.word.sample(), undefined]), ...overrideResponse})
+export const getDeleteUserResponseMock = (): DeleteUser204 => ({"message":"No Content"})
 
 export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 > = {}): GetLoans200 => ({loans: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({books: faker.helpers.arrayElement([{authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()}, undefined]), loans: faker.helpers.arrayElement([{bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})}, undefined]), users: faker.helpers.arrayElement([{email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined])}, undefined])})), totalLoan: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
 export const getUpsertLoansResponseMock = (): Loan[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})})))
 
-export const getLoginResponseMock = (overrideResponse: Partial< User > = {}): User => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined]), ...overrideResponse})
+export const getLoginResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
 
 
 export const getGetBooksMockHandler = (overrideResponse?: GetBooks200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetBooks200> | GetBooks200)) => {
-  return http.get('*/books', async (info) => {await delay(1000);
+  return http.get('*/books', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1285,7 +1284,7 @@ export const getGetBooksMockHandler = (overrideResponse?: GetBooks200 | ((info: 
 }
 
 export const getCreateBookMockHandler = (overrideResponse?: Book | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Book> | Book)) => {
-  return http.post('*/books', async (info) => {await delay(1000);
+  return http.post('*/books', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1297,7 +1296,7 @@ export const getCreateBookMockHandler = (overrideResponse?: Book | ((info: Param
 }
 
 export const getGetBookMockHandler = (overrideResponse?: Book | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Book> | Book)) => {
-  return http.get('*/books/:bookId', async (info) => {await delay(1000);
+  return http.get('*/books/:bookId', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1309,7 +1308,7 @@ export const getGetBookMockHandler = (overrideResponse?: Book | ((info: Paramete
 }
 
 export const getUpdateBookMockHandler = (overrideResponse?: Book | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<Book> | Book)) => {
-  return http.patch('*/books/:bookId', async (info) => {await delay(1000);
+  return http.patch('*/books/:bookId', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1321,7 +1320,7 @@ export const getUpdateBookMockHandler = (overrideResponse?: Book | ((info: Param
 }
 
 export const getDeleteBookMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
-  return http.delete('*/books/:bookId', async (info) => {await delay(1000);
+  return http.delete('*/books/:bookId', async (info) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
     return new HttpResponse(null,
       { status: 204,
@@ -1331,7 +1330,7 @@ export const getDeleteBookMockHandler = (overrideResponse?: void | ((info: Param
 }
 
 export const getSearchBooksMockHandler = (overrideResponse?: SearchBooks200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SearchBooks200> | SearchBooks200)) => {
-  return http.get('*/books/search', async (info) => {await delay(1000);
+  return http.get('*/books/search', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1343,7 +1342,7 @@ export const getSearchBooksMockHandler = (overrideResponse?: SearchBooks200 | ((
 }
 
 export const getGetUsersMockHandler = (overrideResponse?: GetUsers200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetUsers200> | GetUsers200)) => {
-  return http.get('*/users', async (info) => {await delay(1000);
+  return http.get('*/users', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1355,7 +1354,7 @@ export const getGetUsersMockHandler = (overrideResponse?: GetUsers200 | ((info: 
 }
 
 export const getCreateUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<User> | User)) => {
-  return http.post('*/users', async (info) => {await delay(1000);
+  return http.post('*/users', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1367,7 +1366,7 @@ export const getCreateUserMockHandler = (overrideResponse?: User | ((info: Param
 }
 
 export const getGetUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<User> | User)) => {
-  return http.get('*/users/:userId', async (info) => {await delay(1000);
+  return http.get('*/users/:userId', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1379,7 +1378,7 @@ export const getGetUserMockHandler = (overrideResponse?: User | ((info: Paramete
 }
 
 export const getUpdateUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<User> | User)) => {
-  return http.patch('*/users/:userId', async (info) => {await delay(1000);
+  return http.patch('*/users/:userId', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1391,7 +1390,7 @@ export const getUpdateUserMockHandler = (overrideResponse?: User | ((info: Param
 }
 
 export const getDeleteUserMockHandler = (overrideResponse?: DeleteUser204 | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<DeleteUser204> | DeleteUser204)) => {
-  return http.delete('*/users/:userId', async (info) => {await delay(1000);
+  return http.delete('*/users/:userId', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1403,7 +1402,7 @@ export const getDeleteUserMockHandler = (overrideResponse?: DeleteUser204 | ((in
 }
 
 export const getGetLoansMockHandler = (overrideResponse?: GetLoans200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetLoans200> | GetLoans200)) => {
-  return http.get('*/loans', async (info) => {await delay(1000);
+  return http.get('*/loans', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1415,7 +1414,7 @@ export const getGetLoansMockHandler = (overrideResponse?: GetLoans200 | ((info: 
 }
 
 export const getUpsertLoansMockHandler = (overrideResponse?: Loan[] | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<Loan[]> | Loan[])) => {
-  return http.patch('*/loans', async (info) => {await delay(1000);
+  return http.patch('*/loans', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1427,7 +1426,7 @@ export const getUpsertLoansMockHandler = (overrideResponse?: Loan[] | ((info: Pa
 }
 
 export const getLoginMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<User> | User)) => {
-  return http.post('*/auth', async (info) => {await delay(1000);
+  return http.post('*/auth', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -1439,7 +1438,7 @@ export const getLoginMockHandler = (overrideResponse?: User | ((info: Parameters
 }
 
 export const getLogoutMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
-  return http.delete('*/auth', async (info) => {await delay(1000);
+  return http.delete('*/auth', async (info) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
     return new HttpResponse(null,
       { status: 204,
