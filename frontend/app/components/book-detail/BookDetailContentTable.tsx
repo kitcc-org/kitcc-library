@@ -23,7 +23,7 @@ const BookDetailContentTable = ({ book }: BookDetailContentTableProps) => {
           <Table.Th>出版社</Table.Th>
           <Table.Td>{book.publisher}</Table.Td>
         </Table.Tr>
-        <Table.Tr key={"publishDate"}>
+        <Table.Tr key={"publishedDate"}>
           <Table.Th>出版日</Table.Th>
           <Table.Td>{book.publishedDate}</Table.Td>
         </Table.Tr>
