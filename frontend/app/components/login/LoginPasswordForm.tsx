@@ -1,9 +1,9 @@
-import type { UseFormReturnType } from '@mantine/form'
-import type { LoginBody } from 'orval/client.schemas'
-import { PasswordInput } from '@mantine/core'
+import { PasswordInput } from "@mantine/core";
+import type { UseFormReturnType } from "@mantine/form";
+import type { LoginBody } from "orval/client.schemas";
 
 interface LoginPasswordFormProps {
-  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>
+  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
 }
 
 const LoginPasswordForm = ({ form }: LoginPasswordFormProps) => {
@@ -11,11 +11,12 @@ const LoginPasswordForm = ({ form }: LoginPasswordFormProps) => {
     <PasswordInput
       label="パスワード"
       withAsterisk
-      autoComplete='current-password'
-      key={form.key('password')}
-      {...form.getInputProps('password')}
+      autoComplete="current-password"
+      key={form.key("password")}
+      data-testid="password-input"
+      {...form.getInputProps("password")}
     />
-  )
-}
+  );
+};
 
-export default LoginPasswordForm
+export default LoginPasswordForm;
