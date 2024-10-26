@@ -44,6 +44,8 @@ const BooKListPage = () => {
       isbn: isbn ?? '',
     }
   })
+
+  // 選択中の書籍をリセットする
   useEffect(() => {
     setSelectedBook([])
   }, [])
