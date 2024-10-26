@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import { redirect, type MetaFunction } from "@remix-run/cloudflare";
 import { Text } from "@mantine/core";
 
 export const meta: MetaFunction = () => {
@@ -8,6 +8,6 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function Index() {
-  return (<Text>いずれログインページ(auth/login)にリダイレクトする予定のページ</Text>);
+export async function loader() {
+  return redirect('home')
 }
