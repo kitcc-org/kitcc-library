@@ -14,7 +14,7 @@ const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
     case 400:
       return <ErrorComponent message='リクエストが不正です' />
     case 404:
-      return <ErrorComponent message='書籍が見つかりません' />
+      return <ErrorComponent message='書籍が見つかりませんでした' />
     case 500:
       return <ErrorComponent message='サーバーエラーが発生しました' />
   }

@@ -31,7 +31,7 @@ export const action = async ({ request }: ActionFunctionArgs) => { // delete: �
         errorNotifications('ログインしてください')
         return redirect('/auth/login')
       case 404:
-        errorNotifications('書籍が見つかりません')
+        errorNotifications('書籍が見つかりませんでした')
         return redirect('/home')
       case 500:
         errorNotifications('サーバーエラーが発生しました')
