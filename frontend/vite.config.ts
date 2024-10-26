@@ -9,13 +9,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     remixCloudflareDevProxy(),
-    remix({
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-      },
-    }),
+    !process.env.VITEST
+      ? remix({
+          future: {
+            v3_fetcherPersist: true,
+            v3_relativeSplatPath: true,
+            v3_throwAbortReason: true,
+          },
+        })
+      : null,
     tsconfigPaths(),
   ],
   server: {
@@ -32,7 +34,7 @@ export default defineConfig({
     env: {
       NODE_TLS_REJECT_UNAUTHORIZED: "0",
     },
-    environment: "edge-runtime",
+    environment: "happy-dom",
     globals: true,
     setupFiles: ["./test/setup.ts"],
   },
