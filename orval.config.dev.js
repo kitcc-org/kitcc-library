@@ -7,7 +7,7 @@ module.exports = {
       client: 'react-query',
       httpClient: 'fetch',
       mode: 'split',
-      target: './frontend/orval/client.ts',
+      target: './frontend/client/client.ts',
       baseUrl: 'https://localhost:8787',
       override: {
         mutator: {

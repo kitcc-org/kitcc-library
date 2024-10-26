@@ -8,7 +8,7 @@ module.exports = {
       client: 'react-query',
       httpClient: 'fetch',
       mode: 'split',
-      target: './frontend/orval/client.ts',
+      target: './frontend/client/client.ts',
       override: {
         mutator: {
           path: './frontend/orval/mutator.ts',

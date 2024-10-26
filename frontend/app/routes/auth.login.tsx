@@ -1,8 +1,8 @@
 import { useForm } from "@mantine/form";
 import { useNavigate } from "@remix-run/react";
+import { useLogin } from "client/client";
+import type { LoginBody } from "client/client.schemas";
 import { useAtom } from "jotai";
-import { useLogin } from "orval/client";
-import type { LoginBody } from "orval/client.schemas";
 import LoginFormComponent from "~/components/login/LoginFormComponent";
 import { userAtom } from "~/stores/userAtom";
 import { errorNotifications, successNotifications } from "~/utils/notification";

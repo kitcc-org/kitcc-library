@@ -1,6 +1,6 @@
 import { PasswordInput } from "@mantine/core";
 import type { UseFormReturnType } from "@mantine/form";
-import type { LoginBody } from "orval/client.schemas";
+import type { LoginBody } from "client/client.schemas";
 
 interface LoginPasswordFormProps {
   form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;

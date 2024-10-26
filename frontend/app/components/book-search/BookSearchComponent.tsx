@@ -1,14 +1,17 @@
-import BookSearchModeButton from './BookSearchModeButton'
-import type { UseFormReturnType } from '@mantine/form'
-import type { GetBooksParams } from 'orval/client.schemas'
-import BookSearchForm from './BookSearchForm'
+import type { UseFormReturnType } from "@mantine/form";
+import type { GetBooksParams } from "client/client.schemas";
+import BookSearchForm from "./BookSearchForm";
+import BookSearchModeButton from "./BookSearchModeButton";
 
 interface BookSearchComponentProps {
-  isOpen: boolean
-  open: () => void
-  close: () => void
-  form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
-  handleSubmit: (props: GetBooksParams) => void
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  form: UseFormReturnType<
+    GetBooksParams,
+    (values: GetBooksParams) => GetBooksParams
+  >;
+  handleSubmit: (props: GetBooksParams) => void;
 }
 
 const BookSearchComponent = ({
@@ -16,14 +19,14 @@ const BookSearchComponent = ({
   open,
   close,
   form,
-  handleSubmit
+  handleSubmit,
 }: BookSearchComponentProps) => {
   return (
     <>
       <BookSearchModeButton isOpen={isOpen} open={open} close={close} />
       <BookSearchForm isOpen={isOpen} form={form} handleSubmit={handleSubmit} />
     </>
-  )
-}
+  );
+};
 
-export default BookSearchComponent
+export default BookSearchComponent;

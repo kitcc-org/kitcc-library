@@ -1,9 +1,12 @@
-import { TextInput } from '@mantine/core'
-import type { UseFormReturnType } from '@mantine/form'
-import type { GetBooksParams } from 'orval/client.schemas'
+import { TextInput } from "@mantine/core";
+import type { UseFormReturnType } from "@mantine/form";
+import type { GetBooksParams } from "client/client.schemas";
 
 interface SearchPublisherFormProps {
-  form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
+  form: UseFormReturnType<
+    GetBooksParams,
+    (values: GetBooksParams) => GetBooksParams
+  >;
 }
 
 const BookSearchPublisherForm = ({ form }: SearchPublisherFormProps) => {
@@ -11,10 +14,10 @@ const BookSearchPublisherForm = ({ form }: SearchPublisherFormProps) => {
     <TextInput
       label="出版社"
       placeholder="SOFTBANK"
-      key={form.key('publisher')}
-      {...form.getInputProps('publisher')}
+      key={form.key("publisher")}
+      {...form.getInputProps("publisher")}
     />
-  )
-}
+  );
+};
 
-export default BookSearchPublisherForm
+export default BookSearchPublisherForm;

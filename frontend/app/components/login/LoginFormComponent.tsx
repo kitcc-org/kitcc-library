@@ -1,30 +1,27 @@
-import FormLayout from '../layouts/FormLayout'
-import LoginEmailForm from './LoginEmailForm'
-import LoginPasswordForm from './LoginPasswordForm'
-import LoginSubmitButton from './LoginSubmitButton'
-import type { UseFormReturnType } from '@mantine/form'
-import type { LoginBody } from 'orval/client.schemas'
-import LoginFormTitle from './LoginFormTitle'
-import LoginFormHelpText from './LoginFormHelpText'
-import FormBaseLayout from '../layouts/FormBaseLayout'
+import type { UseFormReturnType } from "@mantine/form";
+import type { LoginBody } from "client/client.schemas";
+import FormBaseLayout from "../layouts/FormBaseLayout";
+import FormLayout from "../layouts/FormLayout";
+import LoginEmailForm from "./LoginEmailForm";
+import LoginFormHelpText from "./LoginFormHelpText";
+import LoginFormTitle from "./LoginFormTitle";
+import LoginPasswordForm from "./LoginPasswordForm";
+import LoginSubmitButton from "./LoginSubmitButton";
 
 interface LoginFormComponentProps {
   isPending: boolean;
-  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>
-  handleSubmit: (props: LoginBody) => void
+  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
+  handleSubmit: (props: LoginBody) => void;
 }
 
 const LoginFormComponent = ({
   isPending,
   form,
-  handleSubmit
+  handleSubmit,
 }: LoginFormComponentProps) => {
   return (
     <FormBaseLayout>
-      <FormLayout<LoginBody>
-        form={form}
-        handleSubmit={handleSubmit}
-      >
+      <FormLayout<LoginBody> form={form} handleSubmit={handleSubmit}>
         <LoginFormTitle />
         <LoginEmailForm form={form} />
         <LoginPasswordForm form={form} />
@@ -32,7 +29,7 @@ const LoginFormComponent = ({
         <LoginFormHelpText />
       </FormLayout>
     </FormBaseLayout>
-  )
-}
+  );
+};
 
-export default LoginFormComponent
+export default LoginFormComponent;
