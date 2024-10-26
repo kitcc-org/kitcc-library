@@ -1,5 +1,4 @@
 import { Center, Pagination } from '@mantine/core'
-import React from 'react'
 
 interface PaginationComponentProps {
   totalNum: number

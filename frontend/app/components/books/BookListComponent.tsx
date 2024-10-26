@@ -1,4 +1,4 @@
-import { AppShell, Space, Stack } from '@mantine/core'
+import { Stack } from '@mantine/core'
 import { getBooksResponse } from 'orval/client'
 import ErrorComponent from '../common/ErrorComponent'
 import BookCards from './BookCards'

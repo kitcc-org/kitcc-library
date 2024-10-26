@@ -51,19 +51,19 @@ const BooKListPage = () => {
   const handleSubmit = (props: GetBooksParams) => {
     let url = '/home'
     let initial = true
-    if (props.title !== '') {
+    if (props.title && props.title !== '') {
       url = (initial === true) ? `${url}?title=${props.title}` : `${url}&title=${props.title}`
       initial = false
     }
-    if (props.author !== '') {
+    if (props.author && props.author !== '') {
       url = (initial === true) ? `${url}?author=${props.author}` : `${url}&author=${props.author}`
       initial = false
     }
-    if (props.publisher !== '') {
+    if (props.publisher && props.publisher !== '') {
       url = (initial === true) ? `${url}?publisher=${props.publisher}` : `${url}&publisher=${props.publisher}`
       initial = false
     }
-    if (props.isbn !== '') {
+    if (props.isbn && props.isbn !== '') {
       url = (initial === true) ? `${url}?isbn=${props.isbn}` : `${url}&isbn=${props.isbn}`
       initial = false
     }

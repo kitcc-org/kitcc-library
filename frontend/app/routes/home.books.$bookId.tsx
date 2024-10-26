@@ -1,7 +1,6 @@
-import React from 'react'
 import { json } from '@remix-run/cloudflare'
 import type { LoaderFunctionArgs } from '@remix-run/cloudflare'
-import { getBook, getLoans } from 'orval/client'
+import { getBook } from 'orval/client'
 import { useLoaderData } from '@remix-run/react'
 import BookDetailComponent from '~/components/book-detail/BookDetailComponent'
 

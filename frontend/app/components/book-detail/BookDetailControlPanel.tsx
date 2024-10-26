@@ -1,16 +1,14 @@
 import { Button, Stack } from '@mantine/core'
 import BookDetailThumbnail from './BookDetailThumbnail'
-import { MdEdit } from "react-icons/md";
-import { MdDeleteForever } from "react-icons/md";
+import { MdEdit, MdDeleteForever } from "react-icons/md";
 import { useAtom } from 'jotai';
 import { noUser, userAtom } from '~/stores/userAtom';
 
 interface BookDetailControlPanelProps {
-  id: number
   thumbnail?: string
 }
 
-const BookDetailControlPanel = ({ id, thumbnail }: BookDetailControlPanelProps) => {
+const BookDetailControlPanel = ({ thumbnail }: BookDetailControlPanelProps) => {
   const [user,] = useAtom(userAtom)
   return (
     <Stack

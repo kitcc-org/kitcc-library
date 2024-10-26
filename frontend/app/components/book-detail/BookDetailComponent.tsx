@@ -1,10 +1,8 @@
-import React from 'react'
 import { Stack, Grid, rem } from '@mantine/core'
-import { Book } from 'orval/client.schemas'
 import ErrorComponent from '~/components/common/ErrorComponent'
 
 import BookDetailContent from './BookDetailContent'
-import { getBookResponse, getLoansResponse } from 'orval/client'
+import { getBookResponse } from 'orval/client'
 import BookDetailControlPanel from './BookDetailControlPanel'
 
 interface BookDetailComponentProps {
@@ -29,7 +27,7 @@ const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
     >
       <Grid gutter={rem(50)}>
         <Grid.Col span={4}>
-          <BookDetailControlPanel id={bookResponse.data.id} thumbnail={bookResponse.data.thumbnail} />
+          <BookDetailControlPanel thumbnail={bookResponse.data.thumbnail} />
         </Grid.Col>
         <Grid.Col span={8}>
           <BookDetailContent book={bookResponse.data} />

@@ -1,5 +1,4 @@
 import { Center } from '@mantine/core'
-import React from 'react'
 import BookCardCartButton from './BookCardCartButton'
 
 interface BookCardFooterProps {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Checkbox, Group } from '@mantine/core'
 import { selectedBooksAtom } from '~/stores/cartAtom'
 import { useAtom } from 'jotai'

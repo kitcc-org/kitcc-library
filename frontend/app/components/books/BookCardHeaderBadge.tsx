@@ -1,5 +1,4 @@
 import { Badge } from '@mantine/core'
-import React from 'react'
 
 interface BookCardHeaderBadgeProps {
   stock: number

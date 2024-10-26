@@ -1,4 +1,4 @@
-import { AspectRatio, Card, Image, rem } from '@mantine/core'
+import { AspectRatio, Image, rem } from '@mantine/core'
 import { useNavigate } from '@remix-run/react'
 import NoImage from '~/img/noImage.png'
 

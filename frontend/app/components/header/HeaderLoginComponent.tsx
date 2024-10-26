@@ -11,7 +11,7 @@ import { useAtom } from 'jotai';
 import { userAtom, noUser } from '~/stores/userAtom';
 
 const HeaderLoginComponent = () => {
-  const [user, setUser] = useAtom(userAtom)
+  const [, setUser] = useAtom(userAtom)
   const [opened, { open, close }] = useDisclosure()
   const navigate = useNavigate()
   const logoutTask = useLogout()

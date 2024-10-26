@@ -1,15 +1,18 @@
 import { Stack } from '@mantine/core'
 import { Book } from 'orval/client.schemas'
-import React from 'react'
 import BookDetailTitle from './BookDetailTitle'
 import BookDetailContentTable from './BookDetailContentTable'
 import BookDetailDescription from './BookDetailDescription'
+import { useAtom } from 'jotai'
+import { noUser, userAtom } from '~/stores/userAtom'
+import BookDetailBorrower from './BookDetailBorrower'
 
 interface BookDetailComponentProps {
   book: Book
 }
 
 const BookDetailContent = ({ book }: BookDetailComponentProps) => {
+  const [user] = useAtom(userAtom)
   return (
     <Stack
       bg="var(--mantine-color-body)"
@@ -20,6 +23,7 @@ const BookDetailContent = ({ book }: BookDetailComponentProps) => {
       <BookDetailTitle title={book.title} />
       <BookDetailContentTable book={book} />
       <BookDetailDescription description={book.description} />
+      {user !== noUser && <BookDetailBorrower />}
     </Stack>
   )
 }

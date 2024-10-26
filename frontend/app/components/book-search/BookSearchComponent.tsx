@@ -1,4 +1,3 @@
-import React from 'react'
 import BookSearchModeButton from './BookSearchModeButton'
 import type { UseFormReturnType } from '@mantine/form'
 import type { GetBooksParams } from 'orval/client.schemas'

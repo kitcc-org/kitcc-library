@@ -1,8 +1,6 @@
 import { Button, Menu } from '@mantine/core'
-import { FaUserCircle } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { LuShoppingCart } from "react-icons/lu";
-import { LuLogOut } from "react-icons/lu";
+import { FaUserCircle, FaUser } from "react-icons/fa";
+import { LuLogOut, LuShoppingCart } from "react-icons/lu";
 import { userAtom } from '~/stores/userAtom';
 import { useAtom } from 'jotai';
 import { useNavigate } from '@remix-run/react';

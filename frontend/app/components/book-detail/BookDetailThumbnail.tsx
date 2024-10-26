@@ -1,5 +1,4 @@
-import { AspectRatio, Card, Image, rem } from '@mantine/core'
-import { useNavigate } from '@remix-run/react'
+import { AspectRatio, Image, rem } from '@mantine/core'
 import NoImage from '~/img/noImage.png'
 
 interface BookDetailThumbnailProps {

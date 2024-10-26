@@ -17,7 +17,7 @@ const getCookieUserId = () => {
 const HeaderComponent = () => {
   const [user, setUser] = useAtom(userAtom)
   const userId = getCookieUserId()
-  if (!!userId) {
+  if (userId) {
     if (user === noUser) {
       // ユーザ情報を取得するAPIを呼び出す。
       getUser(userId).then((response) => {
