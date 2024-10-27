@@ -1,15 +1,11 @@
-import { Text } from '@mantine/core'
+import { Text } from '@mantine/core';
 
 const LoginTitle = () => {
-  return (
-    <Text
-      ta='center'
-      tt='uppercase'
-      size='xl'
-    >
-      ログイン
-    </Text>
-  )
-}
+	return (
+		<Text ta="center" tt="uppercase" size="xl">
+			ログイン
+		</Text>
+	);
+};
 
-export default LoginTitle
+export default LoginTitle;

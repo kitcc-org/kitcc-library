@@ -1,10 +1,10 @@
-import { atom } from "jotai";
-import { createJSONStorage, atomWithStorage } from "jotai/utils";
+import { atom } from 'jotai';
+import { createJSONStorage, atomWithStorage } from 'jotai/utils';
 
 const storage = createJSONStorage<CartProps[]>(() => sessionStorage);
 export interface CartProps {
-  id: number
-  stock: number
+	id: number;
+	stock: number;
 }
 
 // カートの中身を管理するAtom 生存時間: セッションストレージ(タブが閉じられるまで)

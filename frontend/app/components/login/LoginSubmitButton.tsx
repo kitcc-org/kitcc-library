@@ -1,18 +1,15 @@
-import { Button } from '@mantine/core'
+import { Button } from '@mantine/core';
 
 interface LoginSubmitButtonProps {
-  isPending: boolean
+	isPending: boolean;
 }
 
-const LoginSubmitButton = ({isPending}: LoginSubmitButtonProps) => {
-  return (
-  <Button
-    type='submit'
-    disabled={isPending}
-  >
-    ログイン
-  </Button>
-  )
-}
+const LoginSubmitButton = ({ isPending }: LoginSubmitButtonProps) => {
+	return (
+		<Button type="submit" disabled={isPending}>
+			ログイン
+		</Button>
+	);
+};
 
-export default LoginSubmitButton
+export default LoginSubmitButton;
