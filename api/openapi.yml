@@ -11,7 +11,7 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: "https://kitcc-library.kitcc.workers.dev"
+  - url: "https://kitcc-library-api.kitcc.workers.dev"
 
 tags:
   - name: book
