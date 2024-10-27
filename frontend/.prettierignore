@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# production
+public/
+
+#orval
+client/
+test/mocks/
+
+# misc
+.DS_Store
+*.pem
+
+.eslintrc.cjs
+postcss.config.cjs
+postcss.config.js
+package.json
+pnpm-lock.yaml
+tsconfig.json
+vite.config.ts
