@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { createJSONStorage, atomWithStorage } from 'jotai/utils';
+import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 
 const storage = createJSONStorage<CartProps[]>(() => sessionStorage);
 export interface CartProps {
@@ -7,8 +7,10 @@ export interface CartProps {
 	stock: number;
 }
 
-// カートの中身を管理するAtom 生存時間: セッションストレージ(タブが閉じられるまで)
+// カートの中身を管理するAtom
+// 生存時間: セッションストレージ(タブが閉じられるまで)
 export const cartAtom = atomWithStorage<CartProps[]>('cart', [], storage);
 
-// 選択された本を管理するAtom 生存時間: DOM(ページをリロードするまで)
+// 選択された本を管理するAtom
+// 生存時間: DOM(ページをリロードするまで)
 export const selectedBooksAtom = atom<CartProps[]>([]);

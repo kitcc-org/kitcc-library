@@ -19,7 +19,7 @@ const HeaderComponent = () => {
 	const userId = getCookieUserId();
 	if (userId) {
 		if (!user) {
-			// ユーザ情報を取得するAPIを呼び出す。
+			// ユーザ情報を取得するAPIを呼び出す
 			getUser(userId).then((response) => {
 				if (response.status === 200) {
 					setUser(response.data as User);

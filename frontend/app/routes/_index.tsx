@@ -1,5 +1,4 @@
 import { redirect, type MetaFunction } from '@remix-run/cloudflare';
-import { Text } from '@mantine/core';
 
 export const meta: MetaFunction = () => {
 	return [
