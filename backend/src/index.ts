@@ -15,9 +15,12 @@ app.use(
 	'*',
 	cors({
 		origin: (origin: string) => {
-			return origin.includes('localhost')
+			// prettier-ignore
+			return(
+				origin.includes('localhost') ||
+				origin.includes('kitcc-library-web.pages.dev')
 				? origin
-				: 'https://kitcc-library-web.pages.dev/';
+				: 'https://kitcc-library-web.pages.dev/');
 		},
 		// リクエストに含めることができるヘッダ
 		allowHeaders: ['Cookie', 'Content-Type'],
