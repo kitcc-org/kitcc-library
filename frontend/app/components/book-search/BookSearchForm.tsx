@@ -1,30 +1,26 @@
-import { Collapse } from '@mantine/core'
-import FormLayout from '../layouts/FormLayout'
-import type { UseFormReturnType } from '@mantine/form'
-import type { GetBooksParams } from 'orval/client.schemas'
-import BookSearchTitleForm from './BookSearchTitleForm'
-import BookSearchAuthorForm from './BookSearchAuthorForm'
-import BookSearchPublisherForm from './BookSearchPublisherForm'
-import BookSearchIsbnForm from './BookSearchIsbnForm'
-import BookSearchSubmitButton from './BookSearchSubmitButton'
+import { Collapse } from "@mantine/core";
+import type { UseFormReturnType } from "@mantine/form";
+import type { GetBooksParams } from "client/client.schemas";
+import FormLayout from "../layouts/FormLayout";
+import BookSearchAuthorForm from "./BookSearchAuthorForm";
+import BookSearchIsbnForm from "./BookSearchIsbnForm";
+import BookSearchPublisherForm from "./BookSearchPublisherForm";
+import BookSearchSubmitButton from "./BookSearchSubmitButton";
+import BookSearchTitleForm from "./BookSearchTitleForm";
 
 interface SearchFormProps {
-  isOpen: boolean
-  form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
-  handleSubmit: (props: GetBooksParams) => void
+  isOpen: boolean;
+  form: UseFormReturnType<
+    GetBooksParams,
+    (values: GetBooksParams) => GetBooksParams
+  >;
+  handleSubmit: (props: GetBooksParams) => void;
 }
 
-const BookSearchForm = ({
-  isOpen,
-  form,
-  handleSubmit
-}: SearchFormProps) => {
+const BookSearchForm = ({ isOpen, form, handleSubmit }: SearchFormProps) => {
   return (
     <Collapse in={isOpen}>
-      <FormLayout<GetBooksParams>
-        form={form}
-        handleSubmit={handleSubmit}
-      >
+      <FormLayout<GetBooksParams> form={form} handleSubmit={handleSubmit}>
         <BookSearchTitleForm form={form} />
         <BookSearchAuthorForm form={form} />
         <BookSearchPublisherForm form={form} />
@@ -32,7 +28,7 @@ const BookSearchForm = ({
         <BookSearchSubmitButton />
       </FormLayout>
     </Collapse>
-  )
-}
+  );
+};
 
-export default BookSearchForm
+export default BookSearchForm;

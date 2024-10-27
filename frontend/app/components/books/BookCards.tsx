@@ -1,6 +1,6 @@
 import { ScrollArea, SimpleGrid } from "@mantine/core";
+import { Book } from "client/client.schemas";
 import { useAtom } from "jotai";
-import { Book } from "orval/client.schemas";
 import { userAtom } from "~/stores/userAtom";
 import BookCard from "./BookCard";
 import BookSelectedDialog from "./BookSelectedDialog";

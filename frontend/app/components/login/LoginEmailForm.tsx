@@ -1,9 +1,9 @@
-import type { UseFormReturnType } from '@mantine/form'
-import type { LoginBody } from 'orval/client.schemas'
-import { TextInput } from '@mantine/core'
+import { TextInput } from "@mantine/core";
+import type { UseFormReturnType } from "@mantine/form";
+import type { LoginBody } from "client/client.schemas";
 
 interface LoginEmailFormProps {
-  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>
+  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
 }
 
 const LoginEmailForm = ({ form }: LoginEmailFormProps) => {
@@ -11,11 +11,12 @@ const LoginEmailForm = ({ form }: LoginEmailFormProps) => {
     <TextInput
       label="メールアドレス"
       withAsterisk
-      autoComplete='email'
-      key={form.key('email')}
-      {...form.getInputProps('email')}
+      autoComplete="email"
+      key={form.key("email")}
+      data-testid="email-input"
+      {...form.getInputProps("email")}
     />
-  )
-}
+  );
+};
 
-export default LoginEmailForm
+export default LoginEmailForm;

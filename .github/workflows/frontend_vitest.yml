@@ -1,0 +1,24 @@
+name: Frontend Vitest
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout latest repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: true
+
+      - name: Run Vitest
+        run: pnpm run test

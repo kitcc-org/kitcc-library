@@ -1,6 +1,6 @@
 import { Card } from "@mantine/core";
+import type { Book } from "client/client.schemas";
 import { useAtom } from "jotai";
-import type { Book } from "orval/client.schemas";
 import { userAtom } from "~/stores/userAtom";
 import BookCardFooter from "./BookCardFooter";
 import BookCardHeader from "./BookCardHeader";

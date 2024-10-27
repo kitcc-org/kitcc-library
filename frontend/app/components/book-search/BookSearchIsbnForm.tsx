@@ -1,9 +1,12 @@
-import { TextInput } from '@mantine/core'
-import type { UseFormReturnType } from '@mantine/form'
-import type { GetBooksParams } from 'orval/client.schemas'
+import { TextInput } from "@mantine/core";
+import type { UseFormReturnType } from "@mantine/form";
+import type { GetBooksParams } from "client/client.schemas";
 
 interface SearchIsbnFormProps {
-  form: UseFormReturnType<GetBooksParams, (values: GetBooksParams) => GetBooksParams>
+  form: UseFormReturnType<
+    GetBooksParams,
+    (values: GetBooksParams) => GetBooksParams
+  >;
 }
 
 const BookSearchIsbnForm = ({ form }: SearchIsbnFormProps) => {
@@ -11,10 +14,10 @@ const BookSearchIsbnForm = ({ form }: SearchIsbnFormProps) => {
     <TextInput
       label="ISBN"
       placeholder="10桁または13桁のISBN"
-      key={form.key('isbn')}
-      {...form.getInputProps('isbn')}
+      key={form.key("isbn")}
+      {...form.getInputProps("isbn")}
     />
-  )
-}
+  );
+};
 
-export default BookSearchIsbnForm
+export default BookSearchIsbnForm;
