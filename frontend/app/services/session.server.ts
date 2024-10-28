@@ -1,7 +1,17 @@
 import { createCookieSessionStorage } from '@remix-run/cloudflare';
 
+interface SessionData {
+	userId: string;
+	sessionToken: string;
+}
+
+interface SessionFlashData {
+	success: string;
+	error: string;
+}
+
 const { getSession, commitSession, destroySession } =
-	createCookieSessionStorage({
+	createCookieSessionStorage<SessionData, SessionFlashData>({
 		cookie: {
 			name: '__session',
 			path: '/',
@@ -11,4 +21,4 @@ const { getSession, commitSession, destroySession } =
 		},
 	});
 
-export { getSession, commitSession, destroySession };
+export { commitSession, destroySession, getSession };
