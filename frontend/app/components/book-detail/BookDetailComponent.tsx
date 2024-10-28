@@ -1,15 +1,19 @@
 import { Grid, rem, Stack } from '@mantine/core';
 import ErrorComponent from '~/components/common/ErrorComponent';
 
-import { getBookResponse } from 'client/client';
+import { getBookResponse, getLoansResponse } from 'client/client';
 import BookDetailContent from './BookDetailContent';
 import BookDetailControlPanel from './BookDetailControlPanel';
 
 interface BookDetailComponentProps {
 	bookResponse: getBookResponse;
+	loansResponse?: getLoansResponse;
 }
 
-const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
+const BookDetailComponent = ({
+	bookResponse,
+	loansResponse,
+}: BookDetailComponentProps) => {
 	switch (bookResponse.status) {
 		case 400:
 			return <ErrorComponent message="リクエストが不正です" />;
@@ -29,7 +33,10 @@ const BookDetailComponent = ({ bookResponse }: BookDetailComponentProps) => {
 					/>
 				</Grid.Col>
 				<Grid.Col span={9}>
-					<BookDetailContent book={bookResponse.data} />
+					<BookDetailContent
+						book={bookResponse.data}
+						loansResponse={loansResponse}
+					/>
 				</Grid.Col>
 			</Grid>
 		</Stack>

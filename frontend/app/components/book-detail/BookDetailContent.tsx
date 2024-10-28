@@ -6,12 +6,17 @@ import BookDetailBorrower from './BookDetailBorrower';
 import BookDetailContentTable from './BookDetailContentTable';
 import BookDetailDescription from './BookDetailDescription';
 import BookDetailTitle from './BookDetailTitle';
+import { getLoansResponse } from 'client/client';
 
 interface BookDetailComponentProps {
 	book: Book;
+	loansResponse?: getLoansResponse;
 }
 
-const BookDetailContent = ({ book }: BookDetailComponentProps) => {
+const BookDetailContent = ({
+	book,
+	loansResponse,
+}: BookDetailComponentProps) => {
 	const [user] = useAtom(userAtom);
 	return (
 		<Stack
@@ -23,7 +28,7 @@ const BookDetailContent = ({ book }: BookDetailComponentProps) => {
 			<BookDetailTitle title={book.title} />
 			<BookDetailContentTable book={book} />
 			<BookDetailDescription description={book.description} />
-			{!!user && <BookDetailBorrower />}
+			{!!user && <BookDetailBorrower loansResponse={loansResponse} />}
 		</Stack>
 	);
 };

@@ -4,8 +4,15 @@ import type {
 } from '@remix-run/cloudflare';
 import { json, redirect } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
-import { deleteBook, getBook } from 'client/client';
+import {
+	deleteBook,
+	getBook,
+	getBookResponse,
+	getLoans,
+	getLoansResponse,
+} from 'client/client';
 import BookDetailComponent from '~/components/book-detail/BookDetailComponent';
+import { getSession } from '~/services/session.server';
 import { errorNotifications, successNotifications } from '~/utils/notification';
 
 interface Response {
@@ -13,15 +20,44 @@ interface Response {
 	status: number;
 }
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+interface LoaderProps {
+	bookResponse: getBookResponse;
+	loansResponse: getLoansResponse | undefined;
+}
+
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
 	const bookId = params.bookId ?? '';
-	const response = await getBook(bookId);
-	return json({ bookResponse: response });
+	const bookResponse = await getBook(bookId);
+	if (session.has('__Secure-user_id')) {
+		const cookieHeader = [
+			`__Secure-user_id=${session.get('__Secure-user_id')}`,
+			`__Secure-session_token=${session.get('__Secure-session_token')}`,
+		].join('; ');
+		const loansResponse = await getLoans(
+			{ bookId: bookId },
+			{ headers: { Cookie: cookieHeader } },
+		);
+		return json<LoaderProps>({
+			bookResponse: bookResponse,
+			loansResponse: loansResponse,
+		});
+	}
+	return json<LoaderProps>({
+		bookResponse: bookResponse,
+		loansResponse: undefined,
+	});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	// delete: 本の削除
-	const cookieHeader = request.headers.get('Cookie');
+	const session = await getSession(request.headers.get('Cookie'));
+	const cookieHeader = session.has('__Secure-user_id')
+		? [
+				`__Secure-user_id=${session.get('__Secure-user_id')}`,
+				`__Secure-session_token=${session.get('__Secure-session_token')}`,
+		  ].join('; ')
+		: undefined;
 	const formData = await request.formData();
 	if (request.method === 'DELETE') {
 		const bookId = String(formData.get('bookId'));
@@ -48,8 +84,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const BookDetailPage = () => {
-	const { bookResponse } = useLoaderData<typeof loader>();
-	return <BookDetailComponent bookResponse={bookResponse} />;
+	const { bookResponse, loansResponse } = useLoaderData<typeof loader>();
+	return (
+		<BookDetailComponent
+			bookResponse={bookResponse}
+			loansResponse={loansResponse}
+		/>
+	);
 };
 
 export default BookDetailPage;

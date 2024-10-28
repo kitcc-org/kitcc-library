@@ -3,7 +3,7 @@ import BookDetailThumbnail from './BookDetailThumbnail';
 import { MdEdit, MdDeleteForever } from 'react-icons/md';
 import { useAtom } from 'jotai';
 import { userAtom } from '~/stores/userAtom';
-import { Form, useFetcher, useNavigate } from '@remix-run/react';
+import { useFetcher, useNavigate } from '@remix-run/react';
 
 interface BookDetailControlPanelProps {
 	id: number;

@@ -1,16 +1,58 @@
 import { useForm } from '@mantine/form';
-import { useNavigate } from '@remix-run/react';
-import { useLogin } from 'client/client';
+import {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+	redirect,
+} from '@remix-run/cloudflare';
+import { useFetcher } from '@remix-run/react';
+import { login, useLogin } from 'client/client';
 import type { LoginBody } from 'client/client.schemas';
-import { useAtom } from 'jotai';
 import LoginFormComponent from '~/components/login/LoginFormComponent';
-import { userAtom } from '~/stores/userAtom';
+import { commitSession, getSession } from '~/services/session.server';
 import { errorNotifications, successNotifications } from '~/utils/notification';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+	if (session.has('__Secure-user_id')) return redirect('/home/mypage');
+	return null;
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+	const formData = await request.formData();
+	const loginEmail = String(formData.get('email'));
+	const loginPassword = String(formData.get('password'));
+	const response = await login({ email: loginEmail, password: loginPassword });
+	switch (response.status) {
+		case 200:
+			successNotifications('ログインに成功しました');
+			session.set('__Secure-user_id', response.data.id);
+			session.set('__Srcure-session_token', response.data.sessionToken);
+			const headers = new Headers({
+				'Set-Cookie': await commitSession(session),
+			});
+			return redirect('/home/mypage', { headers });
+		case 400:
+			errorNotifications('メールアドレスまたはパスワードが間違っています');
+			break;
+		case 401:
+			errorNotifications('メールアドレスまたはパスワードが間違っています');
+			break;
+		case 404:
+			errorNotifications('ユーザーが見つかりません');
+			break;
+		case 500:
+			errorNotifications('サーバーエラーが発生しました');
+			break;
+		default:
+			errorNotifications('エラーが発生しました');
+	}
+	return null;
+};
 
 const LoginPage = () => {
 	const loginTask = useLogin();
-	const navigate = useNavigate();
-	const [, setUser] = useAtom(userAtom);
+	const fetcher = useFetcher();
 	const form = useForm<LoginBody>({
 		mode: 'uncontrolled',
 		initialValues: {
@@ -31,44 +73,9 @@ const LoginPage = () => {
 	});
 
 	const handleSubmit = (props: LoginBody) => {
-		loginTask.mutate(
-			{
-				data: props,
-			},
-			{
-				onSuccess: (response) => {
-					switch (response.status) {
-						case 200:
-							successNotifications('ログインに成功しました');
-							setUser(response.data);
-							navigate('/home/mypage');
-							break;
-						case 400:
-							errorNotifications(
-								'メールアドレスまたはパスワードが間違っています',
-							);
-							break;
-						case 401:
-							errorNotifications(
-								'メールアドレスまたはパスワードが間違っています',
-							);
-							break;
-						case 404:
-							errorNotifications('ユーザーが見つかりません');
-							break;
-						case 500:
-							errorNotifications('サーバーエラーが発生しました');
-							break;
-						default:
-							errorNotifications('エラーが発生しました');
-					}
-				},
-				onError: () => {
-					errorNotifications(
-						'APIに問題が発生しています。サーバが起動されているか確認してください。',
-					);
-				},
-			},
+		fetcher.submit(
+			{ email: props.email, password: props.password },
+			{ method: 'post' },
 		);
 	};
 
