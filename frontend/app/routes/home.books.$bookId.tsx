@@ -59,8 +59,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		: undefined;
 	const formData = await request.formData();
 
-	// 書籍の削除
 	if (request.method === 'DELETE') {
+		// 書籍の削除
 		const bookId = String(formData.get('bookId'));
 		const response = await deleteBook(bookId, {
 			headers: { Cookie: cookieHeader ?? '' },
