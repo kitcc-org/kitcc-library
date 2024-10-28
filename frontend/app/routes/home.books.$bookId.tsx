@@ -29,10 +29,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 	const bookId = params.bookId ?? '';
 	const bookResponse = await getBook(bookId);
-	if (session.has('__Secure-user_id')) {
+	if (session.has('userId')) {
 		const cookieHeader = [
-			`__Secure-user_id=${session.get('__Secure-user_id')}`,
-			`__Secure-session_token=${session.get('__Secure-session_token')}`,
+			`__Secure-user_id=${session.get('userId')}`,
+			`__Secure-session_token=${session.get('sessionToken')}`,
 		].join('; ');
 		const loansResponse = await getLoans(
 			{ bookId: bookId },
@@ -50,15 +50,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	// delete: 本の削除
 	const session = await getSession(request.headers.get('Cookie'));
-	const cookieHeader = session.has('__Secure-user_id')
+	const cookieHeader = session.has('userId')
 		? [
-				`__Secure-user_id=${session.get('__Secure-user_id')}`,
-				`__Secure-session_token=${session.get('__Secure-session_token')}`,
-		  ].join('; ')
+				`__Secure-user_id=${session.get('userId')};`,
+				`__Secure-session_token=${session.get('sessionToken')}`,
+			].join('; ')
 		: undefined;
 	const formData = await request.formData();
+
+	// 書籍の削除
 	if (request.method === 'DELETE') {
 		const bookId = String(formData.get('bookId'));
 		const response = await deleteBook(bookId, {

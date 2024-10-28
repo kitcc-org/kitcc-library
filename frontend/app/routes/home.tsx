@@ -1,19 +1,18 @@
-import { Outlet, useLoaderData } from '@remix-run/react';
 import { AppShell, Container } from '@mantine/core';
-import HeaderComponent from '~/components/header/HeaderComponent';
 import {
 	ActionFunctionArgs,
 	json,
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { destroySession, getSession } from '~/services/session.server';
-import { useEffect } from 'react';
-import { useAtom } from 'jotai';
-import { userAtom } from '~/stores/userAtom';
+import { Outlet, useLoaderData } from '@remix-run/react';
 import { getUser, logout } from 'client/client';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import HeaderComponent from '~/components/header/HeaderComponent';
+import { destroySession, getSession } from '~/services/session.server';
+import { userAtom } from '~/stores/userAtom';
 import { errorNotifications, successNotifications } from '~/utils/notification';
-import { O } from 'node_modules/@faker-js/faker/dist/airline-C5Qwd7_q';
 
 interface LoaderProps {
 	userId: string | undefined;
@@ -21,18 +20,25 @@ interface LoaderProps {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	if (!session.has('__Secure-user_id')) {
+	if (!session.has('userId')) {
 		return json<LoaderProps>({ userId: undefined });
 	} else {
 		return json<LoaderProps>({
-			userId: session.get('__Secure-user_id'),
+			userId: session.get('userId'),
 		});
 	}
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	const response = await logout(session.get('__Secure-user_id'));
+	const userId = session.get('userId');
+
+	const response = await logout({
+		headers: {
+			Cookie: `__Secure-user_id=${userId};`,
+		},
+	});
+
 	if (response.status === 204) {
 		const headers = new Headers({
 			'Set-Cookie': await destroySession(session),
@@ -40,6 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		successNotifications('ログアウトしました');
 		return redirect('/home', { headers });
 	}
+
 	errorNotifications('ログアウトに失敗しました');
 	return null;
 };
