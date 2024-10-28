@@ -1,22 +1,22 @@
-import { PasswordInput } from "@mantine/core";
-import type { UseFormReturnType } from "@mantine/form";
-import type { LoginBody } from "client/client.schemas";
+import { PasswordInput } from '@mantine/core';
+import type { UseFormReturnType } from '@mantine/form';
+import type { LoginBody } from 'client/client.schemas';
 
 interface LoginPasswordFormProps {
-  form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
+	form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
 }
 
 const LoginPasswordForm = ({ form }: LoginPasswordFormProps) => {
-  return (
-    <PasswordInput
-      label="パスワード"
-      withAsterisk
-      autoComplete="current-password"
-      key={form.key("password")}
-      data-testid="password-input"
-      {...form.getInputProps("password")}
-    />
-  );
+	return (
+		<PasswordInput
+			label="パスワード"
+			withAsterisk
+			autoComplete="current-password"
+			key={form.key('password')}
+			data-testid="password-input"
+			{...form.getInputProps('password')}
+		/>
+	);
 };
 
 export default LoginPasswordForm;
