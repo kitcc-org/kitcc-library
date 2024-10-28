@@ -6,8 +6,13 @@ interface SessionData {
 }
 
 interface SessionFlashData {
-	success: string;
-	error: string;
+	// ログイン
+	loginSuccess: string;
+	loginError: string;
+	// ログアウト
+	// ログアウト時はセッションを削除するため
+	// actionからコンポーネントにメッセージを渡すのは難しい
+	logoutError: string;
 }
 
 const { getSession, commitSession, destroySession } =

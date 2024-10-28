@@ -23,7 +23,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	}
 
 	// 未ログインの場合
-	const data = { error: session.get('error') };
+	const data = { error: session.get('loginError') };
 
 	return json(data, {
 		headers: {
@@ -43,7 +43,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	// ログインに成功した場合
 	if (response.status === 200) {
-		session.flash('success', 'ログインに成功しました');
+		session.flash('loginSuccess', 'ログインに成功しました');
 		session.set('userId', response.data.id.toString());
 		session.set('sessionToken', response.data.sessionToken!);
 		return redirect('/home/mypage', {
@@ -56,19 +56,21 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	// ログインに失敗した場合
 	switch (response.status) {
 		case 400:
-			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
+			// prettier-ignore
+			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 401:
-			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
+			// prettier-ignore
+			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 404:
-			session.flash('error', 'ユーザーが見つかりません');
+			session.flash('loginError', 'ユーザーが見つかりません');
 			break;
 		case 500:
-			session.flash('error', 'サーバーエラーが発生しました');
+			session.flash('loginError', 'サーバーエラーが発生しました');
 			break;
 		default:
-			session.flash('error', 'エラーが発生しました');
+			session.flash('loginError', 'エラーが発生しました');
 	}
 	return redirect('/auth/login', {
 		headers: {

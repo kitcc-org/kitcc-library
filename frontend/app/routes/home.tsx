@@ -10,23 +10,36 @@ import { getUser, logout } from 'client/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import HeaderComponent from '~/components/header/HeaderComponent';
-import { destroySession, getSession } from '~/services/session.server';
+import {
+	commitSession,
+	destroySession,
+	getSession,
+} from '~/services/session.server';
 import { userAtom } from '~/stores/userAtom';
-import { errorNotifications, successNotifications } from '~/utils/notification';
+import { errorNotifications } from '~/utils/notification';
 
 interface LoaderProps {
-	userId: string | undefined;
+	userId?: string;
+	error?: string;
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	if (!session.has('userId')) {
-		return json<LoaderProps>({ userId: undefined });
-	} else {
-		return json<LoaderProps>({
-			userId: session.get('userId'),
-		});
-	}
+
+	const userId = session.get('userId');
+	const error = session.get('logoutError');
+
+	return json<LoaderProps>(
+		{
+			userId: userId,
+			error: error,
+		},
+		{
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		},
+	);
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -40,21 +53,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	});
 
 	if (response.status === 204) {
-		const headers = new Headers({
-			'Set-Cookie': await destroySession(session),
+		return redirect('/home', {
+			headers: {
+				'Set-Cookie': await destroySession(session),
+			},
 		});
-		successNotifications('ログアウトしました');
-		return redirect('/home', { headers });
+	} else {
+		session.flash('logoutError', 'ログアウトに失敗しました');
+		return redirect('/home', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
 	}
-
-	errorNotifications('ログアウトに失敗しました');
-	return null;
 };
 
 const Home = () => {
-	const { userId } = useLoaderData<typeof loader>();
+	const { userId, error } = useLoaderData<typeof loader>();
 
 	const [user, setUser] = useAtom(userAtom);
+
 	useEffect(() => {
 		if (userId) {
 			// CookieにユーザIDが存在する
@@ -70,7 +88,12 @@ const Home = () => {
 		} else {
 			setUser(undefined);
 		}
+
+		if (error) {
+			errorNotifications(error);
+		}
 	}, []);
+
 	return (
 		<AppShell header={{ height: 70 }} padding={{ default: 'md', sm: 'sm' }}>
 			<HeaderComponent />
