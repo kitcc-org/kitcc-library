@@ -1,6 +1,6 @@
 import { Button, Group, Modal, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Form, useSubmit } from '@remix-run/react';
+import { useSubmit } from '@remix-run/react';
 import { useLogout } from 'client/client';
 import { useAtom } from 'jotai';
 import { LuLogOut } from 'react-icons/lu';
@@ -14,11 +14,16 @@ const HeaderLoginComponent = () => {
 	const [opened, { open, close }] = useDisclosure();
 	const logoutTask = useLogout();
 	const submit = useSubmit();
+
 	const handleSubmit = () => {
+		// ユーザの状態変数を削除する
 		setUser(undefined);
+		// モーダルを閉じる
 		close();
-		submit({}, { method: 'DELETE' });
+		// home.tsx の action を呼び出す
+		submit({}, { method: 'DELETE', action: '/home' });
 	};
+
 	return (
 		<>
 			<Group>
@@ -35,11 +40,9 @@ const HeaderLoginComponent = () => {
 						<Button onClick={close} variant="light">
 							キャンセル
 						</Button>
-						<Form action="/home" method="DELETE" onSubmit={handleSubmit}>
-							<Button type="submit" fullWidth leftSection={<LuLogOut />}>
-								ログアウト
-							</Button>
-						</Form>
+						<Button onClick={handleSubmit} leftSection={<LuLogOut />}>
+							ログアウト
+						</Button>
 					</Group>
 				</Stack>
 			</Modal>
