@@ -66,7 +66,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 			},
 			flash: {
 				success: success,
-				error: success ? undefined : error,
+				error: error,
 			},
 		},
 		{

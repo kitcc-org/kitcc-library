@@ -49,9 +49,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	// ログインに成功した場合
 	if (response.status === 200) {
-		session.flash('loginSuccess', 'ログインに成功しました');
 		session.set('userId', response.data.id.toString());
 		session.set('sessionToken', response.data.sessionToken!);
+		// FIXME: ログアウト時に表示できないのでログイン時も表示しない
+		// session.flash('loginSuccess', 'ログインに成功しました');
+
 		return redirect('/home/mypage', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
@@ -79,9 +81,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 			session.flash('loginError', 'エラーが発生しました');
 	}
 
+	const setCookie = await commitSession(session);
 	return redirect('/auth/login', {
 		headers: {
-			'Set-Cookie': await commitSession(session),
+			'Set-Cookie': setCookie,
 		},
 	});
 };

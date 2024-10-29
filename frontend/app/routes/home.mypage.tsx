@@ -1,12 +1,5 @@
-import { json, LoaderFunctionArgs, redirect } from '@remix-run/cloudflare';
-import { useLoaderData } from '@remix-run/react';
-import { useEffect } from 'react';
-import { commitSession, getSession } from '~/services/session.server';
-import { successNotification } from '~/utils/notification';
-
-interface LoaderData {
-	success?: string;
-}
+import { LoaderFunctionArgs, redirect } from '@remix-run/cloudflare';
+import { getSession } from '~/services/session.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
@@ -17,24 +10,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		return redirect('/auth/login');
 	}
 
-	const data = { success: session.get('loginSuccess') };
-
-	return json<LoaderData>(data, {
-		headers: {
-			'Set-Cookie': await commitSession(session),
-		},
-	});
+	return null;
 };
 
 const MyPage = () => {
-	const { success } = useLoaderData<typeof loader>();
-
-	useEffect(() => {
-		if (success) {
-			successNotification(success);
-		}
-	}, []);
-
 	return <div>MyPage</div>;
 };
 

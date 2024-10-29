@@ -20,7 +20,7 @@ const HeaderLoginComponent = () => {
 		setUser(undefined);
 		// モーダルを閉じる
 		close();
-		// home.tsx の action を呼び出す
+		// ログアウトのactionを呼び出す
 		submit({}, { method: 'DELETE', action: '/home' });
 	};
 
