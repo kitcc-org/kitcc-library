@@ -1,6 +1,6 @@
 import { notifications } from '@mantine/notifications';
 
-export const successNotifications = (message: string) => {
+export const successNotification = (message: string) => {
 	notifications.show({
 		title: 'Success',
 		message,
@@ -8,7 +8,7 @@ export const successNotifications = (message: string) => {
 	});
 };
 
-export const errorNotifications = (message: string) => {
+export const errorNotification = (message: string) => {
 	notifications.show({
 		title: 'Error',
 		message,

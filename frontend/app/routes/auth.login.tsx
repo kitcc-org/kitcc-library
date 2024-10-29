@@ -1,16 +1,96 @@
 import { useForm } from '@mantine/form';
-import { useNavigate } from '@remix-run/react';
-import { useLogin } from 'client/client';
+import {
+	ActionFunctionArgs,
+	json,
+	LoaderFunctionArgs,
+	redirect,
+} from '@remix-run/cloudflare';
+import { useFetcher, useLoaderData } from '@remix-run/react';
+import { login, useLogin } from 'client/client';
 import type { LoginBody } from 'client/client.schemas';
-import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import LoginFormComponent from '~/components/login/LoginFormComponent';
-import { userAtom } from '~/stores/userAtom';
-import { errorNotifications, successNotifications } from '~/utils/notification';
+import { commitSession, getSession } from '~/services/session.server';
+import { errorNotification } from '~/utils/notification';
+
+interface LoaderData {
+	error?: string;
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+
+	// ログイン済みの場合
+	if (session.has('userId')) {
+		// マイページへリダイレクト
+		return redirect('/home/mypage');
+	}
+
+	// 未ログインの場合
+	// エラーメッセージを取得
+	const data = { error: session.get('loginError') };
+
+	return json<LoaderData>(data, {
+		headers: {
+			'Set-Cookie': await commitSession(session),
+		},
+	});
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	// 認証情報を取得する
+	const formData = await request.formData();
+	const email = String(formData.get('email'));
+	const password = String(formData.get('password'));
+	// ログインする
+	const response = await login({ email: email, password: password });
+
+	const session = await getSession(request.headers.get('Cookie'));
+
+	// ログインに成功した場合
+	if (response.status === 200) {
+		session.flash('loginSuccess', 'ログインに成功しました');
+		session.set('userId', response.data.id.toString());
+		session.set('sessionToken', response.data.sessionToken!);
+		return redirect('/home/mypage', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+
+	// ログインに失敗した場合
+	switch (response.status) {
+		case 400:
+			// prettier-ignore
+			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
+			break;
+		case 401:
+			// prettier-ignore
+			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
+			break;
+		case 404:
+			session.flash('loginError', 'ユーザーが見つかりません');
+			break;
+		case 500:
+			session.flash('loginError', 'サーバーエラーが発生しました');
+			break;
+		default:
+			session.flash('loginError', 'エラーが発生しました');
+	}
+
+	return redirect('/auth/login', {
+		headers: {
+			'Set-Cookie': await commitSession(session),
+		},
+	});
+};
 
 const LoginPage = () => {
+	const { error } = useLoaderData<typeof loader>();
+
 	const loginTask = useLogin();
-	const navigate = useNavigate();
-	const [, setUser] = useAtom(userAtom);
+	const fetcher = useFetcher();
 	const form = useForm<LoginBody>({
 		mode: 'uncontrolled',
 		initialValues: {
@@ -31,46 +111,21 @@ const LoginPage = () => {
 	});
 
 	const handleSubmit = (props: LoginBody) => {
-		loginTask.mutate(
-			{
-				data: props,
-			},
-			{
-				onSuccess: (response) => {
-					switch (response.status) {
-						case 200:
-							successNotifications('ログインに成功しました');
-							setUser(response.data);
-							navigate('/home/mypage');
-							break;
-						case 400:
-							errorNotifications(
-								'メールアドレスまたはパスワードが間違っています',
-							);
-							break;
-						case 401:
-							errorNotifications(
-								'メールアドレスまたはパスワードが間違っています',
-							);
-							break;
-						case 404:
-							errorNotifications('ユーザーが見つかりません');
-							break;
-						case 500:
-							errorNotifications('サーバーエラーが発生しました');
-							break;
-						default:
-							errorNotifications('エラーが発生しました');
-					}
-				},
-				onError: () => {
-					errorNotifications(
-						'APIに問題が発生しています。サーバが起動されているか確認してください。',
-					);
-				},
-			},
+		fetcher.submit(
+			{ email: props.email, password: props.password },
+			{ method: 'POST' },
 		);
 	};
+
+	useEffect(() => {
+		// 同じメッセージが連続して表示されないように
+		// actionが終了したタイミングで実行
+		if (fetcher.state === 'idle') {
+			if (error) {
+				errorNotification(error);
+			}
+		}
+	}, [fetcher.state]);
 
 	return (
 		<LoginFormComponent
