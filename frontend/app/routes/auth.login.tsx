@@ -38,13 +38,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-	const session = await getSession(request.headers.get('Cookie'));
-
+	// 認証情報を取得する
 	const formData = await request.formData();
 	const email = String(formData.get('email'));
 	const password = String(formData.get('password'));
-
+	// ログインする
 	const response = await login({ email: email, password: password });
+
+	const session = await getSession(request.headers.get('Cookie'));
 
 	// ログインに成功した場合
 	if (response.status === 200) {
@@ -77,6 +78,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		default:
 			session.flash('loginError', 'エラーが発生しました');
 	}
+
 	return redirect('/auth/login', {
 		headers: {
 			'Set-Cookie': await commitSession(session),
@@ -116,6 +118,7 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
+		// 同じメッセージが連続して表示されないように
 		// actionが終了したタイミングで実行
 		if (fetcher.state === 'idle') {
 			if (error) {

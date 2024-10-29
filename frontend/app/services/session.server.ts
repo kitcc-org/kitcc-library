@@ -10,8 +10,7 @@ interface SessionFlashData {
 	loginSuccess: string;
 	loginError: string;
 	// ログアウト
-	// ログアウト時はセッションを削除するため
-	// actionからコンポーネントにメッセージを渡すのは難しい
+	logoutSuccess: string;
 	logoutError: string;
 	// 書籍の削除
 	deleteBookSuccess: string;

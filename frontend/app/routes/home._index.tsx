@@ -29,6 +29,7 @@ interface LoaderData {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+	// 検索条件を取得する
 	const url = new URL(request.url);
 	const title = url.searchParams.get('title') ?? undefined;
 	const publisher = url.searchParams.get('publisher') ?? undefined;
@@ -36,7 +37,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const auther = url.searchParams.get('author') ?? undefined;
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
-
+	// 書籍情報を取得する
 	const response = await getBooks({
 		title: title,
 		author: auther,
@@ -48,14 +49,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 	const session = await getSession(request.headers.get('Cookie'));
 
-	let success = undefined;
-	let error = undefined;
-
-	if (session.has('deleteBookSuccess')) {
-		success = session.get('deleteBookSuccess');
-	} else if (session.has('deleteBookError')) {
-		error = session.get('deleteBookError');
-	}
+	// flashメッセージを取得する
+	const success = session.get('deleteBookSuccess');
+	const error = session.get('deleteBookError');
 
 	return json<LoaderData>(
 		{
@@ -70,7 +66,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 			},
 			flash: {
 				success: success,
-				error: error,
+				error: success ? undefined : error,
 			},
 		},
 		{
@@ -99,14 +95,15 @@ const BooKListPage = () => {
 		},
 	});
 
-	// 選択中の書籍をリセットする
 	useEffect(() => {
+		// flashメッセージを表示する
 		if (success) {
 			successNotification(success);
 		} else if (error) {
 			errorNotification(error);
 		}
 
+		// 選択中の書籍をリセットする
 		setSelectedBook([]);
 	}, []);
 
