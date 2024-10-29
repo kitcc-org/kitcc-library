@@ -4,6 +4,10 @@ import { useEffect } from 'react';
 import { commitSession, getSession } from '~/services/session.server';
 import { successNotifications } from '~/utils/notification';
 
+interface LoaderData {
+	success?: string;
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
@@ -13,10 +17,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		return redirect('/auth/login');
 	}
 
-	// ログイン成功時のメッセージを取得
 	const data = { success: session.get('loginSuccess') };
 
-	return json(data, {
+	return json<LoaderData>(data, {
 		headers: {
 			'Set-Cookie': await commitSession(session),
 		},

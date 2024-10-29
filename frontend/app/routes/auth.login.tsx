@@ -13,6 +13,10 @@ import LoginFormComponent from '~/components/login/LoginFormComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { errorNotifications } from '~/utils/notification';
 
+interface LoaderData {
+	error?: string;
+}
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
@@ -23,9 +27,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	}
 
 	// 未ログインの場合
+	// エラーメッセージを取得
 	const data = { error: session.get('loginError') };
 
-	return json(data, {
+	return json<LoaderData>(data, {
 		headers: {
 			'Set-Cookie': await commitSession(session),
 		},
