@@ -12,72 +12,104 @@ import {
 	getLoansResponse,
 } from 'client/client';
 import BookDetailComponent from '~/components/book-detail/BookDetailComponent';
-import { getSession } from '~/services/session.server';
-import { errorNotifications, successNotifications } from '~/utils/notification';
+import { commitSession, getSession } from '~/services/session.server';
 
-interface Response {
+interface LoaderData {
+	bookResponse: getBookResponse;
+	loansResponse?: getLoansResponse;
+}
+
+interface ActionResponse {
 	method: string;
 	status: number;
 }
 
-interface LoaderProps {
-	bookResponse: getBookResponse;
-	loansResponse: getLoansResponse | undefined;
-}
-
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
+
+	// 書籍の情報を取得する
 	const bookId = params.bookId ?? '';
 	const bookResponse = await getBook(bookId);
+
+	let loansResponse = undefined;
+	// ログイン済みの場合は貸出履歴を取得する
 	if (session.has('userId')) {
-		const cookieHeader = [
-			`__Secure-user_id=${session.get('userId')}`,
-			`__Secure-session_token=${session.get('sessionToken')}`,
-		].join('; ');
-		const loansResponse = await getLoans(
+		loansResponse = await getLoans(
 			{ bookId: bookId },
-			{ headers: { Cookie: cookieHeader } },
+			{
+				headers: {
+					Cookie: [
+						`__Secure-user_id=${session.get('userId')}`,
+						`__Secure-session_token=${session.get('sessionToken')}`,
+					].join('; '),
+				},
+			},
 		);
-		return json<LoaderProps>({
-			bookResponse: bookResponse,
-			loansResponse: loansResponse,
-		});
 	}
-	return json<LoaderProps>({
+
+	return json<LoaderData>({
 		bookResponse: bookResponse,
-		loansResponse: undefined,
+		loansResponse: loansResponse,
 	});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	const cookieHeader = session.has('userId')
-		? [
-				`__Secure-user_id=${session.get('userId')};`,
-				`__Secure-session_token=${session.get('sessionToken')}`,
-			].join('; ')
-		: undefined;
+
+	// 未ログインの場合
+	if (!session.has('userId')) {
+		session.flash('loginError', 'ログインしてください');
+		return redirect('/auth/login', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+
+	const cookieHeader = [
+		`__Secure-user_id=${session.get('userId')};`,
+		`__Secure-session_token=${session.get('sessionToken')}`,
+	].join('; ');
 	const formData = await request.formData();
 
 	if (request.method === 'DELETE') {
 		// 書籍の削除
 		const bookId = String(formData.get('bookId'));
 		const response = await deleteBook(bookId, {
-			headers: { Cookie: cookieHeader ?? '' },
+			headers: { Cookie: cookieHeader },
 		});
 		switch (response.status) {
 			case 204:
-				successNotifications('削除しました');
-				return redirect('/home');
+				session.flash('deleteBookSuccess', '削除しました');
+				return redirect('/home', {
+					headers: {
+						'Set-Cookie': await commitSession(session),
+					},
+				});
 			case 401:
-				errorNotifications('ログインしてください');
-				return redirect('/auth/login');
+				session.flash('loginError', 'ログインしてください');
+				return redirect('/auth/login', {
+					headers: {
+						'Set-Cookie': await commitSession(session),
+					},
+				});
 			case 404:
-				errorNotifications('書籍が見つかりませんでした');
-				return redirect('/home');
+				session.flash('deleteBookError', '書籍が見つかりませんでした');
+				return redirect('/home', {
+					headers: {
+						'Set-Cookie': await commitSession(session),
+					},
+				});
 			case 500:
-				errorNotifications('サーバーエラーが発生しました');
-				return json<Response>({ method: 'DELETE', status: 500 });
+				session.flash('deleteBookError', 'サーバーエラーが発生しました');
+				return json<ActionResponse>(
+					{ method: 'DELETE', status: 500 },
+					{
+						headers: {
+							'Set-Cookie': await commitSession(session),
+						},
+					},
+				);
 		}
 	}
 

@@ -13,6 +13,9 @@ interface SessionFlashData {
 	// ログアウト時はセッションを削除するため
 	// actionからコンポーネントにメッセージを渡すのは難しい
 	logoutError: string;
+	// 書籍の削除
+	deleteBookSuccess: string;
+	deleteBookError: string;
 }
 
 const { getSession, commitSession, destroySession } =

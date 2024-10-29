@@ -3,12 +3,30 @@ import { useDisclosure } from '@mantine/hooks';
 import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { json } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { getBooks } from 'client/client';
+import { getBooks, getBooksResponse } from 'client/client';
 import { GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
+import { commitSession, getSession } from '~/services/session.server';
 import { selectedBooksAtom } from '~/stores/cartAtom';
+import { errorNotification, successNotification } from '~/utils/notification';
+
+interface LoaderData {
+	booksResponse: getBooksResponse;
+	condition: {
+		title?: string;
+		author?: string;
+		publisher?: string;
+		isbn?: string;
+		page?: string;
+		limit?: string;
+	};
+	flash: {
+		success?: string;
+		error?: string;
+	};
+}
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const url = new URL(request.url);
@@ -18,6 +36,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const auther = url.searchParams.get('author') ?? undefined;
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
+
 	const response = await getBooks({
 		title: title,
 		author: auther,
@@ -26,20 +45,47 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		page: page,
 		limit: limit,
 	});
-	return json({
-		booksResponse: response,
-		title: title,
-		author: auther,
-		publisher: publisher,
-		isbn: isbn,
-		page: page,
-		limit: limit,
-	});
+
+	const session = await getSession(request.headers.get('Cookie'));
+
+	let success = undefined;
+	let error = undefined;
+
+	if (session.has('deleteBookSuccess')) {
+		success = session.get('deleteBookSuccess');
+	} else if (session.has('deleteBookError')) {
+		error = session.get('deleteBookError');
+	}
+
+	return json<LoaderData>(
+		{
+			booksResponse: response,
+			condition: {
+				title: title,
+				author: auther,
+				publisher: publisher,
+				isbn: isbn,
+				page: page,
+				limit: limit,
+			},
+			flash: {
+				success: success,
+				error: error,
+			},
+		},
+		{
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		},
+	);
 };
 
 const BooKListPage = () => {
-	const { booksResponse, title, author, publisher, isbn, page, limit } =
-		useLoaderData<typeof loader>();
+	const { booksResponse, condition, flash } = useLoaderData<typeof loader>();
+	const { title, author, publisher, isbn, page, limit } = condition;
+	const { success, error } = flash;
+
 	const [opened, { open, close }] = useDisclosure();
 	const navigate = useNavigate();
 	const [, setSelectedBook] = useAtom(selectedBooksAtom);
@@ -55,6 +101,12 @@ const BooKListPage = () => {
 
 	// 選択中の書籍をリセットする
 	useEffect(() => {
+		if (success) {
+			successNotification(success);
+		} else if (error) {
+			errorNotification(error);
+		}
+
 		setSelectedBook([]);
 	}, []);
 

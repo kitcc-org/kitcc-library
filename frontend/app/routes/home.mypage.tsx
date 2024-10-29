@@ -2,7 +2,7 @@ import { json, LoaderFunctionArgs, redirect } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
 import { useEffect } from 'react';
 import { commitSession, getSession } from '~/services/session.server';
-import { successNotifications } from '~/utils/notification';
+import { successNotification } from '~/utils/notification';
 
 interface LoaderData {
 	success?: string;
@@ -31,7 +31,7 @@ const MyPage = () => {
 
 	useEffect(() => {
 		if (success) {
-			successNotifications(success);
+			successNotification(success);
 		}
 	}, []);
 

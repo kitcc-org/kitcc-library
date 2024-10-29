@@ -16,9 +16,9 @@ import {
 	getSession,
 } from '~/services/session.server';
 import { userAtom } from '~/stores/userAtom';
-import { errorNotifications } from '~/utils/notification';
+import { errorNotification } from '~/utils/notification';
 
-interface LoaderProps {
+interface LoaderData {
 	userId?: string;
 	error?: string;
 }
@@ -29,7 +29,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const userId = session.get('userId');
 	const error = session.get('logoutError');
 
-	return json<LoaderProps>(
+	return json<LoaderData>(
 		{
 			userId: userId,
 			error: error,
@@ -90,7 +90,7 @@ const Home = () => {
 		}
 
 		if (error) {
-			errorNotifications(error);
+			errorNotification(error);
 		}
 	}, []);
 

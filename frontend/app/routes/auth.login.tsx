@@ -11,7 +11,7 @@ import type { LoginBody } from 'client/client.schemas';
 import { useEffect } from 'react';
 import LoginFormComponent from '~/components/login/LoginFormComponent';
 import { commitSession, getSession } from '~/services/session.server';
-import { errorNotifications } from '~/utils/notification';
+import { errorNotification } from '~/utils/notification';
 
 interface LoaderData {
 	error?: string;
@@ -119,7 +119,7 @@ const LoginPage = () => {
 		// actionが終了したタイミングで実行
 		if (fetcher.state === 'idle') {
 			if (error) {
-				errorNotifications(error);
+				errorNotification(error);
 			}
 		}
 	}, [fetcher.state]);
