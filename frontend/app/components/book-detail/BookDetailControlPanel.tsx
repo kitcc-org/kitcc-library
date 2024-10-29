@@ -1,9 +1,9 @@
 import { Button, Stack } from '@mantine/core';
-import BookDetailThumbnail from './BookDetailThumbnail';
-import { MdEdit, MdDeleteForever } from 'react-icons/md';
-import { useAtom } from 'jotai';
-import { userAtom } from '~/stores/userAtom';
 import { useFetcher, useNavigate } from '@remix-run/react';
+import { useAtom } from 'jotai';
+import { MdDeleteForever, MdEdit } from 'react-icons/md';
+import { userAtom } from '~/stores/userAtom';
+import BookDetailThumbnail from './BookDetailThumbnail';
 
 interface BookDetailControlPanelProps {
 	id: number;
@@ -39,8 +39,12 @@ const BookDetailControlPanel = ({
 					color="red"
 					leftSection={<MdDeleteForever />}
 					fz="lg"
-					// action : home.books.$bookId.tsx
-					onClick={() => fetcher.submit({ bookId: id }, { method: 'delete' })}
+					onClick={() =>
+						fetcher.submit(
+							{ bookId: id },
+							{ action: '/home/books/$bookId', method: 'delete' },
+						)
+					}
 					disabled={fetcher.state === 'submitting'}
 				>
 					削除
