@@ -8,5 +8,5 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader() {
-	return redirect('home');
+	return redirect('/home');
 }

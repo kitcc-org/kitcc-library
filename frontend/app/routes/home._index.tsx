@@ -8,9 +8,7 @@ import { GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
-import { commitSession, getSession } from '~/services/session.server';
 import { selectedBooksAtom } from '~/stores/cartAtom';
-import { errorNotification, successNotification } from '~/utils/notification';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;
@@ -21,10 +19,6 @@ interface LoaderData {
 		isbn?: string;
 		page?: string;
 		limit?: string;
-	};
-	flash: {
-		success?: string;
-		error?: string;
 	};
 }
 
@@ -47,40 +41,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		limit: limit,
 	});
 
-	const session = await getSession(request.headers.get('Cookie'));
-
-	// flashメッセージを取得する
-	const success = session.get('deleteBookSuccess');
-	const error = session.get('deleteBookError');
-
-	return json<LoaderData>(
-		{
-			booksResponse: response,
-			condition: {
-				title: title,
-				author: auther,
-				publisher: publisher,
-				isbn: isbn,
-				page: page,
-				limit: limit,
-			},
-			flash: {
-				success: success,
-				error: error,
-			},
+	return json<LoaderData>({
+		booksResponse: response,
+		condition: {
+			title: title,
+			author: auther,
+			publisher: publisher,
+			isbn: isbn,
+			page: page,
+			limit: limit,
 		},
-		{
-			headers: {
-				'Set-Cookie': await commitSession(session),
-			},
-		},
-	);
+	});
 };
 
 const BooKListPage = () => {
-	const { booksResponse, condition, flash } = useLoaderData<typeof loader>();
+	const { booksResponse, condition } = useLoaderData<typeof loader>();
 	const { title, author, publisher, isbn, page, limit } = condition;
-	const { success, error } = flash;
 
 	const [opened, { open, close }] = useDisclosure();
 	const navigate = useNavigate();
@@ -96,13 +72,6 @@ const BooKListPage = () => {
 	});
 
 	useEffect(() => {
-		// flashメッセージを表示する
-		if (success) {
-			successNotification(success);
-		} else if (error) {
-			errorNotification(error);
-		}
-
 		// 選択中の書籍をリセットする
 		setSelectedBook([]);
 	}, []);

@@ -10,25 +10,28 @@ import { getUser, logout } from 'client/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import HeaderComponent from '~/components/header/HeaderComponent';
-import {
-	commitSession,
-	destroySession,
-	getSession,
-} from '~/services/session.server';
+import { commitSession, getSession } from '~/services/session.server';
 import { userAtom } from '~/stores/userAtom';
+import { errorNotification, successNotification } from '~/utils/notification';
 
 interface LoaderData {
 	userId?: string;
+	success?: string;
+	error?: string;
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	const userId = session.get('userId');
+	const success = session.get('success');
+	const error = session.get('error');
 
 	return json<LoaderData>(
 		{
 			userId: userId,
+			success: success,
+			error: error,
 		},
 		{
 			headers: {
@@ -51,24 +54,26 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	if (response.status === 204) {
 		session.unset('userId');
 		session.unset('sessionToken');
-		// FIXME: loaderで読み出しても削除されない
-		// session.flash('logoutSuccess', 'ログアウトに成功しました');
+		session.flash('success', 'ログアウトに成功しました');
 
 		return redirect('/home', {
 			headers: {
-				'Set-Cookie': await destroySession(session),
+				'Set-Cookie': await commitSession(session),
 			},
 		});
 	} else {
-		// FIXME: loaderで読み出しても削除されない
-		// session.flash('logoutError', 'ログアウトに失敗しました');
+		session.flash('error', 'ログアウトに失敗しました');
 
-		return redirect('/home');
+		return redirect('/home', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
 	}
 };
 
 const Home = () => {
-	const { userId } = useLoaderData<typeof loader>();
+	const { userId, success, error } = useLoaderData<typeof loader>();
 
 	const [user, setUser] = useAtom(userAtom);
 	const navigation = useNavigation();
@@ -90,7 +95,19 @@ const Home = () => {
 				setUser(undefined);
 			}
 		}
-	}, [navigation.state]);
+	}, [userId]);
+
+	useEffect(() => {
+		if (success) {
+			successNotification(success);
+		}
+	}, [success]);
+
+	useEffect(() => {
+		if (error) {
+			errorNotification(error);
+		}
+	}, [error]);
 
 	return (
 		<AppShell header={{ height: 70 }} padding={{ default: 'md', sm: 'sm' }}>

@@ -28,7 +28,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 	// 未ログインの場合
 	// エラーメッセージを取得
-	const data = { error: session.get('loginError') };
+	const data = { error: session.get('error') };
 
 	return json<LoaderData>(data, {
 		headers: {
@@ -51,8 +51,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	if (response.status === 200) {
 		session.set('userId', response.data.id.toString());
 		session.set('sessionToken', response.data.sessionToken!);
-		// FIXME: ログアウト時に表示できないのでログイン時も表示しない
-		// session.flash('loginSuccess', 'ログインに成功しました');
+		// FIXME: homeのloaderで読み出してもCookieが削除されない
+		session.flash('success', 'ログインに成功しました');
 
 		return redirect('/home/mypage', {
 			headers: {
@@ -65,26 +65,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	switch (response.status) {
 		case 400:
 			// prettier-ignore
-			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
+			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 401:
 			// prettier-ignore
-			session.flash('loginError', 'メールアドレスまたはパスワードが間違っています');
+			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 404:
-			session.flash('loginError', 'ユーザーが見つかりません');
+			session.flash('error', 'ユーザーが見つかりません');
 			break;
 		case 500:
-			session.flash('loginError', 'サーバーエラーが発生しました');
+			session.flash('error', 'サーバーエラーが発生しました');
 			break;
 		default:
-			session.flash('loginError', 'エラーが発生しました');
+			session.flash('error', 'エラーが発生しました');
 	}
 
-	const setCookie = await commitSession(session);
 	return redirect('/auth/login', {
 		headers: {
-			'Set-Cookie': setCookie,
+			'Set-Cookie': await commitSession(session),
 		},
 	});
 };
