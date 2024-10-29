@@ -73,7 +73,7 @@ export const getGetBooksUrl = (params?: GetBooksParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/books?${normalizedParams.toString()}` : `https://localhost:8787/books`
+  return normalizedParams.size ? `https://kitcc-library-api.kitcc.workers.dev/books?${normalizedParams.toString()}` : `https://kitcc-library-api.kitcc.workers.dev/books`
 }
 
 export const getBooks = async (params?: GetBooksParams, options?: RequestInit): Promise<getBooksResponse> => {
@@ -90,7 +90,7 @@ export const getBooks = async (params?: GetBooksParams, options?: RequestInit): 
 
 
 export const getGetBooksQueryKey = (params?: GetBooksParams,) => {
-    return [`https://localhost:8787/books`, ...(params ? [params]: [])] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/books`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -148,7 +148,7 @@ export type createBookResponse = {
 export const getCreateBookUrl = () => {
 
 
-  return `https://localhost:8787/books`
+  return `https://kitcc-library-api.kitcc.workers.dev/books`
 }
 
 export const createBook = async (createBookBody: CreateBookBody, options?: RequestInit): Promise<createBookResponse> => {
@@ -217,7 +217,7 @@ export type getBookResponse = {
 export const getGetBookUrl = (bookId: string,) => {
 
 
-  return `https://localhost:8787/books/${bookId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/books/${bookId}`
 }
 
 export const getBook = async (bookId: string, options?: RequestInit): Promise<getBookResponse> => {
@@ -234,7 +234,7 @@ export const getBook = async (bookId: string, options?: RequestInit): Promise<ge
 
 
 export const getGetBookQueryKey = (bookId: string,) => {
-    return [`https://localhost:8787/books/${bookId}`] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/books/${bookId}`] as const;
     }
 
     
@@ -294,7 +294,7 @@ export type updateBookResponse = {
 export const getUpdateBookUrl = (bookId: string,) => {
 
 
-  return `https://localhost:8787/books/${bookId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/books/${bookId}`
 }
 
 export const updateBook = async (bookId: string,
@@ -364,7 +364,7 @@ export type deleteBookResponse = {
 export const getDeleteBookUrl = (bookId: string,) => {
 
 
-  return `https://localhost:8787/books/${bookId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/books/${bookId}`
 }
 
 export const deleteBook = async (bookId: string, options?: RequestInit): Promise<deleteBookResponse> => {
@@ -439,7 +439,7 @@ export const getSearchBooksUrl = (params?: SearchBooksParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/books/search?${normalizedParams.toString()}` : `https://localhost:8787/books/search`
+  return normalizedParams.size ? `https://kitcc-library-api.kitcc.workers.dev/books/search?${normalizedParams.toString()}` : `https://kitcc-library-api.kitcc.workers.dev/books/search`
 }
 
 export const searchBooks = async (params?: SearchBooksParams, options?: RequestInit): Promise<searchBooksResponse> => {
@@ -456,7 +456,7 @@ export const searchBooks = async (params?: SearchBooksParams, options?: RequestI
 
 
 export const getSearchBooksQueryKey = (params?: SearchBooksParams,) => {
-    return [`https://localhost:8787/books/search`, ...(params ? [params]: [])] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/books/search`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -522,7 +522,7 @@ export const getGetUsersUrl = (params?: GetUsersParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/users?${normalizedParams.toString()}` : `https://localhost:8787/users`
+  return normalizedParams.size ? `https://kitcc-library-api.kitcc.workers.dev/users?${normalizedParams.toString()}` : `https://kitcc-library-api.kitcc.workers.dev/users`
 }
 
 export const getUsers = async (params?: GetUsersParams, options?: RequestInit): Promise<getUsersResponse> => {
@@ -539,7 +539,7 @@ export const getUsers = async (params?: GetUsersParams, options?: RequestInit): 
 
 
 export const getGetUsersQueryKey = (params?: GetUsersParams,) => {
-    return [`https://localhost:8787/users`, ...(params ? [params]: [])] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/users`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -597,7 +597,7 @@ export type createUserResponse = {
 export const getCreateUserUrl = () => {
 
 
-  return `https://localhost:8787/users`
+  return `https://kitcc-library-api.kitcc.workers.dev/users`
 }
 
 export const createUser = async (createUserBody: CreateUserBody, options?: RequestInit): Promise<createUserResponse> => {
@@ -666,7 +666,7 @@ export type getUserResponse = {
 export const getGetUserUrl = (userId: string,) => {
 
 
-  return `https://localhost:8787/users/${userId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/users/${userId}`
 }
 
 export const getUser = async (userId: string, options?: RequestInit): Promise<getUserResponse> => {
@@ -683,7 +683,7 @@ export const getUser = async (userId: string, options?: RequestInit): Promise<ge
 
 
 export const getGetUserQueryKey = (userId: string,) => {
-    return [`https://localhost:8787/users/${userId}`] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/users/${userId}`] as const;
     }
 
     
@@ -742,7 +742,7 @@ export type updateUserResponse = {
 export const getUpdateUserUrl = (userId: string,) => {
 
 
-  return `https://localhost:8787/users/${userId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/users/${userId}`
 }
 
 export const updateUser = async (userId: string,
@@ -812,7 +812,7 @@ export type deleteUserResponse = {
 export const getDeleteUserUrl = (userId: string,) => {
 
 
-  return `https://localhost:8787/users/${userId}`
+  return `https://kitcc-library-api.kitcc.workers.dev/users/${userId}`
 }
 
 export const deleteUser = async (userId: string, options?: RequestInit): Promise<deleteUserResponse> => {
@@ -888,7 +888,7 @@ export const getGetLoansUrl = (params?: GetLoansParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/loans?${normalizedParams.toString()}` : `https://localhost:8787/loans`
+  return normalizedParams.size ? `https://kitcc-library-api.kitcc.workers.dev/loans?${normalizedParams.toString()}` : `https://kitcc-library-api.kitcc.workers.dev/loans`
 }
 
 export const getLoans = async (params?: GetLoansParams, options?: RequestInit): Promise<getLoansResponse> => {
@@ -905,7 +905,7 @@ export const getLoans = async (params?: GetLoansParams, options?: RequestInit): 
 
 
 export const getGetLoansQueryKey = (params?: GetLoansParams,) => {
-    return [`https://localhost:8787/loans`, ...(params ? [params]: [])] as const;
+    return [`https://kitcc-library-api.kitcc.workers.dev/loans`, ...(params ? [params]: [])] as const;
     }
 
     
@@ -963,7 +963,7 @@ export type upsertLoansResponse = {
 export const getUpsertLoansUrl = () => {
 
 
-  return `https://localhost:8787/loans`
+  return `https://kitcc-library-api.kitcc.workers.dev/loans`
 }
 
 export const upsertLoans = async (upsertLoansBodyItem: UpsertLoansBodyItem[], options?: RequestInit): Promise<upsertLoansResponse> => {
@@ -1033,7 +1033,7 @@ export type loginResponse = {
 export const getLoginUrl = () => {
 
 
-  return `https://localhost:8787/auth`
+  return `https://kitcc-library-api.kitcc.workers.dev/auth`
 }
 
 export const login = async (loginBody: LoginBody, options?: RequestInit): Promise<loginResponse> => {
@@ -1103,7 +1103,7 @@ export type logoutResponse = {
 export const getLogoutUrl = () => {
 
 
-  return `https://localhost:8787/auth`
+  return `https://kitcc-library-api.kitcc.workers.dev/auth`
 }
 
 export const logout = async ( options?: RequestInit): Promise<logoutResponse> => {
