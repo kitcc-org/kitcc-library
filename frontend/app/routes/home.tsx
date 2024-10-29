@@ -77,23 +77,21 @@ const Home = () => {
 	const navigation = useNavigation();
 
 	useEffect(() => {
-		// そもそもここが呼ばれていない
-		if (userId) {
-			// CookieにユーザIDが存在する
-			if (!user) {
-				// 状態変数にユーザ情報が保存されていない
-				// ユーザ情報を取得するAPIを呼び出す
-				getUser(userId).then((response) => {
-					if (response.status === 200) {
-						setUser(response.data);
-					}
-				});
-			}
-		} else {
-			setUser(undefined);
-		}
-
 		if (navigation.state === 'idle') {
+			if (userId) {
+				// CookieにユーザIDが存在する
+				if (!user) {
+					// 状態変数にユーザ情報が保存されていない
+					// ユーザ情報を取得するAPIを呼び出す
+					getUser(userId).then((response) => {
+						if (response.status === 200) {
+							setUser(response.data);
+						}
+					});
+				}
+			} else {
+				setUser(undefined);
+			}
 			if (success) {
 				successNotification(success);
 			} else if (error) {
