@@ -1,11 +1,11 @@
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render } from '@testing-library/react';
+import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
-export const renderWithWrapper = (children: ReactElement) => {
+const wrappper = ({ children }: { children: ReactNode }) => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -15,15 +15,23 @@ export const renderWithWrapper = (children: ReactElement) => {
 			},
 		},
 	});
+
+	return (
+		<QueryClientProvider client={queryClient}>
+			<MantineProvider>
+				<Notifications />
+				{children}
+			</MantineProvider>
+		</QueryClientProvider>
+	);
+};
+
+export const customRender = (
+	ui: ReactElement,
+	options?: Omit<RenderOptions, 'wrapper'>,
+) => {
 	return {
 		user: userEvent.setup(),
-		...render(
-			<QueryClientProvider client={queryClient}>
-				<MantineProvider>
-					<Notifications />
-					{children}
-				</MantineProvider>
-			</QueryClientProvider>,
-		),
+		...render(ui, { wrapper: wrappper, ...options }),
 	};
 };
