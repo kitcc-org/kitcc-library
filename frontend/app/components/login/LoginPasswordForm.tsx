@@ -13,7 +13,7 @@ const LoginPasswordForm = ({ form }: LoginPasswordFormProps) => {
 			withAsterisk
 			autoComplete="current-password"
 			key={form.key('password')}
-			data-testid="password-input"
+			aria-label="パスワード"
 			{...form.getInputProps('password')}
 		/>
 	);
