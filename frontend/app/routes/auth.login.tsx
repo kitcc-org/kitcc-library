@@ -51,7 +51,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	if (response.status === 200) {
 		session.set('userId', response.data.id.toString());
 		session.set('sessionToken', response.data.sessionToken!);
-		// FIXME: homeのloaderで読み出してもCookieが削除されない
 		session.flash('success', 'ログインに成功しました');
 
 		return redirect('/home/mypage', {
