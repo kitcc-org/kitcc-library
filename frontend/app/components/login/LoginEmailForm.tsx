@@ -13,7 +13,7 @@ const LoginEmailForm = ({ form }: LoginEmailFormProps) => {
 			withAsterisk
 			autoComplete="email"
 			key={form.key('email')}
-			data-testid="email-input"
+			aria-label="メールアドレス"
 			{...form.getInputProps('email')}
 		/>
 	);
