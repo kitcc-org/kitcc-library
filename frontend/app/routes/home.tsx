@@ -5,7 +5,12 @@ import {
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { Outlet, useLoaderData, useNavigation } from '@remix-run/react';
+import {
+	Outlet,
+	useLoaderData,
+	useNavigation,
+	useRevalidator,
+} from '@remix-run/react';
 import { getUser, logout } from 'client/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
@@ -24,14 +29,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	const userId = session.get('userId');
-	const success = session.get('logoutSuccess');
-	const error = session.get('logoutError');
+	const success = session.get('success');
+	const error = session.get('error');
 
 	return json<LoaderData>(
 		{
 			userId: userId,
 			success: success,
-			error: success ? undefined : error,
+			error: error,
 		},
 		{
 			headers: {
@@ -54,14 +59,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	if (response.status === 204) {
 		session.unset('userId');
 		session.unset('sessionToken');
-		session.flash('logoutSuccess', 'ログアウトに成功しました');
+		session.flash('success', 'ログアウトに成功しました');
+
 		return redirect('/home', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
 			},
 		});
 	} else {
-		session.flash('logoutError', 'ログアウトに失敗しました');
+		session.flash('error', 'ログアウトに失敗しました');
+
 		return redirect('/home', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
@@ -75,6 +82,7 @@ const Home = () => {
 
 	const [user, setUser] = useAtom(userAtom);
 	const navigation = useNavigation();
+	const revalidator = useRevalidator();
 
 	useEffect(() => {
 		if (navigation.state === 'idle') {
@@ -92,13 +100,22 @@ const Home = () => {
 			} else {
 				setUser(undefined);
 			}
-			if (success) {
-				successNotification(success);
-			} else if (error) {
-				errorNotification(error);
-			}
 		}
-	}, [navigation.state]);
+	}, [userId]);
+
+	useEffect(() => {
+		if (success) {
+			successNotification(success);
+			revalidator.revalidate();
+		}
+	}, [success]);
+
+	useEffect(() => {
+		if (error) {
+			errorNotification(error);
+			revalidator.revalidate();
+		}
+	}, [error]);
 
 	return (
 		<AppShell header={{ height: 70 }} padding={{ default: 'md', sm: 'sm' }}>

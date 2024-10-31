@@ -58,7 +58,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	// 未ログインの場合
 	if (!session.has('userId')) {
-		session.flash('loginError', 'ログインしてください');
+		session.flash('error', 'ログインしてください');
 		return redirect('/auth/login', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
@@ -80,28 +80,28 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 		switch (response.status) {
 			case 204:
-				session.flash('deleteBookSuccess', '削除しました');
+				session.flash('success', '削除しました');
 				return redirect('/home', {
 					headers: {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
 			case 401:
-				session.flash('loginError', 'ログインしてください');
+				session.flash('error', 'ログインしてください');
 				return redirect('/auth/login', {
 					headers: {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
 			case 404:
-				session.flash('deleteBookError', '書籍が見つかりませんでした');
+				session.flash('error', '書籍が見つかりませんでした');
 				return redirect('/home', {
 					headers: {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
 			case 500:
-				session.flash('deleteBookError', 'サーバーエラーが発生しました');
+				session.flash('error', 'サーバーエラーが発生しました');
 				return json<ActionResponse>(
 					{ method: 'DELETE', status: 500 },
 					{

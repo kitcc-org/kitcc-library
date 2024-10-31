@@ -6,15 +6,8 @@ interface SessionData {
 }
 
 interface SessionFlashData {
-	// ログイン
-	loginSuccess: string;
-	loginError: string;
-	// ログアウト
-	logoutSuccess: string;
-	logoutError: string;
-	// 書籍の削除
-	deleteBookSuccess: string;
-	deleteBookError: string;
+	success?: string;
+	error?: string;
 }
 
 const { getSession, commitSession, destroySession } =
