@@ -5,7 +5,12 @@ import {
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { Outlet, useLoaderData, useNavigation } from '@remix-run/react';
+import {
+	Outlet,
+	useLoaderData,
+	useNavigation,
+	useRevalidator,
+} from '@remix-run/react';
 import { getUser, logout } from 'client/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
@@ -77,6 +82,7 @@ const Home = () => {
 
 	const [user, setUser] = useAtom(userAtom);
 	const navigation = useNavigation();
+	const revalidator = useRevalidator();
 
 	useEffect(() => {
 		if (navigation.state === 'idle') {
@@ -100,12 +106,14 @@ const Home = () => {
 	useEffect(() => {
 		if (success) {
 			successNotification(success);
+			revalidator.revalidate();
 		}
 	}, [success]);
 
 	useEffect(() => {
 		if (error) {
 			errorNotification(error);
+			revalidator.revalidate();
 		}
 	}, [error]);
 
