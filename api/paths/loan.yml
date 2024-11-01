@@ -42,7 +42,14 @@ loans:
           default: 10
       - name: sort
         in: query
-        description: ソート順
+        description: >
+          ソート順
+          0: ユーザID昇順
+          1: ユーザID降順
+          2: 書籍ID昇順
+          3: 書籍ID降順
+          4: 貸出日昇順
+          5: 貸出日降順
         required: false
         schema:
           type: string
@@ -70,20 +77,20 @@ loans:
                     type: object
                     properties:
                       loans:
-                        $ref: "../components/schemas/Loan.yml"
+                        $ref: '../components/schemas/Loan.yml'
                       users:
-                        $ref: "../components/schemas/User.yml"
+                        $ref: '../components/schemas/User.yml'
                       books:
-                        $ref: "../components/schemas/Book.yml"
+                        $ref: '../components/schemas/Book.yml'
               required:
                 - totalLoan
                 - loans
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
   patch:
     tags:
@@ -119,11 +126,11 @@ loans:
             schema:
               type: array
               items:
-                $ref: "../components/schemas/Loan.yml"
+                $ref: '../components/schemas/Loan.yml'
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '404':
         description: ユーザーまたは書籍が存在しない
         content:
@@ -159,4 +166,4 @@ loans:
                 - bookId
                 - volume
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
