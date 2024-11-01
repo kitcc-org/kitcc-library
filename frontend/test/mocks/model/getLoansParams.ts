@@ -24,7 +24,8 @@ page?: string;
  */
 limit?: string;
 /**
- * ソート順
+ * ソート順 0: ユーザID昇順 1: ユーザID降順 2: 書籍ID昇順 3: 書籍ID降順 4: 貸出日昇順 5: 貸出日降順
+
  */
 sort?: GetLoansSort;
 };

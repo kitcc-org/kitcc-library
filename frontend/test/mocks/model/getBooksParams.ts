@@ -32,7 +32,7 @@ publisher?: string;
  */
 isbn?: string;
 /**
- * ソート順 1: id昇順 2: id降順 3: 出版日昇順 4: 出版日降順
+ * ソート順 0: id昇順 1: id降順 2: 出版日昇順 3: 出版日降順
 
  */
 sort?: GetBooksSort;
