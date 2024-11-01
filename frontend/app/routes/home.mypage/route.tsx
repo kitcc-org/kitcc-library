@@ -7,7 +7,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// 未ログインの場合
 	if (!session.has('userId')) {
 		// ログインページへリダイレクト
-		return redirect('/auth/login');
+		return redirect('/login');
 	}
 
 	return null;

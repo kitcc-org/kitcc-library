@@ -8,7 +8,7 @@ const HeaderLoginButton = () => {
 		<Button
 			variant="default"
 			leftSection={<LuLogIn />}
-			onClick={() => navigate('/auth/login')}
+			onClick={() => navigate('/login')}
 		>
 			ログイン
 		</Button>
