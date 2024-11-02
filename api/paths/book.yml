@@ -54,10 +54,10 @@ books:
         in: query
         description: >
           ソート順
-          1: id昇順
-          2: id降順
-          3: 出版日昇順
-          4: 出版日降順
+          0: id昇順
+          1: id降順
+          2: 出版日昇順
+          3: 出版日降順
         required: false
         schema:
           type: string
@@ -81,14 +81,14 @@ books:
                 books:
                   type: array
                   items:
-                    $ref: "../components/schemas/Book.yml"
+                    $ref: '../components/schemas/Book.yml'
               required:
                 - totalBook
                 - books
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
   post:
     tags:
@@ -132,16 +132,16 @@ books:
               - isbn
               - stock
             example:
-              title: "計算機プログラムの構造と解釈"
+              title: '計算機プログラムの構造と解釈'
               author:
-                - "Harold Abelson"
-                - "Gerald Jay Sussman"
-                - "Julie Sussman"
-              publisher: "翔泳社"
-              publishedDate: "2018-07-01"
-              description: "言わずと知れた計算機科学の古典的名著"
-              thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-              isbn: "9784798135984"
+                - 'Harold Abelson'
+                - 'Gerald Jay Sussman'
+                - 'Julie Sussman'
+              publisher: '翔泳社'
+              publishedDate: '2018-07-01'
+              description: '言わずと知れた計算機科学の古典的名著'
+              thumbnail: 'http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+              isbn: '9784798135984'
               stock: 1
     responses:
       '201':
@@ -149,16 +149,16 @@ books:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Book.yml"
+              $ref: '../components/schemas/Book.yml'
             examples:
               book:
-                $ref: "../components/examples/book.yml"
+                $ref: '../components/examples/book.yml'
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
 book:
   get:
@@ -170,7 +170,7 @@ book:
     parameters:
       - name: bookId
         in: path
-        description: "取得する書籍のID"
+        description: '取得する書籍のID'
         required: true
         schema:
           type: string
@@ -181,16 +181,16 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Book.yml"
+              $ref: '../components/schemas/Book.yml'
             examples:
               book:
-                $ref: "../components/examples/book.yml"
+                $ref: '../components/examples/book.yml'
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '404':
-        $ref: "../components/responses/4xx.yml#/NotFound"
+        $ref: '../components/responses/4xx.yml#/NotFound'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
   patch:
     tags:
@@ -233,14 +233,14 @@ book:
               stock:
                 type: integer
           example:
-            title: "計算機プログラムの構造と解釈"
+            title: '計算機プログラムの構造と解釈'
             authors:
-              - "Harold Abelson"
-              - "Gerald Jay Sussman"
-              - "Julie Sussman"
-            publisher: "翔泳社"
-            publishedDate: "2018-07-01"
-            isbn: "9784798135984"
+              - 'Harold Abelson'
+              - 'Gerald Jay Sussman'
+              - 'Julie Sussman'
+            publisher: '翔泳社'
+            publishedDate: '2018-07-01'
+            isbn: '9784798135984'
             stock: 1
     responses:
       '200':
@@ -248,18 +248,18 @@ book:
         content:
           application/json:
             schema:
-              $ref: "../components/schemas/Book.yml"
+              $ref: '../components/schemas/Book.yml'
             examples:
               book:
-                $ref: "../components/examples/book.yml"
+                $ref: '../components/examples/book.yml'
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '404':
-        $ref: "../components/responses/4xx.yml#/NotFound"
+        $ref: '../components/responses/4xx.yml#/NotFound'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
   delete:
     tags:
@@ -280,13 +280,13 @@ book:
       '204':
         description: 書籍の削除に成功した
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
-        $ref: "../components/responses/4xx.yml#/Unauthorized"
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '404':
-        $ref: "../components/responses/4xx.yml#/NotFound"
+        $ref: '../components/responses/4xx.yml#/NotFound'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
 
 search:
   get:
@@ -387,17 +387,17 @@ search:
             example:
               totalBook: 30
               books:
-                - title: "計算機プログラムの構造と解釈"
+                - title: '計算機プログラムの構造と解釈'
                   authors:
-                    - "Harold Abelson"
-                    - "Gerald Jay Sussman"
-                    - "Julie Sussman"
-                  publisher: "翔泳社"
-                  publishedDate: "2018-07-01"
-                  description: "言わずと知れた計算機科学の古典的名著"
-                  thumbnail: "http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                  isbn: "9784798135984"
+                    - 'Harold Abelson'
+                    - 'Gerald Jay Sussman'
+                    - 'Julie Sussman'
+                  publisher: '翔泳社'
+                  publishedDate: '2018-07-01'
+                  description: '言わずと知れた計算機科学の古典的名著'
+                  thumbnail: 'http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+                  isbn: '9784798135984'
       '400':
-        $ref: "../components/responses/4xx.yml#/BadRequest"
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '500':
-        $ref: "../components/responses/5xx.yml#/InternalServerError"
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
