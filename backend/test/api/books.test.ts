@@ -307,6 +307,81 @@ describe('POST /books', async () => {
 	});
 });
 
+describe('DELETE /books', () => {
+	const db = drizzle(env.DB);
+
+	beforeAll(async () => {
+		const books = bookFactory.buildList(5);
+		await db.insert(bookTable).values(books);
+	});
+
+	afterAll(async () => {
+		await db.delete(bookTable);
+		bookFactory.resetSequenceNumber();
+	});
+
+	loggedInTest('should delete books', async ({ currentUser, sessionToken }) => {
+		const before = await db.select({ count: count() }).from(bookTable);
+
+		const bookIdList = [1, 2];
+
+		const response = await app.request(
+			'/books',
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Cookie: [
+						`__Secure-user_id=${currentUser.id}`,
+						`__Secure-session_token=${sessionToken}`,
+					].join('; '),
+				},
+				body: JSON.stringify({ bookIdList: bookIdList }),
+			},
+			env,
+		);
+
+		// ステータスコード
+		expect(response.status).toBe(204);
+
+		// データベースから書籍が削除されていることを確認する
+		const after = await db.select({ count: count() }).from(bookTable);
+		expect(after[0].count).toBe(before[0].count - bookIdList.length);
+	});
+
+	it('should return 400 when bookIdList is not array', async () => {
+		const response = await app.request(
+			'/books',
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ bookIdList: 1 }),
+			},
+			env,
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 401 when not logged in', async () => {
+		const response = await app.request(
+			'/books',
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ bookIdList: [1] }),
+			},
+			env,
+		);
+
+		expect(response.status).toBe(401);
+	});
+});
+
 describe('GET /books/search', () => {
 	it('should return 400 when page is not a number', async () => {
 		// pageに数字以外を指定する

@@ -1,11 +1,12 @@
 import { bookTable, SelectBook } from '@/drizzle/schema';
 import { zValidator } from '@hono/zod-validator';
-import { and, asc, desc, eq, like } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
 import {
 	createBookBody,
 	deleteBookParams,
+	deleteBooksBody,
 	getBookParams,
 	getBookResponse,
 	getBooksQueryParams,
@@ -315,6 +316,39 @@ app.post(
 		} else {
 			return ctx.json(result.data, 201);
 		}
+	},
+);
+
+app.delete(
+	'/',
+	zValidator('json', deleteBooksBody, (result, ctx) => {
+		if (!result.success) {
+			return ctx.json(
+				{
+					message: 'Request Body Validation Error',
+					error: result.error,
+				},
+				400,
+			);
+		}
+	}),
+	async (ctx) => {
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401,
+			);
+		}
+
+		const { bookIdList } = ctx.req.valid('json');
+
+		const db = drizzle(ctx.env.DB);
+		await db.delete(bookTable).where(inArray(bookTable.id, bookIdList));
+
+		return ctx.body(null, 204);
 	},
 );
 
