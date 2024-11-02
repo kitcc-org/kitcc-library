@@ -59,7 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	// 未ログインの場合
 	if (!session.has('userId')) {
 		session.flash('error', 'ログインしてください');
-		return redirect('/auth/login', {
+		return redirect('/login', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
 			},
@@ -88,7 +88,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 				});
 			case 401:
 				session.flash('error', 'ログインしてください');
-				return redirect('/auth/login', {
+				return redirect('/login', {
 					headers: {
 						'Set-Cookie': await commitSession(session),
 					},

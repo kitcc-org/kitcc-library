@@ -2,8 +2,11 @@ import { redirect, type MetaFunction } from '@remix-run/cloudflare';
 
 export const meta: MetaFunction = () => {
 	return [
-		{ title: 'New Remix App' },
-		{ name: 'description', content: 'Welcome to Remix!' },
+		{ title: 'KITCC Library' },
+		{
+			name: 'KITCCが所有する書籍を管理するWebアプリ',
+			content: 'Welcome to KITCC Library!',
+		},
 	];
 };
 

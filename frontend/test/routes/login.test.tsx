@@ -2,7 +2,7 @@ import type * as remixruncloudflare from '@remix-run/cloudflare';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { createRemixStub } from '@remix-run/testing';
 import { screen } from '@testing-library/react';
-import LoginPage, { action, loader } from '~/routes/auth.login';
+import LoginPage, { action, loader } from '~/routes/login/route';
 import { customRender } from '../helpers/wrapper';
 import { redirect } from '../mocks/@remix-run/cloudflare';
 

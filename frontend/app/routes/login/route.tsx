@@ -80,7 +80,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 			session.flash('error', 'エラーが発生しました');
 	}
 
-	return redirect('/auth/login', {
+	return redirect('/login', {
 		headers: {
 			'Set-Cookie': await commitSession(session),
 		},
