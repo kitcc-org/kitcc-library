@@ -187,6 +187,10 @@ export type UpdateBookBody = {
   title?: string;
 };
 
+export type DeleteBooksBody = {
+  bookIdList: number[];
+};
+
 export type CreateBookBody = {
   authors: string[];
   description: string;

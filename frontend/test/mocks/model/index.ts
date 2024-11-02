@@ -9,6 +9,7 @@ export * from './badRequestResponse';
 export * from './book';
 export * from './createBookBody';
 export * from './createUserBody';
+export * from './deleteBooksBody';
 export * from './deleteUser204';
 export * from './error';
 export * from './getBooks200';

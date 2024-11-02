@@ -22,6 +22,7 @@ import type {
   Book,
   CreateBookBody,
   CreateUserBody,
+  DeleteBooksBody,
   DeleteUser204,
   Error,
   GetBooks200,
@@ -202,6 +203,75 @@ export const useCreateBook = <TError = BadRequestResponse | UnauthorizedResponse
       > => {
 
       const mutationOptions = getCreateBookMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export type deleteBooksResponse = {
+  data: void;
+  status: number;
+}
+
+export const getDeleteBooksUrl = () => {
+
+
+  return `https://localhost:8787/books`
+}
+
+export const deleteBooks = async (deleteBooksBody: DeleteBooksBody, options?: RequestInit): Promise<deleteBooksResponse> => {
+  
+  return customFetch<Promise<deleteBooksResponse>>(getDeleteBooksUrl(),
+  {      
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      deleteBooksBody,)
+  }
+);}
+
+
+
+
+export const getDeleteBooksMutationOptions = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBooks>>, {data: DeleteBooksBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteBooks(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteBooksMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBooks>>>
+    export type DeleteBooksMutationBody = DeleteBooksBody
+    export type DeleteBooksMutationError = UnauthorizedResponse | InternalServerErrorResponse
+
+    /**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export const useDeleteBooks = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteBooks>>,
+        TError,
+        {data: DeleteBooksBody},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteBooksMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

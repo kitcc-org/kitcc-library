@@ -66,6 +66,14 @@ export const createBookBody = zod.object({
 
 
 /**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export const deleteBooksBody = zod.object({
+  "bookIdList": zod.array(zod.number())
+})
+
+
+/**
  * @summary 特定の書籍の情報を取得する
  */
 export const getBookPathBookIdRegExp = new RegExp('^\\d+$');

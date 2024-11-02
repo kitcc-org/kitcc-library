@@ -21,6 +21,7 @@ import type {
   BadRequestResponse,
   CreateBookBody,
   CreateUserBody,
+  DeleteBooksBody,
   Error,
   GetBooksParams,
   GetLoansParams,
@@ -219,6 +220,80 @@ export const useCreateBook = <TError = BadRequestResponse | UnauthorizedResponse
       > => {
 
       const mutationOptions = getCreateBookMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export type deleteBooksResponse = {
+  data: void;
+  status: number;
+}
+
+export const getDeleteBooksUrl = () => {
+
+
+  return `https://localhost:8787/books`
+}
+
+export const deleteBooks = async (deleteBooksBody: DeleteBooksBody, options?: RequestInit): Promise<deleteBooksResponse> => {
+  
+  const res = await fetch(getDeleteBooksUrl(),
+  {      
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      deleteBooksBody,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getDeleteBooksMutationOptions = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext> => {
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBooks>>, {data: DeleteBooksBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteBooks(data,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteBooksMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBooks>>>
+    export type DeleteBooksMutationBody = DeleteBooksBody
+    export type DeleteBooksMutationError = UnauthorizedResponse | InternalServerErrorResponse
+
+    /**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export const useDeleteBooks = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, fetch?: RequestInit}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteBooks>>,
+        TError,
+        {data: DeleteBooksBody},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteBooksMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1295,6 +1370,16 @@ export const getCreateBookMockHandler = (overrideResponse?: Book | ((info: Param
   })
 }
 
+export const getDeleteBooksMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/books', async (info) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
 export const getGetBookMockHandler = (overrideResponse?: Book | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<Book> | Book)) => {
   return http.get('*/books/:bookId', async (info) => {
   
@@ -1449,6 +1534,7 @@ export const getLogoutMockHandler = (overrideResponse?: void | ((info: Parameter
 export const getKITCCLibraryAPIMock = () => [
   getGetBooksMockHandler(),
   getCreateBookMockHandler(),
+  getDeleteBooksMockHandler(),
   getGetBookMockHandler(),
   getUpdateBookMockHandler(),
   getDeleteBookMockHandler(),
