@@ -1,5 +1,6 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 import type { LinksFunction } from '@remix-run/cloudflare';
 import {
 	Links,

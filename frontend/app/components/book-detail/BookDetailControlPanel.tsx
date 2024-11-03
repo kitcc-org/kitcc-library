@@ -1,9 +1,10 @@
 import { Button, Stack } from '@mantine/core';
-import { useFetcher, useNavigate } from '@remix-run/react';
+import { useFetcher } from '@remix-run/react';
 import { useAtom } from 'jotai';
-import { MdDeleteForever, MdEdit } from 'react-icons/md';
+import { MdDeleteForever } from 'react-icons/md';
 import { userAtom } from '~/stores/userAtom';
 import BookDetailThumbnail from './BookDetailThumbnail';
+import BookDetailEditButton from './BookDetailEditButton';
 
 interface BookDetailControlPanelProps {
 	id: number;
@@ -16,7 +17,7 @@ const BookDetailControlPanel = ({
 }: BookDetailControlPanelProps) => {
 	const [user] = useAtom(userAtom);
 	const fetcher = useFetcher();
-	const navigate = useNavigate();
+
 	return (
 		<Stack
 			bg="var(--mantine-color-body)"
@@ -25,15 +26,7 @@ const BookDetailControlPanel = ({
 			gap="md"
 		>
 			<BookDetailThumbnail thumbnail={thumbnail} />
-			{!!user && (
-				<Button
-					leftSection={<MdEdit />}
-					fz="lg"
-					onClick={() => navigate('edit')}
-				>
-					編集
-				</Button>
-			)}
+			{!!user && <BookDetailEditButton bookId={id} />}
 			{!!user && (
 				<Button
 					color="red"
