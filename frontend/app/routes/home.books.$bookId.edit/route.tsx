@@ -3,7 +3,7 @@ import { BookDetailOutletContext } from '../home.books.$bookId/route';
 import { useForm } from '@mantine/form';
 import { ActionFunctionArgs, redirect } from '@remix-run/cloudflare';
 import { UpdateBookBody } from 'client/client.schemas';
-import BookDetailEditContent from '~/components/book-detail-edot/BookDetailEditContent';
+import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
 import { formatDate } from '~/utils/day';
 import { commitSession, getSession } from '~/services/session.server';
 import { updateBook } from 'client/client';
