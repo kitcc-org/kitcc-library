@@ -181,9 +181,9 @@ books:
               - bookIdList
             example:
               bookIdList:
-                - '1'
-                - '2'
-                - '3'
+                - 1
+                - 2
+                - 3
     responses:
       '204':
         description: 書籍の削除に成功した
