@@ -27,7 +27,7 @@ const BookSelectedDialog = () => {
 				<Button
 					fz="xs"
 					variant="light"
-					bd="solid"
+					bd="solid 1px"
 					onClick={() => setSelectedBook([])}
 				>
 					選択を解除する

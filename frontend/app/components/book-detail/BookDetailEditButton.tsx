@@ -17,7 +17,7 @@ const BookDetailEditButton = ({ bookId }: BookDetailEditButtonProps) => {
 					leftSection={<RiArrowGoBackLine />}
 					variant="light"
 					fz="lg"
-					bd="solid"
+					bd="solid 1px"
 					onClick={() => navigate(`/home/books/${bookId}`)}
 				>
 					キャンセル
