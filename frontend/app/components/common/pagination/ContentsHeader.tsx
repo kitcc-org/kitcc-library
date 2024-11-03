@@ -1,6 +1,6 @@
 import { Group } from '@mantine/core';
-import LimitSelect from './LimitSelect';
 import CurrentContentNumber from './CurrentContentNumber';
+import LimitSelect from './LimitSelect';
 
 interface ContentsHeaderProps {
 	page?: number;

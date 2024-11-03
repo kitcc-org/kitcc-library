@@ -3,9 +3,9 @@ import type { UseFormReturnType } from '@mantine/form';
 import { getBooksResponse } from 'client/client';
 import type { GetBooksParams } from 'client/client.schemas';
 import BookSearchComponent from '../book-search/BookSearchComponent';
-import ContentsHeader from '../common/ContentsHeader';
-import ErrorComponent from '../common/ErrorComponent';
-import PaginationComponent from '../common/PaginationComponent';
+import ErrorComponent from '../common/error/ErrorComponent';
+import ContentsHeader from '../common/pagination/ContentsHeader';
+import PaginationComponent from '../common/pagination/PaginationComponent';
 import BookCards from './BookCards';
 
 interface BookListComponentProps {
