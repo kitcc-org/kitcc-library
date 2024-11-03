@@ -4,7 +4,7 @@ import type {
 	LoaderFunctionArgs,
 } from '@remix-run/cloudflare';
 import { deleteBook, getBook, getLoans } from 'client/client';
-import { getBookResponse, getLoansResponse } from 'client/client';
+import type { getBookResponse, getLoansResponse } from 'client/client';
 import { json, redirect } from '@remix-run/cloudflare';
 import { commitSession, getSession } from '~/services/session.server';
 import { Grid, rem, Stack } from '@mantine/core';
