@@ -17,10 +17,11 @@ export const loggedInTest = test.extend({
 		const db = drizzle(env.DB);
 		const sessionToken = crypto.randomUUID();
 
+		const { id, ...rest } = user;
 		const insertUser = await db
 			.insert(userTable)
 			.values({
-				...user,
+				...rest,
 				sessionToken,
 			})
 			.returning();

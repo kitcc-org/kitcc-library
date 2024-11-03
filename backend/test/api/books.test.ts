@@ -320,34 +320,37 @@ describe('DELETE /books', () => {
 		bookFactory.resetSequenceNumber();
 	});
 
-	loggedInTest('should delete books', async ({ currentUser, sessionToken }) => {
-		const before = await db.select({ count: count() }).from(bookTable);
+	loggedInTest(
+		'should delete books successfully',
+		async ({ currentUser, sessionToken }) => {
+			const before = await db.select({ count: count() }).from(bookTable);
 
-		const bookIdList = [1, 2];
+			const bookIdList = [1, 2];
 
-		const response = await app.request(
-			'/books',
-			{
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Cookie: [
-						`__Secure-user_id=${currentUser.id}`,
-						`__Secure-session_token=${sessionToken}`,
-					].join('; '),
+			const response = await app.request(
+				'/books',
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ bookIdList: bookIdList }),
 				},
-				body: JSON.stringify({ bookIdList: bookIdList }),
-			},
-			env,
-		);
+				env,
+			);
 
-		// ステータスコード
-		expect(response.status).toBe(204);
+			// ステータスコード
+			expect(response.status).toBe(204);
 
-		// データベースから書籍が削除されていることを確認する
-		const after = await db.select({ count: count() }).from(bookTable);
-		expect(after[0].count).toBe(before[0].count - bookIdList.length);
-	});
+			// データベースから書籍が削除されていることを確認する
+			const after = await db.select({ count: count() }).from(bookTable);
+			expect(after[0].count).toBe(before[0].count - bookIdList.length);
+		},
+	);
 
 	it('should return 400 when bookIdList is not array', async () => {
 		const response = await app.request(

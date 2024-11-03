@@ -84,7 +84,7 @@ describe('GET /users', () => {
 describe('POST /users', () => {
 	const db = drizzle(env.DB);
 
-	afterAll(() => {
+	afterAll(async () => {
 		userFactory.resetSequenceNumber();
 	});
 
@@ -326,4 +326,82 @@ describe('POST /users', () => {
 			expect(response.status).toBe(409);
 		},
 	);
+});
+
+describe('DELETE /users', () => {
+	const db = drizzle(env.DB);
+
+	beforeAll(async () => {
+		const users = userFactory.buildList(5);
+		await db.insert(userTable).values(users);
+	});
+
+	afterAll(async () => {
+		await db.delete(userTable);
+		userFactory.resetSequenceNumber();
+	});
+
+	loggedInTest(
+		'should delete users successfully',
+		async ({ currentUser, sessionToken }) => {
+			const before = await db.select({ count: count() }).from(userTable);
+
+			const userIdList = [1, 2];
+
+			const response = await app.request(
+				'/users',
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({ userIdList: userIdList }),
+				},
+				env,
+			);
+
+			// ステータスコード
+			expect(response.status).toBe(204);
+
+			// データベースからユーザが削除されていることを確認する
+			const after = await db.select({ count: count() }).from(userTable);
+			expect(after[0].count).toBe(before[0].count - userIdList.length);
+		},
+	);
+
+	it('should return 400 when userIdList is not array', async () => {
+		const response = await app.request(
+			'/users',
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ userIdList: 1 }),
+			},
+			env,
+		);
+
+		expect(response.status).toBe(400);
+	});
+
+	it('should return 401 when not logged in', async () => {
+		const response = await app.request(
+			'/users',
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ userIdList: [1] }),
+			},
+			env,
+		);
+
+		expect(response.status).toBe(401);
+	});
 });
