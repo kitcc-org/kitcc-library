@@ -95,6 +95,10 @@ export type UpdateUserBody = {
   password?: string;
 };
 
+export type DeleteUsersBody = {
+  userIdList: number[];
+};
+
 export type CreateUserBody = {
   email: string;
   name: string;

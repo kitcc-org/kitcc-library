@@ -22,6 +22,7 @@ import type {
   CreateBookBody,
   CreateUserBody,
   DeleteBooksBody,
+  DeleteUsersBody,
   Error,
   GetBooksParams,
   GetLoansParams,
@@ -778,6 +779,80 @@ export const useCreateUser = <TError = BadRequestResponse | UnauthorizedResponse
     }
     
 /**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export type deleteUsersResponse = {
+  data: void;
+  status: number;
+}
+
+export const getDeleteUsersUrl = () => {
+
+
+  return `https://localhost:8787/users`
+}
+
+export const deleteUsers = async (deleteUsersBody: DeleteUsersBody, options?: RequestInit): Promise<deleteUsersResponse> => {
+  
+  const res = await fetch(getDeleteUsersUrl(),
+  {      
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      deleteUsersBody,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getDeleteUsersMutationOptions = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext> => {
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUsers>>, {data: DeleteUsersBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteUsers(data,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteUsersMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsers>>>
+    export type DeleteUsersMutationBody = DeleteUsersBody
+    export type DeleteUsersMutationError = UnauthorizedResponse | InternalServerErrorResponse
+
+    /**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export const useDeleteUsers = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, fetch?: RequestInit}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteUsers>>,
+        TError,
+        {data: DeleteUsersBody},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteUsersMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
  * @summary 特定のユーザーの情報を取得する
  */
 export type getUserResponse = {
@@ -1450,6 +1525,16 @@ export const getCreateUserMockHandler = (overrideResponse?: User | ((info: Param
   })
 }
 
+export const getDeleteUsersMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/users', async (info) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
+      })
+  })
+}
+
 export const getGetUserMockHandler = (overrideResponse?: User | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<User> | User)) => {
   return http.get('*/users/:userId', async (info) => {
   
@@ -1541,6 +1626,7 @@ export const getKITCCLibraryAPIMock = () => [
   getSearchBooksMockHandler(),
   getGetUsersMockHandler(),
   getCreateUserMockHandler(),
+  getDeleteUsersMockHandler(),
   getGetUserMockHandler(),
   getUpdateUserMockHandler(),
   getDeleteUserMockHandler(),

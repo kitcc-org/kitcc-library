@@ -11,6 +11,7 @@ export * from './createBookBody';
 export * from './createUserBody';
 export * from './deleteBooksBody';
 export * from './deleteUser204';
+export * from './deleteUsersBody';
 export * from './error';
 export * from './getBooks200';
 export * from './getBooksParams';

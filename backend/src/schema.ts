@@ -226,6 +226,14 @@ export const createUserBody = zod.object({
 
 
 /**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export const deleteUsersBody = zod.object({
+  "userIdList": zod.array(zod.number())
+})
+
+
+/**
  * @summary 特定のユーザーの情報を取得する
  */
 export const getUserPathUserIdRegExp = new RegExp('^\\d+$');
