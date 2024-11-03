@@ -1,5 +1,4 @@
 import { Center, Title } from '@mantine/core';
-import React from 'react';
 
 const BookDetailEditTitle = () => {
 	return (

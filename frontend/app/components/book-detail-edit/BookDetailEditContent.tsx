@@ -1,4 +1,3 @@
-import React from 'react';
 import FormLayout from '../layouts/FormLayout';
 import { UseFormReturnType } from '@mantine/form';
 import BookDetailTitleForm from './BookDetailTitleForm';

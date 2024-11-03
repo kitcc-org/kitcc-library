@@ -1,4 +1,3 @@
-import React from 'react';
 import { Center, Paper } from '@mantine/core';
 
 interface FormBaseLayoutProps {

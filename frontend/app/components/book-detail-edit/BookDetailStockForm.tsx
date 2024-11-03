@@ -1,4 +1,3 @@
-import React from 'react';
 import { UseFormReturnType } from '@mantine/form';
 import { NumberInput } from '@mantine/core';
 import { CustomUpdateBookBody } from '~/routes/home.books.$bookId.edit/route';
