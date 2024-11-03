@@ -12,6 +12,7 @@ properties:
     type: string
   publishedDate:
     type: string
+    format: date
   description:
     type: string
   thumbnail:

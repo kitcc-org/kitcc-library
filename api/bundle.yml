@@ -132,6 +132,7 @@ paths:
                   type: string
                 publishedDate:
                   type: string
+                  format: date
                 description:
                   type: string
                 thumbnail:
@@ -199,9 +200,9 @@ paths:
                 - bookIdList
               example:
                 bookIdList:
-                  - '1'
-                  - '2'
-                  - '3'
+                  - 1
+                  - 2
+                  - 3
       responses:
         '204':
           description: 書籍の削除に成功した
@@ -274,6 +275,7 @@ paths:
                   type: string
                 publishedDate:
                   type: string
+                  format: date
                 isbn:
                   type: string
                   pattern: ^\d{10}(\d{3})?$
@@ -974,6 +976,7 @@ components:
           type: string
         publishedDate:
           type: string
+          format: date
         description:
           type: string
         thumbnail:
