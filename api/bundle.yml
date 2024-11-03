@@ -564,6 +564,38 @@ paths:
                 message: Conflict
         '500':
           $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - user
+      operationId: deleteUsers
+      summary: 指定された1人以上のユーザーを削除する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIdList:
+                  type: array
+                  items:
+                    type: integer
+              required:
+                - userIdList
+              example:
+                userIdList:
+                  - 1
+                  - 2
+                  - 3
+      responses:
+        '204':
+          description: ユーザーの削除に成功した
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /users/{userId}:
     get:
       tags:
