@@ -1,7 +1,11 @@
 import { useOutletContext, useSubmit } from '@remix-run/react';
 import { BookDetailOutletContext } from '../home.books.$bookId/route';
 import { useForm } from '@mantine/form';
-import { ActionFunctionArgs, redirect } from '@remix-run/cloudflare';
+import {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+	redirect,
+} from '@remix-run/cloudflare';
 import { UpdateBookBody } from 'client/client.schemas';
 import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
 import { formatDate } from '~/utils/day';
@@ -11,6 +15,22 @@ import { updateBook } from 'client/client';
 export interface CustomUpdateBookBody extends UpdateBookBody {
 	customPublishedDate?: Date;
 }
+
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+
+	const bookId = params.bookId ?? '';
+
+	if (!session.has('userId')) {
+		session.flash('error', 'ログインしてください');
+		return redirect(`/home/books/${bookId}`, {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+	return null;
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
