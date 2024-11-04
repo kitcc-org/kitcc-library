@@ -1,6 +1,6 @@
 import { Button, Center, Dialog, Stack, Text } from '@mantine/core';
 import { useAtom } from 'jotai';
-import { selectedBooksAtom } from '~/stores/cartAtom';
+import { selectedBooksAtom } from '~/stores/bookAtom';
 
 const BookSelectedDialog = () => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
@@ -27,7 +27,7 @@ const BookSelectedDialog = () => {
 				<Button
 					fz="xs"
 					variant="light"
-					bd="solid 1px"
+					bd="solid 2px"
 					onClick={() => setSelectedBook([])}
 				>
 					選択を解除する

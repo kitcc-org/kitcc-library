@@ -1,6 +1,6 @@
+import { Button } from '@mantine/core';
 import { useLocation, useNavigate } from '@remix-run/react';
 import { MdEdit } from 'react-icons/md';
-import { Button } from '@mantine/core';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
 interface BookDetailEditButtonProps {
@@ -17,7 +17,7 @@ const BookDetailEditButton = ({ bookId }: BookDetailEditButtonProps) => {
 					leftSection={<RiArrowGoBackLine />}
 					variant="light"
 					fz="lg"
-					bd="solid 1px"
+					bd="solid 2px"
 					onClick={() => navigate(`/home/books/${bookId}`)}
 				>
 					キャンセル
