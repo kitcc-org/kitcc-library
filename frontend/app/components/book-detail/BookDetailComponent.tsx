@@ -1,5 +1,5 @@
 import { Grid, rem, Stack } from '@mantine/core';
-import ErrorComponent from '~/components/common/ErrorComponent';
+import ErrorComponent from '~/components/common/error/ErrorComponent';
 
 import { getBookResponse, getLoansResponse } from 'client/client';
 import BookDetailContent from './BookDetailContent';
