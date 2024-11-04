@@ -188,6 +188,8 @@ books:
     responses:
       '204':
         description: 書籍の削除に成功した
+      '400':
+        $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
         $ref: '../components/responses/4xx.yml#/Unauthorized'
       '500':

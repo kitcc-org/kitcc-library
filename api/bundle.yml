@@ -206,6 +206,8 @@ paths:
       responses:
         '204':
           description: 書籍の削除に成功した
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -594,6 +596,8 @@ paths:
       responses:
         '204':
           description: ユーザーの削除に成功した
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':

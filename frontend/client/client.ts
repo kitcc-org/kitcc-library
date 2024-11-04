@@ -237,7 +237,7 @@ export const deleteBooks = async (deleteBooksBody: DeleteBooksBody, options?: Re
 
 
 
-export const getDeleteBooksMutationOptions = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+export const getDeleteBooksMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -258,12 +258,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type DeleteBooksMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBooks>>>
     export type DeleteBooksMutationBody = DeleteBooksBody
-    export type DeleteBooksMutationError = UnauthorizedResponse | InternalServerErrorResponse
+    export type DeleteBooksMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
 
     /**
  * @summary 指定された1冊以上の書籍を削除する
  */
-export const useDeleteBooks = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+export const useDeleteBooks = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof deleteBooks>>,
@@ -755,7 +755,7 @@ export const deleteUsers = async (deleteUsersBody: DeleteUsersBody, options?: Re
 
 
 
-export const getDeleteUsersMutationOptions = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+export const getDeleteUsersMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -776,12 +776,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type DeleteUsersMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsers>>>
     export type DeleteUsersMutationBody = DeleteUsersBody
-    export type DeleteUsersMutationError = UnauthorizedResponse | InternalServerErrorResponse
+    export type DeleteUsersMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
 
     /**
  * @summary 指定された1人以上のユーザーを削除する
  */
-export const useDeleteUsers = <TError = UnauthorizedResponse | InternalServerErrorResponse,
+export const useDeleteUsers = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof deleteUsers>>,
