@@ -1,14 +1,14 @@
-import FormLayout from '../layouts/FormLayout';
 import { UseFormReturnType } from '@mantine/form';
-import BookDetailTitleForm from './BookDetailTitleForm';
-import BookDetailAuthorsForm from './BookDetailAuthorsForm';
-import BookDetailPublisherForm from './BookDetailPublisherForm';
-import BookDetailPublishedDateForm from './BookDetailPublishedDateForm';
-import BookDetailIsbnForm from './BookDetailIsbnForm';
-import BookDetailStockForm from './BookDetailStockForm';
 import { CustomUpdateBookBody } from '~/routes/home.books.$bookId.edit/route';
+import FormLayout from '../layouts/FormLayout';
+import BookDetailAuthorsForm from './BookDetailAuthorsForm';
 import BookDetailEditTitle from './BookDetailEditTitle';
+import BookDetailIsbnForm from './BookDetailIsbnForm';
+import BookDetailPublishedDateForm from './BookDetailPublishedDateForm';
+import BookDetailPublisherForm from './BookDetailPublisherForm';
+import BookDetailStockForm from './BookDetailStockForm';
 import BookDetailSubmitButton from './BookDetailSubmitButton';
+import BookDetailTitleForm from './BookDetailTitleForm';
 
 interface BookDetailEditContentProps {
 	form: UseFormReturnType<

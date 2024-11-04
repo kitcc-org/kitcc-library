@@ -1,5 +1,5 @@
-import { UseFormReturnType } from '@mantine/form';
 import { DateInput } from '@mantine/dates';
+import { UseFormReturnType } from '@mantine/form';
 import { CustomUpdateBookBody } from '~/routes/home.books.$bookId.edit/route';
 
 interface BookDetailPublishedDateFormProps {
@@ -14,6 +14,7 @@ const BookDetailPublishedDateForm = ({
 }: BookDetailPublishedDateFormProps) => {
 	return (
 		<DateInput
+			size="md"
 			label="出版日"
 			placeholder="2000-01-31"
 			valueFormat="YYYY-MM-DD"

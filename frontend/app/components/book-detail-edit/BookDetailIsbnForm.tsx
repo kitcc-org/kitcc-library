@@ -1,5 +1,5 @@
-import { UseFormReturnType } from '@mantine/form';
 import { TextInput } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
 import { CustomUpdateBookBody } from '~/routes/home.books.$bookId.edit/route';
 
 interface BookDetailIsbnFormProps {
@@ -12,6 +12,7 @@ interface BookDetailIsbnFormProps {
 const BookDetailIsbnForm = ({ form }: BookDetailIsbnFormProps) => {
 	return (
 		<TextInput
+			size="md"
 			label="ISBN"
 			placeholder="987654321098"
 			key={form.key('isbn')}
