@@ -3,8 +3,8 @@ import { useFetcher } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { MdDeleteForever } from 'react-icons/md';
 import { userAtom } from '~/stores/userAtom';
-import BookDetailThumbnail from './BookDetailThumbnail';
 import BookDetailEditButton from './BookDetailEditButton';
+import BookDetailThumbnail from './BookDetailThumbnail';
 
 interface BookDetailControlPanelProps {
 	id: number;
