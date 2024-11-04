@@ -114,6 +114,7 @@ books:
                 type: string
               publishedDate:
                 type: string
+                format: date
               description:
                 type: string
               thumbnail:
@@ -153,6 +154,40 @@ books:
             examples:
               book:
                 $ref: '../components/examples/book.yml'
+      '400':
+        $ref: '../components/responses/4xx.yml#/BadRequest'
+      '401':
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
+      '500':
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
+  delete:
+    tags:
+      - book
+    operationId: deleteBooks
+    summary: 指定された1冊以上の書籍を削除する
+    security:
+      - CookieAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bookIdList:
+                type: array
+                items:
+                  type: integer
+            required:
+              - bookIdList
+            example:
+              bookIdList:
+                - 1
+                - 2
+                - 3
+    responses:
+      '204':
+        description: 書籍の削除に成功した
       '400':
         $ref: '../components/responses/4xx.yml#/BadRequest'
       '401':
@@ -227,6 +262,7 @@ book:
                 type: string
               publishedDate:
                 type: string
+                format: date
               isbn:
                 type: string
                 pattern: '^\d{10}(\d{3})?$'

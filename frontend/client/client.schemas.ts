@@ -95,6 +95,10 @@ export type UpdateUserBody = {
   password?: string;
 };
 
+export type DeleteUsersBody = {
+  userIdList: number[];
+};
+
 export type CreateUserBody = {
   email: string;
   name: string;
@@ -185,6 +189,10 @@ export type UpdateBookBody = {
   publisher?: string;
   stock?: number;
   title?: string;
+};
+
+export type DeleteBooksBody = {
+  bookIdList: number[];
 };
 
 export type CreateBookBody = {

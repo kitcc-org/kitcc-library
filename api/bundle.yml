@@ -132,6 +132,7 @@ paths:
                   type: string
                 publishedDate:
                   type: string
+                  format: date
                 description:
                   type: string
                 thumbnail:
@@ -171,6 +172,40 @@ paths:
               examples:
                 book:
                   $ref: '#/components/examples/book'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - book
+      operationId: deleteBooks
+      summary: 指定された1冊以上の書籍を削除する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bookIdList:
+                  type: array
+                  items:
+                    type: integer
+              required:
+                - bookIdList
+              example:
+                bookIdList:
+                  - 1
+                  - 2
+                  - 3
+      responses:
+        '204':
+          description: 書籍の削除に成功した
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -242,6 +277,7 @@ paths:
                   type: string
                 publishedDate:
                   type: string
+                  format: date
                 isbn:
                   type: string
                   pattern: ^\d{10}(\d{3})?$
@@ -530,6 +566,40 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 message: Conflict
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - user
+      operationId: deleteUsers
+      summary: 指定された1人以上のユーザーを削除する
+      security:
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userIdList:
+                  type: array
+                  items:
+                    type: integer
+              required:
+                - userIdList
+              example:
+                userIdList:
+                  - 1
+                  - 2
+                  - 3
+      responses:
+        '204':
+          description: ユーザーの削除に成功した
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /users/{userId}:
@@ -910,6 +980,7 @@ components:
           type: string
         publishedDate:
           type: string
+          format: date
         description:
           type: string
         thumbnail:

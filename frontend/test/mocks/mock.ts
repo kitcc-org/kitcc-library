@@ -21,6 +21,8 @@ import type {
   BadRequestResponse,
   CreateBookBody,
   CreateUserBody,
+  DeleteBooksBody,
+  DeleteUsersBody,
   Error,
   GetBooksParams,
   GetLoansParams,
@@ -219,6 +221,80 @@ export const useCreateBook = <TError = BadRequestResponse | UnauthorizedResponse
       > => {
 
       const mutationOptions = getCreateBookMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export type deleteBooksResponse = {
+  data: void;
+  status: number;
+}
+
+export const getDeleteBooksUrl = () => {
+
+
+  return `https://localhost:8787/books`
+}
+
+export const deleteBooks = async (deleteBooksBody: DeleteBooksBody, options?: RequestInit): Promise<deleteBooksResponse> => {
+  
+  const res = await fetch(getDeleteBooksUrl(),
+  {      
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      deleteBooksBody,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getDeleteBooksMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext> => {
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBooks>>, {data: DeleteBooksBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteBooks(data,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteBooksMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBooks>>>
+    export type DeleteBooksMutationBody = DeleteBooksBody
+    export type DeleteBooksMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
+
+    /**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export const useDeleteBooks = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteBooks>>, TError,{data: DeleteBooksBody}, TContext>, fetch?: RequestInit}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteBooks>>,
+        TError,
+        {data: DeleteBooksBody},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteBooksMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -698,6 +774,80 @@ export const useCreateUser = <TError = BadRequestResponse | UnauthorizedResponse
       > => {
 
       const mutationOptions = getCreateUserMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export type deleteUsersResponse = {
+  data: void;
+  status: number;
+}
+
+export const getDeleteUsersUrl = () => {
+
+
+  return `https://localhost:8787/users`
+}
+
+export const deleteUsers = async (deleteUsersBody: DeleteUsersBody, options?: RequestInit): Promise<deleteUsersResponse> => {
+  
+  const res = await fetch(getDeleteUsersUrl(),
+  {      
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      deleteUsersBody,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getDeleteUsersMutationOptions = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, fetch?: RequestInit}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext> => {
+const {mutation: mutationOptions, fetch: fetchOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUsers>>, {data: DeleteUsersBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteUsers(data,fetchOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteUsersMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsers>>>
+    export type DeleteUsersMutationBody = DeleteUsersBody
+    export type DeleteUsersMutationError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse
+
+    /**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export const useDeleteUsers = <TError = BadRequestResponse | UnauthorizedResponse | InternalServerErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsers>>, TError,{data: DeleteUsersBody}, TContext>, fetch?: RequestInit}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deleteUsers>>,
+        TError,
+        {data: DeleteUsersBody},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteUsersMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1244,7 +1394,7 @@ export const useLogout = <TError = InternalServerErrorResponse,
     
 
 
-export const getGetBooksResponseMock = (overrideResponse: Partial< GetBooks200 > = {}): GetBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+export const getGetBooksResponseMock = (overrideResponse: Partial< GetBooks200 > = {}): GetBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.date.past().toISOString().split('T')[0], publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
 export const getCreateBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
@@ -1264,7 +1414,7 @@ export const getUpdateUserResponseMock = (): User => ({"id":1,"name":"比企谷�
 
 export const getDeleteUserResponseMock = (): DeleteUser204 => ({"message":"No Content"})
 
-export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 > = {}): GetLoans200 => ({loans: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({books: faker.helpers.arrayElement([{authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.word.sample(), publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()}, undefined]), loans: faker.helpers.arrayElement([{bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})}, undefined]), users: faker.helpers.arrayElement([{email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined])}, undefined])})), totalLoan: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 > = {}): GetLoans200 => ({loans: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({books: faker.helpers.arrayElement([{authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), description: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.date.past().toISOString().split('T')[0], publisher: faker.word.sample(), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.word.sample()}, undefined]), loans: faker.helpers.arrayElement([{bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})}, undefined]), users: faker.helpers.arrayElement([{email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined])}, undefined])})), totalLoan: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
 export const getUpsertLoansResponseMock = (): Loan[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})})))
 
@@ -1291,6 +1441,16 @@ export const getCreateBookMockHandler = (overrideResponse?: Book | ((info: Param
             : getCreateBookResponseMock()),
       { status: 201,
         headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDeleteBooksMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/books', async (info) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
       })
   })
 }
@@ -1361,6 +1521,16 @@ export const getCreateUserMockHandler = (overrideResponse?: User | ((info: Param
             : getCreateUserResponseMock()),
       { status: 201,
         headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getDeleteUsersMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<void> | void)) => {
+  return http.delete('*/users', async (info) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+    return new HttpResponse(null,
+      { status: 204,
+        
       })
   })
 }
@@ -1449,12 +1619,14 @@ export const getLogoutMockHandler = (overrideResponse?: void | ((info: Parameter
 export const getKITCCLibraryAPIMock = () => [
   getGetBooksMockHandler(),
   getCreateBookMockHandler(),
+  getDeleteBooksMockHandler(),
   getGetBookMockHandler(),
   getUpdateBookMockHandler(),
   getDeleteBookMockHandler(),
   getSearchBooksMockHandler(),
   getGetUsersMockHandler(),
   getCreateUserMockHandler(),
+  getDeleteUsersMockHandler(),
   getGetUserMockHandler(),
   getUpdateUserMockHandler(),
   getDeleteUserMockHandler(),

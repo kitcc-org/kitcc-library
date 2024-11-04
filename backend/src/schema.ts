@@ -38,7 +38,7 @@ export const getBooksResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string(),
+  "publishedDate": zod.string().date(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseBooksItemIsbnRegExp),
@@ -57,11 +57,19 @@ export const createBookBody = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string(),
+  "publishedDate": zod.string().date(),
   "description": zod.string(),
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().regex(createBookBodyIsbnRegExp),
   "stock": zod.number()
+})
+
+
+/**
+ * @summary 指定された1冊以上の書籍を削除する
+ */
+export const deleteBooksBody = zod.object({
+  "bookIdList": zod.array(zod.number())
 })
 
 
@@ -83,7 +91,7 @@ export const getBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string(),
+  "publishedDate": zod.string().date(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBookResponseIsbnRegExp),
@@ -110,7 +118,7 @@ export const updateBookBody = zod.object({
   "title": zod.string().optional(),
   "authors": zod.array(zod.string()).optional(),
   "publisher": zod.string().optional(),
-  "publishedDate": zod.string().optional(),
+  "publishedDate": zod.string().date().optional(),
   "isbn": zod.string().regex(updateBookBodyIsbnRegExp).optional(),
   "stock": zod.number().optional()
 })
@@ -123,7 +131,7 @@ export const updateBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string(),
+  "publishedDate": zod.string().date(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(updateBookResponseIsbnRegExp),
@@ -214,6 +222,14 @@ export const createUserBody = zod.object({
   "name": zod.string(),
   "email": zod.string().email(),
   "password": zod.string().min(createUserBodyPasswordMin).regex(createUserBodyPasswordRegExp)
+})
+
+
+/**
+ * @summary 指定された1人以上のユーザーを削除する
+ */
+export const deleteUsersBody = zod.object({
+  "userIdList": zod.array(zod.number())
 })
 
 
@@ -318,7 +334,7 @@ export const getLoansResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string(),
+  "publishedDate": zod.string().date(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getLoansResponseLoansItemBooksIsbnRegExp),
