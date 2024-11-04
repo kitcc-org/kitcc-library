@@ -8,7 +8,7 @@ import { GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
-import { selectedBooksAtom } from '~/stores/cartAtom';
+import { selectedBooksAtom } from '~/stores/bookAtom';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;
