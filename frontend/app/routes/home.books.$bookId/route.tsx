@@ -1,18 +1,17 @@
+import { Outlet, useLoaderData } from '@remix-run/react';
 import type {
 	ActionFunctionArgs,
 	LoaderFunctionArgs,
 } from '@remix-run/cloudflare';
+import { deleteBook, getBook, getLoans } from 'client/client';
+import type { getBookResponse, getLoansResponse } from 'client/client';
 import { json, redirect } from '@remix-run/cloudflare';
-import { useLoaderData } from '@remix-run/react';
-import {
-	deleteBook,
-	getBook,
-	getBookResponse,
-	getLoans,
-	getLoansResponse,
-} from 'client/client';
-import BookDetailComponent from '~/components/book-detail/BookDetailComponent';
 import { commitSession, getSession } from '~/services/session.server';
+import { Grid, rem, Stack } from '@mantine/core';
+
+import ErrorComponent from '~/components/common/ErrorComponent';
+import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
+import { Book } from 'client/client.schemas';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
@@ -22,6 +21,11 @@ interface LoaderData {
 interface ActionResponse {
 	method: string;
 	status: number;
+}
+
+export interface BookDetailOutletContext {
+	book: Book;
+	loansResponse?: getLoansResponse;
 }
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -116,14 +120,36 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	return null;
 };
 
-const BookDetailPage = () => {
+const BookDetail = () => {
 	const { bookResponse, loansResponse } = useLoaderData<typeof loader>();
+	switch (bookResponse.status) {
+		case 400:
+			return <ErrorComponent message="リクエストが不正です" />;
+		case 404:
+			return <ErrorComponent message="書籍が見つかりませんでした" />;
+		case 500:
+			return <ErrorComponent message="サーバーエラーが発生しました" />;
+	}
 	return (
-		<BookDetailComponent
-			bookResponse={bookResponse}
-			loansResponse={loansResponse}
-		/>
+		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<Grid gutter={rem(50)}>
+				<Grid.Col span={3}>
+					<BookDetailControlPanel
+						id={bookResponse.data.id}
+						thumbnail={bookResponse.data.thumbnail}
+					/>
+				</Grid.Col>
+				<Grid.Col span={9}>
+					<Outlet
+						context={{
+							book: bookResponse.data,
+							loansResponse: loansResponse,
+						}}
+					/>
+				</Grid.Col>
+			</Grid>
+		</Stack>
 	);
 };
 
-export default BookDetailPage;
+export default BookDetail;

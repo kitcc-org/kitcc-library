@@ -8,15 +8,12 @@ import BookDetailDescription from './BookDetailDescription';
 import BookDetailTitle from './BookDetailTitle';
 import { getLoansResponse } from 'client/client';
 
-interface BookDetailComponentProps {
+interface BookDetailContentProps {
 	book: Book;
 	loansResponse?: getLoansResponse;
 }
 
-const BookDetailContent = ({
-	book,
-	loansResponse,
-}: BookDetailComponentProps) => {
+const BookDetailContent = ({ book, loansResponse }: BookDetailContentProps) => {
 	const [user] = useAtom(userAtom);
 	return (
 		<Stack

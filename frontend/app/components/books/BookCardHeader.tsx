@@ -1,7 +1,7 @@
 import { Checkbox, Group } from '@mantine/core';
 import { useAtom } from 'jotai';
+import { selectedBooksAtom } from '~/stores/bookAtom';
 import type { CartProps } from '~/stores/cartAtom';
-import { selectedBooksAtom } from '~/stores/cartAtom';
 import { userAtom } from '~/stores/userAtom';
 import BookCardHeaderBadge from './BookCardHeaderBadge';
 

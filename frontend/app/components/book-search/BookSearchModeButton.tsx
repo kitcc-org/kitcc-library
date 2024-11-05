@@ -13,12 +13,12 @@ const BookSearchModeButton = ({
 }: SearchModeButtonProps) => {
 	if (isOpen)
 		return (
-			<Button id="search-mode-button" onClick={close} variant="light">
+			<Button id="search-mode-button" onClick={close} variant="light" size="md">
 				検索条件を閉じる
 			</Button>
 		);
 	return (
-		<Button id="search-mode-button" onClick={open} variant="light">
+		<Button id="search-mode-button" onClick={open} variant="light" size="md">
 			検索条件を開く
 		</Button>
 	);
