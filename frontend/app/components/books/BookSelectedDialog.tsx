@@ -28,14 +28,13 @@ const BookSelectedDialog = () => {
 					fz="xs"
 					color="red"
 					onClick={() => {
-						const temporalBook = [...selectedBook];
-						setSelectedBook([]);
-
-						submit(JSON.stringify({ selectedBook: temporalBook }), {
+						submit(JSON.stringify({ selectedBook: selectedBook }), {
 							action: '/home?index',
 							method: 'DELETE',
 							encType: 'application/json',
 						});
+
+						setSelectedBook([]);
 					}}
 				>
 					選択中の本を削除する

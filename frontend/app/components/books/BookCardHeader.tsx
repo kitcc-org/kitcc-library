@@ -17,7 +17,7 @@ const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
 	const selectedCheck = (element: CartProps) => element.id === id;
 
 	const selectedBookAdd = () => {
-		// チェックボックスの状態が変化した時に、
+		// チェックボックスの状態が変化した時に
 		if (selectedBook.some(selectedCheck)) {
 			// すでに選択されていた場合は選択を外す
 			setSelectedBook(selectedBook.filter((element) => element.id !== id));

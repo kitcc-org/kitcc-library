@@ -128,9 +128,10 @@ const BooKListPage = () => {
 	const { booksResponse, condition } = useLoaderData<typeof loader>();
 	const { title, author, publisher, isbn, page, limit } = condition;
 
+	const [, setSelectedBook] = useAtom(selectedBooksAtom);
+
 	const [opened, { open, close }] = useDisclosure();
 	const navigate = useNavigate();
-	const [, setSelectedBook] = useAtom(selectedBooksAtom);
 	const form = useForm<GetBooksParams>({
 		mode: 'uncontrolled',
 		initialValues: {
