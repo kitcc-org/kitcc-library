@@ -28,7 +28,10 @@ const BookSelectedDialog = () => {
 					fz="xs"
 					color="red"
 					onClick={() => {
-						submit(JSON.stringify({ selectedBook: selectedBook }), {
+						const temporalBook = [...selectedBook];
+						setSelectedBook([]);
+
+						submit(JSON.stringify({ selectedBook: temporalBook }), {
 							action: '/home?index',
 							method: 'DELETE',
 							encType: 'application/json',
