@@ -55,4 +55,59 @@ VALUES
         'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
         '9784567890123',
         3
+    ),
+	(
+        6,
+        '機械学習入門',
+        json_array('山本 七子'),
+        'オライリー・ジャパン',
+        '2019-03-15',
+        '機械学習の基礎理論から応用までを解説した入門書。',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
+        '9785678901234',
+        2
+    ),
+    (
+        7,
+        '深層学習の基礎',
+        json_array('田村 八郎'),
+        '講談社',
+        '2020-11-01',
+        '深層学習の基礎を学ぶための参考書。理論と実践をカバー。',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
+        '9786789012345',
+        1
+    ),
+    (
+        8,
+        '人工知能と社会',
+        json_array('木村 九郎'),
+        '朝日出版社',
+        '2018-07-22',
+        '人工知能が社会に与える影響を考察した書籍。',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
+        '9787890123456',
+        2
+    ),
+    (
+        9,
+        'プログラム設計論',
+        json_array('井上 十郎', '上田 美子'),
+        '共立出版',
+        '2021-02-10',
+        'プログラム設計の理論と実践方法をまとめた教科書。',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
+        '9788901234567',
+        3
+    ),
+    (
+        10,
+        '情報理論と符号化',
+        json_array('村山 十三', '森田 十四'),
+        'サイエンス社',
+        '2017-09-15',
+        '情報理論と符号化の基本概念を理解するための本。',
+        'https://www.oreilly.co.jp/books/images/picture_large978-4-87311-565-8.jpeg',
+        '9789012345678',
+        1
     );
