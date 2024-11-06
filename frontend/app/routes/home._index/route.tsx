@@ -1,14 +1,18 @@
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
-import { json } from '@remix-run/cloudflare';
+import type {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+} from '@remix-run/cloudflare';
+import { json, redirect } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { getBooks, getBooksResponse } from 'client/client';
+import { deleteBooks, getBooks, getBooksResponse } from 'client/client';
 import { GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
-import { selectedBooksAtom } from '~/stores/bookAtom';
+import { commitSession, getSession } from '~/services/session.server';
+import { SelectedBookProps, selectedBooksAtom } from '~/stores/bookAtom';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;
@@ -20,6 +24,11 @@ interface LoaderData {
 		page?: string;
 		limit?: string;
 	};
+}
+
+interface ActionResponse {
+	method: string;
+	status: number;
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -52,6 +61,67 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 			limit: limit,
 		},
 	});
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+
+	// 未ログインの場合
+	if (!session.has('userId')) {
+		session.flash('error', 'ログインしてください');
+		return redirect('/login', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+
+	const cookieHeader = [
+		`__Secure-user_id=${session.get('userId')};`,
+		`__Secure-session_token=${session.get('sessionToken')}`,
+	].join('; ');
+
+	// prettier-ignore
+	const requestBody = await request.json<{ selectedBook: SelectedBookProps[] }>();
+	const selectedBook = requestBody.selectedBook;
+
+	const response = await deleteBooks(
+		{
+			bookIdList: selectedBook.map((book) => book.id),
+		},
+		{
+			headers: { Cookie: cookieHeader },
+		},
+	);
+
+	switch (response.status) {
+		case 204:
+			session.flash('success', '削除しました');
+			return redirect('/home', {
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			});
+
+		case 401:
+			session.flash('error', 'ログインしてください');
+			return redirect('/login', {
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			});
+
+		default:
+			session.flash('error', '削除に失敗しました');
+			return json<ActionResponse>(
+				{ method: 'DELETE', status: response.status },
+				{
+					headers: {
+						'Set-Cookie': await commitSession(session),
+					},
+				},
+			);
+	}
 };
 
 const BooKListPage = () => {

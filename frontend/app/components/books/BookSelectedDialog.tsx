@@ -1,9 +1,12 @@
 import { Button, Center, Dialog, Stack, Text } from '@mantine/core';
+import { useSubmit } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 
 const BookSelectedDialog = () => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
+	const submit = useSubmit();
+
 	return (
 		<Dialog
 			opened={selectedBook.length > 0}
@@ -21,7 +24,17 @@ const BookSelectedDialog = () => {
 				<Button fz="xs" color="yellow">
 					選択中の本をカートに入れる
 				</Button>
-				<Button fz="xs" color="red">
+				<Button
+					fz="xs"
+					color="red"
+					onClick={() => {
+						submit(JSON.stringify({ selectedBook: selectedBook }), {
+							action: '/home?index',
+							method: 'DELETE',
+							encType: 'application/json',
+						});
+					}}
+				>
 					選択中の本を削除する
 				</Button>
 				<Button
