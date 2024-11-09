@@ -35,7 +35,7 @@ const BookDetailControlPanel = ({
 					onClick={() =>
 						fetcher.submit(
 							{ bookId: id },
-							{ action: '/home/books/$bookId', method: 'delete' },
+							{ action: '/home/books/$bookId', method: 'DELETE' },
 						)
 					}
 					disabled={fetcher.state === 'submitting'}

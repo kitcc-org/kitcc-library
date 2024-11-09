@@ -1,17 +1,17 @@
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { Grid, rem, Stack } from '@mantine/core';
 import type {
 	ActionFunctionArgs,
 	LoaderFunctionArgs,
 } from '@remix-run/cloudflare';
-import { deleteBook, getBook, getLoans } from 'client/client';
-import type { getBookResponse, getLoansResponse } from 'client/client';
 import { json, redirect } from '@remix-run/cloudflare';
+import { Outlet, useLoaderData } from '@remix-run/react';
+import type { getBookResponse, getLoansResponse } from 'client/client';
+import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
-import { Grid, rem, Stack } from '@mantine/core';
 
-import ErrorComponent from '~/components/common/ErrorComponent';
-import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
 import { Book } from 'client/client.schemas';
+import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
+import ErrorComponent from '~/components/common/error/ErrorComponent';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
