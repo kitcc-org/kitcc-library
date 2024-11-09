@@ -8,6 +8,7 @@ import GlobalBookSearchPublisherForm from './GlobalBookSearchPublisherForm';
 import GlobalBookSearchIsbnForm from './GlobalBookSearchIsbnForm';
 import GlobalBookSearchSubmitButton from './GlobalBookSearchSubmitButton';
 import GlobalBookSearchKeywordForm from './GlobalBookSearchKeywordForm';
+import GlobalSearchSegment from './GlobalSearchSegment';
 
 interface GlobalKeywordSearchFormProps {
 	isOpen: boolean;
@@ -16,15 +17,23 @@ interface GlobalKeywordSearchFormProps {
 		(values: SearchBooksParams) => SearchBooksParams
 	>;
 	handleSubmit: (props: SearchBooksParams) => void;
+	searchMode: string;
+	setSearchMode: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const GlobalBookKeywordSearchForm = ({
 	isOpen,
 	form,
 	handleSubmit,
+	searchMode,
+	setSearchMode,
 }: GlobalKeywordSearchFormProps) => {
 	return (
 		<Collapse in={isOpen}>
+			<GlobalSearchSegment
+				searchMode={searchMode}
+				setSearchMode={setSearchMode}
+			/>
 			<FormLayout<SearchBooksParams> form={form} handleSubmit={handleSubmit}>
 				<GlobalBookSearchKeywordForm form={form} />
 				<GlobalBookSearchSubmitButton />

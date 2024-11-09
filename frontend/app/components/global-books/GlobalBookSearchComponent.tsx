@@ -34,21 +34,21 @@ const GlobalBookSearchComponent = ({
 	return (
 		<>
 			<GlobalBookSearchModeButton isOpen={isOpen} open={open} close={close} />
-			<GlobalSearchSegment
-				searchMode={searchMode}
-				setSearchMode={setSearchMode}
-			/>
 			{searchMode === 'detail' ? (
 				<GlobalBookDetailSearchForm
 					isOpen={isOpen}
 					form={form}
 					handleSubmit={handleDetailSubmit}
+					searchMode={searchMode}
+					setSearchMode={setSearchMode}
 				/>
 			) : (
 				<GlobalBookKeywordSearchForm
 					isOpen={isOpen}
 					form={form}
 					handleSubmit={handleKeywordSubmit}
+					searchMode={searchMode}
+					setSearchMode={setSearchMode}
 				/>
 			)}
 		</>
