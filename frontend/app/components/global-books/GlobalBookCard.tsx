@@ -13,7 +13,10 @@ const GlobalBookCard = ({ book }: GlobalBookCardProps) => {
 	return (
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding py="xs">
-				<BookCardThumbnail id={book.isbn} thumbnail={book.thumbnail} />
+				<BookCardThumbnail
+					id={book.isbn ? Number(book.isbn) : undefined}
+					thumbnail={book.thumbnail}
+				/>
 			</Card.Section>
 		</Card>
 	);
