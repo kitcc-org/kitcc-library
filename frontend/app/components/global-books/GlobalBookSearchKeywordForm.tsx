@@ -13,11 +13,7 @@ const GlobalBookSearchKeywordForm = ({
 	form,
 }: GlobalSearchKeywordFormProps) => {
 	return (
-		<TextInput
-			placeholder="Python"
-			key={form.key('keyword')}
-			{...form.getInputProps('keyword')}
-		/>
+		<TextInput key={form.key('keyword')} {...form.getInputProps('keyword')} />
 	);
 };
 
