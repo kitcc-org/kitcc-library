@@ -27,6 +27,7 @@ interface GoogleBookVolume {
 	totalItems: number;
 	items?: [
 		{
+			id: string;
 			volumeInfo: {
 				title: string;
 				authors?: string[];
@@ -59,6 +60,7 @@ interface GoogleApiError {
 
 // GET /search のレスポンス
 interface GoogleBook {
+	id: string;
 	title: string;
 	authors: string[];
 	publisher: string;
@@ -140,6 +142,7 @@ app.get(
 
 				// 書籍を配列に追加する
 				hitBooks.push({
+					id: item.id,
 					title: book.title,
 					authors: book.authors ?? [],
 					publisher: book.publisher ?? '',
