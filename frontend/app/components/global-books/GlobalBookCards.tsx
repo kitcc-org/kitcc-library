@@ -1,5 +1,4 @@
 import { SearchBooks200BooksItem } from 'client/client.schemas';
-import React from 'react';
 import { ScrollArea, SimpleGrid } from '@mantine/core';
 import GlobalNoBookComponent from './GlobalNoBookComponent';
 import GlobalBookCard from './GlobalBookCard';

@@ -3,8 +3,6 @@ import { useNavigate } from '@remix-run/react';
 import { FaBook } from 'react-icons/fa';
 import { LuBookCopy } from 'react-icons/lu';
 import { AiOutlineGlobal } from 'react-icons/ai';
-import { userAtom } from '~/stores/userAtom';
-import { useAtom } from 'jotai';
 
 const HeaderBookMenu = () => {
 	const navigate = useNavigate();

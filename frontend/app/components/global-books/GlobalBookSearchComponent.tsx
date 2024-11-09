@@ -1,9 +1,7 @@
 import type { UseFormReturnType } from '@mantine/form';
 import type { SearchBooksParams } from 'client/client.schemas';
 import React from 'react';
-import BookSearchModeButton from '../book-search/BookSearchModeButton';
 import GlobalBookSearchModeButton from './GlobalBookSearchModeButton';
-import GlobalSearchSegment from './GlobalSearchSegment';
 import GlobalBookDetailSearchForm from './GlobalBookDetailSearchForm';
 import GlobalBookKeywordSearchForm from './GlobalBookKeywordSearchForm';
 

@@ -1,5 +1,4 @@
 import { Alert, Center } from '@mantine/core';
-import React from 'react';
 
 const NoQueryComponent = () => {
 	return (

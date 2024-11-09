@@ -4,7 +4,6 @@ import type { SearchBooksParams } from 'client/client.schemas';
 import React from 'react';
 import NoQueryComponent from './NoQueryComponent';
 import { Stack } from '@mantine/core';
-import BookSearchComponent from '../book-search/BookSearchComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import ErrorComponent from '../common/error/ErrorComponent';
 import GlobalBookCards from './GlobalBookCards';
