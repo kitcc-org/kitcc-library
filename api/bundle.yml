@@ -411,6 +411,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: string
                         title:
                           type: string
                         authors:
@@ -428,6 +430,7 @@ paths:
                         isbn:
                           type: string
                       required:
+                        - id
                         - title
                         - authors
                 required:
@@ -436,7 +439,8 @@ paths:
               example:
                 totalBook: 30
                 books:
-                  - title: 計算機プログラムの構造と解釈
+                  - id: 5-OgzgEACAAJ
+                    title: 計算機プログラムの構造と解釈
                     authors:
                       - Harold Abelson
                       - Gerald Jay Sussman
