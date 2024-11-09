@@ -5,6 +5,7 @@ interface PaginationComponentProps {
 	page?: number;
 	limit?: number;
 	handlePaginationChange: (newPage: number) => void;
+	color?: string;
 }
 
 const PaginationComponent = ({
@@ -12,6 +13,7 @@ const PaginationComponent = ({
 	page,
 	limit,
 	handlePaginationChange,
+	color,
 }: PaginationComponentProps) => {
 	const limitNum = limit ?? 10;
 	const totalPage = totalNum / limitNum + 1;
@@ -21,6 +23,7 @@ const PaginationComponent = ({
 				total={totalPage}
 				value={page ?? 1}
 				withEdges
+				color={color ?? 'blue'}
 				onChange={handlePaginationChange}
 			/>
 		</Center>

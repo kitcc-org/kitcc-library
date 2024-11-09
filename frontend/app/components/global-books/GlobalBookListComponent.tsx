@@ -7,8 +7,8 @@ import { Stack } from '@mantine/core';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import ErrorComponent from '../common/error/ErrorComponent';
 import GlobalBookCards from './GlobalBookCards';
-import GlobalPaginationComponent from './GlobalPaginationComponent';
 import GlobalBookSearchComponent from './GlobalBookSearchComponent';
+import PaginationComponent from '../common/pagination/PaginationComponent';
 
 interface GlobalBookListComponentProps {
 	booksResponse?: searchBooksResponse;
@@ -71,11 +71,12 @@ const GlobalBookListComponent = ({
 			) : (
 				<GlobalBookCards books={booksResponse.data.books} />
 			)}
-			<GlobalPaginationComponent
+			<PaginationComponent
 				totalNum={totalBook}
 				page={page}
 				limit={limit}
 				handlePaginationChange={handlePaginationChange}
+				color="teal"
 			/>
 		</Stack>
 	);
