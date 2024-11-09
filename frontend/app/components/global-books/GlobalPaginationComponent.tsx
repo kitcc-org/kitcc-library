@@ -22,7 +22,7 @@ const GlobalPaginationComponent = ({
 				total={totalPage}
 				value={page ?? 1}
 				withEdges
-				color="lime"
+				color="teal"
 				onChange={handlePaginationChange}
 			/>
 		</Center>

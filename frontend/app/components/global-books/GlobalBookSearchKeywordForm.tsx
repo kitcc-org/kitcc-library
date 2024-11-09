@@ -14,7 +14,6 @@ const GlobalBookSearchKeywordForm = ({
 }: GlobalSearchKeywordFormProps) => {
 	return (
 		<TextInput
-			label="キーワード"
 			placeholder="Python"
 			key={form.key('keyword')}
 			{...form.getInputProps('keyword')}

@@ -22,6 +22,7 @@ interface LoaderData {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+	let response: searchBooksResponse;
 	// 検索条件を取得する
 	const url = new URL(request.url);
 	const keyword = url.searchParams.get('keyword') ?? undefined;
@@ -32,7 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
 	// 検索条件が指定されていない場合は検索をしない
-	if (title && publisher && isbn && author) {
+	if (!keyword && !title && !publisher && !isbn && !author) {
 		return json<LoaderData>({
 			booksResponse: undefined,
 			condition: {
@@ -45,9 +46,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 				limit: limit,
 			},
 		});
-	} else if (!keyword) {
+	} else if (keyword) {
 		// 書籍情報を取得する(キーワード検索)
-		const response = await searchBooks({
+		response = await searchBooks({
 			keyword: keyword,
 			page: page,
 			limit: limit,
@@ -67,7 +68,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		});
 	} else {
 		// 書籍情報を取得する(詳細検索)
-		const response = await searchBooks({
+		response = await searchBooks({
 			intitle: title,
 			inauthor: author,
 			inpublisher: publisher,
@@ -75,20 +76,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 			page: page,
 			limit: limit,
 		});
-
-		return json<LoaderData>({
-			booksResponse: response,
-			condition: {
-				keyword: keyword,
-				title: title,
-				author: author,
-				publisher: publisher,
-				isbn: isbn,
-				page: page,
-				limit: limit,
-			},
-		});
 	}
+	return json<LoaderData>({
+		booksResponse: response,
+		condition: {
+			keyword: keyword,
+			title: title,
+			author: author,
+			publisher: publisher,
+			isbn: isbn,
+			page: page,
+			limit: limit,
+		},
+	});
 };
 
 const GlobalBookListPage = () => {

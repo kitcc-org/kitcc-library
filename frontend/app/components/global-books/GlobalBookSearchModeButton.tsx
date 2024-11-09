@@ -15,7 +15,7 @@ const GlobalBookSearchModeButton = ({
 		return (
 			<Button
 				id="search-mode-button"
-				color="lime"
+				color="teal"
 				onClick={close}
 				variant="light"
 				size="md"
@@ -26,7 +26,7 @@ const GlobalBookSearchModeButton = ({
 	return (
 		<Button
 			id="search-mode-button"
-			color="lime"
+			color="teal"
 			onClick={open}
 			variant="light"
 			size="md"

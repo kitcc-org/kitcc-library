@@ -1,4 +1,4 @@
-import { Collapse } from '@mantine/core';
+import { Collapse, Space } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import type { SearchBooksParams } from 'client/client.schemas';
 import FormLayout from '../layouts/FormLayout';
@@ -34,6 +34,7 @@ const GlobalBookKeywordSearchForm = ({
 				searchMode={searchMode}
 				setSearchMode={setSearchMode}
 			/>
+			<Space h="md" />
 			<FormLayout<SearchBooksParams> form={form} handleSubmit={handleSubmit}>
 				<GlobalBookSearchKeywordForm form={form} />
 				<GlobalBookSearchSubmitButton />

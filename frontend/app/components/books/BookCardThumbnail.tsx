@@ -12,7 +12,7 @@ const BookCardThumbnail = ({ id, thumbnail }: BookCardThumbnailProps) => {
 	return (
 		<AspectRatio
 			ratio={10 / 14}
-			style={{ flex: `0 0 ${rem(400)}`, cursor: id ? 'pointer' : 'none' }}
+			style={{ flex: `0 0 ${rem(400)}`, cursor: id ? 'pointer' : undefined }}
 			component="div"
 			onClick={() => id && navigate(`books/${id}`)}
 		>

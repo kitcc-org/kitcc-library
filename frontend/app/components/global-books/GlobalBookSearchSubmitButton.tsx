@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 
 const GlobalBookSearchSubmitButton = () => {
 	return (
-		<Button type="submit" color="lime" leftSection={<FaSearch />} fz="lg">
+		<Button type="submit" color="teal" leftSection={<FaSearch />} fz="lg">
 			検索
 		</Button>
 	);
