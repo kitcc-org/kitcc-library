@@ -20,7 +20,7 @@ const BookCards = ({ books }: BookCardsProps) => {
 				<SimpleGrid
 					type="container"
 					cols={{
-						base: 1,
+						base: 2,
 						'500px': 3,
 						'800px': 4,
 						'1100px': 5,
