@@ -37,13 +37,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const title = url.searchParams.get('title') ?? undefined;
 	const publisher = url.searchParams.get('publisher') ?? undefined;
 	const isbn = url.searchParams.get('isbn') ?? undefined;
-	const auther = url.searchParams.get('author') ?? undefined;
+	const author = url.searchParams.get('author') ?? undefined;
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
 	// 書籍情報を取得する
 	const response = await getBooks({
 		title: title,
-		author: auther,
+		author: author,
 		publisher: publisher,
 		isbn: isbn,
 		page: page,
@@ -54,7 +54,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		booksResponse: response,
 		condition: {
 			title: title,
-			author: auther,
+			author: author,
 			publisher: publisher,
 			isbn: isbn,
 			page: page,
