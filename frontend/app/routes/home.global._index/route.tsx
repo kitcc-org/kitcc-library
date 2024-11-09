@@ -169,34 +169,37 @@ const GlobalBookListPage = () => {
 		let url = '/home/global';
 		let initial = true;
 		if (keyword) {
+			// キーワード検索
 			url =
 				initial === true
 					? `${url}?keyword=${keyword}`
 					: `${url}&keyword=${keyword}`;
 			initial = false;
-		}
-		if (title) {
-			url =
-				initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-			initial = false;
-		}
-		if (author) {
-			url =
-				initial === true
-					? `${url}?author=${author}`
-					: `${url}&author=${author}`;
-			initial = false;
-		}
-		if (publisher) {
-			url =
-				initial === true
-					? `${url}?publisher=${publisher}`
-					: `${url}&publisher=${publisher}`;
-			initial = false;
-		}
-		if (isbn) {
-			url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-			initial = false;
+		} else {
+			// 詳細検索
+			if (title) {
+				url =
+					initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
+				initial = false;
+			}
+			if (author) {
+				url =
+					initial === true
+						? `${url}?author=${author}`
+						: `${url}&author=${author}`;
+				initial = false;
+			}
+			if (publisher) {
+				url =
+					initial === true
+						? `${url}?publisher=${publisher}`
+						: `${url}&publisher=${publisher}`;
+				initial = false;
+			}
+			if (isbn) {
+				url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
+				initial = false;
+			}
 		}
 		if (limit) {
 			url =
@@ -212,34 +215,37 @@ const GlobalBookListPage = () => {
 		let url = '/home/global';
 		let initial = true;
 		if (keyword) {
+			// キーワード検索
 			url =
 				initial === true
 					? `${url}?keyword=${keyword}`
 					: `${url}&keyword=${keyword}`;
 			initial = false;
-		}
-		if (title) {
-			url =
-				initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-			initial = false;
-		}
-		if (author) {
-			url =
-				initial === true
-					? `${url}?author=${author}`
-					: `${url}&author=${author}`;
-			initial = false;
-		}
-		if (publisher) {
-			url =
-				initial === true
-					? `${url}?publisher=${publisher}`
-					: `${url}&publisher=${publisher}`;
-			initial = false;
-		}
-		if (isbn) {
-			url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-			initial = false;
+		} else {
+			// 詳細検索
+			if (title) {
+				url =
+					initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
+				initial = false;
+			}
+			if (author) {
+				url =
+					initial === true
+						? `${url}?author=${author}`
+						: `${url}&author=${author}`;
+				initial = false;
+			}
+			if (publisher) {
+				url =
+					initial === true
+						? `${url}?publisher=${publisher}`
+						: `${url}&publisher=${publisher}`;
+				initial = false;
+			}
+			if (isbn) {
+				url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
+				initial = false;
+			}
 		}
 		url =
 			initial === true
