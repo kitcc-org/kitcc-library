@@ -14,7 +14,7 @@ const GlobalBookSearchAuthorForm = ({
 }: GlobalBookSearchAuthorFormProps) => {
 	return (
 		<TextInput
-			label="筆者"
+			label="著者"
 			placeholder="竹岡尚三"
 			key={form.key('inauthor')}
 			{...form.getInputProps('inauthor')}

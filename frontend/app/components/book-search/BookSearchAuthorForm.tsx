@@ -12,7 +12,7 @@ interface BookSearchAuthorFormProps {
 const BookSearchAuthorForm = ({ form }: BookSearchAuthorFormProps) => {
 	return (
 		<TextInput
-			label="筆者"
+			label="著者"
 			placeholder="竹岡尚三"
 			key={form.key('author')}
 			{...form.getInputProps('author')}
