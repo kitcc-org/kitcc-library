@@ -8,6 +8,7 @@
 export type SearchBooks200BooksItem = {
   authors: string[];
   description?: string;
+  id: string;
   isbn?: string;
   publishedDate?: string;
   publisher?: string;

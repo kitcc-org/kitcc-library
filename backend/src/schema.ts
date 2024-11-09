@@ -173,6 +173,7 @@ export const searchBooksQueryParams = zod.object({
 export const searchBooksResponse = zod.object({
   "totalBook": zod.number(),
   "books": zod.array(zod.object({
+  "id": zod.string(),
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string().optional(),
