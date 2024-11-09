@@ -258,16 +258,20 @@ const GlobalBookListPage = () => {
 		<GlobalBookListComponent
 			booksResponse={booksResponse}
 			form={form}
-			handleDetailSubmit={handleDetailSubmit}
-			handleKeywordSubmit={handleKeywordSubmit}
+			globalSearchFunctions={{
+				handleDetailSubmit: handleDetailSubmit,
+				handleKeywordSubmit: handleKeywordSubmit,
+			}}
 			isOpen={opened}
 			open={open}
 			close={close}
-			handlePaginationChange={handlePaginationChange}
-			handleLimitChange={handleLimitChange}
-			page={page ? Number(page) : undefined}
-			limit={limit ? Number(limit) : undefined}
-			totalBook={booksResponse?.data.totalBook ?? 0}
+			paginationProps={{
+				handlePaginationChange: handlePaginationChange,
+				handleLimitChange: handleLimitChange,
+				page: page ? Number(page) : undefined,
+				limit: limit ? Number(limit) : undefined,
+				totalBook: booksResponse ? booksResponse.data.totalBook : 0,
+			}}
 			searchMode={searchMode}
 			setSearchMode={setSearchMode}
 		/>

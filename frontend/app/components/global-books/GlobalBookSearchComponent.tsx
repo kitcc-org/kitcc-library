@@ -4,6 +4,7 @@ import React from 'react';
 import GlobalBookSearchModeButton from './GlobalBookSearchModeButton';
 import GlobalBookDetailSearchForm from './GlobalBookDetailSearchForm';
 import GlobalBookKeywordSearchForm from './GlobalBookKeywordSearchForm';
+import { HandleGlobalSearchFunctions } from './GlobalBookListComponent';
 
 interface GlobalBookSearchComponentProps {
 	isOpen: boolean;
@@ -13,8 +14,7 @@ interface GlobalBookSearchComponentProps {
 		SearchBooksParams,
 		(values: SearchBooksParams) => SearchBooksParams
 	>;
-	handleDetailSubmit: (props: SearchBooksParams) => void;
-	handleKeywordSubmit: (props: SearchBooksParams) => void;
+	globalSearchFunctions: HandleGlobalSearchFunctions;
 	searchMode: string;
 	setSearchMode: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -24,8 +24,7 @@ const GlobalBookSearchComponent = ({
 	open,
 	close,
 	form,
-	handleDetailSubmit,
-	handleKeywordSubmit,
+	globalSearchFunctions,
 	searchMode,
 	setSearchMode,
 }: GlobalBookSearchComponentProps) => {
@@ -36,7 +35,7 @@ const GlobalBookSearchComponent = ({
 				<GlobalBookDetailSearchForm
 					isOpen={isOpen}
 					form={form}
-					handleSubmit={handleDetailSubmit}
+					handleSubmit={globalSearchFunctions.handleDetailSubmit}
 					searchMode={searchMode}
 					setSearchMode={setSearchMode}
 				/>
@@ -44,7 +43,7 @@ const GlobalBookSearchComponent = ({
 				<GlobalBookKeywordSearchForm
 					isOpen={isOpen}
 					form={form}
-					handleSubmit={handleKeywordSubmit}
+					handleSubmit={globalSearchFunctions.handleKeywordSubmit}
 					searchMode={searchMode}
 					setSearchMode={setSearchMode}
 				/>

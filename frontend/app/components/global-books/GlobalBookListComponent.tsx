@@ -10,22 +10,30 @@ import GlobalBookCards from './GlobalBookCards';
 import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 
+export interface HandleGlobalSearchFunctions {
+	handleDetailSubmit: (props: SearchBooksParams) => void;
+	handleKeywordSubmit: (props: SearchBooksParams) => void;
+}
+
+interface HandlePaginationProps {
+	handlePaginationChange: (newPage: number) => void;
+	handleLimitChange: (newLimit: number) => void;
+	page?: number;
+	limit?: number;
+	totalBook: number;
+}
+
 interface GlobalBookListComponentProps {
 	booksResponse?: searchBooksResponse;
 	form: UseFormReturnType<
 		SearchBooksParams,
 		(values: SearchBooksParams) => SearchBooksParams
 	>;
-	handleDetailSubmit: (props: SearchBooksParams) => void;
-	handleKeywordSubmit: (props: SearchBooksParams) => void;
+	globalSearchFunctions: HandleGlobalSearchFunctions;
+	paginationProps: HandlePaginationProps;
 	isOpen: boolean;
 	open: () => void;
 	close: () => void;
-	handlePaginationChange: (newPage: number) => void;
-	handleLimitChange: (newLimit: number) => void;
-	page?: number;
-	limit?: number;
-	totalBook: number;
 	searchMode: string;
 	setSearchMode: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -33,16 +41,11 @@ interface GlobalBookListComponentProps {
 const GlobalBookListComponent = ({
 	booksResponse,
 	form,
-	handleDetailSubmit,
-	handleKeywordSubmit,
+	globalSearchFunctions,
 	isOpen,
 	open,
 	close,
-	handlePaginationChange,
-	handleLimitChange,
-	page,
-	limit,
-	totalBook,
+	paginationProps,
 	searchMode,
 	setSearchMode,
 }: GlobalBookListComponentProps) => {
@@ -53,16 +56,15 @@ const GlobalBookListComponent = ({
 				open={open}
 				close={close}
 				form={form}
-				handleDetailSubmit={handleDetailSubmit}
-				handleKeywordSubmit={handleKeywordSubmit}
+				globalSearchFunctions={globalSearchFunctions}
 				searchMode={searchMode}
 				setSearchMode={setSearchMode}
 			/>
 			<ContentsHeader
-				page={page}
-				limit={limit}
-				total={totalBook}
-				handleLimitChange={handleLimitChange}
+				page={paginationProps.page}
+				limit={paginationProps.limit}
+				total={paginationProps.totalBook}
+				handleLimitChange={paginationProps.handleLimitChange}
 			/>
 			{!booksResponse ? (
 				<NoQueryComponent />
@@ -72,10 +74,10 @@ const GlobalBookListComponent = ({
 				<GlobalBookCards books={booksResponse.data.books} />
 			)}
 			<PaginationComponent
-				totalNum={totalBook}
-				page={page}
-				limit={limit}
-				handlePaginationChange={handlePaginationChange}
+				totalNum={paginationProps.totalBook}
+				page={paginationProps.page}
+				limit={paginationProps.limit}
+				handlePaginationChange={paginationProps.handlePaginationChange}
 				color="teal"
 			/>
 		</Stack>
