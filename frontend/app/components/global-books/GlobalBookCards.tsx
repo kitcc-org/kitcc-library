@@ -1,7 +1,7 @@
 import { SearchBooks200BooksItem } from 'client/client.schemas';
 import { ScrollArea, SimpleGrid } from '@mantine/core';
-import GlobalNoBookComponent from './GlobalNoBookComponent';
 import GlobalBookCard from './GlobalBookCard';
+import NoBookComponent from '../books/NoBookComponent';
 
 interface GlobalBookCardsProps {
 	books: SearchBooks200BooksItem[];
@@ -9,7 +9,7 @@ interface GlobalBookCardsProps {
 
 const GlobalBookCards = ({ books }: GlobalBookCardsProps) => {
 	if (books.length === 0) {
-		return <GlobalNoBookComponent />;
+		return <NoBookComponent color="teal" />;
 	}
 	return (
 		<ScrollArea h="70dh">
