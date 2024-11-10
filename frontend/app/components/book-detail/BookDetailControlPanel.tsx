@@ -1,22 +1,27 @@
-import { Button, Stack } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
+import { Stack } from '@mantine/core';
 import { useAtom } from 'jotai';
-import { MdDeleteForever } from 'react-icons/md';
 import { userAtom } from '~/stores/userAtom';
-import BookDetailEditButton from './BookDetailEditButton';
 import BookDetailThumbnail from './BookDetailThumbnail';
+import BookDetailControlButtons from './BookDetailControlButtons';
+import { useLocation } from '@remix-run/react';
+import GlobalBookDetailControlButtons from '../global-book-detail/GlobalBookDetailControlButtons';
+import { SearchBooks200BooksItem } from 'client/client.schemas';
 
 interface BookDetailControlPanelProps {
-	id: number;
+	id?: number;
 	thumbnail?: string;
+	searchBook?: SearchBooks200BooksItem;
+	totalBook?: number;
 }
 
 const BookDetailControlPanel = ({
 	id,
 	thumbnail,
+	searchBook,
+	totalBook,
 }: BookDetailControlPanelProps) => {
 	const [user] = useAtom(userAtom);
-	const fetcher = useFetcher();
+	const location = useLocation();
 
 	return (
 		<Stack
@@ -26,23 +31,15 @@ const BookDetailControlPanel = ({
 			gap="md"
 		>
 			<BookDetailThumbnail thumbnail={thumbnail} />
-			{!!user && <BookDetailEditButton bookId={id} />}
-			{!!user && (
-				<Button
-					color="red"
-					leftSection={<MdDeleteForever />}
-					fz="lg"
-					onClick={() =>
-						fetcher.submit(
-							{ bookId: id },
-							{ action: '/home/books/$bookId', method: 'DELETE' },
-						)
-					}
-					disabled={fetcher.state === 'submitting'}
-				>
-					削除
-				</Button>
-			)}
+			{user && location.pathname.includes('global')
+				? searchBook &&
+					totalBook && (
+						<GlobalBookDetailControlButtons
+							searchBook={searchBook}
+							totalBook={totalBook}
+						/>
+					)
+				: id && <BookDetailControlButtons id={id} />}
 		</Stack>
 	);
 };
