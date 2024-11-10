@@ -28,10 +28,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 	// 書籍の情報を取得する
 	const isbn = params.isbn ?? '';
-	console.log('isbn', isbn);
 	const searchBooksResponse = await searchBooks({ isbn: isbn });
-	console.log('ここでは', searchBooksResponse);
-
 	// 蔵書追加処理実装をするため蔵書の情報を取得する
 	if (session.has('userId')) {
 		const getBookResponse = await getBooks({ isbn: isbn });
