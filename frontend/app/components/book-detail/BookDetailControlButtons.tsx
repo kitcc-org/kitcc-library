@@ -1,4 +1,3 @@
-import React from 'react';
 import BookDetailEditButton from './BookDetailEditButton';
 import { MdDeleteForever } from 'react-icons/md';
 import { Button } from '@mantine/core';
