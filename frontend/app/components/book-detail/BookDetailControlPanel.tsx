@@ -22,6 +22,7 @@ const BookDetailControlPanel = ({
 }: BookDetailControlPanelProps) => {
 	const [user] = useAtom(userAtom);
 	const location = useLocation();
+	console.log('本の総数は', totalBook);
 
 	return (
 		<Stack
@@ -33,7 +34,7 @@ const BookDetailControlPanel = ({
 			<BookDetailThumbnail thumbnail={thumbnail} />
 			{user && location.pathname.includes('global')
 				? searchBook &&
-					totalBook && (
+					typeof totalBook == 'number' && (
 						<GlobalBookDetailControlButtons
 							searchBook={searchBook}
 							totalBook={totalBook}
