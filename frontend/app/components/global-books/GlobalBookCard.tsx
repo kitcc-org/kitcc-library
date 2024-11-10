@@ -11,7 +11,8 @@ const GlobalBookCard = ({ book }: GlobalBookCardProps) => {
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding py="xs">
 				<BookCardThumbnail
-					id={book.isbn ? Number(book.isbn) : undefined}
+					// Google Books APIでisbnの味の検索ができるまではコメントアウト
+					// id={book.isbn ? Number(book.isbn) : undefined}
 					thumbnail={book.thumbnail}
 				/>
 			</Card.Section>
