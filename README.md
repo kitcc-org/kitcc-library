@@ -39,8 +39,9 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
 [![Remix](https://img.shields.io/badge/Remix-%23000000?style=for-the-badge&logo=remix&logoColor=white)][Remix]
+[![TanStack Query](https://img.shields.io/badge/TanStack_Query-%23FF4154?style=for-the-badge&logo=reactquery&logoColor=white)][TSQ]
 [![Mantine](https://img.shields.io/badge/Mantine-%23339AF0?style=for-the-badge&logo=mantine&logoColor=white)][Mantine]
-[![Jotai](https://img.shields.io/badge/Jotai-%23000000?style=for-the-badge)][Jotai]
+[![Jotai](https://img.shields.io/badge/Jotai-%23000000?style=for-the-badge&logo=ghostery&logoColor=white)][Jotai]
 [![Vitest](https://img.shields.io/badge/Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
 [![Testing Library](https://img.shields.io/badge/Testing_Library-%23E33332?style=for-the-badge&logo=testinglibrary&logoColor=white)][RTL]
 [![MSW](https://img.shields.io/badge/MSW-%23FF6A33?style=for-the-badge&logo=mockserviceworker&logoColor=white)][MSW]
@@ -49,6 +50,7 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
 [![Hono](https://img.shields.io/badge/Hono-%23FF6A33?style=for-the-badge&logo=hono&logoColor=white)][Hono]
+[![Zod](https://img.shields.io/badge/zod-%233E67B1?style=for-the-badge&logo=zod&logoColor=white)][Zod]
 [![Drizzle](https://img.shields.io/badge/Drizzle_ORM-%23C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)][Drizzle]
 [![Vitest](https://img.shields.io/badge/Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
 
@@ -95,5 +97,7 @@ KITCC が所有する書籍を管理する Web アプリ
 [Prettier]: https://prettier.io/
 [RTL]: https://testing-library.com/docs/react-testing-library/intro/
 [Remix]: https://remix.run/
+[TSQ]: https://tanstack.com/query/latest
 [Vitest]: https://vitest.dev/
 [Workers]: https://developers.cloudflare.com/workers/
+[Zod]: https://zod.dev/
