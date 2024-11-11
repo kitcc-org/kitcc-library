@@ -59,7 +59,7 @@ KITCC が所有する書籍を管理する Web アプリ
 ### インフラ
 
 [![Pages](https://img.shields.io/badge/-Cloudflare_Pages-%23F38020?style=for-the-badge&logo=cloudflarepages&logoColor=white)][Pages]
-[![Workers](https://img.shields.io/badge/-Cloudflare_Pages-%23F38020?style=for-the-badge&logo=cloudflareworkers&logoColor=white)][Workers]
+[![Workers](https://img.shields.io/badge/-Cloudflare_Workers-%23F38020?style=for-the-badge&logo=cloudflareworkers&logoColor=white)][Workers]
 
 ### CI/CD
 
