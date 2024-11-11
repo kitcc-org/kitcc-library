@@ -49,7 +49,7 @@ KITCC が所有する書籍を管理する Web アプリ
 
 - TypeScript
 - [Hono][Hono]
-- [Drizzle][Drizzle]
+- [Drizzle ORM][Drizzle]
 - [Vitest][Vitest]
 
 ### データベース
