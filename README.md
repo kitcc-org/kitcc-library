@@ -37,20 +37,20 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ### フロントエンド
 
-![TypeScript](https://skillicons.dev/icons?i=ts&theme=light)
-[![Remix](https://skillicons.dev/icons?i=remix&theme=light)][Remix]
-[<img src="./assets/images/mantine.png" width="50px" height="50px">][Mantine]
-[<img src="./assets/images/jotai.png" width="50px" height="50px">][Jotai]
-[![Vitest](https://skillicons.dev/icons?i=vitest&theme=light)][Vitest]
-[<img src="./assets/images/RTL.png" width="55px" height="50px">][RTL]
-[<img src="./assets/images/msw.png" width="50px" height="50px">][MSW]
+- TypeScript
+- [Remix][Remix]
+- [Mantine][Mantine]
+- [Jotai][Jotai]
+- [Vitest][Vitest]
+- [React Testing Library][RTL]
+- [MSW][MSW]
 
 ### バックエンド
 
-![TypeScript](https://skillicons.dev/icons?i=ts&theme=light)
-[<img src="./assets/images/hono.svg" width="50px" height="50px">][Hono]
-[<img src="./assets/images/drizzle.png" width="50px" height="50px">][Drizzle]
-[![Vitest](https://skillicons.dev/icons?i=vitest&theme=light)][Vitest]
+- TypeScript
+- [Hono][Hono]
+- [Drizzle][Drizzle]
+- [Vitest][Vitest]
 
 ### データベース
 
