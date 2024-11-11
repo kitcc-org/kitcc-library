@@ -37,41 +37,41 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ### フロントエンド
 
-![TypeScript](https://img.shields.io/badge/-TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
-[![Remix](https://img.shields.io/badge/-Remix-%23000000?style=for-the-badge&logo=remix&logoColor=white)][Remix]
-[![Mantine](https://img.shields.io/badge/-Mantine-%23339AF0?style=for-the-badge&logo=mantine&logoColor=white)][Mantine]
-[![Jotai](https://img.shields.io/badge/-Jotai-%23000000?style=for-the-badge)][Jotai]
-[![Vitest](https://img.shields.io/badge/-Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
-[![Testing Library](https://img.shields.io/badge/-Testing_Library-%23E33332?style=for-the-badge&logo=testinglibrary&logoColor=white)][RTL]
-[![MSW](https://img.shields.io/badge/-MSW-%23FF6A33?style=for-the-badge&logo=mockserviceworker&logoColor=white)][MSW]
+![TypeScript](https://img.shields.io/badge/TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
+[![Remix](https://img.shields.io/badge/Remix-%23000000?style=for-the-badge&logo=remix&logoColor=white)][Remix]
+[![Mantine](https://img.shields.io/badge/Mantine-%23339AF0?style=for-the-badge&logo=mantine&logoColor=white)][Mantine]
+[![Jotai](https://img.shields.io/badge/Jotai-%23000000?style=for-the-badge)][Jotai]
+[![Vitest](https://img.shields.io/badge/Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
+[![Testing Library](https://img.shields.io/badge/Testing_Library-%23E33332?style=for-the-badge&logo=testinglibrary&logoColor=white)][RTL]
+[![MSW](https://img.shields.io/badge/MSW-%23FF6A33?style=for-the-badge&logo=mockserviceworker&logoColor=white)][MSW]
 
 ### バックエンド
 
-![TypeScript](https://img.shields.io/badge/-TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
-[![Hono](https://img.shields.io/badge/-Hono-%23FF6A33?style=for-the-badge&logo=hono&logoColor=white)][Hono]
-[![Drizzle](https://img.shields.io/badge/-Drizzle_ORM-%23C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)][Drizzle]
-[![Vitest](https://img.shields.io/badge/-Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
+![TypeScript](https://img.shields.io/badge/TypeScript-%233178C6?style=for-the-badge&logo=typescript&logoColor=white)
+[![Hono](https://img.shields.io/badge/Hono-%23FF6A33?style=for-the-badge&logo=hono&logoColor=white)][Hono]
+[![Drizzle](https://img.shields.io/badge/Drizzle_ORM-%23C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)][Drizzle]
+[![Vitest](https://img.shields.io/badge/Vitest-%236E9F18?style=for-the-badge&logo=vitest&logoColor=white)][Vitest]
 
 ### データベース
 
-[![D1](https://img.shields.io/badge/-Cloudflare_D1-%23F38020?style=for-the-badge&logo=cloudflare&logoColor=white)][D1]
+[![D1](https://img.shields.io/badge/Cloudflare_D1-%23F38020?style=for-the-badge&logo=cloudflare&logoColor=white)][D1]
 
 ### インフラ
 
-[![Pages](https://img.shields.io/badge/-Cloudflare_Pages-%23F38020?style=for-the-badge&logo=cloudflarepages&logoColor=white)][Pages]
-[![Workers](https://img.shields.io/badge/-Cloudflare_Workers-%23F38020?style=for-the-badge&logo=cloudflareworkers&logoColor=white)][Workers]
+[![Pages](https://img.shields.io/badge/Cloudflare_Pages-%23F38020?style=for-the-badge&logo=cloudflarepages&logoColor=white)][Pages]
+[![Workers](https://img.shields.io/badge/Cloudflare_Workers-%23F38020?style=for-the-badge&logo=cloudflareworkers&logoColor=white)][Workers]
 
 ### CI/CD
 
-![Actions](https://img.shields.io/badge/-GitHub_Actions-%232088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![Actions](https://img.shields.io/badge/GitHub_Actions-%232088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 ### 開発ツール
 
-[![Orval](https://img.shields.io/badge/-Orval-%23683BC1?style=for-the-badge)][Orval]
-[![ESLint](https://img.shields.io/badge/-ESLint-%234B32C3?style=for-the-badge&logo=eslint&logoColor=white)][ESLint]
-[![Prettier](https://img.shields.io/badge/-Prettier-%23F7B93E?style=for-the-badge&logo=prettier&logoColor=black)][Prettier]
-[![Husky](https://img.shields.io/badge/-Husky-black?style=for-the-badge)][Husky]
-![lint-staged](https://img.shields.io/badge/-lint--staged-%23684730?style=for-the-badge)
+[![Orval](https://img.shields.io/badge/Orval-%23683BC1?style=for-the-badge)][Orval]
+[![ESLint](https://img.shields.io/badge/ESLint-%234B32C3?style=for-the-badge&logo=eslint&logoColor=white)][ESLint]
+[![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E?style=for-the-badge&logo=prettier&logoColor=black)][Prettier]
+[![Husky](https://img.shields.io/badge/Husky-black?style=for-the-badge)][Husky]
+![lint-staged](https://img.shields.io/badge/lint--staged-%23684730?style=for-the-badge)
 
 ## ER 図
 
