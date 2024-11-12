@@ -889,7 +889,7 @@ export const getGetUserQueryKey = (userId: string,) => {
     }
 
     
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, fetch?: RequestInit}
+export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse>(userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
@@ -908,14 +908,14 @@ const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 }
 
 export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>
-export type GetUserQueryError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
+export type GetUserQueryError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse
 
 
 /**
  * @summary 特定のユーザーの情報を取得する
  */
 
-export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(
+export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse>(
  userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, fetch?: RequestInit}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -1404,7 +1404,7 @@ export const getUpdateBookResponseMock = (): Book => ({"id":1,"title":"計算機
 
 export const getSearchBooksResponseMock = (): SearchBooks200 => ({"totalBook":30,"books":[{"id":"5-OgzgEACAAJ","title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2018-07-01","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984"}]})
 
-export const getGetUsersResponseMock = (overrideResponse: Partial< GetUsers200 > = {}): GetUsers200 => ({totalUser: faker.number.int({min: undefined, max: undefined}), users: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(), null]), undefined])})), ...overrideResponse})
+export const getGetUsersResponseMock = (overrideResponse: Partial< GetUsers200 > = {}): GetUsers200 => ({totalUser: faker.number.int({min: undefined, max: undefined}), users: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), name: faker.helpers.arrayElement([faker.word.sample(), undefined])})), ...overrideResponse})
 
 export const getCreateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
 

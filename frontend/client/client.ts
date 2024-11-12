@@ -827,7 +827,7 @@ export const getGetUserQueryKey = (userId: string,) => {
     }
 
     
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse>(userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -846,14 +846,14 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>
-export type GetUserQueryError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
+export type GetUserQueryError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse
 
 
 /**
  * @summary 特定のユーザーの情報を取得する
  */
 
-export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(
+export function useGetUser<TData = Awaited<ReturnType<typeof getUser>>, TError = BadRequestResponse | UnauthorizedResponse | NotFoundResponse | InternalServerErrorResponse>(
  userId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {

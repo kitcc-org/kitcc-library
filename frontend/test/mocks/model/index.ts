@@ -21,6 +21,7 @@ export * from './getLoans200LoansItem';
 export * from './getLoansParams';
 export * from './getLoansSort';
 export * from './getUsers200';
+export * from './getUsers200UsersItem';
 export * from './getUsersParams';
 export * from './internalServerErrorResponse';
 export * from './loan';
