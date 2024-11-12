@@ -19,29 +19,78 @@ describe('GET /users/:userId', () => {
 		userFactory.resetSequenceNumber();
 	});
 
-	it('should return correct user', async () => {
-		const response = await app.request(`/users/1`, {}, env);
-		const result = await response.json();
+	loggedInTest(
+		'should return correct user',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/users/${currentUser.id}`,
+				{
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env,
+			);
+			const result = await response.json();
 
-		expect(response.status).toBe(200);
+			expect(response.status).toBe(200);
 
-		const { passwordDigest, ...rest } = user;
-		expect(result).toMatchObject(rest);
+			const { passwordDigest, ...rest } = currentUser;
+			expect(result).toMatchObject(rest);
+		},
+	);
+
+	loggedInTest(
+		'should return 400 when userId is not a number',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// userIdに数字以外を指定する
+				`/users/id`,
+				{
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env,
+			);
+
+			expect(response.status).toBe(400);
+		},
+	);
+
+	it('should return 401 when not logged in', async () => {
+		// Cookieを指定しない
+		const response = await app.request(`/users/1`, {});
+
+		expect(response.status).toBe(401);
 	});
 
-	it('should return 400 when userId is not a number', async () => {
-		// userIdに数字以外を指定する
-		const response = await app.request(`/users/id`, {}, env);
+	loggedInTest(
+		'should return 404 when user is not found',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				// 存在しないuserIdを指定する
+				`/users/100`,
+				{
+					headers: {
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+				},
+				env,
+			);
 
-		expect(response.status).toBe(400);
-	});
-
-	it('should return 404 when user is not found', async () => {
-		// 存在しないuserIdを指定する
-		const response = await app.request(`/users/100`, {}, env);
-
-		expect(response.status).toBe(404);
-	});
+			expect(response.status).toBe(404);
+		},
+	);
 });
 
 describe('PATCH /users/:userId', () => {

@@ -8,7 +8,10 @@ import { userFactory } from '../factories/user';
 
 interface GetUsersResponse {
 	totalUser: number;
-	users: SelectUser[];
+	users: {
+		id: number;
+		name: string;
+	}[];
 }
 
 describe('GET /users', () => {
@@ -63,7 +66,7 @@ describe('GET /users', () => {
 
 		const body: GetUsersResponse = await response.json();
 		expect(body.totalUser).toBe(1);
-		expect(body.users).toContainEqual(firstUser);
+		expect(firstUser).toEqual(expect.objectContaining(body.users[0]));
 	});
 
 	it('should return 400 when page is not a number', async () => {

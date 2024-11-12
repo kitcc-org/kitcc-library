@@ -199,6 +199,16 @@ app.get(
 		}
 	}),
 	async (ctx) => {
+		const authed = await isLoggedIn(ctx);
+		if (!authed) {
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401,
+			);
+		}
+
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);
 
