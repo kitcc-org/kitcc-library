@@ -52,7 +52,12 @@ users:
                 users:
                   type: array
                   items:
-                    $ref: '../components/schemas/User.yml'
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
               required:
                 - totalUser
                 - users
@@ -159,7 +164,8 @@ user:
       - user
     operationId: getUser
     summary: 特定のユーザーの情報を取得する
-    security: []
+    security:
+      - CookieAuth: []
     parameters:
       - name: userId
         in: path
@@ -180,6 +186,8 @@ user:
                 $ref: '../components/examples/user.yml'
       '400':
         $ref: '../components/responses/4xx.yml#/BadRequest'
+      '401':
+        $ref: '../components/responses/4xx.yml#/Unauthorized'
       '404':
         $ref: '../components/responses/4xx.yml#/NotFound'
       '500':
