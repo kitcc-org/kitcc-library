@@ -29,7 +29,7 @@ const GlobalBookDetailControlButtons = ({
 			color="teal"
 			disabled={totalBook > 0}
 			leftSection={<BiSolidBookAdd />}
-			onCanPlay={() =>
+			onClick={() =>
 				fetcher.submit(addBookData, {
 					action: '/home/global/books/$bookId',
 					method: 'POST',

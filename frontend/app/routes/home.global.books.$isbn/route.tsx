@@ -20,8 +20,8 @@ import { ActionResponse } from '../home._index/route';
 
 interface LoaderData {
 	searchBooksResponse: searchBooksResponse;
-	storageTotalBook: number;
-	bookId: number;
+	totalBook?: number;
+	bookId?: number;
 }
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -29,28 +29,28 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	// 書籍の情報を取得する
 	const isbn = params.isbn ?? '';
 	const searchBooksResponse = await searchBooks({ isbn: isbn });
-	// 蔵書追加処理実装をするため蔵書の情報を取得する
+	//　既に登録済みであるか確認するため
 	if (session.has('userId')) {
 		const getBookResponse = await getBooks({ isbn: isbn });
 		if (getBookResponse.data.totalBook > 0) {
 			return json<LoaderData>({
 				searchBooksResponse: searchBooksResponse,
-				storageTotalBook: getBookResponse.data.totalBook,
+				totalBook: getBookResponse.data.totalBook,
 				bookId: getBookResponse.data.books[0].id,
 			});
 		} else {
 			return json<LoaderData>({
 				searchBooksResponse: searchBooksResponse,
-				storageTotalBook: getBookResponse.data.totalBook,
-				bookId: -1,
+				totalBook: getBookResponse.data.totalBook,
+				bookId: undefined,
 			});
 		}
 	} else {
 		// ログイン済みでない場合は、APIを呼び出す回数を減らすために蔵書の情報を取得しない
 		return json<LoaderData>({
 			searchBooksResponse: searchBooksResponse,
-			storageTotalBook: -1,
-			bookId: -1,
+			totalBook: undefined,
+			bookId: undefined,
 		});
 	}
 };
@@ -102,7 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const GlobalBookDetailPage = () => {
-	const { searchBooksResponse, storageTotalBook, bookId } =
+	const { searchBooksResponse, totalBook, bookId } =
 		useLoaderData<LoaderData>();
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
@@ -111,7 +111,7 @@ const GlobalBookDetailPage = () => {
 					<BookDetailControlPanel
 						thumbnail={searchBooksResponse.data.books[0].thumbnail}
 						searchBook={searchBooksResponse.data.books[0]}
-						totalBook={storageTotalBook}
+						totalBook={totalBook}
 					/>
 				</Grid.Col>
 				<Grid.Col span={9}>

@@ -7,7 +7,7 @@ import GlobalBookDetailLink from './GlobalBookDetailLink';
 
 interface GlobalBookDetailContentProps {
 	book: SearchBooks200BooksItem;
-	bookId: number;
+	bookId?: number;
 }
 
 const GlobalBookDetailContent = ({
@@ -24,7 +24,7 @@ const GlobalBookDetailContent = ({
 			<BookDetailTitle title={book.title} />
 			<GlobalBookDetailContentTable book={book} />
 			<BookDetailDescription description={book.description ?? ''} />
-			{bookId > 0 && <GlobalBookDetailLink bookId={bookId} />}
+			{!!bookId && <GlobalBookDetailLink bookId={bookId} />}
 		</Stack>
 	);
 };
