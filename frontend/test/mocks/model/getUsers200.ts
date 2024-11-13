@@ -4,10 +4,10 @@
  * KITCC Library API
  * OpenAPI spec version: 1.0.0
  */
-import type { User } from './user';
+import type { GetUsers200UsersItem } from './getUsers200UsersItem';
 
 export type GetUsers200 = {
   /** 総ユーザー数 */
   totalUser: number;
-  users: User[];
+  users: GetUsers200UsersItem[];
 };

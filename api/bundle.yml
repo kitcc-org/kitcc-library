@@ -508,7 +508,12 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/User'
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
                 required:
                   - totalUser
                   - users
@@ -612,7 +617,8 @@ paths:
         - user
       operationId: getUser
       summary: 特定のユーザーの情報を取得する
-      security: []
+      security:
+        - CookieAuth: []
       parameters:
         - name: userId
           in: path
@@ -633,6 +639,8 @@ paths:
                   $ref: '#/components/examples/user'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':

@@ -109,10 +109,15 @@ export type CreateUserBody = {
   password: string;
 };
 
+export type GetUsers200UsersItem = {
+  id?: number;
+  name?: string;
+};
+
 export type GetUsers200 = {
   /** 総ユーザー数 */
   totalUser: number;
-  users: User[];
+  users: GetUsers200UsersItem[];
 };
 
 export type GetUsersParams = {
