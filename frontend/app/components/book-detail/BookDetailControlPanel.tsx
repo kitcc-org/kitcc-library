@@ -33,7 +33,7 @@ const BookDetailControlPanel = ({
 			<BookDetailThumbnail thumbnail={thumbnail} />
 			{user && location.pathname.includes('global')
 				? searchBook &&
-					!!totalBook && (
+					typeof totalBook == 'number' && (
 						<GlobalBookDetailControlButtons
 							searchBook={searchBook}
 							totalBook={totalBook}
