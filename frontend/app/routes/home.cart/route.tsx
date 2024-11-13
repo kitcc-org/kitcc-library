@@ -1,4 +1,8 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/cloudflare';
+import {
+	ActionFunctionArgs,
+	LoaderFunctionArgs,
+	redirect,
+} from '@remix-run/cloudflare';
 import { useSubmit } from '@remix-run/react';
 import { upsertLoans } from 'client/client';
 import { UpsertLoansBodyItem } from 'client/client.schemas';
@@ -10,6 +14,18 @@ import { cartAtom, selectedCartBooksAtom } from '~/stores/cartAtom';
 import type { CartProps } from '~/stores/cartAtom';
 import { removeBooksFromCart } from '~/utils/cart';
 import { errorNotification } from '~/utils/notification';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+	if (!session) {
+		return redirect('/login', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+	return null;
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
