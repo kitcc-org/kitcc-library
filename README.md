@@ -77,7 +77,8 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ## ER 図
 
-![ER図](https://github.com/user-attachments/assets/cc4a7ae4-0d9f-4272-8078-08fedb953c3e)
+![ER図](https://github.com/user-attachments/assets/6b9cc0ed-4be6-43d3-9b81-179ae72b0acd)
+
 [Miro のリンク](https://miro.com/app/board/uXjVKhyZcq4=/?share_link_id=764975652044)
 
 ## ワイヤーフレーム
