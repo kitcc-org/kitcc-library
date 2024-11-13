@@ -7,7 +7,6 @@ import CartCardNumberInput from './CartCardNumberInput';
 interface CartCardHeaderProps {
 	id: number;
 	stock: number;
-	title: string;
 	volume: number;
 	thumbnail?: string;
 }
@@ -15,7 +14,6 @@ interface CartCardHeaderProps {
 const CartCardHeader = ({
 	id,
 	stock,
-	title,
 	volume,
 	thumbnail,
 }: CartCardHeaderProps) => {
@@ -32,7 +30,6 @@ const CartCardHeader = ({
 					return {
 						id: element.id,
 						stock: element.stock,
-						title: element.title,
 						thumbnail: element.thumbnail,
 						volume: value,
 					};
@@ -56,7 +53,7 @@ const CartCardHeader = ({
 			// 選択されていなかった場合は選択する
 			setSelectedCartBook([
 				...selectedCartBook,
-				{ id, stock, title, thumbnail, volume: 1 },
+				{ id, stock, thumbnail, volume: 1 },
 			]);
 		}
 	};

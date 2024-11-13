@@ -2,6 +2,7 @@ import { Button } from '@mantine/core';
 import { useAtom } from 'jotai';
 import { BiSolidCartAdd } from 'react-icons/bi';
 import { cartAtom } from '~/stores/cartAtom';
+import { addBookToCart } from '~/utils/cart';
 
 interface BookCardCartButtonProps {
 	id: number;
@@ -11,7 +12,7 @@ interface BookCardCartButtonProps {
 const BookCardCartButton = ({ id, stock }: BookCardCartButtonProps) => {
 	const [cart, setCart] = useAtom(cartAtom);
 	const addCart = () => {
-		setCart([...cart, { id, stock }]);
+		setCart(addBookToCart(cart, id, stock));
 	};
 	return (
 		<Button

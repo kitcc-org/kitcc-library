@@ -14,7 +14,6 @@ const CartCard = ({ book }: CartCardProps) => {
 				<CartCardHeader
 					id={book.id}
 					stock={book.stock}
-					title={book.title}
 					volume={book.volume}
 					thumbnail={book.thumbnail}
 				/>

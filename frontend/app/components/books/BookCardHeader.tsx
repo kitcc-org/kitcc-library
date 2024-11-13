@@ -29,7 +29,7 @@ const BookCardHeader = ({
 			setSelectedBook(selectedBook.filter((element) => element.id !== id));
 		} else {
 			// 選択されていなかった場合は選択する
-			setSelectedBook([...selectedBook, { id, stock, title, thumbnail }]);
+			setSelectedBook([...selectedBook, { id, stock, thumbnail }]);
 		}
 	};
 

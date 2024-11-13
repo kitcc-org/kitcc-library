@@ -13,11 +13,29 @@ export const addBooksToCart = (
 			cart.push({
 				id: book.id,
 				stock: book.stock,
-				title: book.title,
 				thumbnail: book.thumbnail,
 				volume: 1,
 			});
 		}
+	}
+	return cart;
+};
+
+export const addBookToCart = (
+	cart: CartProps[],
+	bookId: number,
+	stock: number,
+) => {
+	const index = cart.findIndex((cartBook) => cartBook.id === bookId);
+	if (index !== -1) {
+		cart[index].volume += 1;
+	} else {
+		cart.push({
+			id: bookId,
+			stock,
+			thumbnail: '',
+			volume: 1,
+		});
 	}
 	return cart;
 };
