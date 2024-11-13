@@ -1,20 +1,26 @@
 import { Checkbox, Group } from '@mantine/core';
 import { useAtom } from 'jotai';
-import { selectedBooksAtom } from '~/stores/bookAtom';
-import type { CartProps } from '~/stores/cartAtom';
+import { SelectedBookProps, selectedBooksAtom } from '~/stores/bookAtom';
 import { userAtom } from '~/stores/userAtom';
 import BookCardHeaderBadge from './BookCardHeaderBadge';
 
 interface BookCardHeaderProps {
 	id: number;
 	stock: number;
+	title: string;
+	thumbnail?: string;
 }
 
-const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
+const BookCardHeader = ({
+	id,
+	stock,
+	title,
+	thumbnail,
+}: BookCardHeaderProps) => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
 	const [user] = useAtom(userAtom);
 	//  選択されている本のIDと表示する本のIDを比較する関数
-	const selectedCheck = (element: CartProps) => element.id === id;
+	const selectedCheck = (element: SelectedBookProps) => element.id === id;
 
 	const selectedBookAdd = () => {
 		// チェックボックスの状態が変化した時に
@@ -23,7 +29,7 @@ const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
 			setSelectedBook(selectedBook.filter((element) => element.id !== id));
 		} else {
 			// 選択されていなかった場合は選択する
-			setSelectedBook([...selectedBook, { id, stock }]);
+			setSelectedBook([...selectedBook, { id, stock, title, thumbnail }]);
 		}
 	};
 

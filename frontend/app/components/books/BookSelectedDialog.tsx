@@ -3,6 +3,7 @@ import { useSubmit } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 import { cartAtom } from '~/stores/cartAtom';
+import { addBooksToCart } from '~/utils/cart';
 import { successNotification } from '~/utils/notification';
 
 const BookSelectedDialog = () => {
@@ -29,7 +30,7 @@ const BookSelectedDialog = () => {
 					fz="xs"
 					color="yellow"
 					onClick={() => {
-						setCart([...cart, ...selectedBook]);
+						setCart(addBooksToCart(cart, selectedBook));
 						setSelectedBook([]);
 
 						successNotification('カートに追加しました');
