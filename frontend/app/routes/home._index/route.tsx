@@ -26,7 +26,7 @@ interface LoaderData {
 	};
 }
 
-interface ActionResponse {
+export interface ActionResponse {
 	method: string;
 	status: number;
 }
