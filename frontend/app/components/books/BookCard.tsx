@@ -18,7 +18,6 @@ const BookCard = ({ book }: BookCardProps) => {
 				<BookCardHeader
 					id={book.id}
 					stock={book.stock}
-					title={book.title}
 					thumbnail={book.thumbnail}
 				/>
 			</Card.Section>
@@ -26,7 +25,13 @@ const BookCard = ({ book }: BookCardProps) => {
 				<BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
 			</Card.Section>
 
-			{!!user && <BookCardFooter id={book.id} stock={book.stock} />}
+			{!!user && (
+				<BookCardFooter
+					id={book.id}
+					stock={book.stock}
+					thumbnail={book.thumbnail}
+				/>
+			)}
 		</Card>
 	);
 };

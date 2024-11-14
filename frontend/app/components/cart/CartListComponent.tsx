@@ -7,10 +7,12 @@ import { cartAtom } from '~/stores/cartAtom';
 import NoCartComponent from './NoCartComponent';
 
 interface CartListComponentProps {
-	handleLoanPatch: () => void;
+	handleBorrowButtonClick: () => void;
 }
 
-const CartListComponent = ({ handleLoanPatch }: CartListComponentProps) => {
+const CartListComponent = ({
+	handleBorrowButtonClick,
+}: CartListComponentProps) => {
 	const [cart] = useAtom(cartAtom);
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
@@ -20,7 +22,9 @@ const CartListComponent = ({ handleLoanPatch }: CartListComponentProps) => {
 			) : (
 				<>
 					<CartCards />
-					<CartSelectedDialog handleLoanPatch={handleLoanPatch} />
+					<CartSelectedDialog
+						handleBorrowButtonClick={handleBorrowButtonClick}
+					/>
 				</>
 			)}
 		</Stack>

@@ -102,7 +102,7 @@ const CartListPage = () => {
 	// volumeがstockを超えていないかチェックする
 	const checkStock = (element: CartProps) => element.stock < element.volume;
 
-	const handleLoanPatch = () => {
+	const handleBorrowButtonClick = () => {
 		if (selectedCartBook.length > 0 && !selectedCartBook.some(checkStock)) {
 			submit(JSON.stringify({ selectedCartBook: selectedCartBook }), {
 				action: '/home/cart',
@@ -116,7 +116,9 @@ const CartListPage = () => {
 		}
 	};
 
-	return <CartListComponent handleLoanPatch={handleLoanPatch} />;
+	return (
+		<CartListComponent handleBorrowButtonClick={handleBorrowButtonClick} />
+	);
 };
 
 export default CartListPage;

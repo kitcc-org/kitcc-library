@@ -4,10 +4,12 @@ import { cartAtom, selectedCartBooksAtom } from '~/stores/cartAtom';
 import { removeBooksFromCart } from '~/utils/cart';
 
 interface CartSelectedDialogProps {
-	handleLoanPatch: () => void;
+	handleBorrowButtonClick: () => void;
 }
 
-const CartSelectedDialog = ({ handleLoanPatch }: CartSelectedDialogProps) => {
+const CartSelectedDialog = ({
+	handleBorrowButtonClick,
+}: CartSelectedDialogProps) => {
 	const [selectedCartBook, setSelectedCartBook] = useAtom(
 		selectedCartBooksAtom,
 	);
@@ -24,7 +26,7 @@ const CartSelectedDialog = ({ handleLoanPatch }: CartSelectedDialogProps) => {
 				justify="center"
 				gap="md"
 			>
-				<Button fz="xs" color="blue" onClick={handleLoanPatch}>
+				<Button fz="xs" color="blue" onClick={handleBorrowButtonClick}>
 					借りる
 				</Button>
 				<Button
