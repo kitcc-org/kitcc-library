@@ -21,7 +21,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// ログイン済みの場合
-	if (session.has('userId')) {
+	if (session.has('user')) {
 		// マイページへリダイレクト
 		return redirect('/home/mypage');
 	}
@@ -49,8 +49,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	// ログインに成功した場合
 	if (response.status === 200) {
-		session.set('userId', response.data.id.toString());
-		session.set('sessionToken', response.data.sessionToken!);
+		session.set('user', response.data);
 		session.flash('success', 'ログインに成功しました');
 
 		return redirect('/home/mypage', {

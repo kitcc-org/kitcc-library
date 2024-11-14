@@ -5,7 +5,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// 未ログインの場合
-	if (!session.has('userId')) {
+	if (!session.has('user')) {
 		// ログインページへリダイレクト
 		return redirect('/login');
 	}

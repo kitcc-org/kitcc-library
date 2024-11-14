@@ -31,8 +31,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// 未ログインの場合
-	const userId = session.get('userId');
-	if (!userId) {
+	const userData = session.get('user');
+	if (!userData) {
 		return redirect('/login', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
@@ -41,8 +41,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const cookieHeader = [
-		`__Secure-user_id=${session.get('userId')};`,
-		`__Secure-session_token=${session.get('sessionToken')}`,
+		`__Secure-user_id=${session.get('user')?.id};`,
+		`__Secure-session_token=${session.get('user')?.sessionToken}`,
 	].join('; ');
 
 	// prettier-ignore
@@ -51,7 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const upsertBody: UpsertLoansBodyItem[] = selectedCartBook.map((book) => {
 		return {
 			bookId: book.id,
-			userId: Number(userId),
+			userId: userData.id,
 			volume: book.volume,
 		};
 	});

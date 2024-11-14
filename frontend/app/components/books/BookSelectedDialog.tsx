@@ -1,5 +1,5 @@
 import { Button, Center, Dialog, Stack, Text } from '@mantine/core';
-import { useSubmit } from '@remix-run/react';
+import { useNavigate, useSubmit } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 import { cartAtom } from '~/stores/cartAtom';
@@ -9,6 +9,7 @@ import { successNotification } from '~/utils/notification';
 const BookSelectedDialog = () => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
 	const [cart, setCart] = useAtom(cartAtom);
+	const navigate = useNavigate();
 
 	const submit = useSubmit();
 
@@ -32,8 +33,8 @@ const BookSelectedDialog = () => {
 					onClick={() => {
 						setCart(addBooksToCart(cart, selectedBook));
 						setSelectedBook([]);
-
 						successNotification('カートに追加しました');
+						navigate('/home/cart');
 					}}
 				>
 					選択中の本をカートに入れる

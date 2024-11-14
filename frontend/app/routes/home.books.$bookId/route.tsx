@@ -37,14 +37,14 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
 	let loansResponse = undefined;
 	// ログイン済みの場合は貸出履歴を取得する
-	if (session.has('userId')) {
+	if (session.has('user')) {
 		loansResponse = await getLoans(
 			{ bookId: bookId },
 			{
 				headers: {
 					Cookie: [
-						`__Secure-user_id=${session.get('userId')}`,
-						`__Secure-session_token=${session.get('sessionToken')}`,
+						`__Secure-user_id=${session.get('user')?.id}`,
+						`__Secure-session_token=${session.get('user')?.sessionToken}`,
 					].join('; '),
 				},
 			},
@@ -61,7 +61,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// 未ログインの場合
-	if (!session.has('userId')) {
+	if (!session.has('user')) {
 		session.flash('error', 'ログインしてください');
 		return redirect('/login', {
 			headers: {
@@ -71,8 +71,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const cookieHeader = [
-		`__Secure-user_id=${session.get('userId')};`,
-		`__Secure-session_token=${session.get('sessionToken')}`,
+		`__Secure-user_id=${session.get('user')?.id};`,
+		`__Secure-session_token=${session.get('user')?.sessionToken}`,
 	].join('; ');
 	const formData = await request.formData();
 

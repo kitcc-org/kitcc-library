@@ -11,7 +11,8 @@ import {
 	useNavigation,
 	useRevalidator,
 } from '@remix-run/react';
-import { getUser, logout } from 'client/client';
+import { logout } from 'client/client';
+import type { User } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import HeaderComponent from '~/components/header/HeaderComponent';
@@ -20,7 +21,7 @@ import { userAtom } from '~/stores/userAtom';
 import { errorNotification, successNotification } from '~/utils/notification';
 
 interface LoaderData {
-	userId?: string;
+	userData?: User;
 	success?: string;
 	error?: string;
 }
@@ -28,27 +29,42 @@ interface LoaderData {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
-	const userId = session.get('userId');
+	const userData = session.get('user');
 	const success = session.get('success');
 	const error = session.get('error');
 
-	return json<LoaderData>(
-		{
-			userId: userId,
-			success: success,
-			error: error,
-		},
-		{
-			headers: {
-				'Set-Cookie': await commitSession(session),
+	if (!userData) {
+		return json<LoaderData>(
+			{
+				userData: undefined,
+				success: success,
+				error: error,
 			},
-		},
-	);
+			{
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			},
+		);
+	} else {
+		return json<LoaderData>(
+			{
+				userData: userData,
+				success: success,
+				error: error,
+			},
+			{
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			},
+		);
+	}
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	const userId = session.get('userId');
+	const userId = session.get('user');
 
 	const response = await logout({
 		headers: {
@@ -57,8 +73,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	});
 
 	if (response.status === 204) {
-		session.unset('userId');
-		session.unset('sessionToken');
+		session.unset('user');
 		session.flash('success', 'ログアウトに成功しました');
 
 		return redirect('/home', {
@@ -78,7 +93,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const Home = () => {
-	const { userId, success, error } = useLoaderData<typeof loader>();
+	const { userData, success, error } = useLoaderData<typeof loader>();
 
 	const [user, setUser] = useAtom(userAtom);
 	const navigation = useNavigation();
@@ -86,22 +101,17 @@ const Home = () => {
 
 	useEffect(() => {
 		if (navigation.state === 'idle') {
-			if (userId) {
-				// CookieにユーザIDが存在する
+			if (!!userData) {
+				// Cookieにユーザ情報が保存されている
 				if (!user) {
-					// 状態変数にユーザ情報が保存されていない
-					// ユーザ情報を取得するAPIを呼び出す
-					getUser(userId).then((response) => {
-						if (response.status === 200) {
-							setUser(response.data);
-						}
-					});
+					// 状態変数にユーザ情報を保存する
+					setUser(userData);
 				}
 			} else {
 				setUser(undefined);
 			}
 		}
-	}, [userId]);
+	}, [userData]);
 
 	useEffect(() => {
 		if (success) {
