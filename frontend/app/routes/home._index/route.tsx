@@ -67,7 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// 未ログインの場合
-	if (!session.has('userId')) {
+	if (!session.has('user')) {
 		session.flash('error', 'ログインしてください');
 		return redirect('/login', {
 			headers: {
@@ -77,7 +77,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const cookieHeader = [
-		`__Secure-user_id=${session.get('userId')};`,
+		`__Secure-user_id=${session.get('user')};`,
 		`__Secure-session_token=${session.get('sessionToken')}`,
 	].join('; ');
 

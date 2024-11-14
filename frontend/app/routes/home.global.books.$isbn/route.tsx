@@ -30,7 +30,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	const isbn = params.isbn ?? '';
 	const searchBooksResponse = await searchBooks({ isbn: isbn });
 	//　既に登録済みであるか確認するため
-	if (session.has('userId')) {
+	if (session.has('user')) {
 		const getBookResponse = await getBooks({ isbn: isbn });
 		if (getBookResponse.data.totalBook > 0) {
 			return json<LoaderData>({
@@ -59,7 +59,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
 	// 未ログインの場合
-	if (!session.has('userId')) {
+	if (!session.has('user')) {
 		session.flash('error', 'ログインしてください');
 		return redirect('/login', {
 			headers: {
@@ -69,7 +69,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const cookieHeader = [
-		`__Secure-user_id=${session.get('userId')};`,
+		`__Secure-user_id=${session.get('user')?.id};`,
 		`__Secure-session_token=${session.get('sessionToken')}`,
 	].join('; ');
 

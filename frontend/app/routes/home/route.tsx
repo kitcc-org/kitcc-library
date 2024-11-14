@@ -11,7 +11,7 @@ import {
 	useNavigation,
 	useRevalidator,
 } from '@remix-run/react';
-import { getUser, logout } from 'client/client';
+import { logout } from 'client/client';
 import type { User } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
@@ -29,11 +29,11 @@ interface LoaderData {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
 
-	const userId = session.get('userId');
+	const userData = session.get('user');
 	const success = session.get('success');
 	const error = session.get('error');
 
-	if (!userId) {
+	if (!userData) {
 		return json<LoaderData>(
 			{
 				userData: undefined,
@@ -47,18 +47,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 			},
 		);
 	} else {
-		const cookieHeader = [
-			`__Secure-user_id=${session.get('userId')};`,
-			`__Secure-session_token=${session.get('sessionToken')}`,
-		].join('; ');
-
-		const response = await getUser(userId, {
-			headers: { Cookie: cookieHeader },
-		});
-
 		return json<LoaderData>(
 			{
-				userData: response.data,
+				userData: userData,
 				success: success,
 				error: error,
 			},
@@ -73,7 +64,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-	const userId = session.get('userId');
+	const userId = session.get('user');
 
 	const response = await logout({
 		headers: {
@@ -82,7 +73,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	});
 
 	if (response.status === 204) {
-		session.unset('userId');
+		session.unset('user');
 		session.unset('sessionToken');
 		session.flash('success', 'ログアウトに成功しました');
 
