@@ -12,6 +12,7 @@ import {
 	useRevalidator,
 } from '@remix-run/react';
 import { getUser, logout } from 'client/client';
+import type { User } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import HeaderComponent from '~/components/header/HeaderComponent';
@@ -20,7 +21,7 @@ import { userAtom } from '~/stores/userAtom';
 import { errorNotification, successNotification } from '~/utils/notification';
 
 interface LoaderData {
-	userId?: string;
+	userData?: User;
 	success?: string;
 	error?: string;
 }
@@ -32,18 +33,42 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const success = session.get('success');
 	const error = session.get('error');
 
-	return json<LoaderData>(
-		{
-			userId: userId,
-			success: success,
-			error: error,
-		},
-		{
-			headers: {
-				'Set-Cookie': await commitSession(session),
+	if (!userId) {
+		return json<LoaderData>(
+			{
+				userData: undefined,
+				success: success,
+				error: error,
 			},
-		},
-	);
+			{
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			},
+		);
+	} else {
+		const cookieHeader = [
+			`__Secure-user_id=${session.get('userId')};`,
+			`__Secure-session_token=${session.get('sessionToken')}`,
+		].join('; ');
+
+		const response = await getUser(userId, {
+			headers: { Cookie: cookieHeader },
+		});
+
+		return json<LoaderData>(
+			{
+				userData: response.data,
+				success: success,
+				error: error,
+			},
+			{
+				headers: {
+					'Set-Cookie': await commitSession(session),
+				},
+			},
+		);
+	}
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -78,7 +103,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const Home = () => {
-	const { userId, success, error } = useLoaderData<typeof loader>();
+	const { userData, success, error } = useLoaderData<typeof loader>();
 
 	const [user, setUser] = useAtom(userAtom);
 	const navigation = useNavigation();
@@ -86,22 +111,18 @@ const Home = () => {
 
 	useEffect(() => {
 		if (navigation.state === 'idle') {
-			if (userId) {
+			if (!!userData) {
 				// CookieにユーザIDが存在する
 				if (!user) {
 					// 状態変数にユーザ情報が保存されていない
 					// ユーザ情報を取得するAPIを呼び出す
-					getUser(userId).then((response) => {
-						if (response.status === 200) {
-							setUser(response.data);
-						}
-					});
+					setUser(userData);
 				}
 			} else {
 				setUser(undefined);
 			}
 		}
-	}, [userId]);
+	}, [userData]);
 
 	useEffect(() => {
 		if (success) {
