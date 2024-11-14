@@ -23,6 +23,7 @@ const GlobalBookCards = ({ books }: GlobalBookCardsProps) => {
 					'1400px': 6,
 					'1700px': 7,
 				}}
+				// 画面幅が300pxを超えた場合、カードの間をxlにする
 				spacing={{ base: 10, '300px': 'xl' }}
 			>
 				{books.map((book) => (

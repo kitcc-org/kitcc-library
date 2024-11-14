@@ -3,6 +3,7 @@ import { atom } from 'jotai';
 export interface SelectedBookProps {
 	id: number;
 	stock: number;
+	thumbnail?: string;
 }
 
 // 選択された本を管理するAtom

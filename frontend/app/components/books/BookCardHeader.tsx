@@ -1,29 +1,29 @@
 import { Checkbox, Group } from '@mantine/core';
 import { useAtom } from 'jotai';
-import { selectedBooksAtom } from '~/stores/bookAtom';
-import type { CartProps } from '~/stores/cartAtom';
+import { SelectedBookProps, selectedBooksAtom } from '~/stores/bookAtom';
 import { userAtom } from '~/stores/userAtom';
 import BookCardHeaderBadge from './BookCardHeaderBadge';
 
 interface BookCardHeaderProps {
 	id: number;
 	stock: number;
+	thumbnail?: string;
 }
 
-const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
+const BookCardHeader = ({ id, stock, thumbnail }: BookCardHeaderProps) => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
 	const [user] = useAtom(userAtom);
 	//  選択されている本のIDと表示する本のIDを比較する関数
-	const selectedCheck = (element: CartProps) => element.id === id;
+	const isSelected = (element: SelectedBookProps) => element.id === id;
 
-	const selectedBookAdd = () => {
+	const switchBookSelect = () => {
 		// チェックボックスの状態が変化した時に
-		if (selectedBook.some(selectedCheck)) {
+		if (selectedBook.some(isSelected)) {
 			// すでに選択されていた場合は選択を外す
 			setSelectedBook(selectedBook.filter((element) => element.id !== id));
 		} else {
 			// 選択されていなかった場合は選択する
-			setSelectedBook([...selectedBook, { id, stock }]);
+			setSelectedBook([...selectedBook, { id, stock, thumbnail }]);
 		}
 	};
 
@@ -32,8 +32,8 @@ const BookCardHeader = ({ id, stock }: BookCardHeaderProps) => {
 			{!!user && (
 				<Checkbox
 					value={id}
-					checked={selectedBook.some(selectedCheck)}
-					onChange={selectedBookAdd}
+					checked={selectedBook.some(isSelected)}
+					onChange={switchBookSelect}
 				/>
 			)}
 			<BookCardHeaderBadge stock={stock} />
