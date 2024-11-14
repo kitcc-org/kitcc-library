@@ -16,7 +16,7 @@ import { CreateBookBody } from 'client/client.schemas';
 import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
-import { ActionResponse } from '../home._index/route';
+import { ActionResponse } from '~/types/response';
 
 interface LoaderData {
 	searchBooksResponse: searchBooksResponse;
@@ -29,7 +29,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	// 書籍の情報を取得する
 	const isbn = params.isbn ?? '';
 	const searchBooksResponse = await searchBooks({ isbn: isbn });
-	//　既に登録済みであるか確認するため
+	// 既に登録済みであるか確認するため
 	if (session.has('user')) {
 		const getBookResponse = await getBooks({ isbn: isbn });
 		if (getBookResponse.data.totalBook > 0) {

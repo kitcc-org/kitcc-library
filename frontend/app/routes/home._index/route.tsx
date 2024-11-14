@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { SelectedBookProps, selectedBooksAtom } from '~/stores/bookAtom';
+import { ActionResponse } from '~/types/response';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;
@@ -24,11 +25,6 @@ interface LoaderData {
 		page?: string;
 		limit?: string;
 	};
-}
-
-export interface ActionResponse {
-	method: string;
-	status: number;
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -263,11 +259,13 @@ const BooKListPage = () => {
 			isOpen={opened}
 			open={open}
 			close={close}
-			handlePaginationChange={handlePaginationChange}
-			handleLimitChange={handleLimitChange}
-			page={page ? Number(page) : undefined}
-			limit={limit ? Number(limit) : undefined}
-			totalBook={booksResponse.data.totalBook}
+			paginationProps={{
+				handlePaginationChange: handlePaginationChange,
+				handleLimitChange: handleLimitChange,
+				page: page ? Number(page) : undefined,
+				limit: limit ? Number(limit) : undefined,
+				totalNum: booksResponse.data.totalBook,
+			}}
 		/>
 	);
 };

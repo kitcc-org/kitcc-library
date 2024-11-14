@@ -1,4 +1,3 @@
-import React from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import { Button } from '@mantine/core';
 import { useFetcher } from '@remix-run/react';

@@ -1,7 +1,4 @@
 import BookDetailEditButton from './BookDetailEditButton';
-import { MdDeleteForever } from 'react-icons/md';
-import { Button } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
 import BookDetailDeleteButton from './BookDetailDeleteButton';
 
 interface BookDetailControlButtonsProps {

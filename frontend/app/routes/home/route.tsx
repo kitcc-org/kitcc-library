@@ -101,7 +101,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (navigation.state === 'idle') {
-			if (!!userData) {
+			if (userData) {
 				// Cookieにユーザ情報が保存されている
 				if (!user) {
 					// 状態変数にユーザ情報を保存する

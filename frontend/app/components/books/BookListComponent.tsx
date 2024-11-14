@@ -7,6 +7,7 @@ import ErrorComponent from '../common/error/ErrorComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import BookCards from './BookCards';
+import { PaginationProps } from '~/types/paginatiion';
 
 interface BookListComponentProps {
 	booksResponse: getBooksResponse;
@@ -18,11 +19,7 @@ interface BookListComponentProps {
 	isOpen: boolean;
 	open: () => void;
 	close: () => void;
-	handlePaginationChange: (newPage: number) => void;
-	handleLimitChange: (newLimit: number) => void;
-	page?: number;
-	limit?: number;
-	totalBook: number;
+	paginationProps: PaginationProps;
 }
 
 const BookListComponent = ({
@@ -32,11 +29,7 @@ const BookListComponent = ({
 	isOpen,
 	open,
 	close,
-	handlePaginationChange,
-	handleLimitChange,
-	page,
-	limit,
-	totalBook,
+	paginationProps,
 }: BookListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
@@ -48,10 +41,10 @@ const BookListComponent = ({
 				handleSubmit={handleSubmit}
 			/>
 			<ContentsHeader
-				page={page}
-				limit={limit}
-				total={totalBook}
-				handleLimitChange={handleLimitChange}
+				page={paginationProps.page}
+				limit={paginationProps.limit}
+				total={paginationProps.totalNum}
+				handleLimitChange={paginationProps.handleLimitChange}
 			/>
 			{booksResponse.status !== 200 ? (
 				<ErrorComponent message={'書籍情報を取得できませんでした。'} />
@@ -59,10 +52,10 @@ const BookListComponent = ({
 				<BookCards books={booksResponse.data.books} />
 			)}
 			<PaginationComponent
-				totalNum={totalBook}
-				page={page}
-				limit={limit}
-				handlePaginationChange={handlePaginationChange}
+				totalNum={paginationProps.totalNum}
+				page={paginationProps.page}
+				limit={paginationProps.limit}
+				handlePaginationChange={paginationProps.handlePaginationChange}
 			/>
 		</Stack>
 	);
