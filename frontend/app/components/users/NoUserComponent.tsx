@@ -1,4 +1,4 @@
-import { Anchor, Blockquote, Center } from '@mantine/core';
+import { Blockquote, Center } from '@mantine/core';
 import { FaInfoCircle } from 'react-icons/fa';
 
 interface NoUserComponentProps {
