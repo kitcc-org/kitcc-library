@@ -3,6 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { and, asc, eq, inArray, like } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/d1';
 import { Hono } from 'hono';
+import { getCookie } from 'hono/cookie';
 import {
 	createUserBody,
 	deleteUserParams,
@@ -274,14 +275,66 @@ app.patch(
 		const param = ctx.req.valid('param');
 		const id = parseInt(param['userId']);
 
-		const user = ctx.req.valid('json');
+		const userIdCookie = getCookie(ctx, 'user_id', 'secure');
+		const userId = Number(userIdCookie);
+
+		if (id !== userId) {
+			// ログインユーザと更新対象のユーザが異なる
+			return ctx.json(
+				{
+					message: 'Unauthorized',
+				},
+				401,
+			);
+		}
+
+		const newUser = ctx.req.valid('json');
 
 		const db = drizzle(ctx.env.DB);
-		let updatedBook: SelectUser[] = [];
+
+		if (newUser.newPassword) {
+			// 新しいパスワードが指定されている
+			if (!newUser.currentPassword) {
+				// 現在のパスワードが指定されていない
+				return ctx.json(
+					{
+						message: 'Current password is required to update password',
+					},
+					400,
+				);
+			}
+
+			const user = await db
+				.select()
+				.from(userTable)
+				.where(eq(userTable.id, id));
+
+			if (user.length === 0) {
+				return ctx.notFound();
+			}
+
+			const digest = await generateHash(newUser.currentPassword);
+			if (digest != user[0].passwordDigest) {
+				return ctx.json(
+					{
+						message: 'Current password is incorrect',
+					},
+					400,
+				);
+			}
+		}
+
+		let updatedUser: SelectUser[] = [];
 		try {
-			updatedBook = await db
+			updatedUser = await db
 				.update(userTable)
-				.set(user)
+				.set({
+					name: newUser.name,
+					email: newUser.email,
+					passwordDigest: newUser.newPassword
+						? await generateHash(newUser.newPassword)
+						: undefined,
+				})
 				.where(eq(userTable.id, id))
 				.returning();
 		} catch (err) {
@@ -295,11 +348,11 @@ app.patch(
 			}
 		}
 
-		if (updatedBook.length === 0) {
+		if (updatedUser.length === 0) {
 			return ctx.notFound();
 		}
 
-		const result = updateUserResponse.safeParse(updatedBook[0]);
+		const result = updateUserResponse.safeParse(updatedUser[0]);
 		if (!result.success) {
 			console.error(result.error);
 			return ctx.json(
@@ -342,12 +395,12 @@ app.delete(
 		const id = parseInt(param['userId']);
 
 		const db = drizzle(ctx.env.DB);
-		const deletedBook = await db
+		const deletedUser = await db
 			.delete(userTable)
 			.where(eq(userTable.id, id))
 			.returning();
 
-		if (deletedBook.length === 0) {
+		if (deletedUser.length === 0) {
 			return ctx.notFound();
 		}
 
