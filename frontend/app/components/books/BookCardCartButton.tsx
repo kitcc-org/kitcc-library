@@ -1,4 +1,5 @@
 import { Button } from '@mantine/core';
+import { useNavigate } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { BiSolidCartAdd } from 'react-icons/bi';
 import { cartAtom } from '~/stores/cartAtom';
@@ -16,8 +17,10 @@ const BookCardCartButton = ({
 	thumbnail,
 }: BookCardCartButtonProps) => {
 	const [cart, setCart] = useAtom(cartAtom);
+	const navigate = useNavigate();
 	const addCart = () => {
 		setCart(addBooksToCart(cart, [{ id, stock, thumbnail }]));
+		navigate('/home/cart');
 	};
 	return (
 		<Button
