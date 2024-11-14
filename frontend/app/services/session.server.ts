@@ -3,7 +3,6 @@ import { User } from 'client/client.schemas';
 
 interface SessionData {
 	user: User;
-	sessionToken: string;
 }
 
 interface SessionFlashData {

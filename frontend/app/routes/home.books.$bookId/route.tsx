@@ -44,7 +44,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 				headers: {
 					Cookie: [
 						`__Secure-user_id=${session.get('user')?.id}`,
-						`__Secure-session_token=${session.get('sessionToken')}`,
+						`__Secure-session_token=${session.get('user')?.sessionToken}`,
 					].join('; '),
 				},
 			},
@@ -71,8 +71,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 
 	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')};`,
-		`__Secure-session_token=${session.get('sessionToken')}`,
+		`__Secure-user_id=${session.get('user')?.id};`,
+		`__Secure-session_token=${session.get('user')?.sessionToken}`,
 	].join('; ');
 	const formData = await request.formData();
 

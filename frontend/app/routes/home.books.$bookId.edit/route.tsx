@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	const cookieHeader = [
 		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('sessionToken')}`,
+		`__Secure-session_token=${session.get('user')?.sessionToken}`,
 	].join('; ');
 	const formData = await request.formData();
 

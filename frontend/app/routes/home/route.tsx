@@ -74,7 +74,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 	if (response.status === 204) {
 		session.unset('user');
-		session.unset('sessionToken');
 		session.flash('success', 'ログアウトに成功しました');
 
 		return redirect('/home', {
@@ -103,10 +102,9 @@ const Home = () => {
 	useEffect(() => {
 		if (navigation.state === 'idle') {
 			if (!!userData) {
-				// CookieにユーザIDが存在する
+				// Cookieにユーザ情報が保存されている
 				if (!user) {
-					// 状態変数にユーザ情報が保存されていない
-					// ユーザ情報を取得するAPIを呼び出す
+					// 状態変数にユーザ情報を保存する
 					setUser(userData);
 				}
 			} else {

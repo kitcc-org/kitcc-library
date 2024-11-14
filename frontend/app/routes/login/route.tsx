@@ -50,7 +50,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	// ログインに成功した場合
 	if (response.status === 200) {
 		session.set('user', response.data);
-		session.set('sessionToken', response.data.sessionToken!);
 		session.flash('success', 'ログインに成功しました');
 
 		return redirect('/home/mypage', {
