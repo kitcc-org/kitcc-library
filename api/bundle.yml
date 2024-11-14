@@ -673,7 +673,12 @@ paths:
                 email:
                   type: string
                   format: email
-                password:
+                currentPassword:
+                  type: string
+                  format: password
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+                  minLength: 8
+                newPassword:
                   type: string
                   format: password
                   pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
@@ -681,7 +686,8 @@ paths:
             example:
               name: 比企谷八幡
               email: hikigaya@oregairu.com
-              password: passw0rd
+              currentPassword: passw0rd
+              newPassword: pa55word
       responses:
         '200':
           description: 情報の更新に成功した
@@ -1108,3 +1114,4 @@ components:
         id: 1
         name: 比企谷八幡
         email: hikigaya@oregairu.com
+        sessionToken: abcde12345
