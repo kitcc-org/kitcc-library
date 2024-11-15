@@ -144,111 +144,68 @@ const BooKListPage = () => {
 	}, []);
 
 	const handleSubmit = (props: GetBooksParams) => {
-		let url = '/home';
-		let initial = true;
-		if (props.title && props.title !== '') {
-			url =
-				initial === true
-					? `${url}?title=${props.title}`
-					: `${url}&title=${props.title}`;
-			initial = false;
+		const params = new URLSearchParams();
+
+		if (props.title) {
+			params.append('title', props.title);
 		}
-		if (props.author && props.author !== '') {
-			url =
-				initial === true
-					? `${url}?author=${props.author}`
-					: `${url}&author=${props.author}`;
-			initial = false;
+		if (props.author) {
+			params.append('author', props.author);
 		}
-		if (props.publisher && props.publisher !== '') {
-			url =
-				initial === true
-					? `${url}?publisher=${props.publisher}`
-					: `${url}&publisher=${props.publisher}`;
-			initial = false;
+		if (props.publisher) {
+			params.append('publisher', props.publisher);
 		}
-		if (props.isbn && props.isbn !== '') {
-			url =
-				initial === true
-					? `${url}?isbn=${props.isbn}`
-					: `${url}&isbn=${props.isbn}`;
-			initial = false;
+		if (props.isbn) {
+			params.append('isbn', props.isbn);
 		}
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit.toString());
 		}
-		navigate(url);
+
+		navigate(`/home?${params.toString()}`);
 	};
 
 	const handlePaginationChange = (newPage: number) => {
-		let url = '/home';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (title) {
-			url =
-				initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-			initial = false;
+			params.append('title', title);
 		}
 		if (author) {
-			url =
-				initial === true
-					? `${url}?author=${author}`
-					: `${url}&author=${author}`;
-			initial = false;
+			params.append('author', author);
 		}
 		if (publisher) {
-			url =
-				initial === true
-					? `${url}?publisher=${publisher}`
-					: `${url}&publisher=${publisher}`;
-			initial = false;
+			params.append('publisher', publisher);
 		}
 		if (isbn) {
-			url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-			initial = false;
+			params.append('isbn', isbn);
 		}
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit.toString());
 		}
-		url =
-			initial === true ? `${url}?page=${newPage}` : `${url}&page=${newPage}`;
-		navigate(url);
+		params.append('page', newPage.toString());
+
+		navigate(`/home?${params.toString()}`);
 	};
 
 	const handleLimitChange = (newLimit: number) => {
-		let url = '/home';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (title) {
-			url =
-				initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-			initial = false;
+			params.append('title', title);
 		}
 		if (author) {
-			url =
-				initial === true
-					? `${url}?author=${author}`
-					: `${url}&author=${author}`;
-			initial = false;
+			params.append('author', author);
 		}
 		if (publisher) {
-			url =
-				initial === true
-					? `${url}?publisher=${publisher}`
-					: `${url}&publisher=${publisher}`;
-			initial = false;
+			params.append('publisher', publisher);
 		}
 		if (isbn) {
-			url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-			initial = false;
+			params.append('isbn', isbn);
 		}
-		url =
-			initial === true
-				? `${url}?limit=${newLimit}`
-				: `${url}&limit=${newLimit}`;
-		navigate(url);
+		params.append('limit', newLimit.toString());
+
+		navigate(`/home?${params.toString()}`);
 	};
 
 	return (

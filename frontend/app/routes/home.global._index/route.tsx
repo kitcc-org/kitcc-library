@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { json } from '@remix-run/cloudflare';
 import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import { json } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { searchBooks, searchBooksResponse } from 'client/client';
 import { SearchBooksParams } from 'client/client.schemas';
+import { useState } from 'react';
 import GlobalBookListComponent from '~/components/global-books/GlobalBookListComponent';
-import { useForm } from '@mantine/form';
 
 interface LoaderData {
 	booksResponse?: searchBooksResponse;
@@ -109,149 +109,93 @@ const GlobalBookListPage = () => {
 	});
 
 	const handleDetailSubmit = (props: SearchBooksParams) => {
-		let url = '/home/global';
-		let initial = true;
-		if (props.intitle && props.intitle !== '') {
-			url =
-				initial === true
-					? `${url}?title=${props.intitle}`
-					: `${url}&title=${props.intitle}`;
-			initial = false;
+		const params = new URLSearchParams();
+
+		if (props.intitle) {
+			params.append('title', props.intitle);
 		}
-		if (props.inauthor && props.inauthor !== '') {
-			url =
-				initial === true
-					? `${url}?author=${props.inauthor}`
-					: `${url}&author=${props.inauthor}`;
-			initial = false;
+		if (props.inauthor) {
+			params.append('author', props.inauthor);
 		}
-		if (props.inpublisher && props.inpublisher !== '') {
-			url =
-				initial === true
-					? `${url}?publisher=${props.inpublisher}`
-					: `${url}&publisher=${props.inpublisher}`;
-			initial = false;
+		if (props.inpublisher) {
+			params.append('publisher', props.inpublisher);
 		}
-		if (props.isbn && props.isbn !== '') {
-			url =
-				initial === true
-					? `${url}?isbn=${props.isbn}`
-					: `${url}&isbn=${props.isbn}`;
-			initial = false;
+		if (props.isbn) {
+			params.append('isbn', props.isbn);
 		}
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit.toString());
 		}
-		navigate(url);
+
+		navigate(`/home/global?${params.toString()}`);
 	};
 
 	const handleKeywordSubmit = (props: SearchBooksParams) => {
-		let url = '/home/global';
-		let initial = true;
-		if (props.keyword && props.keyword !== '') {
-			url =
-				initial === true
-					? `${url}?keyword=${props.keyword}`
-					: `${url}&keyword=${props.keyword}`;
-			initial = false;
+		const params = new URLSearchParams();
+
+		if (props.keyword) {
+			params.append('keyword', props.keyword);
 		}
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit.toString());
 		}
-		navigate(url);
+
+		navigate(`/home/global?${params.toString()}`);
 	};
 
 	const handlePaginationChange = (newPage: number) => {
-		let url = '/home/global';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (keyword) {
 			// キーワード検索
-			url =
-				initial === true
-					? `${url}?keyword=${keyword}`
-					: `${url}&keyword=${keyword}`;
-			initial = false;
+			params.append('keyword', keyword);
 		} else {
 			// 詳細検索
 			if (title) {
-				url =
-					initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-				initial = false;
+				params.append('title', title);
 			}
 			if (author) {
-				url =
-					initial === true
-						? `${url}?author=${author}`
-						: `${url}&author=${author}`;
-				initial = false;
+				params.append('author', author);
 			}
 			if (publisher) {
-				url =
-					initial === true
-						? `${url}?publisher=${publisher}`
-						: `${url}&publisher=${publisher}`;
-				initial = false;
+				params.append('publisher', publisher);
 			}
 			if (isbn) {
-				url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-				initial = false;
+				params.append('isbn', isbn);
 			}
 		}
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit.toString());
 		}
-		url =
-			initial === true ? `${url}?page=${newPage}` : `${url}&page=${newPage}`;
-		navigate(url);
+		params.append('page', newPage.toString());
+
+		navigate(`/home/global?${params.toString()}`);
 	};
 
 	const handleLimitChange = (newLimit: number) => {
-		let url = '/home/global';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (keyword) {
 			// キーワード検索
-			url =
-				initial === true
-					? `${url}?keyword=${keyword}`
-					: `${url}&keyword=${keyword}`;
-			initial = false;
+			params.append('keyword', keyword);
 		} else {
 			// 詳細検索
 			if (title) {
-				url =
-					initial === true ? `${url}?title=${title}` : `${url}&title=${title}`;
-				initial = false;
+				params.append('title', title);
 			}
 			if (author) {
-				url =
-					initial === true
-						? `${url}?author=${author}`
-						: `${url}&author=${author}`;
-				initial = false;
+				params.append('author', author);
 			}
 			if (publisher) {
-				url =
-					initial === true
-						? `${url}?publisher=${publisher}`
-						: `${url}&publisher=${publisher}`;
-				initial = false;
+				params.append('publisher', publisher);
 			}
 			if (isbn) {
-				url = initial === true ? `${url}?isbn=${isbn}` : `${url}&isbn=${isbn}`;
-				initial = false;
+				params.append('isbn', isbn);
 			}
 		}
-		url =
-			initial === true
-				? `${url}?limit=${newLimit}`
-				: `${url}&limit=${newLimit}`;
-		navigate(url);
+		params.append('limit', newLimit.toString());
+
+		navigate(`/home/global?${params.toString()}`);
 	};
 
 	return (
