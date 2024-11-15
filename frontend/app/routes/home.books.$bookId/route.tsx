@@ -12,15 +12,11 @@ import { commitSession, getSession } from '~/services/session.server';
 import { Book } from 'client/client.schemas';
 import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
+import { ActionResponse } from '~/types/response';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
 	loansResponse?: getLoansResponse;
-}
-
-interface ActionResponse {
-	method: string;
-	status: number;
 }
 
 export interface BookDetailOutletContext {

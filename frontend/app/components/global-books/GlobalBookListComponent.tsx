@@ -9,18 +9,11 @@ import ErrorComponent from '../common/error/ErrorComponent';
 import GlobalBookCards from './GlobalBookCards';
 import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import PaginationComponent from '../common/pagination/PaginationComponent';
+import { PaginationProps } from '~/types/paginatiion';
 
 export interface HandleGlobalSearchFunctions {
 	handleDetailSubmit: (props: SearchBooksParams) => void;
 	handleKeywordSubmit: (props: SearchBooksParams) => void;
-}
-
-interface HandlePaginationProps {
-	handlePaginationChange: (newPage: number) => void;
-	handleLimitChange: (newLimit: number) => void;
-	page?: number;
-	limit?: number;
-	totalBook: number;
 }
 
 interface GlobalBookListComponentProps {
@@ -30,7 +23,7 @@ interface GlobalBookListComponentProps {
 		(values: SearchBooksParams) => SearchBooksParams
 	>;
 	globalSearchFunctions: HandleGlobalSearchFunctions;
-	paginationProps: HandlePaginationProps;
+	paginationProps: PaginationProps;
 	isOpen: boolean;
 	open: () => void;
 	close: () => void;
@@ -63,7 +56,7 @@ const GlobalBookListComponent = ({
 			<ContentsHeader
 				page={paginationProps.page}
 				limit={paginationProps.limit}
-				total={paginationProps.totalBook}
+				total={paginationProps.total}
 				handleLimitChange={paginationProps.handleLimitChange}
 			/>
 			{!booksResponse ? (
@@ -74,7 +67,7 @@ const GlobalBookListComponent = ({
 				<GlobalBookCards books={booksResponse.data.books} />
 			)}
 			<PaginationComponent
-				totalNum={paginationProps.totalBook}
+				total={paginationProps.total}
 				page={paginationProps.page}
 				limit={paginationProps.limit}
 				handlePaginationChange={paginationProps.handlePaginationChange}

@@ -1,7 +1,7 @@
 import { Center, Pagination } from '@mantine/core';
 
 interface PaginationComponentProps {
-	totalNum: number;
+	total: number;
 	page?: number;
 	limit?: number;
 	handlePaginationChange: (newPage: number) => void;
@@ -9,14 +9,14 @@ interface PaginationComponentProps {
 }
 
 const PaginationComponent = ({
-	totalNum,
+	total,
 	page,
 	limit,
 	handlePaginationChange,
 	color,
 }: PaginationComponentProps) => {
 	const limitNum = limit ?? 10;
-	const totalPage = totalNum / limitNum + 1;
+	const totalPage = total != 0 ? Math.ceil(total / limitNum) : 1;
 	return (
 		<Center>
 			<Pagination
