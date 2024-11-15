@@ -43,7 +43,7 @@ const BookListComponent = ({
 			<ContentsHeader
 				page={paginationProps.page}
 				limit={paginationProps.limit}
-				total={paginationProps.totalNum}
+				total={paginationProps.total}
 				handleLimitChange={paginationProps.handleLimitChange}
 			/>
 			{booksResponse.status !== 200 ? (
@@ -52,7 +52,7 @@ const BookListComponent = ({
 				<BookCards books={booksResponse.data.books} />
 			)}
 			<PaginationComponent
-				totalNum={paginationProps.totalNum}
+				total={paginationProps.total}
 				page={paginationProps.page}
 				limit={paginationProps.limit}
 				handlePaginationChange={paginationProps.handlePaginationChange}

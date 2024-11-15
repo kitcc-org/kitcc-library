@@ -16,7 +16,7 @@ const PaginationComponent = ({
 	color,
 }: PaginationComponentProps) => {
 	const limitNum = limit ?? 10;
-	const totalPage = total / limitNum + 1;
+	const totalPage = total != 0 ? Math.ceil(total / limitNum) : 1;
 	return (
 		<Center>
 			<Pagination
