@@ -264,7 +264,7 @@ const BooKListPage = () => {
 				handleLimitChange: handleLimitChange,
 				page: page ? Number(page) : undefined,
 				limit: limit ? Number(limit) : undefined,
-				totalNum: booksResponse.data.totalBook,
+				total: booksResponse.data.totalBook,
 			}}
 		/>
 	);

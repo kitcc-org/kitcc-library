@@ -3,5 +3,5 @@ export interface PaginationProps {
 	handleLimitChange: (newLimit: number) => void;
 	page?: number;
 	limit?: number;
-	totalNum: number;
+	total: number;
 }

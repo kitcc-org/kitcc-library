@@ -133,7 +133,7 @@ const UsersListPage = () => {
 				handleLimitChange: handleLimitChange,
 				page: page ? Number(page) : undefined,
 				limit: limit ? Number(limit) : undefined,
-				totalNum: usersResponse.data.totalUser,
+				total: usersResponse.data.totalUser,
 			}}
 			usersResponse={usersResponse}
 			handleDeleteUserButtonClick={handleDeleteUserButtonClick}

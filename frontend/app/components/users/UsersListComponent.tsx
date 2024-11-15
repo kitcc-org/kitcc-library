@@ -31,7 +31,7 @@ const UsersListComponent = ({
 				<ContentsHeader
 					page={paginationProps.page}
 					limit={paginationProps.limit}
-					total={paginationProps.totalNum}
+					total={paginationProps.total}
 					handleLimitChange={paginationProps.handleLimitChange}
 				/>
 				{usersResponse.status === 200 ? (
@@ -44,7 +44,7 @@ const UsersListComponent = ({
 				)}
 				<UserAddButton />
 				<PaginationComponent
-					totalNum={paginationProps.totalNum}
+					total={paginationProps.total}
 					page={paginationProps.page}
 					limit={paginationProps.limit}
 					handlePaginationChange={paginationProps.handlePaginationChange}

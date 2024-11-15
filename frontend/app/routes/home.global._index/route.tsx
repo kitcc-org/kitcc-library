@@ -270,7 +270,7 @@ const GlobalBookListPage = () => {
 				handleLimitChange: handleLimitChange,
 				page: page ? Number(page) : undefined,
 				limit: limit ? Number(limit) : undefined,
-				totalNum: booksResponse ? booksResponse.data.totalBook : 0,
+				total: booksResponse ? booksResponse.data.totalBook : 0,
 			}}
 			searchMode={searchMode}
 			setSearchMode={setSearchMode}
