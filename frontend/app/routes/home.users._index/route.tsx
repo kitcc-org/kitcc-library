@@ -114,8 +114,9 @@ const UsersListPage = () => {
 		navigate(url);
 	};
 
-	const handleLimitChange = (newLimit: number) =>
+	const handleLimitChange = (newLimit: number) => {
 		navigate(`/home/users?limit=${newLimit}`);
+	};
 
 	const handleDeleteUserButtonClick = (id: number) => {
 		fetcher.submit(
