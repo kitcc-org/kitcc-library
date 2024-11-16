@@ -15,6 +15,7 @@ const BookSearchPublisherForm = ({ form }: SearchPublisherFormProps) => {
 			label="出版社"
 			placeholder="SOFTBANK"
 			key={form.key('publisher')}
+			aria-label="出版社"
 			{...form.getInputProps('publisher')}
 		/>
 	);

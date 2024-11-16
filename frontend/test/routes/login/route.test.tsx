@@ -1,4 +1,4 @@
-import type * as remixruncloudflare from '@remix-run/cloudflare';
+import type * as remixrunCloudflare from '@remix-run/cloudflare';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { createRemixStub } from '@remix-run/testing';
 import { screen } from '@testing-library/react';
@@ -7,7 +7,7 @@ import { customRender } from '../../helpers/wrapper';
 import { redirect } from '../../mocks/@remix-run/cloudflare';
 
 vi.mock('@remix-run/cloudflare', async (importOriginal) => {
-	const actual = await importOriginal<typeof remixruncloudflare>();
+	const actual = await importOriginal<typeof remixrunCloudflare>();
 	return {
 		...actual,
 		redirect: (url: string, init?: number | ResponseInit) => {
@@ -29,7 +29,7 @@ const LoginPageStub = createRemixStub([
 	},
 ]);
 
-describe('Login page', () => {
+describe('Login Page', () => {
 	it('should login successfully', async () => {
 		const { user } = customRender(
 			<LoginPageStub initialEntries={['/login']} />,

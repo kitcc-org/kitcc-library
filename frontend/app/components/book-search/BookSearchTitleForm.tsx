@@ -15,6 +15,7 @@ const BookSearchTitleForm = ({ form }: SearchTitleFormProps) => {
 			label="タイトル"
 			placeholder="Javaプログラミング徹底マスター"
 			key={form.key('title')}
+			aria-label="タイトル"
 			{...form.getInputProps('title')}
 		/>
 	);
