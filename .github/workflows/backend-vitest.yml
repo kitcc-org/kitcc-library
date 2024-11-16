@@ -1,4 +1,4 @@
-name: Frontend Vitest
+name: Backend Vitest
 
 on:
   push:
@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: frontend
+        working-directory: backend
     steps:
-      - name: Checkout latest repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup pnpm

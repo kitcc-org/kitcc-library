@@ -8,7 +8,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install redocly-cli

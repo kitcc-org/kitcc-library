@@ -12,9 +12,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest repo
+      - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
