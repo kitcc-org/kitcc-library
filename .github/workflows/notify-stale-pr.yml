@@ -1,0 +1,44 @@
+name: Notify Stale Pull Requests to Slack
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for stale pull requests
+        id: check_prs
+        run: |
+          stale_prs=$(gh pr list --state open --json createdAt,url --jq '.[] | select(( now - (.createdAt | fromdateiso8601)) > 172800) | .url')
+          echo "::set-output name=stale_prs::$stale_prs"
+
+      - name: Format stale pull requests
+        if: steps.check_prs.outputs.stale_prs != ''
+        id: format_prs
+        run: |
+          fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /')
+          echo "::set-output name=fmt_prs::$fmt_prs"
+
+      - name: Send notification to Slack
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "section"
+                text:
+                  "type": "mrkdwn",
+                  "text": "以下のプルリクエストが2日以上マージされていません:"
+              - type: "section"
+                text:
+                  "type": "mrkdwn",
+                  "text": "${{ steps.format_prs.outputs.fmt_prs }}"
