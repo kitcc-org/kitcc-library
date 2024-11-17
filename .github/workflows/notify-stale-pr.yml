@@ -18,16 +18,17 @@ jobs:
         id: check_prs
         run: |
           stale_prs=$(gh pr list --state open --json createdAt,url --jq '.[] | select(( now - (.createdAt | fromdateiso8601)) > 172800) | .url')
-          echo "::set-output name=stale_prs::$stale_prs"
+          echo "stale_prs=$stale_prs" >> $GITHUB_OUTPUT
 
       - name: Format stale pull requests
         if: steps.check_prs.outputs.stale_prs != ''
         id: format_prs
         run: |
           fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /')
-          echo "::set-output name=fmt_prs::$fmt_prs"
+          echo "fmt_prs=$fmt_prs" >> $GITHUB_OUTPUT
 
       - name: Send notification to Slack
+        if: ${{ steps.format_prs.outcome == 'success' }}
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
