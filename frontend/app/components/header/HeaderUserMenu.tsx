@@ -22,7 +22,7 @@ const HeaderUserMenu = ({ open }: HeaderUserMenuProps) => {
 			<Menu.Dropdown>
 				<Menu.Item
 					leftSection={<FaUser />}
-					onClick={() => navigate('/home/mypage')}
+					onClick={() => navigate('/home/me')}
 				>
 					マイページ
 				</Menu.Item>
