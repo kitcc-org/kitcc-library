@@ -1,6 +1,12 @@
+import {
+	ColorSchemeScript,
+	LoadingOverlay,
+	MantineProvider,
+} from '@mantine/core';
 import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
 import type { LinksFunction } from '@remix-run/cloudflare';
 import {
 	Links,
@@ -8,9 +14,8 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useNavigation,
 } from '@remix-run/react';
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const links: LinksFunction = () => [
@@ -53,5 +58,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <Outlet />;
+	const navigation = useNavigation();
+
+	return (
+		<>
+			<LoadingOverlay
+				visible={navigation.state !== 'idle'}
+				overlayProps={{ radius: 'sm', blur: 1 }}
+			/>
+			<Outlet />
+		</>
+	);
 }

@@ -1,4 +1,4 @@
-import { AppShell, Container, LoadingOverlay } from '@mantine/core';
+import { AppShell, Container } from '@mantine/core';
 import {
 	ActionFunctionArgs,
 	json,
@@ -132,10 +132,6 @@ const Home = () => {
 			<HeaderComponent />
 			<Container size="xl">
 				<AppShell.Main>
-					<LoadingOverlay
-						visible={navigation.state === 'loading'}
-						overlayProps={{ radius: 'sm', blur: 1 }}
-					/>
 					<Outlet />
 				</AppShell.Main>
 			</Container>
