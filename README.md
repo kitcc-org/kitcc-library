@@ -1,7 +1,7 @@
 # KITCC Library
 
-![frontend vitest](https://github.com/kitcc-org/kitcc-library/actions/workflows/frontend_vitest.yml/badge.svg)
-![backend vitest](https://github.com/kitcc-org/kitcc-library/actions/workflows/backend_vitest.yml/badge.svg)
+![frontend vitest](https://github.com/kitcc-org/kitcc-library/actions/workflows/frontend-vitest.yml/badge.svg)
+![backend vitest](https://github.com/kitcc-org/kitcc-library/actions/workflows/backend-vitest.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-yellow)
 
 KITCC が所有する書籍を管理する Web アプリ
