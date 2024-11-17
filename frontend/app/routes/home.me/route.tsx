@@ -103,7 +103,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 		default:
 			session.flash('error', '本の返却に失敗しました');
-			return redirect('/home/users/me', {
+			return redirect('/home/me', {
 				headers: {
 					'Set-Cookie': await commitSession(session),
 				},
@@ -145,7 +145,7 @@ export const MyPage = () => {
 	}, [loansResponse]);
 
 	const handlePaginationChange = (newPage: number) => {
-		let url = '/home/users/me';
+		let url = '/home/me';
 		let initial = true;
 		if (limit) {
 			url =
@@ -158,12 +158,12 @@ export const MyPage = () => {
 	};
 
 	const handleLimitChange = (newLimit: number) => {
-		navigate(`/home/users/me?limit=${newLimit}`);
+		navigate(`/home/me?limit=${newLimit}`);
 	};
 
 	const handleReturnButtonClick = () => {
 		submit(JSON.stringify({ selectedLoan: selectedLoan }), {
-			action: '/home/users/me',
+			action: '/home/me',
 			method: 'PATCH',
 			encType: 'application/json',
 		});
