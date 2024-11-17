@@ -15,6 +15,7 @@ const BookSearchAuthorForm = ({ form }: BookSearchAuthorFormProps) => {
 			label="著者"
 			placeholder="竹岡尚三"
 			key={form.key('author')}
+			aria-label="著者"
 			{...form.getInputProps('author')}
 		/>
 	);

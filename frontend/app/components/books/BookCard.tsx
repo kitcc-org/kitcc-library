@@ -12,6 +12,7 @@ interface BookCardProps {
 
 const BookCard = ({ book }: BookCardProps) => {
 	const [user] = useAtom(userAtom);
+
 	return (
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding>

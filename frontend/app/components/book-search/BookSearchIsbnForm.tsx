@@ -15,6 +15,7 @@ const BookSearchIsbnForm = ({ form }: SearchIsbnFormProps) => {
 			label="ISBN"
 			placeholder="10桁または13桁のISBN"
 			key={form.key('isbn')}
+			aria-label="ISBN"
 			{...form.getInputProps('isbn')}
 		/>
 	);
