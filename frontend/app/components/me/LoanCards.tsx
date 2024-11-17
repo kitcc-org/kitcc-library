@@ -1,7 +1,5 @@
 import { ScrollArea, SimpleGrid } from '@mantine/core';
-import { GetLoans200LoansItem } from 'client/client.schemas';
 import { useAtom } from 'jotai';
-import { userAtom } from '~/stores/userAtom';
 import NoLoanComponent from './NoLoansComponent';
 import LoanCard from './LoanCard';
 import { displayLoanAtom } from '~/stores/loanAtom';

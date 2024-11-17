@@ -1,8 +1,6 @@
 import { Button, Dialog, Stack } from '@mantine/core';
 import { useAtom } from 'jotai';
-import { cartAtom, selectedCartBooksAtom } from '~/stores/cartAtom';
 import { selectedLoanAtom } from '~/stores/loanAtom';
-import { removeBooksFromCart } from '~/utils/cart';
 
 interface LoanSelectedDialogProps {
 	handleReturnButtonClick: () => void;

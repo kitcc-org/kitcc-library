@@ -1,6 +1,5 @@
 import { Stack } from '@mantine/core';
 import { getLoansResponse } from 'client/client';
-import React from 'react';
 import { PaginationProps } from '~/types/paginatiion';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import ErrorComponent from '../common/error/ErrorComponent';

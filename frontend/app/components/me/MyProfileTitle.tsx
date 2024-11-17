@@ -1,5 +1,4 @@
 import { Center, Group, Title } from '@mantine/core';
-import React from 'react';
 import { PiUserListFill } from 'react-icons/pi';
 
 const MyProfileTitle = () => {

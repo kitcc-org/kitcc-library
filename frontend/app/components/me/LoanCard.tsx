@@ -1,6 +1,5 @@
 import { Card } from '@mantine/core';
 import BookCardThumbnail from '../books/BookCardThumbnail';
-import { Book } from 'client/client.schemas';
 import LoanCardHeader from './LoanCardHeader';
 
 interface LoanCardProps {

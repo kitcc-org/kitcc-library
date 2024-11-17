@@ -1,5 +1,4 @@
-import { rem, Stack, Text, Title } from '@mantine/core';
-import React from 'react';
+import { rem, Stack, Text } from '@mantine/core';
 
 interface MyProfileDataComponentProps {
 	name: string;
