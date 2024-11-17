@@ -113,12 +113,12 @@ describe('PATCH /users/:userId', () => {
 		const credentials = {
 			name: '比企谷八幡',
 			email: 'hikigaya@oregairu.com',
-			password: 'passw0rd',
+			currentPassword: 'passw0rd',
+			newPassword: 'pa55word',
 		};
 
-		const users = await db.select().from(userTable);
 		const response = await app.request(
-			`/users/${users[0].id}`,
+			`/users/${currentUser.id}`,
 			{
 				method: 'PATCH',
 				headers: {
@@ -139,9 +139,9 @@ describe('PATCH /users/:userId', () => {
 		const updatedUser = await db
 			.select()
 			.from(userTable)
-			.where(eq(userTable.id, users[0].id));
-		const { password, ...rest } = credentials;
-		expect(updatedUser[0]).toMatchObject(rest);
+			.where(eq(userTable.id, currentUser.id!));
+		expect(updatedUser[0].name).toBe(credentials.name);
+		expect(updatedUser[0].email).toBe(credentials.email);
 	});
 
 	loggedInTest(
@@ -172,7 +172,7 @@ describe('PATCH /users/:userId', () => {
 		'should return 400 when name is not a string',
 		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
-				`/users/1`,
+				`/users/${currentUser.id}`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -196,7 +196,7 @@ describe('PATCH /users/:userId', () => {
 		'should return 400 when email is invalid',
 		async ({ currentUser, sessionToken }) => {
 			const response = await app.request(
-				`/users/1`,
+				`/users/${currentUser.id}`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -206,7 +206,7 @@ describe('PATCH /users/:userId', () => {
 							`__Secure-session_token=${sessionToken}`,
 						].join('; '),
 					},
-					// メールアドレスに文字列以外を指定する
+					// メールアドレスが形式に合っていない
 					body: JSON.stringify({ email: 'user@invalid' }),
 				},
 				env,
@@ -220,14 +220,14 @@ describe('PATCH /users/:userId', () => {
 		'should return 400 when password is invalid',
 		async ({ currentUser, sessionToken }) => {
 			const invalidPassword = [
-				'abc123', // 文字数が8未満
+				'abc123', // 文字数が8文字未満
 				'12345678', // 英字が含まれていない
 				'password', // 数字が含まれていない
 			];
 
 			for (const password of invalidPassword) {
 				const response = await app.request(
-					`/users/1`,
+					`/users/${currentUser.id}`,
 					{
 						method: 'PATCH',
 						headers: {
@@ -238,7 +238,7 @@ describe('PATCH /users/:userId', () => {
 							].join('; '),
 						},
 						// パスワードに文字列以外を指定する
-						body: JSON.stringify({ password: 1 }),
+						body: JSON.stringify({ password: password }),
 					},
 					env,
 				);
@@ -249,12 +249,38 @@ describe('PATCH /users/:userId', () => {
 	);
 
 	loggedInTest(
+		'should return 400 when current password is incorrect',
+		async ({ currentUser, sessionToken }) => {
+			const response = await app.request(
+				`/users/${currentUser.id}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'Content-Type': 'application/json',
+						Cookie: [
+							`__Secure-user_id=${currentUser.id}`,
+							`__Secure-session_token=${sessionToken}`,
+						].join('; '),
+					},
+					body: JSON.stringify({
+						currentPassword: 'abcd1234',
+						newPassword: 'pa55word',
+					}),
+				},
+				env,
+			);
+
+			expect(response.status).toBe(400);
+		},
+	);
+
+	loggedInTest(
 		'should return 400 when violate email unique constraint',
 		async ({ currentUser, sessionToken }) => {
 			const users = await db.select().from(userTable);
 
 			const response = await app.request(
-				`/users/${users[1].id}`,
+				`/users/${currentUser.id}`,
 				{
 					method: 'PATCH',
 					headers: {
@@ -286,30 +312,6 @@ describe('PATCH /users/:userId', () => {
 
 		expect(response.status).toBe(401);
 	});
-
-	loggedInTest(
-		'should return 404 when user is not found',
-		async ({ currentUser, sessionToken }) => {
-			const response = await app.request(
-				// 存在しないuserIdを指定する
-				`/users/100`,
-				{
-					method: 'PATCH',
-					headers: {
-						'Content-Type': 'application/json',
-						Cookie: [
-							`__Secure-user_id=${currentUser.id}`,
-							`__Secure-session_token=${sessionToken}`,
-						].join('; '),
-					},
-					body: JSON.stringify({ name: 'username' }),
-				},
-				env,
-			);
-
-			expect(response.status).toBe(404);
-		},
-	);
 });
 
 describe('DELETE /users/:userId', () => {

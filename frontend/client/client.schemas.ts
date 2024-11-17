@@ -86,13 +86,18 @@ export type DeleteUser204 = {
 };
 
 export type UpdateUserBody = {
+  /**
+   * @minLength 8
+   * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
+   */
+  currentPassword?: string;
   email?: string;
   name?: string;
   /**
    * @minLength 8
    * @pattern ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$
    */
-  password?: string;
+  newPassword?: string;
 };
 
 export type DeleteUsersBody = {

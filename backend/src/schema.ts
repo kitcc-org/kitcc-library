@@ -261,15 +261,19 @@ export const updateUserParams = zod.object({
   "userId": zod.string().regex(updateUserPathUserIdRegExp)
 })
 
-export const updateUserBodyPasswordMin = 8;
+export const updateUserBodyCurrentPasswordMin = 8;
 
-export const updateUserBodyPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
+export const updateUserBodyCurrentPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
+export const updateUserBodyNewPasswordMin = 8;
+
+export const updateUserBodyNewPasswordRegExp = new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]+$');
 
 
 export const updateUserBody = zod.object({
   "name": zod.string().optional(),
   "email": zod.string().email().optional(),
-  "password": zod.string().min(updateUserBodyPasswordMin).regex(updateUserBodyPasswordRegExp).optional()
+  "currentPassword": zod.string().min(updateUserBodyCurrentPasswordMin).regex(updateUserBodyCurrentPasswordRegExp).optional(),
+  "newPassword": zod.string().min(updateUserBodyNewPasswordMin).regex(updateUserBodyNewPasswordRegExp).optional()
 })
 
 export const updateUserResponse = zod.object({

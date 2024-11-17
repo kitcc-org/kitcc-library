@@ -1,4 +1,5 @@
 value:
   id: 1
-  name: "比企谷八幡"
-  email: "hikigaya@oregairu.com"
+  name: '比企谷八幡'
+  email: 'hikigaya@oregairu.com'
+  sessionToken: 'abcde12345'

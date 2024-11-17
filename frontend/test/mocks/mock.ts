@@ -1406,11 +1406,11 @@ export const getSearchBooksResponseMock = (): SearchBooks200 => ({"totalBook":30
 
 export const getGetUsersResponseMock = (overrideResponse: Partial< GetUsers200 > = {}): GetUsers200 => ({totalUser: faker.number.int({min: undefined, max: undefined}), users: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), name: faker.helpers.arrayElement([faker.word.sample(), undefined])})), ...overrideResponse})
 
-export const getCreateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
+export const getCreateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com","sessionToken":"abcde12345"})
 
-export const getGetUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
+export const getGetUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com","sessionToken":"abcde12345"})
 
-export const getUpdateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
+export const getUpdateUserResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com","sessionToken":"abcde12345"})
 
 export const getDeleteUserResponseMock = (): DeleteUser204 => ({"message":"No Content"})
 
@@ -1418,7 +1418,7 @@ export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 >
 
 export const getUpsertLoansResponseMock = (): Loan[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})})))
 
-export const getLoginResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com"})
+export const getLoginResponseMock = (): User => ({"id":1,"name":"比企谷八幡","email":"hikigaya@oregairu.com","sessionToken":"abcde12345"})
 
 
 export const getGetBooksMockHandler = (overrideResponse?: GetBooks200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetBooks200> | GetBooks200)) => {
