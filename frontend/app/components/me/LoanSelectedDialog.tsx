@@ -22,11 +22,12 @@ const LoanSelectedDialog = ({
 				justify="center"
 				gap="md"
 			>
-				<Button fz="xs" color="blue" onClick={handleReturnButtonClick}>
+				<Button fz="xs" color="red" onClick={handleReturnButtonClick}>
 					返却する
 				</Button>
 				<Button
 					fz="xs"
+					color="red"
 					variant="light"
 					bd="solid 2px"
 					onClick={() => setSelectedLoan([])}
