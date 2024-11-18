@@ -89,7 +89,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 const LoginPage = () => {
 	const { error } = useLoaderData<typeof loader>();
 
-	const loginTask = useLogin();
 	const fetcher = useFetcher();
 	const form = useForm<LoginBody>({
 		mode: 'uncontrolled',
@@ -127,13 +126,7 @@ const LoginPage = () => {
 		}
 	}, [fetcher.state]);
 
-	return (
-		<LoginFormComponent
-			isPending={loginTask.isPending}
-			form={form}
-			handleSubmit={handleSubmit}
-		/>
-	);
+	return <LoginFormComponent form={form} handleSubmit={handleSubmit} />;
 };
 
 export default LoginPage;
