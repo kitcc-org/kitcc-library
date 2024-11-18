@@ -145,20 +145,23 @@ export const MyPage = () => {
 	}, [loansResponse]);
 
 	const handlePaginationChange = (newPage: number) => {
-		let url = '/home/me';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit);
 		}
-		url =
-			initial === true ? `${url}?page=${newPage}` : `${url}&page=${newPage}`;
-		navigate(url);
+
+		params.append('page', newPage.toString());
+
+		navigate(`/home/me?${params.toString()}`);
 	};
 
 	const handleLimitChange = (newLimit: number) => {
-		navigate(`/home/me?limit=${newLimit}`);
+		const params = new URLSearchParams();
+
+		params.append('limit', newLimit.toString());
+
+		navigate(`/home/me?${params.toString()}`);
 	};
 
 	const handleReturnButtonClick = () => {
