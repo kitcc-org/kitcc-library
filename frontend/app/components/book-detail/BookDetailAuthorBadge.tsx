@@ -12,6 +12,7 @@ const BookDetailAuthorBadge = ({ name }: BookDetailAuthorBadgeProps) => {
 			style={{ cursor: 'pointer' }}
 			variant="outline"
 			size="lg"
+			data-testid="author-badge"
 		>
 			{name}
 		</Badge>
