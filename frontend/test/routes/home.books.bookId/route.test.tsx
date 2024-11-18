@@ -132,6 +132,7 @@ describe('Book Detail Page', () => {
 			customRender(<BookDetailStub initialEntries={['/home/books/1']} />);
 
 			await waitFor(() => {
+				// 借りている人が表示されていない
 				const borrowerText = screen.queryByText('借りている人');
 				expect(borrowerText).not.toBeInTheDocument();
 			});
