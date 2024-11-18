@@ -16,7 +16,7 @@ const LoanCardHeader = ({ id }: LoanCardHeaderProps) => {
 	const isSelected = (element: CartProps) => element.id === id;
 
 	// 該当する本のvolumeを変更する
-	const handleChangeVolume = (id: number, value: number) => {
+	const handleVolumeChange = (id: number, value: number) => {
 		setDisplayLoan(
 			displayLoan.map((element) => {
 				if (element.id === id) {
@@ -73,7 +73,7 @@ const LoanCardHeader = ({ id }: LoanCardHeaderProps) => {
 				id={id}
 				stock={displayLoan.find(isSelected)?.stock || 1}
 				volume={displayLoan.find(isSelected)?.volume || 1}
-				handleChangeVolume={handleChangeVolume}
+				handleVolumeChange={handleVolumeChange}
 			/>
 		</Group>
 	);

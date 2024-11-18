@@ -20,7 +20,7 @@ const CartCardHeader = ({ id, stock, volume }: CartCardHeaderProps) => {
 	const isSelected = (element: CartProps) => element.id === id;
 
 	// 該当する本のvolumeを変更する
-	const handleChangeVolume = (id: number, value: number) => {
+	const handleVolumeChange = (id: number, value: number) => {
 		setCart(
 			cart.map((element) => {
 				if (element.id === id) {
@@ -80,7 +80,7 @@ const CartCardHeader = ({ id, stock, volume }: CartCardHeaderProps) => {
 				id={id}
 				stock={stock}
 				volume={volume}
-				handleChangeVolume={handleChangeVolume}
+				handleVolumeChange={handleVolumeChange}
 			/>
 		</Group>
 	);

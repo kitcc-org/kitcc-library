@@ -5,14 +5,14 @@ interface CartCardHeaderBadgeProps {
 	id: number;
 	stock: number;
 	volume: number;
-	handleChangeVolume: (id: number, value: number) => void;
+	handleVolumeChange: (id: number, value: number) => void;
 }
 
 const CartCardNumberInput = ({
 	id,
 	stock,
 	volume,
-	handleChangeVolume,
+	handleVolumeChange,
 }: CartCardHeaderBadgeProps) => {
 	const stockList = range(0, stock);
 	const dataList = stock >= volume ? stockList : [...stockList, volume];
@@ -21,7 +21,7 @@ const CartCardNumberInput = ({
 	const handleOnChange = (volume: string | null) => {
 		if (!volume) return;
 		const numVolume = Number(volume);
-		handleChangeVolume(id, numVolume);
+		handleVolumeChange(id, numVolume);
 	};
 	return (
 		<Group justify="flex-end" w="70%">
