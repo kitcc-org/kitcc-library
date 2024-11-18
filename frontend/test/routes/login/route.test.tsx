@@ -53,7 +53,7 @@ describe('Login Page', () => {
 		// マイページへリダイレクトされる
 		// prettier-ignore
 		expect(redirect).toHaveBeenCalledWith(
-			'/home/mypage',
+			'/home/me',
 			{
 				headers: {
 					'Set-Cookie': expect.any(String),
