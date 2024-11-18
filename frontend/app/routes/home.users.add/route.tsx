@@ -4,7 +4,7 @@ import { useSubmit } from '@remix-run/react';
 import type { CreateUserBody } from 'client/client.schemas';
 import React from 'react';
 import UsersAddComponent from '~/components/users-add/UsersAddComponent';
-import { errorNotification } from '~/utils/notification';
+import { errorNotification, successNotification } from '~/utils/notification';
 import { passwordGen } from '~/utils/password';
 
 const UserAddPage = () => {
@@ -38,6 +38,7 @@ const UserAddPage = () => {
 	const handlePasswordGenButtonClick = () => {
 		const password = passwordGen();
 		clipborad.copy(password);
+		successNotification('パスワードをコピーしました');
 		form.setValues({ password: password });
 	};
 
