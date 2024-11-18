@@ -9,13 +9,11 @@ import LoginPasswordForm from './LoginPasswordForm';
 import LoginSubmitButton from './LoginSubmitButton';
 
 interface LoginFormComponentProps {
-	isPending: boolean;
 	form: UseFormReturnType<LoginBody, (values: LoginBody) => LoginBody>;
 	handleSubmit: (props: LoginBody) => void;
 }
 
 const LoginFormComponent = ({
-	isPending,
 	form,
 	handleSubmit,
 }: LoginFormComponentProps) => {
@@ -25,7 +23,7 @@ const LoginFormComponent = ({
 				<LoginFormTitle />
 				<LoginEmailForm form={form} />
 				<LoginPasswordForm form={form} />
-				<LoginSubmitButton isPending={isPending} />
+				<LoginSubmitButton />
 				<LoginFormHelpText />
 			</FormLayout>
 		</FormBaseLayout>
