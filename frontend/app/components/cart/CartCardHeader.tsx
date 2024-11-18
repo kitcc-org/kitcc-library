@@ -35,7 +35,7 @@ const CartCardHeader = ({ id, stock, volume }: CartCardHeaderProps) => {
 			}),
 		);
 		const target = selectedCartBook.find(isSelected);
-		// volumeを選択されていた本がすでに選択されている場合
+		// volumeを変更した本がすでに選択されていた場合
 		if (target) {
 			setSelectedCartBook(
 				selectedCartBook.map((element) => {
