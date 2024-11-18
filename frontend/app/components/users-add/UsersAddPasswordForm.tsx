@@ -1,7 +1,6 @@
 import { TextInput } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import type { CreateUserBody } from 'client/client.schemas';
-import React from 'react';
 
 interface UsersAddPasswordFormProps {
 	form: UseFormReturnType<

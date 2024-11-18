@@ -1,7 +1,6 @@
 import { TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { CreateUserBody } from 'client/client.schemas';
-import React from 'react';
 
 interface UsersAddNameFormProps {
 	form: UseFormReturnType<

@@ -2,7 +2,6 @@ import { useForm } from '@mantine/form';
 import { useClipboard } from '@mantine/hooks';
 import { useSubmit } from '@remix-run/react';
 import type { CreateUserBody } from 'client/client.schemas';
-import React from 'react';
 import UsersAddComponent from '~/components/users-add/UsersAddComponent';
 import { errorNotification, successNotification } from '~/utils/notification';
 import { passwordGen } from '~/utils/password';

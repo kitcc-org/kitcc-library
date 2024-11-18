@@ -6,7 +6,7 @@ import {
 	redirect,
 } from '@remix-run/cloudflare';
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { login, useLogin } from 'client/client';
+import { login } from 'client/client';
 import type { LoginBody } from 'client/client.schemas';
 import { useEffect } from 'react';
 import LoginFormComponent from '~/components/login/LoginFormComponent';

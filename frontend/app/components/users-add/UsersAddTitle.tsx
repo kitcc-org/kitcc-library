@@ -1,5 +1,4 @@
-import { Center, Group, Text, Title } from '@mantine/core';
-import React from 'react';
+import { Center, Group, Title } from '@mantine/core';
 import { RiUserAddFill } from 'react-icons/ri';
 
 const UsersAddTitle = () => {
