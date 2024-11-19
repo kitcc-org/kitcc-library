@@ -23,7 +23,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// ログイン済みの場合
 	if (session.has('user')) {
 		// マイページへリダイレクト
-		return redirect('/home/mypage');
+		return redirect('/home/me');
 	}
 
 	// 未ログインの場合
@@ -52,7 +52,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		session.set('user', response.data);
 		session.flash('success', 'ログインに成功しました');
 
-		return redirect('/home/mypage', {
+		return redirect('/home/me', {
 			headers: {
 				'Set-Cookie': await commitSession(session),
 			},

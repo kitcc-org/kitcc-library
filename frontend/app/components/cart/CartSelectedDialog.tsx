@@ -50,7 +50,6 @@ const CartSelectedDialog = ({
 			</Stack>
 		</Dialog>
 	);
-	return <div>CartSelectedDialog</div>;
 };
 
 export default CartSelectedDialog;
