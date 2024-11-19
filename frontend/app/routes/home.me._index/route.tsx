@@ -34,7 +34,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	// 未ログインの場合
 	if (!userData) {
 		// ログインページへリダイレクト
-		return redirect('/login');
+		return redirect('/login', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
 	}
 
 	const cookieHeader = [
