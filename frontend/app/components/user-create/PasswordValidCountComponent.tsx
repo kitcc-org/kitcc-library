@@ -8,11 +8,12 @@ interface PasswordValidCountComponentProps {
 const PasswordValidCountComponent = ({
 	counts,
 }: PasswordValidCountComponentProps) => {
+	const fmtedCounts = counts.toString().padStart(2, ' ');
 	return (
 		<Button
 			disabled
 			leftSection={<PasswordValidProgress counts={counts} />}
-		>{`パスワードの有効時間：${counts}秒`}</Button>
+		>{`パスワードの有効時間：${fmtedCounts}秒`}</Button>
 	);
 };
 
