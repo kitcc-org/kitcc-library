@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
 import type * as remixrunReact from '@remix-run/react';
 import { createRemixStub } from '@remix-run/testing';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { customRender } from 'test/helpers/wrapper';
 import BookListPage, { action, loader } from '~/routes/home._index/route';
 import { userAtom } from '~/stores/userAtom';
@@ -117,11 +117,13 @@ describe('Book List Page', () => {
 		it('should not display add cart button when user is not logged in', async () => {
 			customRender(<BookListPageStub initialEntries={['/home']} />);
 
-			// カートに入れるボタンが表示されていない
-			const addCartButton = await screen.queryByRole('button', {
-				name: 'カートに入れる',
+			await waitFor(() => {
+				// カートに入れるボタンが表示されていない
+				const addCartButton = screen.queryByRole('button', {
+					name: 'カートに入れる',
+				});
+				expect(addCartButton).not.toBeInTheDocument();
 			});
-			expect(addCartButton).not.toBeInTheDocument();
 		});
 
 		it('should display add cart button when user is logged in', async () => {

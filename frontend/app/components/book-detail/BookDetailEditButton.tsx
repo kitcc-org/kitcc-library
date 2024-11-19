@@ -26,7 +26,9 @@ const BookDetailEditButton = ({ bookId }: BookDetailEditButtonProps) => {
 				<Button
 					leftSection={<MdEdit />}
 					fz="lg"
-					onClick={() => navigate('edit')}
+					onClick={() => {
+						navigate(`/home/books/${bookId}/edit`);
+					}}
 				>
 					編集
 				</Button>

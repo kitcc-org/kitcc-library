@@ -9,7 +9,7 @@ const BookDetailThumbnail = ({ thumbnail }: BookDetailThumbnailProps) => {
 	return (
 		<AspectRatio
 			ratio={10 / 14}
-			style={{ flex: `0 0 ${rem(400)}`, cursor: 'pointer' }}
+			style={{ flex: `0 0 ${rem(400)}` }}
 			component="div"
 		>
 			<Image src={thumbnail ? thumbnail : NoImage} alt="Book cover" />
