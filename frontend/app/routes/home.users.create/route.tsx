@@ -94,7 +94,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	}
 };
 
-const UserAddPage = () => {
+const UserCreatePage = () => {
 	const clipborad = useClipboard({ timeout: 30000 });
 	const submit = useSubmit();
 	const [counts, setCounts] = useState(0);
@@ -171,4 +171,4 @@ const UserAddPage = () => {
 	);
 };
 
-export default UserAddPage;
+export default UserCreatePage;
