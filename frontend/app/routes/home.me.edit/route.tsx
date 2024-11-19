@@ -236,7 +236,7 @@ const MyPageEdit = () => {
 							} else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) {
 								if (values.newPassword) {
 									if (value !== values.newPassword) {
-										return '新しいパスワードが一致しません';
+										return '新しいパスワードが一致していません';
 									} else {
 										return null;
 									}
@@ -283,7 +283,7 @@ const MyPageEdit = () => {
 			);
 		} else {
 			if (props.newPassword !== props.newPasswordAgain) {
-				errorNotification('新しいパスワードが一致しません');
+				errorNotification('新しいパスワードが一致していません');
 			} else {
 				submit(JSON.stringify({ updateUserBody: props as UpdateUserBody }), {
 					action: '/home/me/edit',
