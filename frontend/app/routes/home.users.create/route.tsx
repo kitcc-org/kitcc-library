@@ -108,6 +108,7 @@ const UserCreatePage = () => {
 				setCounts(counts - 1);
 			}
 		}, 1000);
+		// コンポーネントがアンマウントした時、タイマーをクリアする
 		return () => clearInterval(countDown);
 	}, [counts]);
 
