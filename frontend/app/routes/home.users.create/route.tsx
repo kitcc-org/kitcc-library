@@ -139,7 +139,7 @@ const UserCreatePage = () => {
 	const handlePasswordGenButtonClick = () => {
 		const password = generatePassword();
 		clipborad.copy(password);
-		// カウントダウンを正常に動かすために、29秒に設定
+		// コールバック関数の実行時間を考慮して、29秒に設定
 		setCounts(29);
 		successNotification('パスワードをコピーしました');
 		form.setValues({ password: password });
