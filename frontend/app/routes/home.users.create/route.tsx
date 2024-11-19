@@ -150,7 +150,7 @@ const UserAddPage = () => {
 		if (clipborad.copied) {
 			// パスワードを生成してから30秒以内の場合
 			submit(JSON.stringify({ createUserBody: props }), {
-				action: 'home/users/create',
+				action: '/home/users/create',
 				method: 'POST',
 				encType: 'application/json',
 			});
