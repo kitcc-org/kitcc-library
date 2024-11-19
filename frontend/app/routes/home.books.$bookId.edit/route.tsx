@@ -127,9 +127,11 @@ const BookEditPage = () => {
 		},
 		validate: {
 			isbn: (value) => {
-				if (value && !/^\d{10}(\d{3})?$/.test(value))
+				if (value && !/^\d{10}(\d{3})?$/.test(value)) {
 					return 'ISBNは10桁または13桁の数字で入力してください';
-				else null;
+				} else {
+					return null;
+				}
 			},
 			stock: (value) =>
 				Number(value) < 0 && '在庫数は0以上の数字で入力してください',

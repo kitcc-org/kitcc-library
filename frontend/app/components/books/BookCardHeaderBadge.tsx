@@ -5,18 +5,19 @@ interface BookCardHeaderBadgeProps {
 }
 
 const BookCardHeaderBadge = ({ stock }: BookCardHeaderBadgeProps) => {
-	if (stock > 0)
+	if (stock > 0) {
 		return (
 			<Badge color="lime" radius="xs">
 				貸出可
 			</Badge>
 		);
-	else
+	} else {
 		return (
 			<Badge color="red" radius="xs">
 				貸出不可
 			</Badge>
 		);
+	}
 };
 
 export default BookCardHeaderBadge;

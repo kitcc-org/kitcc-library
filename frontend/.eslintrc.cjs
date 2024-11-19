@@ -23,6 +23,9 @@ module.exports = {
 
 	// Base config
 	extends: ['eslint:recommended', 'prettier'],
+	rules: {
+		curly: ['warn', 'all'],
+	},
 
 	overrides: [
 		// React
