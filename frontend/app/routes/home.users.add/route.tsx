@@ -1,11 +1,30 @@
 import { useForm } from '@mantine/form';
 import { useClipboard } from '@mantine/hooks';
-import { useSubmit } from '@remix-run/react';
+import { LoaderFunctionArgs } from '@remix-run/cloudflare';
+import { redirect, useSubmit } from '@remix-run/react';
 import type { CreateUserBody } from 'client/client.schemas';
 import { useEffect, useState } from 'react';
 import UsersAddComponent from '~/components/users-add/UsersAddComponent';
+import { commitSession, getSession } from '~/services/session.server';
 import { errorNotification, successNotification } from '~/utils/notification';
 import { passwordGen } from '~/utils/password';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+	const session = await getSession(request.headers.get('Cookie'));
+	const userData = session.get('user');
+
+	// 未ログインの場合
+	if (!userData) {
+		// ログインページへリダイレクト
+		return redirect('/login', {
+			headers: {
+				'Set-Cookie': await commitSession(session),
+			},
+		});
+	}
+
+	return null;
+};
 
 const UserAddPage = () => {
 	const clipborad = useClipboard({ timeout: 30000 });
