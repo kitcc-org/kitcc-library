@@ -28,8 +28,8 @@ const PasswordCopyButton = ({ form, generated }: PasswordCopyButtonProps) => {
 						variant="subtle"
 						disabled={!generated}
 						onClick={() => {
-							successNotification('パスワードをコピーしました');
 							copy();
+							successNotification('パスワードをコピーしました');
 						}}
 					>
 						{copied ? <IoCheckmark /> : <IoCopyOutline />}
