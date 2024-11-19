@@ -13,7 +13,7 @@ import UserCreateComponent from '~/components/user-create/UserCreateComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification, successNotification } from '~/utils/notification';
-import { passwordGen } from '~/utils/password';
+import { generatePassword } from '~/utils/password';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
@@ -137,7 +137,7 @@ const UserCreatePage = () => {
 	});
 
 	const handlePasswordGenButtonClick = () => {
-		const password = passwordGen();
+		const password = generatePassword();
 		clipborad.copy(password);
 		// カウントダウンを正常に動かすために、29秒に設定
 		setCounts(29);

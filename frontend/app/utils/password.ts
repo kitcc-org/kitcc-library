@@ -1,4 +1,4 @@
-export const passwordGen = () => {
+export const generatePassword = () => {
 	let password = '';
 	const checkPassword = (element: string) =>
 		element.length >= 8 && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(element);
