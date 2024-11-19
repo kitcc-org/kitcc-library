@@ -121,7 +121,7 @@ const UserAddPage = () => {
 		validate: {
 			name: (value) => {
 				if (value.length < 1) {
-					return '名前は必須です';
+					return 'ユーザー名はは必須です';
 				}
 			},
 			email: (value) =>
