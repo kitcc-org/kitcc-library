@@ -1,9 +1,9 @@
 import { Stack } from '@mantine/core';
-import MyLoansListComponent from './MyLoansListComponent';
-import { User } from 'client/client.schemas';
 import { getLoansResponse } from 'client/client';
+import { User } from 'client/client.schemas';
 import { PaginationProps } from '~/types/paginatiion';
-import MyProfileDataComponent from './MyProfileDataComponent';
+import MyLoansListComponent from './MyLoansListComponent';
+import MyProfileDataComponent from './MyProfileComponent';
 
 interface MyPageComponentProps {
 	user: User;
