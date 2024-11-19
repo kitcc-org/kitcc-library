@@ -163,19 +163,25 @@ const MyPageEdit = () => {
 						value === '' &&
 						values.newPassword === '' &&
 						values.newPasswordAgain === ''
-					)
+					) {
 						return null;
-					else {
+					} else {
 						if (value) {
-							if (value.length < 8)
+							if (value.length < 8) {
 								return 'パスワードは8文字以上で入力してください';
-							else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value))
+							} else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) {
 								return null;
-							else return 'パスワードにはアルファベットと数字を含めてください';
-						} else return '現在のパスワードを入力してください';
+							} else {
+								return 'パスワードにはアルファベットと数字を含めてください';
+							}
+						} else {
+							return '現在のパスワードを入力してください';
+						}
 					}
 					// パスワードフォームを触っていない
-				} else return null;
+				} else {
+					return null;
+				}
 			},
 			newPassword: (value, values) => {
 				// パスワードを更新しようとしている
@@ -185,23 +191,33 @@ const MyPageEdit = () => {
 						value === '' &&
 						values.currentPassword === '' &&
 						values.newPasswordAgain === ''
-					)
+					) {
 						return null;
-					else {
+					} else {
 						if (value) {
-							if (value.length < 8)
+							if (value.length < 8) {
 								return 'パスワードは8文字以上で入力してください';
-							else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value))
+							} else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) {
 								if (values.currentPassword) {
-									if (value === values.currentPassword)
+									if (value === values.currentPassword) {
 										return 'パスワードが更新されていません';
-									else return null;
-								} else return null;
-							else return 'パスワードにはアルファベットと数字を含めてください';
-						} else return '新しいパスワードを入力してください';
+									} else {
+										return null;
+									}
+								} else {
+									return null;
+								}
+							} else {
+								return 'パスワードにはアルファベットと数字を含めてください';
+							}
+						} else {
+							return '新しいパスワードを入力してください';
+						}
 					}
 					// パスワードフォームを触っていない
-				} else return null;
+				} else {
+					return null;
+				}
 			},
 			newPasswordAgain: (value, values) => {
 				// パスワードを更新しようとしている
@@ -211,23 +227,33 @@ const MyPageEdit = () => {
 						value === '' &&
 						values.currentPassword === '' &&
 						values.newPassword === ''
-					)
+					) {
 						return null;
-					else {
+					} else {
 						if (value) {
-							if (value.length < 8)
+							if (value.length < 8) {
 								return 'パスワードは8文字以上で入力してください';
-							else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value))
+							} else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) {
 								if (values.newPassword) {
-									if (value !== values.newPassword)
+									if (value !== values.newPassword) {
 										return '新しいパスワードが一致しません';
-									else return null;
-								} else return null;
-							else return 'パスワードにはアルファベットと数字を含めてください';
-						} else return '新しいパスワードを入力してください';
+									} else {
+										return null;
+									}
+								} else {
+									return null;
+								}
+							} else {
+								return 'パスワードにはアルファベットと数字を含めてください';
+							}
+						} else {
+							return '新しいパスワードを入力してください';
+						}
 					}
 					// パスワードフォームを触っていない
-				} else return null;
+				} else {
+					return null;
+				}
 			},
 		},
 	});

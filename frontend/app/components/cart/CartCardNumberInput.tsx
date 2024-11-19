@@ -19,7 +19,9 @@ const CartCardNumberInput = ({
 	const strList = dataList.map((data) => data.toString());
 
 	const handleOnChange = (volume: string | null) => {
-		if (!volume) return;
+		if (!volume) {
+			return;
+		}
 		const numVolume = Number(volume);
 		handleChangeVolume(id, numVolume);
 	};

@@ -12,7 +12,9 @@ interface BookCardsProps {
 
 const BookCards = ({ books }: BookCardsProps) => {
 	const [user] = useAtom(userAtom);
-	if (books.length === 0) return <NoBookComponent />;
+	if (books.length === 0) {
+		return <NoBookComponent />;
+	}
 
 	return (
 		<>

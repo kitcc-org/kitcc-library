@@ -11,7 +11,7 @@ const GlobalBookSearchModeButton = ({
 	open,
 	close,
 }: GlobalSearchModeButtonProps) => {
-	if (isOpen)
+	if (isOpen) {
 		return (
 			<Button
 				id="search-mode-button"
@@ -23,6 +23,7 @@ const GlobalBookSearchModeButton = ({
 				検索条件を閉じる
 			</Button>
 		);
+	}
 	return (
 		<Button
 			id="search-mode-button"

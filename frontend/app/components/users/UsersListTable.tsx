@@ -12,7 +12,9 @@ const UsersListTable = ({
 	users,
 	handleDeleteUserButtonClick,
 }: UsersTableProps) => {
-	if (users.length === 0) return <NoUserComponent />;
+	if (users.length === 0) {
+		return <NoUserComponent />;
+	}
 	return (
 		<Table striped maw="50%">
 			<Table.Tbody>
