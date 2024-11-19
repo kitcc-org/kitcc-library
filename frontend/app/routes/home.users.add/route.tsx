@@ -2,6 +2,7 @@ import { useForm } from '@mantine/form';
 import { useClipboard } from '@mantine/hooks';
 import { useSubmit } from '@remix-run/react';
 import type { CreateUserBody } from 'client/client.schemas';
+import { useEffect, useState } from 'react';
 import UsersAddComponent from '~/components/users-add/UsersAddComponent';
 import { errorNotification, successNotification } from '~/utils/notification';
 import { passwordGen } from '~/utils/password';
@@ -9,6 +10,20 @@ import { passwordGen } from '~/utils/password';
 const UserAddPage = () => {
 	const clipborad = useClipboard({ timeout: 30000 });
 	const submit = useSubmit();
+	const [counts, setCounts] = useState(0);
+
+	useEffect(() => {
+		const countDown = setInterval(() => {
+			if (counts == 0) {
+				clearInterval(countDown);
+				clipborad.reset();
+			} else {
+				setCounts(counts - 1);
+			}
+		}, 1000);
+		return () => clearInterval(countDown);
+	}, [counts]);
+
 	const form = useForm<CreateUserBody>({
 		mode: 'uncontrolled',
 		initialValues: {
@@ -37,6 +52,8 @@ const UserAddPage = () => {
 	const handlePasswordGenButtonClick = () => {
 		const password = passwordGen();
 		clipborad.copy(password);
+		// カウントダウンを正常に動かすために、29秒に設定
+		setCounts(29);
 		successNotification('パスワードをコピーしました');
 		form.setValues({ password: password });
 	};
@@ -58,6 +75,7 @@ const UserAddPage = () => {
 			handleSubmit={handleSubmit}
 			handlePasswordGenButtonClick={handlePasswordGenButtonClick}
 			copied={clipborad.copied}
+			counts={counts}
 		/>
 	);
 };

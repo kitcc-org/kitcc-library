@@ -7,7 +7,7 @@ import UsersAddNameForm from './UsersAddNameForm';
 import { Container } from '@mantine/core';
 import UsersAddPasswordForm from './UsersAddPasswordForm';
 import UsersAddSubmitButton from './UsersAddSubmitButton';
-import PasswordGenerateButton from './PasswordGenerateButton';
+import UserAddPasswordComponent from './UserAddPasswordComponent';
 
 interface UsersAddComponentProps {
 	form: UseFormReturnType<
@@ -17,6 +17,7 @@ interface UsersAddComponentProps {
 	handleSubmit: (props: CreateUserBody) => void;
 	handlePasswordGenButtonClick: () => void;
 	copied: boolean;
+	counts: number;
 }
 
 const UsersAddComponent = ({
@@ -24,6 +25,7 @@ const UsersAddComponent = ({
 	handleSubmit,
 	handlePasswordGenButtonClick,
 	copied,
+	counts,
 }: UsersAddComponentProps) => {
 	return (
 		<Container size="sm">
@@ -31,9 +33,11 @@ const UsersAddComponent = ({
 				<UsersAddTitle />
 				<UsersAddNameForm form={form} />
 				<UsersAddEmailForm form={form} />
-				<UsersAddPasswordForm form={form} />
-				<PasswordGenerateButton
+				<UsersAddPasswordForm form={form} copied={copied} />
+				<UserAddPasswordComponent
 					handlePasswordGenButtonClick={handlePasswordGenButtonClick}
+					copied={copied}
+					counts={counts}
 				/>
 				<UsersAddSubmitButton copied={copied} />
 			</FormLayout>
