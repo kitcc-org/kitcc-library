@@ -1,7 +1,7 @@
 import { Button } from '@mantine/core';
 import { RiUserAddFill } from 'react-icons/ri';
 
-const UserAddButton = () => {
+const UserCreateButton = () => {
 	return (
 		<Button
 			color="blue"
@@ -9,11 +9,11 @@ const UserAddButton = () => {
 			radius="xl"
 			leftSection={<RiUserAddFill />}
 			component="a"
-			href="users/add"
+			href="users/create"
 		>
-			ユーザー追加
+			ユーザーを作成する
 		</Button>
 	);
 };
 
-export default UserAddButton;
+export default UserCreateButton;

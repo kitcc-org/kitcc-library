@@ -1,17 +1,17 @@
 import PasswordGenerateButton from './PasswordGenerateButton';
 import PasswordValidCountComponent from './PasswordValidCountComponent';
 
-interface UserAddPasswordComponentProps {
+interface UserCreatePasswordComponentProps {
 	handlePasswordGenButtonClick: () => void;
 	copied: boolean;
 	counts: number;
 }
 
-const UserAddPasswordComponent = ({
+const UserCreatePasswordComponent = ({
 	handlePasswordGenButtonClick,
 	copied,
 	counts,
-}: UserAddPasswordComponentProps) => {
+}: UserCreatePasswordComponentProps) => {
 	if (copied) {
 		return <PasswordValidCountComponent counts={counts} />;
 	} else {
@@ -23,4 +23,4 @@ const UserAddPasswordComponent = ({
 	}
 };
 
-export default UserAddPasswordComponent;
+export default UserCreatePasswordComponent;

@@ -3,7 +3,7 @@ import type { UseFormReturnType } from '@mantine/form';
 import type { CreateUserBody } from 'client/client.schemas';
 import PasswordCopyButton from './PasswordCopyButton';
 
-interface UsersAddPasswordFormProps {
+interface UserCreatePasswordFormProps {
 	form: UseFormReturnType<
 		CreateUserBody,
 		(values: CreateUserBody) => CreateUserBody
@@ -11,7 +11,10 @@ interface UsersAddPasswordFormProps {
 	copied: boolean;
 }
 
-const UsersAddPasswordForm = ({ form, copied }: UsersAddPasswordFormProps) => {
+const UserCreatePasswordForm = ({
+	form,
+	copied,
+}: UserCreatePasswordFormProps) => {
 	return (
 		<TextInput
 			disabled
@@ -26,4 +29,4 @@ const UsersAddPasswordForm = ({ form, copied }: UsersAddPasswordFormProps) => {
 	);
 };
 
-export default UsersAddPasswordForm;
+export default UserCreatePasswordForm;

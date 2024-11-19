@@ -2,14 +2,14 @@ import { TextInput } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { CreateUserBody } from 'client/client.schemas';
 
-interface UsersAddNameFormProps {
+interface UserCreateNameFormProps {
 	form: UseFormReturnType<
 		CreateUserBody,
 		(values: CreateUserBody) => CreateUserBody
 	>;
 }
 
-const UsersAddNameForm = ({ form }: UsersAddNameFormProps) => {
+const UserCreateNameForm = ({ form }: UserCreateNameFormProps) => {
 	return (
 		<TextInput
 			label="ユーザー名"
@@ -22,4 +22,4 @@ const UsersAddNameForm = ({ form }: UsersAddNameFormProps) => {
 	);
 };
 
-export default UsersAddNameForm;
+export default UserCreateNameForm;

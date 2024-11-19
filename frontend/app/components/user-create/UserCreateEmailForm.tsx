@@ -2,14 +2,14 @@ import { TextInput } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import type { CreateUserBody } from 'client/client.schemas';
 
-interface UsersAddEmailFormProps {
+interface UserCreateEmailFormProps {
 	form: UseFormReturnType<
 		CreateUserBody,
 		(values: CreateUserBody) => CreateUserBody
 	>;
 }
 
-const UsersAddEmailForm = ({ form }: UsersAddEmailFormProps) => {
+const UserCreateEmailForm = ({ form }: UserCreateEmailFormProps) => {
 	return (
 		<TextInput
 			label="メールアドレス"
@@ -22,4 +22,4 @@ const UsersAddEmailForm = ({ form }: UsersAddEmailFormProps) => {
 	);
 };
 
-export default UsersAddEmailForm;
+export default UserCreateEmailForm;

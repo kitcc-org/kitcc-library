@@ -9,7 +9,7 @@ import { redirect, useSubmit } from '@remix-run/react';
 import { createUser } from 'client/client';
 import type { CreateUserBody } from 'client/client.schemas';
 import { useEffect, useState } from 'react';
-import UsersAddComponent from '~/components/users-add/UsersAddComponent';
+import UserCreateComponent from '~/components/user-create/UserCreateComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification, successNotification } from '~/utils/notification';
@@ -150,7 +150,7 @@ const UserAddPage = () => {
 		if (clipborad.copied) {
 			// パスワードを生成してから30秒以内の場合
 			submit(JSON.stringify({ createUserBody: props }), {
-				action: 'home/users/add',
+				action: 'home/users/create',
 				method: 'POST',
 				encType: 'application/json',
 			});
@@ -161,7 +161,7 @@ const UserAddPage = () => {
 	};
 
 	return (
-		<UsersAddComponent
+		<UserCreateComponent
 			form={form}
 			handleSubmit={handleSubmit}
 			handlePasswordGenButtonClick={handlePasswordGenButtonClick}

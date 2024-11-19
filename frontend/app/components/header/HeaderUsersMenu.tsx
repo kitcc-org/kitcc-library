@@ -21,7 +21,7 @@ const HeaderUsersMenu = () => {
 				</Menu.Item>
 				<Menu.Item
 					leftSection={<FaUserPlus />}
-					onClick={() => navigate('/home/users/add')}
+					onClick={() => navigate('/home/users/create')}
 				>
 					ユーザー作成
 				</Menu.Item>

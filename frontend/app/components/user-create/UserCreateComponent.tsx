@@ -1,15 +1,15 @@
 import FormLayout from '../layouts/FormLayout';
 import { CreateUserBody } from 'client/client.schemas';
 import { UseFormReturnType } from '@mantine/form';
-import UsersAddTitle from './UsersAddTitle';
-import UsersAddEmailForm from './UsersAddEmailForm';
-import UsersAddNameForm from './UsersAddNameForm';
+import UserCreateTitle from './UserCreateTitle';
+import UserCreateEmailForm from './UserCreateEmailForm';
+import UserCreateNameForm from './UserCreateNameForm';
 import { Container } from '@mantine/core';
-import UsersAddPasswordForm from './UsersAddPasswordForm';
-import UsersAddSubmitButton from './UsersAddSubmitButton';
-import UserAddPasswordComponent from './UserAddPasswordComponent';
+import UserCreatePasswordForm from './UserCreatePasswordForm';
+import UserCreateSubmitButton from './UserCreateSubmitButton';
+import UserCreatePasswordComponent from './UserCreatePasswordComponent';
 
-interface UsersAddComponentProps {
+interface UserCreateComponentProps {
 	form: UseFormReturnType<
 		CreateUserBody,
 		(values: CreateUserBody) => CreateUserBody
@@ -20,29 +20,29 @@ interface UsersAddComponentProps {
 	counts: number;
 }
 
-const UsersAddComponent = ({
+const UserCreateComponent = ({
 	form,
 	handleSubmit,
 	handlePasswordGenButtonClick,
 	copied,
 	counts,
-}: UsersAddComponentProps) => {
+}: UserCreateComponentProps) => {
 	return (
 		<Container size="sm">
 			<FormLayout<CreateUserBody> form={form} handleSubmit={handleSubmit}>
-				<UsersAddTitle />
-				<UsersAddNameForm form={form} />
-				<UsersAddEmailForm form={form} />
-				<UsersAddPasswordForm form={form} copied={copied} />
-				<UserAddPasswordComponent
+				<UserCreateTitle />
+				<UserCreateNameForm form={form} />
+				<UserCreateEmailForm form={form} />
+				<UserCreatePasswordForm form={form} copied={copied} />
+				<UserCreatePasswordComponent
 					handlePasswordGenButtonClick={handlePasswordGenButtonClick}
 					copied={copied}
 					counts={counts}
 				/>
-				<UsersAddSubmitButton copied={copied} />
+				<UserCreateSubmitButton copied={copied} />
 			</FormLayout>
 		</Container>
 	);
 };
 
-export default UsersAddComponent;
+export default UserCreateComponent;

@@ -1,11 +1,11 @@
 import { Button } from '@mantine/core';
 import { RiUserAddFill } from 'react-icons/ri';
 
-interface UsersAddSubmitButtonProps {
+interface UserCreateSubmitButtonProps {
 	copied: boolean;
 }
 
-const UsersAddSubmitButton = ({ copied }: UsersAddSubmitButtonProps) => {
+const UserCreateSubmitButton = ({ copied }: UserCreateSubmitButtonProps) => {
 	return (
 		<Button
 			type="submit"
@@ -18,4 +18,4 @@ const UsersAddSubmitButton = ({ copied }: UsersAddSubmitButtonProps) => {
 	);
 };
 
-export default UsersAddSubmitButton;
+export default UserCreateSubmitButton;

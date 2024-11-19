@@ -6,7 +6,7 @@ import PaginationComponent from '../common/pagination/PaginationComponent';
 import ErrorComponent from '../common/error/ErrorComponent';
 import { getUsersResponse } from 'client/client';
 import UsersListTable from './UsersListTable';
-import UserAddButton from './UserAddButton';
+import UserCreateButton from './UserCreateButton';
 
 interface UsersListComponentProps {
 	paginationProps: PaginationProps;
@@ -42,7 +42,7 @@ const UsersListComponent = ({
 				) : (
 					<ErrorComponent message={'ユーザー情報を取得できませんでした。'} />
 				)}
-				<UserAddButton />
+				<UserCreateButton />
 				<PaginationComponent
 					total={paginationProps.total}
 					page={paginationProps.page}

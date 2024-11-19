@@ -1,7 +1,7 @@
 import { Center, Group, Title } from '@mantine/core';
 import { RiUserAddFill } from 'react-icons/ri';
 
-const UsersAddTitle = () => {
+const UserCreateTitle = () => {
 	return (
 		<Center>
 			<Group justify="center" align="center">
@@ -12,4 +12,4 @@ const UsersAddTitle = () => {
 	);
 };
 
-export default UsersAddTitle;
+export default UserCreateTitle;
