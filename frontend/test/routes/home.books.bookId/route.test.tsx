@@ -82,6 +82,15 @@ describe('Book Detail Page', () => {
 			// 削除ボタンをクリックする
 			await user.click(deleteButton);
 
+			// ダイアログに削除ボタンが表示されている
+			const dialogDeleteButton = await screen.findByRole('button', {
+				name: '削除',
+			});
+			expect(dialogDeleteButton).toBeInTheDocument();
+
+			// 削除ボタンをクリックする
+			await user.click(dialogDeleteButton);
+
 			// ログインページへリダイレクトされる
 			expect(redirect).toHaveBeenCalledWith('/login', {
 				headers: {
