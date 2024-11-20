@@ -10,7 +10,7 @@ import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
 
 import { Book } from 'client/client.schemas';
-import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
+import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 import { ActionResponse } from '~/types/response';
 
@@ -130,7 +130,7 @@ const BookDetail = () => {
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailControlPanel
+					<BookDetailActionPanel
 						id={bookResponse.data.id}
 						thumbnail={bookResponse.data.thumbnail}
 					/>

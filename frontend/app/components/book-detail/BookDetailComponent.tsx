@@ -2,8 +2,8 @@ import { Grid, rem, Stack } from '@mantine/core';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 
 import { getBookResponse, getLoansResponse } from 'client/client';
+import BookDetailActionPanel from './BookDetailActionPanel';
 import BookDetailContent from './BookDetailContent';
-import BookDetailControlPanel from './BookDetailControlPanel';
 
 interface BookDetailComponentProps {
 	bookResponse: getBookResponse;
@@ -27,7 +27,7 @@ const BookDetailComponent = ({
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailControlPanel
+					<BookDetailActionPanel
 						id={bookResponse.data.id}
 						thumbnail={bookResponse.data.thumbnail}
 					/>

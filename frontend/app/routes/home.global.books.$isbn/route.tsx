@@ -13,7 +13,7 @@ import {
 	searchBooksResponse,
 } from 'client/client';
 import { CreateBookBody } from 'client/client.schemas';
-import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
+import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
@@ -108,7 +108,7 @@ const GlobalBookDetailPage = () => {
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailControlPanel
+					<BookDetailActionPanel
 						thumbnail={searchBooksResponse.data.books[0].thumbnail}
 						searchBook={searchBooksResponse.data.books[0]}
 						totalBook={totalBook}
