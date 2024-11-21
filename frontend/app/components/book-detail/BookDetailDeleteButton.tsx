@@ -21,7 +21,12 @@ const BookDetailDeleteButton = ({ bookId }: BookDetailDeleteButtonProps) => {
 				centered
 			>
 				<Center>
-					<Button leftSection={<RiArrowGoBackLine />} color="gray" mr={rem(10)}>
+					<Button
+						leftSection={<RiArrowGoBackLine />}
+						color="gray"
+						mr={rem(10)}
+						onClick={close}
+					>
 						キャンセル
 					</Button>
 					<Button
