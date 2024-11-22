@@ -84,7 +84,7 @@ describe('Book Detail Page', () => {
 
 			// ダイアログに削除ボタンが表示されている
 			const dialogDeleteButton = await screen.findByRole('button', {
-				name: '削除',
+				name: '削除する',
 			});
 			expect(dialogDeleteButton).toBeInTheDocument();
 
