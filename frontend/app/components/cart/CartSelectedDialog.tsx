@@ -26,11 +26,11 @@ const CartSelectedDialog = ({
 				justify="center"
 				gap="md"
 			>
-				<Button fz="xs" color="blue" onClick={handleBorrowButtonClick}>
+				<Button fz="sm" color="blue" onClick={handleBorrowButtonClick}>
 					借りる
 				</Button>
 				<Button
-					fz="xs"
+					fz="sm"
 					color="red"
 					onClick={() => {
 						setCart(removeBooksFromCart(cart, selectedCartBook));
@@ -40,7 +40,7 @@ const CartSelectedDialog = ({
 					カートから削除する
 				</Button>
 				<Button
-					fz="xs"
+					fz="sm"
 					variant="light"
 					bd="solid 2px"
 					onClick={() => setSelectedCartBook([])}

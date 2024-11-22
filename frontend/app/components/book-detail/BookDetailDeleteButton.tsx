@@ -40,7 +40,7 @@ const BookDetailDeleteButton = ({ bookId }: BookDetailDeleteButtonProps) => {
 						}
 						disabled={fetcher.state === 'submitting'}
 					>
-						削除
+						削除する
 					</Button>
 				</Center>
 			</Modal>

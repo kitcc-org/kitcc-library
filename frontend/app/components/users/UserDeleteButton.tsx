@@ -36,7 +36,7 @@ const UserDeleteButton = ({
 						color="red"
 						onClick={() => handleDeleteUserButtonClick(id)}
 					>
-						削除
+						削除する
 					</Button>
 				</Center>
 			</Modal>
