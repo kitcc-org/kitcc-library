@@ -32,7 +32,7 @@ const UserDeleteButton = ({
 						キャンセル
 					</Button>
 					<Button
-						leftSection={<MdDeleteForever />}
+						leftSection={<MdDeleteForever size={20} />}
 						color="red"
 						onClick={() => handleDeleteUserButtonClick(id)}
 					>

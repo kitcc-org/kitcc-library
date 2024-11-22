@@ -35,7 +35,7 @@ const BookSelectedDialog = () => {
 						キャンセル
 					</Button>
 					<Button
-						leftSection={<MdDeleteForever size={23} />}
+						leftSection={<MdDeleteForever size={20} />}
 						color="red"
 						onClick={() => {
 							submit(JSON.stringify({ selectedBook: selectedBook }), {

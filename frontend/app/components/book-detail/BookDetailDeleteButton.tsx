@@ -30,7 +30,7 @@ const BookDetailDeleteButton = ({ bookId }: BookDetailDeleteButtonProps) => {
 						キャンセル
 					</Button>
 					<Button
-						leftSection={<MdDeleteForever />}
+						leftSection={<MdDeleteForever size={20} />}
 						color="red"
 						onClick={() =>
 							fetcher.submit(
