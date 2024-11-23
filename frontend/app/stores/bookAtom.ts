@@ -2,6 +2,7 @@ import { atom } from 'jotai';
 
 export interface SelectedBookProps {
 	id: number;
+	title: string;
 	stock: number;
 	thumbnail?: string;
 }
