@@ -102,16 +102,14 @@ const UsersListPage = () => {
 	const navigate = useNavigate();
 
 	const handlePaginationChange = (newPage: number) => {
-		let url = '/home/users';
-		let initial = true;
+		const params = new URLSearchParams();
+
 		if (limit) {
-			url =
-				initial === true ? `${url}?limit=${limit}` : `${url}&limit=${limit}`;
-			initial = false;
+			params.append('limit', limit);
 		}
-		url =
-			initial === true ? `${url}?page=${newPage}` : `${url}&page=${newPage}`;
-		navigate(url);
+		params.append('page', String(newPage));
+
+		navigate(`/home/users?${params.toString()}`);
 	};
 
 	const handleLimitChange = (newLimit: number) => {

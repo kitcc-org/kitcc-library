@@ -153,7 +153,6 @@ export const MyPage = () => {
 		if (limit) {
 			params.append('limit', limit);
 		}
-
 		params.append('page', newPage.toString());
 
 		navigate(`/home/me?${params.toString()}`);
@@ -161,9 +160,7 @@ export const MyPage = () => {
 
 	const handleLimitChange = (newLimit: number) => {
 		const params = new URLSearchParams();
-
 		params.append('limit', newLimit.toString());
-
 		navigate(`/home/me?${params.toString()}`);
 	};
 
