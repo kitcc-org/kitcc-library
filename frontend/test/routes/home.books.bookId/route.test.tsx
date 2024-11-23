@@ -13,6 +13,7 @@ import BookDetail, {
 	loader as rootLoader,
 } from '~/routes/home.books.$bookId/route';
 import { redirect } from '../../mocks/@remix-run/cloudflare';
+import type * as remixrunReact from '@remix-run/react';
 
 vi.mock('@remix-run/cloudflare', async (importOriginal) => {
 	const actual = await importOriginal<typeof remixrunCloudflare>();
@@ -21,6 +22,20 @@ vi.mock('@remix-run/cloudflare', async (importOriginal) => {
 		redirect: (url: string, init?: number | ResponseInit) => {
 			return redirect(url, init);
 		},
+	};
+});
+
+const { navigateMock } = vi.hoisted(() => {
+	return {
+		navigateMock: vi.fn(),
+	};
+});
+
+vi.mock('@remix-run/react', async (importOriginal) => {
+	const actual = await importOriginal<typeof remixrunReact>();
+	return {
+		...actual,
+		useNavigate: () => navigateMock,
 	};
 });
 
@@ -148,5 +163,19 @@ describe('Book Detail Page', () => {
 		});
 
 		// TODO: ログイン状態で借りている人がいる場合
+	});
+
+	describe('BreadCrumbs', () => {
+		it('should navigate to home page when clicked', async () => {
+			const { user } = customRender(
+				<BookDetailStub initialEntries={['/home/books/1']} />,
+			);
+
+			const homeLink = await screen.findByRole('link', { name: '蔵書一覧' });
+			await user.click(homeLink);
+
+			// ホームページに遷移する
+			expect(window.location.pathname).toBe('/home');
+		});
 	});
 });
