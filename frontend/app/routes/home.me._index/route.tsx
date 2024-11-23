@@ -137,6 +137,7 @@ export const MyPage = () => {
 						...bookArray,
 						{
 							...loan.books,
+							stock: loan.loans.volume,
 							volume: loan.loans.volume,
 						},
 					];
