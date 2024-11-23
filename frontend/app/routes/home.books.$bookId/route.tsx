@@ -7,15 +7,14 @@ import { json, redirect } from '@remix-run/cloudflare';
 import { Outlet, useLoaderData, useLocation } from '@remix-run/react';
 import type { getBookResponse, getLoansResponse } from 'client/client';
 import { deleteBook, getBook, getLoans } from 'client/client';
-import { commitSession, getSession } from '~/services/session.server';
-
 import { Book } from 'client/client.schemas';
 import { FaBook } from 'react-icons/fa6';
-import { GiNotebook } from 'react-icons/gi';
 import { LuBookCopy } from 'react-icons/lu';
+import { TbBookUpload } from 'react-icons/tb';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
+import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';
 
@@ -143,7 +142,7 @@ const BookDetail = () => {
 									href: `/home/books/${bookResponse.data.id}`,
 								},
 								{
-									icon: <GiNotebook />,
+									icon: <TbBookUpload />,
 									title: '書籍更新',
 									href: `/home/books/${bookResponse.data.id}/edit`,
 								},
