@@ -130,9 +130,13 @@ const UserCreatePage = () => {
 					? null
 					: '有効でないメールアドレスです',
 			password: (value) => {
-				if (value.length < 8) return 'パスワードは8文字以上で入力してください';
-				else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) return null;
-				else return 'パスワードにはアルファベットと数字を含めてください';
+				if (value.length < 8) {
+					return 'パスワードは8文字以上で入力してください';
+				} else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(value)) {
+					return null;
+				} else {
+					return 'パスワードにはアルファベットと数字を含めてください';
+				}
 			},
 		},
 	});

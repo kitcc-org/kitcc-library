@@ -16,7 +16,6 @@ import { ActionResponse } from '~/types/response';
 import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import { LuBookCopy } from 'react-icons/lu';
 import { FaBook } from 'react-icons/fa6';
-import { GiNotebook } from 'react-icons/gi';
 import { TbBookUpload } from 'react-icons/tb';
 
 interface LoaderData {

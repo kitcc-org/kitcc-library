@@ -11,7 +11,9 @@ interface LoanCardsProps {
 
 const LoanCards = ({ handleReturnButtonClick }: LoanCardsProps) => {
 	const [loans] = useAtom(displayLoanAtom);
-	if (loans.length === 0) return <NoLoanComponent />;
+	if (loans.length === 0) {
+		return <NoLoanComponent />;
+	}
 
 	return (
 		<>
