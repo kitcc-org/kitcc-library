@@ -1,17 +1,13 @@
 import { rem, Table } from '@mantine/core';
 import { GetUsers200UsersItem } from 'client/client.schemas';
-import UserDeleteButton from './UserDeleteButton';
 import NoUserComponent from './NoUserComponent';
+import UserDeleteButton from './UserDeleteButton';
 
 interface UsersTableProps {
 	users: GetUsers200UsersItem[];
-	handleDeleteUserButtonClick: (id: number) => void;
 }
 
-const UsersListTable = ({
-	users,
-	handleDeleteUserButtonClick,
-}: UsersTableProps) => {
+const UsersListTable = ({ users }: UsersTableProps) => {
 	if (users.length === 0) {
 		return <NoUserComponent />;
 	}
@@ -24,10 +20,7 @@ const UsersListTable = ({
 							<>
 								<Table.Td>{user.name}</Table.Td>
 								<Table.Td maw={rem(5)}>
-									<UserDeleteButton
-										id={user.id}
-										handleDeleteUserButtonClick={handleDeleteUserButtonClick}
-									/>
+									<UserDeleteButton id={user.id} />
 								</Table.Td>
 							</>
 						)}

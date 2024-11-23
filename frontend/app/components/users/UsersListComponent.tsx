@@ -12,13 +12,11 @@ import UsersListTitle from './UsersListTitle';
 interface UsersListComponentProps {
 	paginationProps: PaginationProps;
 	usersResponse: SerializeFrom<getUsersResponse>;
-	handleDeleteUserButtonClick: (id: number) => void;
 }
 
 const UsersListComponent = ({
 	paginationProps,
 	usersResponse,
-	handleDeleteUserButtonClick,
 }: UsersListComponentProps) => {
 	return (
 		<Container>
@@ -36,10 +34,7 @@ const UsersListComponent = ({
 					handleLimitChange={paginationProps.handleLimitChange}
 				/>
 				{usersResponse.status === 200 ? (
-					<UsersListTable
-						users={usersResponse.data.users}
-						handleDeleteUserButtonClick={handleDeleteUserButtonClick}
-					/>
+					<UsersListTable users={usersResponse.data.users} />
 				) : (
 					<ErrorComponent message={'ユーザー情報を取得できませんでした。'} />
 				)}

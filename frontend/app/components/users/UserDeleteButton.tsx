@@ -1,45 +1,17 @@
-import { Button, Center, Modal, rem } from '@mantine/core';
+import { Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MdDeleteForever } from 'react-icons/md';
-import { RiArrowGoBackLine } from 'react-icons/ri';
+import UserDeleteModal from './UserDeleteModal';
 
 interface UserDeleteButtonProps {
 	id: number;
-	handleDeleteUserButtonClick: (id: number) => void;
 }
 
-const UserDeleteButton = ({
-	id,
-	handleDeleteUserButtonClick,
-}: UserDeleteButtonProps) => {
+const UserDeleteButton = ({ id }: UserDeleteButtonProps) => {
 	const [opened, { open, close }] = useDisclosure();
 
 	return (
 		<>
-			<Modal
-				opened={opened}
-				onClose={close}
-				title="本当に削除しますか？"
-				centered
-			>
-				<Center>
-					<Button
-						leftSection={<RiArrowGoBackLine />}
-						color="gray"
-						mr={rem(10)}
-						onClick={close}
-					>
-						キャンセル
-					</Button>
-					<Button
-						leftSection={<MdDeleteForever size={20} />}
-						color="red"
-						onClick={() => handleDeleteUserButtonClick(id)}
-					>
-						削除する
-					</Button>
-				</Center>
-			</Modal>
+			<UserDeleteModal userId={id} disclosure={{ opened, close }} />
 			<Button color="red" variant="light" bd="solid 2px" onClick={() => open()}>
 				削除
 			</Button>

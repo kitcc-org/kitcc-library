@@ -4,7 +4,7 @@ import {
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { useFetcher, useLoaderData, useNavigate } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import { deleteUser, getUsers, getUsersResponse } from 'client/client';
 import UsersListComponent from '~/components/users/UsersListComponent';
 import { commitSession, getSession } from '~/services/session.server';
@@ -100,7 +100,7 @@ const UsersListPage = () => {
 	const { usersResponse, condition } = useLoaderData<typeof loader>();
 	const { page, limit } = condition;
 	const navigate = useNavigate();
-	const fetcher = useFetcher();
+
 	const handlePaginationChange = (newPage: number) => {
 		let url = '/home/users';
 		let initial = true;
@@ -118,15 +118,6 @@ const UsersListPage = () => {
 		navigate(`/home/users?limit=${newLimit}`);
 	};
 
-	const handleDeleteUserButtonClick = (id: number) => {
-		fetcher.submit(
-			{ userId: id },
-			{
-				method: 'DELETE',
-			},
-		);
-	};
-
 	return (
 		<UsersListComponent
 			paginationProps={{
@@ -137,7 +128,6 @@ const UsersListPage = () => {
 				total: usersResponse.data.totalUser,
 			}}
 			usersResponse={usersResponse}
-			handleDeleteUserButtonClick={handleDeleteUserButtonClick}
 		/>
 	);
 };
