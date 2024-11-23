@@ -1,6 +1,6 @@
 import { AspectRatio, Image, Overlay, rem } from '@mantine/core';
 import { useLocation, useNavigate } from '@remix-run/react';
-import NoImage from '~/img/noImage.png';
+import NoImage from '~/img/noimage.png';
 
 interface BookCardThumbnailProps {
 	id?: number;
