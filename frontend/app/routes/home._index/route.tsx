@@ -7,12 +7,12 @@ import type {
 import { json, redirect } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { deleteBooks, getBooks, getBooksResponse } from 'client/client';
-import { GetBooksParams } from 'client/client.schemas';
+import { Book, GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import BookListComponent from '~/components/books/BookListComponent';
 import { commitSession, getSession } from '~/services/session.server';
-import { SelectedBookProps, selectedBooksAtom } from '~/stores/bookAtom';
+import { selectedBooksAtom } from '~/stores/bookAtom';
 import { ActionResponse } from '~/types/response';
 
 interface LoaderData {
@@ -78,7 +78,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	].join('; ');
 
 	// prettier-ignore
-	const requestBody = await request.json<{ selectedBook: SelectedBookProps[] }>();
+	const requestBody = await request.json<{ selectedBook: Book[] }>();
 	const selectedBook = requestBody.selectedBook;
 
 	const response = await deleteBooks(

@@ -1,9 +1,9 @@
+import { Book } from 'client/client.schemas';
 import { atom } from 'jotai';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { SelectedBookProps } from './bookAtom';
 
 const storage = createJSONStorage<CartProps[]>(() => sessionStorage);
-export interface CartProps extends SelectedBookProps {
+export interface CartProps extends Book {
 	volume: number;
 }
 

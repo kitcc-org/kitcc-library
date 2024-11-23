@@ -136,9 +136,7 @@ export const MyPage = () => {
 					bookArray = [
 						...bookArray,
 						{
-							id: loan.books.id,
-							stock: loan.loans.volume,
-							thumbnail: loan.books.thumbnail,
+							...loan.books,
 							volume: loan.loans.volume,
 						},
 					];

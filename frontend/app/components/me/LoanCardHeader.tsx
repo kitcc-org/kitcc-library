@@ -1,8 +1,8 @@
 import { Checkbox, Group } from '@mantine/core';
 import { useAtom } from 'jotai';
 import type { CartProps } from '~/stores/cartAtom';
-import CartCardNumberInput from '../cart/CartCardNumberInput';
 import { displayLoanAtom, selectedLoanAtom } from '~/stores/loanAtom';
+import CartCardNumberInput from '../cart/CartCardNumberInput';
 
 interface LoanCardHeaderProps {
 	id: number;
@@ -21,9 +21,7 @@ const LoanCardHeader = ({ id }: LoanCardHeaderProps) => {
 			displayLoan.map((element) => {
 				if (element.id === id) {
 					return {
-						id: element.id,
-						stock: element.stock,
-						thumbnail: element.thumbnail,
+						...element,
 						volume: value,
 					};
 				}
@@ -36,9 +34,7 @@ const LoanCardHeader = ({ id }: LoanCardHeaderProps) => {
 				selectedLoan.map((element) => {
 					if (element.id === id) {
 						return {
-							id: element.id,
-							stock: element.stock,
-							thumbnail: element.thumbnail,
+							...element,
 							volume: value,
 						};
 					}
