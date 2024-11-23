@@ -17,9 +17,11 @@ interface BookListComponentProps {
 		(values: GetBooksParams) => GetBooksParams
 	>;
 	handleSubmit: (props: GetBooksParams) => void;
-	isOpen: boolean;
-	open: () => void;
-	close: () => void;
+	disclosure: {
+		isOpen: boolean;
+		open: () => void;
+		close: () => void;
+	};
 	paginationProps: PaginationProps;
 }
 
@@ -27,17 +29,13 @@ const BookListComponent = ({
 	booksResponse,
 	form,
 	handleSubmit,
-	isOpen,
-	open,
-	close,
+	disclosure: { isOpen, open, close },
 	paginationProps,
 }: BookListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<BookSearchComponent
-				isOpen={isOpen}
-				open={open}
-				close={close}
+				disclosure={{ isOpen, open, close }}
 				form={form}
 				handleSubmit={handleSubmit}
 			/>

@@ -1,16 +1,16 @@
-import { useOutletContext, useSubmit } from '@remix-run/react';
-import { BookDetailOutletContext } from '../home.books.$bookId/route';
 import { useForm } from '@mantine/form';
 import {
 	ActionFunctionArgs,
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
+import { useOutletContext, useSubmit } from '@remix-run/react';
+import { updateBook } from 'client/client';
 import { UpdateBookBody } from 'client/client.schemas';
 import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
-import { formatDate } from '~/utils/day';
 import { commitSession, getSession } from '~/services/session.server';
-import { updateBook } from 'client/client';
+import { formatDate } from '~/utils/day';
+import { BookDetailOutletContext } from '../home.books.$bookId/route';
 
 export interface CustomUpdateBookBody extends UpdateBookBody {
 	customPublishedDate?: Date;
@@ -84,6 +84,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 401:
 				session.flash('error', 'ログインしてください');
 				return redirect('/login', {
@@ -91,6 +92,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 404:
 				session.flash('error', '書籍が見つかりませんでした');
 				return redirect('/home', {
@@ -98,6 +100,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 500:
 				session.flash('error', 'サーバーエラーが発生しました');
 				return redirect(`/home/books/${bookId}`, {

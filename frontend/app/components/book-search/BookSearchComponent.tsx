@@ -4,9 +4,11 @@ import BookSearchForm from './BookSearchForm';
 import BookSearchModeButton from './BookSearchModeButton';
 
 interface BookSearchComponentProps {
-	isOpen: boolean;
-	open: () => void;
-	close: () => void;
+	disclosure: {
+		isOpen: boolean;
+		open: () => void;
+		close: () => void;
+	};
 	form: UseFormReturnType<
 		GetBooksParams,
 		(values: GetBooksParams) => GetBooksParams
@@ -15,9 +17,7 @@ interface BookSearchComponentProps {
 }
 
 const BookSearchComponent = ({
-	isOpen,
-	open,
-	close,
+	disclosure: { isOpen, open, close },
 	form,
 	handleSubmit,
 }: BookSearchComponentProps) => {

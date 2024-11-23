@@ -25,9 +25,11 @@ interface GlobalBookListComponentProps {
 	>;
 	globalSearchFunctions: HandleGlobalSearchFunctions;
 	paginationProps: PaginationProps;
-	isOpen: boolean;
-	open: () => void;
-	close: () => void;
+	disclosure: {
+		isOpen: boolean;
+		open: () => void;
+		close: () => void;
+	};
 	searchMode: string;
 	setSearchMode: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -36,9 +38,7 @@ const GlobalBookListComponent = ({
 	booksResponse,
 	form,
 	globalSearchFunctions,
-	isOpen,
-	open,
-	close,
+	disclosure: { isOpen, open, close },
 	paginationProps,
 	searchMode,
 	setSearchMode,

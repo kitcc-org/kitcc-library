@@ -86,6 +86,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 401:
 				session.flash('error', 'ログインしてください');
 				return redirect('/login', {
@@ -93,6 +94,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 404:
 				session.flash('error', '書籍が見つかりませんでした');
 				return redirect('/home', {
@@ -100,6 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 500:
 				session.flash('error', 'サーバーエラーが発生しました');
 				return json<ActionResponse>(

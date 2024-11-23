@@ -213,9 +213,7 @@ const BooKListPage = () => {
 			booksResponse={booksResponse}
 			form={form}
 			handleSubmit={handleSubmit}
-			isOpen={opened}
-			open={open}
-			close={close}
+			disclosure={{ isOpen: opened, open, close }}
 			paginationProps={{
 				handlePaginationChange: handlePaginationChange,
 				handleLimitChange: handleLimitChange,

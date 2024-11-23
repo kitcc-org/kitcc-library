@@ -85,12 +85,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 			return redirect('/home', {
 				headers: { 'Set-Cookie': await commitSession(session) },
 			});
+
 		case 400:
 			session.flash('error', 'リクエストの中身が誤っています');
 			return json<ActionResponse>(
 				{ method: 'POST', status: response.status },
 				{ headers: { 'Set-Cookie': await commitSession(session) } },
 			);
+
 		case 401:
 			session.flash('error', 'ログインしてください');
 			return redirect('/login', {
