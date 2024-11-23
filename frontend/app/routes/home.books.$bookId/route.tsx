@@ -11,6 +11,7 @@ import { commitSession, getSession } from '~/services/session.server';
 
 import { Book } from 'client/client.schemas';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';
@@ -127,6 +128,15 @@ const BookDetail = () => {
 	}
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<BreadCrumbsComponent
+				anchors={[
+					{ title: '蔵書一覧', href: '/home' },
+					{
+						title: bookResponse.data.title,
+						href: `/home/books/${bookResponse.data.id}`,
+					},
+				]}
+			/>
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
 					<BookDetailActionPanel book={bookResponse.data} />
