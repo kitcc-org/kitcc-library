@@ -1,5 +1,5 @@
 import { Button, Center, Modal, rem } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
+import { useSubmit } from '@remix-run/react';
 import { MdDeleteForever } from 'react-icons/md';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 
@@ -15,7 +15,7 @@ const BookDetailDeleteModal = ({
 	bookId: bookId,
 	disclosure: { opened, close },
 }: BookDetailDeleteModalProps) => {
-	const fetcher = useFetcher();
+	const submit = useSubmit();
 
 	return (
 		<Modal
@@ -37,12 +37,11 @@ const BookDetailDeleteModal = ({
 					leftSection={<MdDeleteForever size={20} />}
 					color="red"
 					onClick={() => {
-						fetcher.submit(
+						submit(
 							{ bookId: bookId },
 							{ action: '/home/books/$bookId', method: 'DELETE' },
 						);
 					}}
-					disabled={fetcher.state === 'submitting'}
 				>
 					削除する
 				</Button>
