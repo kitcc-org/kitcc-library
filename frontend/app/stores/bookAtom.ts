@@ -7,5 +7,5 @@ export interface SelectedBookProps {
 }
 
 // 選択された本を管理するAtom
-// 生存時間: DOM(ページをリロードするまで)
+// 生存時間: ページをリロードするまで
 export const selectedBooksAtom = atom<SelectedBookProps[]>([]);
