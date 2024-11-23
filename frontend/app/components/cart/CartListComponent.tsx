@@ -6,7 +6,6 @@ import CartSelectedDialog from './CartSelectedDialog';
 import CartTitle from './CartTitle';
 import NoCartComponent from './NoCartComponent';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
-import { userAtom } from '~/stores/userAtom';
 import { FaUser } from 'react-icons/fa';
 import { LuShoppingCart } from 'react-icons/lu';
 

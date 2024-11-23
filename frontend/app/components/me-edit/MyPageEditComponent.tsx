@@ -7,7 +7,6 @@ import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';
 import FormLayout from '../layouts/FormLayout';
 import MyPageEditSubmitButton from './MyPageEditSubmitButton';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
-import { GiNotebook } from 'react-icons/gi';
 import { FaUser, FaUserEdit } from 'react-icons/fa';
 
 interface MyPageEditComponentProps {

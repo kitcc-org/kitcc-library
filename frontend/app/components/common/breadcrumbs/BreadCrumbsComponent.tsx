@@ -1,4 +1,4 @@
-import { Anchor, Breadcrumbs, Group, Text } from '@mantine/core';
+import { Anchor, Breadcrumbs, Group } from '@mantine/core';
 import React from 'react';
 
 interface AnchorProps {
