@@ -1,16 +1,17 @@
 import { Container, Stack } from '@mantine/core';
-import UsersListTitle from './UsersListTitle';
-import ContentsHeader from '../common/pagination/ContentsHeader';
-import type { PaginationProps } from '~/types/paginatiion';
-import PaginationComponent from '../common/pagination/PaginationComponent';
-import ErrorComponent from '../common/error/ErrorComponent';
+import { SerializeFrom } from '@remix-run/cloudflare';
 import { getUsersResponse } from 'client/client';
-import UsersListTable from './UsersListTable';
+import type { PaginationProps } from '~/types/paginatiion';
+import ErrorComponent from '../common/error/ErrorComponent';
+import ContentsHeader from '../common/pagination/ContentsHeader';
+import PaginationComponent from '../common/pagination/PaginationComponent';
 import UserCreateButton from './UserCreateButton';
+import UsersListTable from './UsersListTable';
+import UsersListTitle from './UsersListTitle';
 
 interface UsersListComponentProps {
 	paginationProps: PaginationProps;
-	usersResponse: getUsersResponse;
+	usersResponse: SerializeFrom<getUsersResponse>;
 	handleDeleteUserButtonClick: (id: number) => void;
 }
 

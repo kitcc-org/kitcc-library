@@ -1,16 +1,17 @@
 import { Stack } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
+import { SerializeFrom } from '@remix-run/cloudflare';
 import { getBooksResponse } from 'client/client';
 import type { GetBooksParams } from 'client/client.schemas';
+import { PaginationProps } from '~/types/paginatiion';
 import BookSearchComponent from '../book-search/BookSearchComponent';
 import ErrorComponent from '../common/error/ErrorComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import BookCards from './BookCards';
-import { PaginationProps } from '~/types/paginatiion';
 
 interface BookListComponentProps {
-	booksResponse: getBooksResponse;
+	booksResponse: SerializeFrom<getBooksResponse>;
 	form: UseFormReturnType<
 		GetBooksParams,
 		(values: GetBooksParams) => GetBooksParams
