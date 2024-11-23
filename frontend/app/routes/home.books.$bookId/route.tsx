@@ -144,7 +144,7 @@ const BookDetail = () => {
 								},
 								{
 									icon: <GiNotebook />,
-									title: '書籍編集',
+									title: '書籍更新',
 									href: `/home/books/${bookResponse.data.id}/edit`,
 								},
 							]
