@@ -4,7 +4,7 @@ import { SerializeFrom } from '@remix-run/cloudflare';
 import type { searchBooksResponse } from 'client/client';
 import type { SearchBooksParams } from 'client/client.schemas';
 import React from 'react';
-import { PaginationProps } from '~/types/paginatiion';
+import { PaginationProps } from '~/types/pagination';
 import ErrorComponent from '../common/error/ErrorComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';

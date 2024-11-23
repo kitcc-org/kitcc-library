@@ -3,7 +3,7 @@ import type { UseFormReturnType } from '@mantine/form';
 import { SerializeFrom } from '@remix-run/cloudflare';
 import { getBooksResponse } from 'client/client';
 import type { GetBooksParams } from 'client/client.schemas';
-import { PaginationProps } from '~/types/paginatiion';
+import { PaginationProps } from '~/types/pagination';
 import BookSearchComponent from '../book-search/BookSearchComponent';
 import ErrorComponent from '../common/error/ErrorComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
