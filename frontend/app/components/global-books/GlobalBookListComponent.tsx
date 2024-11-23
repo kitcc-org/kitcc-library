@@ -1,15 +1,16 @@
+import { Stack } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
+import { SerializeFrom } from '@remix-run/cloudflare';
 import type { searchBooksResponse } from 'client/client';
 import type { SearchBooksParams } from 'client/client.schemas';
 import React from 'react';
-import NoQueryComponent from './NoQueryComponent';
-import { Stack } from '@mantine/core';
-import ContentsHeader from '../common/pagination/ContentsHeader';
+import { PaginationProps } from '~/types/pagination';
 import ErrorComponent from '../common/error/ErrorComponent';
+import ContentsHeader from '../common/pagination/ContentsHeader';
+import PaginationComponent from '../common/pagination/PaginationComponent';
 import GlobalBookCards from './GlobalBookCards';
 import GlobalBookSearchComponent from './GlobalBookSearchComponent';
-import PaginationComponent from '../common/pagination/PaginationComponent';
-import { PaginationProps } from '~/types/paginatiion';
+import NoQueryComponent from './NoQueryComponent';
 
 export interface HandleGlobalSearchFunctions {
 	handleDetailSubmit: (props: SearchBooksParams) => void;
@@ -17,7 +18,7 @@ export interface HandleGlobalSearchFunctions {
 }
 
 interface GlobalBookListComponentProps {
-	booksResponse?: searchBooksResponse;
+	booksResponse?: SerializeFrom<searchBooksResponse>;
 	form: UseFormReturnType<
 		SearchBooksParams,
 		(values: SearchBooksParams) => SearchBooksParams

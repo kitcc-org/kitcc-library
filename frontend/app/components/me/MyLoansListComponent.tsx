@@ -1,13 +1,14 @@
 import { Stack } from '@mantine/core';
+import { SerializeFrom } from '@remix-run/cloudflare';
 import { getLoansResponse } from 'client/client';
-import { PaginationProps } from '~/types/paginatiion';
-import ContentsHeader from '../common/pagination/ContentsHeader';
+import { PaginationProps } from '~/types/pagination';
 import ErrorComponent from '../common/error/ErrorComponent';
+import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import LoanCards from './LoanCards';
 
 interface MyLoansListComponentProps {
-	loansResponse: getLoansResponse;
+	loansResponse: SerializeFrom<getLoansResponse>;
 	paginationProps: PaginationProps;
 	handleReturnButtonClick: () => void;
 }

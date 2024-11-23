@@ -1,13 +1,14 @@
 import { Stack } from '@mantine/core';
+import { SerializeFrom } from '@remix-run/cloudflare';
 import { getLoansResponse } from 'client/client';
 import { User } from 'client/client.schemas';
-import { PaginationProps } from '~/types/paginatiion';
+import { PaginationProps } from '~/types/pagination';
 import MyLoansListComponent from './MyLoansListComponent';
 import MyProfileDataComponent from './MyProfileComponent';
 
 interface MyPageComponentProps {
 	user: User;
-	loansResponse: getLoansResponse;
+	loansResponse: SerializeFrom<getLoansResponse>;
 	paginationProps: PaginationProps;
 	handleReturnButtonClick: () => void;
 }
