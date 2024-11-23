@@ -10,6 +10,7 @@ import GlobalBookCards from './GlobalBookCards';
 import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import { PaginationProps } from '~/types/paginatiion';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 
 export interface HandleGlobalSearchFunctions {
 	handleDetailSubmit: (props: SearchBooksParams) => void;
@@ -44,6 +45,9 @@ const GlobalBookListComponent = ({
 }: GlobalBookListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<BreadCrumbsComponent
+				anchors={[{ title: 'グローバル検索', href: '/home/global' }]}
+			/>
 			<GlobalBookSearchComponent
 				isOpen={isOpen}
 				open={open}

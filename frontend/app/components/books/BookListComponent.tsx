@@ -8,6 +8,7 @@ import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import BookCards from './BookCards';
 import { PaginationProps } from '~/types/paginatiion';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 
 interface BookListComponentProps {
 	booksResponse: getBooksResponse;
@@ -33,6 +34,7 @@ const BookListComponent = ({
 }: BookListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<BreadCrumbsComponent anchors={[{ title: '蔵書一覧', href: '/home' }]} />
 			<BookSearchComponent
 				isOpen={isOpen}
 				open={open}

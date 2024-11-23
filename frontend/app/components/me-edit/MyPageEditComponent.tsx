@@ -6,6 +6,7 @@ import MyPageEditProfileFieldSet from './MyPageEditProfileFieldSet';
 import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';
 import FormLayout from '../layouts/FormLayout';
 import MyPageEditSubmitButton from './MyPageEditSubmitButton';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 
 interface MyPageEditComponentProps {
 	form: UseFormReturnType<
@@ -21,6 +22,12 @@ const MyPageEditComponent = ({
 }: MyPageEditComponentProps) => {
 	return (
 		<Container size="sm">
+			<BreadCrumbsComponent
+				anchors={[
+					{ title: 'マイページ', href: '/home/me' },
+					{ title: 'プロフィール編集', href: '/home/me/edit' },
+				]}
+			/>
 			<FormLayout<UpdateUserFormBody> form={form} handleSubmit={handleSubmit}>
 				<MyPageEditTitle />
 				<Space h="xs" />
