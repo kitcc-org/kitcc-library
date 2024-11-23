@@ -17,6 +17,7 @@ import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsCom
 import { LuBookCopy } from 'react-icons/lu';
 import { FaBook } from 'react-icons/fa6';
 import { GiNotebook } from 'react-icons/gi';
+import { TbBookUpload } from 'react-icons/tb';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
@@ -144,7 +145,7 @@ const BookDetail = () => {
 									href: `/home/books/${bookResponse.data.id}`,
 								},
 								{
-									icon: <GiNotebook />,
+									icon: <TbBookUpload />,
 									title: '書籍更新',
 									href: `/home/books/${bookResponse.data.id}/edit`,
 								},
