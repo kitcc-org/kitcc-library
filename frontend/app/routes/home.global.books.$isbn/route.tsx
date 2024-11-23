@@ -18,6 +18,8 @@ import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsCom
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { FaBookAtlas } from 'react-icons/fa6';
 
 interface LoaderData {
 	searchBooksResponse: searchBooksResponse;
@@ -109,8 +111,13 @@ const GlobalBookDetailPage = () => {
 		<>
 			<BreadCrumbsComponent
 				anchors={[
-					{ title: 'グローバル検索', href: '/home/global' },
 					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+					{
+						icon: <FaBookAtlas />,
 						title: searchBooksResponse.data.books[0].title,
 						href: `/home/global/books/${searchBooksResponse.data.books[0].isbn}`,
 					},

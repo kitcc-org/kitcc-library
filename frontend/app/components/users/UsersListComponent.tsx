@@ -8,6 +8,7 @@ import { getUsersResponse } from 'client/client';
 import UsersListTable from './UsersListTable';
 import UserCreateButton from './UserCreateButton';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { FaUsers } from 'react-icons/fa';
 
 interface UsersListComponentProps {
 	paginationProps: PaginationProps;
@@ -23,7 +24,9 @@ const UsersListComponent = ({
 	return (
 		<>
 			<BreadCrumbsComponent
-				anchors={[{ title: 'ユーザー一覧', href: '/home/users' }]}
+				anchors={[
+					{ icon: <FaUsers />, title: 'ユーザー一覧', href: '/home/users' },
+				]}
 			/>
 			<Container>
 				<Stack

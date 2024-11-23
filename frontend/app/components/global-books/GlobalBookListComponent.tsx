@@ -11,6 +11,7 @@ import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import PaginationComponent from '../common/pagination/PaginationComponent';
 import { PaginationProps } from '~/types/paginatiion';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { AiOutlineGlobal } from 'react-icons/ai';
 
 export interface HandleGlobalSearchFunctions {
 	handleDetailSubmit: (props: SearchBooksParams) => void;
@@ -46,7 +47,13 @@ const GlobalBookListComponent = ({
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<BreadCrumbsComponent
-				anchors={[{ title: 'グローバル検索', href: '/home/global' }]}
+				anchors={[
+					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+				]}
 			/>
 			<GlobalBookSearchComponent
 				isOpen={isOpen}
