@@ -31,7 +31,7 @@ const HeaderLoginComponent = () => {
 				<HeaderUsersMenu />
 				<HeaderUserMenu open={open} />
 			</Group>
-			<Modal opened={opened && !logoutTask.isPending} onClose={close}>
+			<Modal opened={opened && !logoutTask.isPending} onClose={close} centered>
 				<Stack align="stretch" justify="center" gap="lg">
 					<Text ta="center" size="xl">
 						ログアウトしますか？
