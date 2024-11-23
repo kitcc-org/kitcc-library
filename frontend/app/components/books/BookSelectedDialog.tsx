@@ -1,73 +1,23 @@
-import {
-	Button,
-	Center,
-	Dialog,
-	List,
-	Modal,
-	Stack,
-	Text,
-	rem,
-} from '@mantine/core';
+import { Button, Center, Dialog, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { useNavigate, useSubmit } from '@remix-run/react';
+import { useNavigate } from '@remix-run/react';
 import { useAtom } from 'jotai';
-import { MdDeleteForever } from 'react-icons/md';
-import { RiArrowGoBackLine } from 'react-icons/ri';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 import { cartAtom } from '~/stores/cartAtom';
 import { addBooksToCart } from '~/utils/cart';
 import { successNotification } from '~/utils/notification';
+import BookDeleteModal from './BookDeleteModal';
 
 const BookSelectedDialog = () => {
 	const [selectedBook, setSelectedBook] = useAtom(selectedBooksAtom);
 	const [cart, setCart] = useAtom(cartAtom);
 
 	const navigate = useNavigate();
-	const submit = useSubmit();
 	const [opened, { open, close }] = useDisclosure();
 
 	return (
 		<>
-			<Modal
-				opened={opened}
-				onClose={close}
-				title="本当に削除しますか？"
-				centered
-			>
-				{selectedBook.map((book) => (
-					<List key={book.id}>
-						<List.Item>
-							<Text truncate="end">{book.title}</Text>
-						</List.Item>
-					</List>
-				))}
-				<Center mt={rem(10)}>
-					<Button
-						leftSection={<RiArrowGoBackLine />}
-						color="gray"
-						mr={rem(10)}
-						onClick={close}
-					>
-						キャンセル
-					</Button>
-					<Button
-						leftSection={<MdDeleteForever size={20} />}
-						color="red"
-						onClick={() => {
-							submit(JSON.stringify({ selectedBook: selectedBook }), {
-								action: '/home?index',
-								method: 'DELETE',
-								encType: 'application/json',
-							});
-
-							setSelectedBook([]);
-							close();
-						}}
-					>
-						削除する
-					</Button>
-				</Center>
-			</Modal>
+			<BookDeleteModal disclosure={{ opened, close }} />
 			<Dialog
 				// モーダルとダイアログを同時に表示しない
 				opened={selectedBook.length > 0 && !opened}
