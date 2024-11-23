@@ -4,7 +4,7 @@ import {
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { useLoaderData, useNavigate, useSubmit } from '@remix-run/react';
+import { useLoaderData, useNavigate } from '@remix-run/react';
 import { getLoans, getLoansResponse, upsertLoans } from 'client/client';
 import { UpsertLoansBodyItem, User } from 'client/client.schemas';
 import { useAtom } from 'jotai';
@@ -120,8 +120,8 @@ export const MyPage = () => {
 	const { page, limit } = condition;
 	const navigate = useNavigate();
 	const [, setDisplayLoan] = useAtom(displayLoanAtom);
-	const [selectedLoan, setSelectedLoan] = useAtom(selectedLoanAtom);
-	const submit = useSubmit();
+	const [, setSelectedLoan] = useAtom(selectedLoanAtom);
+
 	let bookArray: CartProps[] = [];
 
 	useEffect(() => {
@@ -164,15 +164,6 @@ export const MyPage = () => {
 		navigate(`/home/me?${params.toString()}`);
 	};
 
-	const handleReturnButtonClick = () => {
-		submit(JSON.stringify({ selectedLoan: selectedLoan }), {
-			action: '/home/me',
-			method: 'PATCH',
-			encType: 'application/json',
-		});
-		setSelectedLoan([]);
-	};
-
 	return (
 		<MyPageComponent
 			user={userData}
@@ -184,7 +175,6 @@ export const MyPage = () => {
 				limit: limit ? Number(limit) : 10,
 				total: loansResponse.data.totalLoan,
 			}}
-			handleReturnButtonClick={handleReturnButtonClick}
 		/>
 	);
 };

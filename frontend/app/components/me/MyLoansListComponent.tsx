@@ -10,13 +10,11 @@ import LoanCards from './LoanCards';
 interface MyLoansListComponentProps {
 	loansResponse: SerializeFrom<getLoansResponse>;
 	paginationProps: PaginationProps;
-	handleReturnButtonClick: () => void;
 }
 
 const MyLoansListComponent = ({
 	loansResponse,
 	paginationProps,
-	handleReturnButtonClick,
 }: MyLoansListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="center">
@@ -29,7 +27,7 @@ const MyLoansListComponent = ({
 			{loansResponse.status !== 200 ? (
 				<ErrorComponent message={'貸出情報を取得できませんでした。'} />
 			) : (
-				<LoanCards handleReturnButtonClick={handleReturnButtonClick} />
+				<LoanCards />
 			)}
 			<PaginationComponent
 				total={paginationProps.total}

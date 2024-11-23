@@ -1,17 +1,15 @@
 import { ScrollArea, SimpleGrid } from '@mantine/core';
 import { useAtom } from 'jotai';
-import NoLoanComponent from './NoLoansComponent';
-import LoanCard from './LoanCard';
 import { displayLoanAtom } from '~/stores/loanAtom';
+import LoanCard from './LoanCard';
 import LoanSelectedDialog from './LoanSelectedDialog';
+import NoLoanComponent from './NoLoansComponent';
 
-interface LoanCardsProps {
-	handleReturnButtonClick: () => void;
-}
-
-const LoanCards = ({ handleReturnButtonClick }: LoanCardsProps) => {
+const LoanCards = () => {
 	const [loans] = useAtom(displayLoanAtom);
-	if (loans.length === 0) return <NoLoanComponent />;
+	if (loans.length === 0) {
+		return <NoLoanComponent />;
+	}
 
 	return (
 		<>
@@ -34,7 +32,7 @@ const LoanCards = ({ handleReturnButtonClick }: LoanCardsProps) => {
 					))}
 				</SimpleGrid>
 			</ScrollArea>
-			<LoanSelectedDialog handleReturnButtonClick={handleReturnButtonClick} />
+			<LoanSelectedDialog />
 		</>
 	);
 };
