@@ -10,6 +10,9 @@ import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
 
 import { Book } from 'client/client.schemas';
+import { FaBook } from 'react-icons/fa6';
+import { GiNotebook } from 'react-icons/gi';
+import { LuBookCopy } from 'react-icons/lu';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
@@ -133,19 +136,22 @@ const BookDetail = () => {
 				anchors={
 					location.pathname.includes('/edit')
 						? [
-								{ title: '蔵書一覧', href: '/home' },
+								{ icon: <LuBookCopy />, title: '蔵書一覧', href: '/home' },
 								{
+									icon: <FaBook />,
 									title: bookResponse.data.title,
 									href: `/home/books/${bookResponse.data.id}`,
 								},
 								{
-									title: '書籍情報編集',
+									icon: <GiNotebook />,
+									title: '書籍編集',
 									href: `/home/books/${bookResponse.data.id}/edit`,
 								},
 							]
 						: [
-								{ title: '蔵書一覧', href: '/home' },
+								{ icon: <LuBookCopy />, title: '蔵書一覧', href: '/home' },
 								{
+									icon: <FaBook />,
 									title: bookResponse.data.title,
 									href: `/home/books/${bookResponse.data.id}`,
 								},

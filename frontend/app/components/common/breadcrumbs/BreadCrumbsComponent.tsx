@@ -1,7 +1,8 @@
-import { Anchor, Breadcrumbs } from '@mantine/core';
+import { Anchor, Breadcrumbs, Group, Text } from '@mantine/core';
 import React from 'react';
 
 interface AnchorProps {
+	icon: React.ReactNode;
 	title: string;
 	href: string;
 }
@@ -15,7 +16,10 @@ const BreadCrumbsComponent = ({ anchors }: BreadCrumbsComponentProps) => {
 		<Breadcrumbs>
 			{anchors.map((item, index) => (
 				<Anchor href={item.href} key={index}>
-					{item.title}
+					<Group gap="xs">
+						{item.icon}
+						{item.title}
+					</Group>
 				</Anchor>
 			))}
 		</Breadcrumbs>

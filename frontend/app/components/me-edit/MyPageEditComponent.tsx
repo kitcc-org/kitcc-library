@@ -7,6 +7,8 @@ import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';
 import FormLayout from '../layouts/FormLayout';
 import MyPageEditSubmitButton from './MyPageEditSubmitButton';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { GiNotebook } from 'react-icons/gi';
+import { FaUser, FaUserEdit } from 'react-icons/fa';
 
 interface MyPageEditComponentProps {
 	form: UseFormReturnType<
@@ -24,8 +26,12 @@ const MyPageEditComponent = ({
 		<Container size="sm">
 			<BreadCrumbsComponent
 				anchors={[
-					{ title: 'マイページ', href: '/home/me' },
-					{ title: 'プロフィール編集', href: '/home/me/edit' },
+					{ icon: <FaUser />, title: 'マイページ', href: '/home/me' },
+					{
+						icon: <FaUserEdit />,
+						title: 'プロフィール更新',
+						href: '/home/me/edit',
+					},
 				]}
 			/>
 			<FormLayout<UpdateUserFormBody> form={form} handleSubmit={handleSubmit}>

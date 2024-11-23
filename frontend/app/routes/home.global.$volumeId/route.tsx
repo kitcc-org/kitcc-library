@@ -8,6 +8,8 @@ import {
 import { useLoaderData } from '@remix-run/react';
 import { createBook, getBooks, getGoogleBook } from 'client/client';
 import { CreateBookBody, GoogleBook } from 'client/client.schemas';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { FaBookAtlas } from 'react-icons/fa6';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
@@ -105,8 +107,13 @@ const GlobalBookDetailPage = () => {
 		<>
 			<BreadCrumbsComponent
 				anchors={[
-					{ title: 'グローバル検索', href: '/home/global' },
 					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+					{
+						icon: <FaBookAtlas />,
 						title: googleBook.title,
 						href: `/home/global/${googleBook.id}`,
 					},
