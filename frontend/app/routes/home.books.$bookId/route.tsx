@@ -4,7 +4,7 @@ import type {
 	LoaderFunctionArgs,
 } from '@remix-run/cloudflare';
 import { json, redirect } from '@remix-run/cloudflare';
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { Outlet, useLoaderData, useLocation } from '@remix-run/react';
 import type { getBookResponse, getLoansResponse } from 'client/client';
 import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
@@ -119,6 +119,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 const BookDetail = () => {
 	const { bookResponse, loansResponse } = useLoaderData<typeof loader>();
+	const location = useLocation();
 	switch (bookResponse.status) {
 		case 400:
 			return <ErrorComponent message="リクエストが不正です" />;
@@ -130,13 +131,27 @@ const BookDetail = () => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<BreadCrumbsComponent
-				anchors={[
-					{ title: '蔵書一覧', href: '/home' },
-					{
-						title: bookResponse.data.title,
-						href: `/home/books/${bookResponse.data.id}`,
-					},
-				]}
+				anchors={
+					location.pathname.includes('/edit')
+						? [
+								{ title: '蔵書一覧', href: '/home' },
+								{
+									title: bookResponse.data.title,
+									href: `/home/books/${bookResponse.data.id}`,
+								},
+								{
+									title: '書籍情報編集',
+									href: `/home/books/${bookResponse.data.id}/edit`,
+								},
+							]
+						: [
+								{ title: '蔵書一覧', href: '/home' },
+								{
+									title: bookResponse.data.title,
+									href: `/home/books/${bookResponse.data.id}`,
+								},
+							]
+				}
 			/>
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
