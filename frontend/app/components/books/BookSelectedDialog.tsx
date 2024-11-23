@@ -1,4 +1,13 @@
-import { Button, Center, Dialog, Modal, Stack, Text, rem } from '@mantine/core';
+import {
+	Button,
+	Center,
+	Dialog,
+	List,
+	Modal,
+	Stack,
+	Text,
+	rem,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useNavigate, useSubmit } from '@remix-run/react';
 import { useAtom } from 'jotai';
@@ -25,7 +34,14 @@ const BookSelectedDialog = () => {
 				title="本当に削除しますか？"
 				centered
 			>
-				<Center>
+				{selectedBook.map((book) => (
+					<List key={book.id}>
+						<List.Item>
+							<Text truncate="end">{book.title}</Text>
+						</List.Item>
+					</List>
+				))}
+				<Center mt={rem(10)}>
 					<Button
 						leftSection={<RiArrowGoBackLine />}
 						color="gray"
@@ -45,6 +61,7 @@ const BookSelectedDialog = () => {
 							});
 
 							setSelectedBook([]);
+							close();
 						}}
 					>
 						削除する
@@ -52,8 +69,15 @@ const BookSelectedDialog = () => {
 				</Center>
 			</Modal>
 			<Dialog
-				opened={selectedBook.length > 0}
-				onClose={() => setSelectedBook([])}
+				// モーダルとダイアログを同時に表示しない
+				opened={selectedBook.length > 0 && !opened}
+				onClose={() => {
+					// モーダルが表示されていなければ
+					if (!opened) {
+						// 選択をリセットする
+						setSelectedBook([]);
+					}
+				}}
 			>
 				<Stack
 					bg="var(--mantine-color-body)"
