@@ -1,6 +1,7 @@
 import { Container, Stack } from '@mantine/core';
 import { SerializeFrom } from '@remix-run/cloudflare';
 import { getUsersResponse } from 'client/client';
+import { FaUsers } from 'react-icons/fa';
 import type { PaginationProps } from '~/types/pagination';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 import ErrorComponent from '../common/error/ErrorComponent';
@@ -22,7 +23,9 @@ const UsersListComponent = ({
 	return (
 		<>
 			<BreadCrumbsComponent
-				anchors={[{ title: 'ユーザー一覧', href: '/home/users' }]}
+				anchors={[
+					{ icon: <FaUsers />, title: 'ユーザー一覧', href: '/home/users' },
+				]}
 			/>
 			<Container>
 				<Stack

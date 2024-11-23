@@ -6,6 +6,7 @@ import { PaginationProps } from '~/types/pagination';
 import MyLoansListComponent from './MyLoansListComponent';
 import MyProfileDataComponent from './MyProfileComponent';
 import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { FaUser } from 'react-icons/fa';
 
 interface MyPageComponentProps {
 	user: User;
@@ -21,7 +22,7 @@ const MyPageComponent = ({
 	return (
 		<Stack align="stretch" justify="center">
 			<BreadCrumbsComponent
-				anchors={[{ title: 'マイページ', href: '/home/me' }]}
+				anchors={[{ icon: <FaUser />, title: 'マイページ', href: '/home/me' }]}
 			/>
 			<MyProfileDataComponent name={user.name} email={user.email} />
 			<MyLoansListComponent
