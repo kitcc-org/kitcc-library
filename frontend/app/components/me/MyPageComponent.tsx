@@ -10,14 +10,12 @@ interface MyPageComponentProps {
 	user: User;
 	loansResponse: SerializeFrom<getLoansResponse>;
 	paginationProps: PaginationProps;
-	handleReturnButtonClick: () => void;
 }
 
 const MyPageComponent = ({
 	user,
 	loansResponse,
 	paginationProps,
-	handleReturnButtonClick,
 }: MyPageComponentProps) => {
 	return (
 		<Stack align="stretch" justify="center">
@@ -25,7 +23,6 @@ const MyPageComponent = ({
 			<MyLoansListComponent
 				loansResponse={loansResponse}
 				paginationProps={paginationProps}
-				handleReturnButtonClick={handleReturnButtonClick}
 			/>
 		</Stack>
 	);

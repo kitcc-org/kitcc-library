@@ -11,7 +11,7 @@ const GlobalBookCard = ({ book }: GlobalBookCardProps) => {
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding py="xs">
 				<BookCardThumbnail
-					// Google Books APIでisbnの味の検索ができるまではコメントアウト
+					// Google Books APIsでisbnのみの検索ができるまでコメントアウト
 					// FIXME id={book.isbn ? Number(book.isbn) : undefined}
 					thumbnail={book.thumbnail}
 				/>

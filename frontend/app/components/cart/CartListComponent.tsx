@@ -1,18 +1,12 @@
 import { Stack } from '@mantine/core';
-import CartTitle from './CartTitle';
-import CartCards from './CartCards';
-import CartSelectedDialog from './CartSelectedDialog';
 import { useAtom } from 'jotai';
 import { cartAtom } from '~/stores/cartAtom';
+import CartCards from './CartCards';
+import CartSelectedDialog from './CartSelectedDialog';
+import CartTitle from './CartTitle';
 import NoCartComponent from './NoCartComponent';
 
-interface CartListComponentProps {
-	handleBorrowButtonClick: () => void;
-}
-
-const CartListComponent = ({
-	handleBorrowButtonClick,
-}: CartListComponentProps) => {
+const CartListComponent = () => {
 	const [cart] = useAtom(cartAtom);
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
@@ -22,9 +16,7 @@ const CartListComponent = ({
 			) : (
 				<>
 					<CartCards />
-					<CartSelectedDialog
-						handleBorrowButtonClick={handleBorrowButtonClick}
-					/>
+					<CartSelectedDialog />
 				</>
 			)}
 		</Stack>

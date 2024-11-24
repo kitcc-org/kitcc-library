@@ -25,9 +25,7 @@ const CartCardHeader = ({ id, stock, volume }: CartCardHeaderProps) => {
 			cart.map((element) => {
 				if (element.id === id) {
 					return {
-						id: element.id,
-						stock: element.stock,
-						thumbnail: element.thumbnail,
+						...element,
 						volume: value,
 					};
 				}
@@ -41,9 +39,7 @@ const CartCardHeader = ({ id, stock, volume }: CartCardHeaderProps) => {
 				selectedCartBook.map((element) => {
 					if (element.id === id) {
 						return {
-							id: element.id,
-							stock: element.stock,
-							thumbnail: element.thumbnail,
+							...element,
 							volume: value,
 						};
 					}

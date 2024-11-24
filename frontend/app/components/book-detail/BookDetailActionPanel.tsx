@@ -1,25 +1,25 @@
 import { Stack } from '@mantine/core';
+import { useLocation } from '@remix-run/react';
+import { SearchBooks200BooksItem } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { userAtom } from '~/stores/userAtom';
-import BookDetailThumbnail from './BookDetailThumbnail';
-import BookDetailControlButtons from './BookDetailControlButtons';
-import { useLocation } from '@remix-run/react';
 import GlobalBookDetailControlButtons from '../global-book-detail/GlobalBookDetailControlButtons';
-import { SearchBooks200BooksItem } from 'client/client.schemas';
+import BookDetailControlButtons from './BookDetailControlButtons';
+import BookDetailThumbnail from './BookDetailThumbnail';
 
-interface BookDetailControlPanelProps {
+interface BookDetailActionPanelProps {
 	id?: number;
 	thumbnail?: string;
 	searchBook?: SearchBooks200BooksItem;
 	totalBook?: number;
 }
 
-const BookDetailControlPanel = ({
+const BookDetailActionPanel = ({
 	id,
 	thumbnail,
 	searchBook,
 	totalBook,
-}: BookDetailControlPanelProps) => {
+}: BookDetailActionPanelProps) => {
 	const [user] = useAtom(userAtom);
 	const location = useLocation();
 
@@ -44,4 +44,4 @@ const BookDetailControlPanel = ({
 	);
 };
 
-export default BookDetailControlPanel;
+export default BookDetailActionPanel;

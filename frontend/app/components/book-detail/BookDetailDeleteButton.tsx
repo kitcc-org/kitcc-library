@@ -1,28 +1,27 @@
-import { MdDeleteForever } from 'react-icons/md';
 import { Button } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
+import { useDisclosure } from '@mantine/hooks';
+import { MdDeleteForever } from 'react-icons/md';
+import BookDetailDeleteModal from './BookDetailDeleteModal';
 
 interface BookDetailDeleteButtonProps {
 	bookId: number;
 }
 
 const BookDetailDeleteButton = ({ bookId }: BookDetailDeleteButtonProps) => {
-	const fetcher = useFetcher();
+	const [opened, { open, close }] = useDisclosure();
+
 	return (
-		<Button
-			color="red"
-			leftSection={<MdDeleteForever />}
-			fz="lg"
-			onClick={() =>
-				fetcher.submit(
-					{ bookId: bookId },
-					{ action: '/home/books/$bookId', method: 'DELETE' },
-				)
-			}
-			disabled={fetcher.state === 'submitting'}
-		>
-			削除
-		</Button>
+		<>
+			<BookDetailDeleteModal bookId={bookId} disclosure={{ opened, close }} />
+			<Button
+				color="red"
+				leftSection={<MdDeleteForever />}
+				fz="lg"
+				onClick={() => open()}
+			>
+				削除
+			</Button>
+		</>
 	);
 };
 

@@ -1,23 +1,21 @@
 import { Button } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import UserDeleteModal from './UserDeleteModal';
 
 interface UserDeleteButtonProps {
 	id: number;
-	handleDeleteUserButtonClick: (id: number) => void;
 }
 
-const UserDeleteButton = ({
-	id,
-	handleDeleteUserButtonClick,
-}: UserDeleteButtonProps) => {
+const UserDeleteButton = ({ id }: UserDeleteButtonProps) => {
+	const [opened, { open, close }] = useDisclosure();
+
 	return (
-		<Button
-			color="red"
-			variant="light"
-			bd="solid 2px"
-			onClick={() => handleDeleteUserButtonClick(id)}
-		>
-			削除
-		</Button>
+		<>
+			<UserDeleteModal userId={id} disclosure={{ opened, close }} />
+			<Button color="red" variant="light" bd="solid 2px" onClick={() => open()}>
+				削除
+			</Button>
+		</>
 	);
 };
 

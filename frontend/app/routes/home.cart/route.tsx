@@ -3,17 +3,14 @@ import {
 	LoaderFunctionArgs,
 	redirect,
 } from '@remix-run/cloudflare';
-import { useSubmit } from '@remix-run/react';
 import { upsertLoans } from 'client/client';
 import { UpsertLoansBodyItem } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import CartListComponent from '~/components/cart/CartListComponent';
 import { commitSession, getSession } from '~/services/session.server';
-import { cartAtom, selectedCartBooksAtom } from '~/stores/cartAtom';
 import type { CartProps } from '~/stores/cartAtom';
-import { removeBooksFromCart } from '~/utils/cart';
-import { errorNotification } from '~/utils/notification';
+import { selectedCartBooksAtom } from '~/stores/cartAtom';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
@@ -88,37 +85,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const CartListPage = () => {
-	const [selectedCartBook, setSelectedCartBook] = useAtom(
-		selectedCartBooksAtom,
-	);
-	const [cart, setCart] = useAtom(cartAtom);
-	const submit = useSubmit();
+	const [, setSelectedCartBook] = useAtom(selectedCartBooksAtom);
 
 	useEffect(() => {
 		// 選択中の書籍をリセットする
 		setSelectedCartBook([]);
 	}, []);
 
-	// volumeがstockを超えていないかチェックする
-	const checkStock = (element: CartProps) => element.stock < element.volume;
-
-	const handleBorrowButtonClick = () => {
-		if (selectedCartBook.length > 0 && !selectedCartBook.some(checkStock)) {
-			submit(JSON.stringify({ selectedCartBook: selectedCartBook }), {
-				action: '/home/cart',
-				method: 'PATCH',
-				encType: 'application/json',
-			});
-			setCart(removeBooksFromCart(cart, selectedCartBook));
-			setSelectedCartBook([]);
-		} else {
-			errorNotification('在庫が足りません');
-		}
-	};
-
-	return (
-		<CartListComponent handleBorrowButtonClick={handleBorrowButtonClick} />
-	);
+	return <CartListComponent />;
 };
 
 export default CartListPage;

@@ -10,7 +10,7 @@ import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
 
 import { Book } from 'client/client.schemas';
-import BookDetailControlPanel from '~/components/book-detail/BookDetailControlPanel';
+import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 import { ActionResponse } from '~/types/response';
 
@@ -86,6 +86,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 401:
 				session.flash('error', 'ログインしてください');
 				return redirect('/login', {
@@ -93,6 +94,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 404:
 				session.flash('error', '書籍が見つかりませんでした');
 				return redirect('/home', {
@@ -100,6 +102,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 						'Set-Cookie': await commitSession(session),
 					},
 				});
+
 			case 500:
 				session.flash('error', 'サーバーエラーが発生しました');
 				return json<ActionResponse>(
@@ -130,7 +133,7 @@ const BookDetail = () => {
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailControlPanel
+					<BookDetailActionPanel
 						id={bookResponse.data.id}
 						thumbnail={bookResponse.data.thumbnail}
 					/>

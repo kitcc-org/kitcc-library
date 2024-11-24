@@ -38,6 +38,7 @@ const MyProfileComponent = ({ name, email }: MyProfileComponentProps) => {
 							disabled
 							styles={{
 								input: {
+									cursor: 'default',
 									color: 'black',
 									fontWeight: '500',
 								},

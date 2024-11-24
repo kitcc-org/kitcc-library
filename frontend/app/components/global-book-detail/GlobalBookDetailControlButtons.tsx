@@ -1,5 +1,5 @@
 import { Button } from '@mantine/core';
-import { useFetcher } from '@remix-run/react';
+import { useSubmit } from '@remix-run/react';
 import { CreateBookBody, SearchBooks200BooksItem } from 'client/client.schemas';
 import { BiSolidBookAdd } from 'react-icons/bi';
 
@@ -12,7 +12,8 @@ const GlobalBookDetailControlButtons = ({
 	searchBook,
 	totalBook,
 }: GlobalBookDetailControlButtonsProps) => {
-	const fetcher = useFetcher<CreateBookBody>();
+	const submit = useSubmit();
+
 	const addBookData: CreateBookBody = {
 		authors: searchBook.authors,
 		description: searchBook.description ?? '',
@@ -23,18 +24,22 @@ const GlobalBookDetailControlButtons = ({
 		thumbnail: searchBook.thumbnail,
 		title: searchBook.title,
 	};
+
 	return (
 		<Button
 			variant="filled"
 			color="teal"
 			disabled={totalBook > 0}
 			leftSection={<BiSolidBookAdd />}
-			onClick={() =>
-				fetcher.submit(addBookData, {
-					action: '/home/global/books/$bookId',
-					method: 'POST',
-				})
-			}
+			onClick={() => {
+				submit(
+					{ ...addBookData },
+					{
+						action: '/home/global/books/$bookId',
+						method: 'POST',
+					},
+				);
+			}}
 		>
 			{totalBook > 0 ? '追加済み' : '追加'}
 		</Button>

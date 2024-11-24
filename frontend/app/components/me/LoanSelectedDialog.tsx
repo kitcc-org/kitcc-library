@@ -1,15 +1,21 @@
 import { Button, Dialog, Stack } from '@mantine/core';
+import { useSubmit } from '@remix-run/react';
 import { useAtom } from 'jotai';
 import { selectedLoanAtom } from '~/stores/loanAtom';
 
-interface LoanSelectedDialogProps {
-	handleReturnButtonClick: () => void;
-}
-
-const LoanSelectedDialog = ({
-	handleReturnButtonClick,
-}: LoanSelectedDialogProps) => {
+const LoanSelectedDialog = () => {
 	const [selectedLoan, setSelectedLoan] = useAtom(selectedLoanAtom);
+
+	const submit = useSubmit();
+
+	const handleReturnButtonClick = () => {
+		submit(JSON.stringify({ selectedLoan: selectedLoan }), {
+			action: '/home/me?index',
+			method: 'PATCH',
+			encType: 'application/json',
+		});
+		setSelectedLoan([]);
+	};
 
 	return (
 		<Dialog
@@ -22,12 +28,12 @@ const LoanSelectedDialog = ({
 				justify="center"
 				gap="md"
 			>
-				<Button fz="xs" color="red" onClick={handleReturnButtonClick}>
+				<Button fz="sm" color="red" onClick={handleReturnButtonClick}>
 					返却する
 				</Button>
 				<Button
-					fz="xs"
-					color="red"
+					fz="sm"
+					color="blue"
 					variant="light"
 					bd="solid 2px"
 					onClick={() => setSelectedLoan([])}

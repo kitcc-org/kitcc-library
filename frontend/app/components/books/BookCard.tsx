@@ -16,11 +16,7 @@ const BookCard = ({ book }: BookCardProps) => {
 	return (
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding>
-				<BookCardHeader
-					id={book.id}
-					stock={book.stock}
-					thumbnail={book.thumbnail}
-				/>
+				<BookCardHeader book={book} />
 			</Card.Section>
 			<Card.Section withBorder inheritPadding py="xs">
 				<BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
