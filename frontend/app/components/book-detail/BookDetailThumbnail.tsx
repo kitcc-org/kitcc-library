@@ -1,5 +1,5 @@
 import { AspectRatio, Image, rem } from '@mantine/core';
-import NoImage from '~/img/noImage.png';
+import NoImage from '~/img/noimage.png';
 
 interface BookDetailThumbnailProps {
 	thumbnail?: string;
