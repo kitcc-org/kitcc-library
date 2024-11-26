@@ -27,7 +27,7 @@ const BookCardCartButton = ({ book }: BookCardCartButtonProps) => {
 			leftSection={<BiSolidCartAdd size={23} />}
 			fz={{
 				base: 10,
-				sm: 'xs',
+				md: 'xs',
 			}}
 		>
 			カートに入れる
