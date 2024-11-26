@@ -18,7 +18,7 @@ const UsersListTable = ({ users }: UsersTableProps) => {
 					<Table.Tr key={user.id}>
 						{user.id && (
 							<>
-								<Table.Td>{user.name}</Table.Td>
+								<Table.Td fz="md">{user.name}</Table.Td>
 								<Table.Td maw={rem(5)}>
 									<UserDeleteButton id={user.id} />
 								</Table.Td>
