@@ -8,8 +8,6 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,6 +17,8 @@ jobs:
         run: |
           stale_prs=$(gh pr list --state open --json createdAt,url --jq '.[] | select(( now - (.createdAt | fromdateiso8601)) > 172800) | .url')
           echo "stale_prs=$stale_prs" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Format stale pull requests
         if: steps.check_prs.outputs.stale_prs != ''
@@ -37,9 +37,9 @@ jobs:
             blocks:
               - type: "section"
                 text:
-                  "type": "mrkdwn",
-                  "text": "以下のプルリクエストが2日以上マージされていません:"
+                  type: "mrkdwn"
+                  text: "以下のプルリクエストが2日以上マージされていません:"
               - type: "section"
                 text:
-                  "type": "mrkdwn",
-                  "text": "${{ steps.format_prs.outputs.fmt_prs }}"
+                  type: "mrkdwn"
+                  text: "${{ steps.format_prs.outputs.fmt_prs }}"
