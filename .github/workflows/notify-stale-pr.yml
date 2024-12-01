@@ -16,7 +16,11 @@ jobs:
         id: check_prs
         run: |
           stale_prs=$(gh pr list --state open --json createdAt,url --jq '.[] | select(( now - (.createdAt | fromdateiso8601)) > 172800) | .url')
-          echo "stale_prs=$stale_prs" >> $GITHUB_OUTPUT
+          {
+            echo 'stale_prs<<EOF'
+            echo "$stale_prs"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -24,8 +28,12 @@ jobs:
         if: steps.check_prs.outputs.stale_prs != ''
         id: format_prs
         run: |
-          fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /')
-          echo "fmt_prs=$fmt_prs" >> $GITHUB_OUTPUT
+          fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /' | sed 's/$/\\n/')
+          {
+            echo 'fmt_prs<<EOF'
+            echo "$fmt_prs"
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: Send notification to Slack
         if: ${{ steps.format_prs.outcome == 'success' }}
