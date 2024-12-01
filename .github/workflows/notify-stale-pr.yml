@@ -28,7 +28,7 @@ jobs:
         if: steps.check_prs.outputs.stale_prs != ''
         id: format_prs
         run: |
-          fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /')
+          fmt_prs=$(echo "${{ steps.check_prs.outputs.stale_prs }}" | sed 's/^/• /' | sed 's/$/\\n/')
           {
             echo 'fmt_prs<<EOF'
             echo "$fmt_prs"
