@@ -183,7 +183,7 @@ describe('Book List Page', () => {
 		});
 	});
 
-	describe('BreadCrumbs', () => {
+	describe('Breadcrumbs', () => {
 		it('should navigate to home page when clicked', async () => {
 			const { user } = customRender(
 				<BookListPageStub initialEntries={['/home']} />,

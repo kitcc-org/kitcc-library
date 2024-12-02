@@ -1,5 +1,6 @@
 import type * as remixrunCloudflare from '@remix-run/cloudflare';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
+import type * as remixrunReact from '@remix-run/react';
 import { createRemixStub } from '@remix-run/testing';
 import { screen, waitFor } from '@testing-library/react';
 import { customRender } from 'test/helpers/wrapper';
@@ -13,7 +14,6 @@ import BookDetail, {
 	loader as rootLoader,
 } from '~/routes/home.books.$bookId/route';
 import { redirect } from '../../mocks/@remix-run/cloudflare';
-import type * as remixrunReact from '@remix-run/react';
 
 vi.mock('@remix-run/cloudflare', async (importOriginal) => {
 	const actual = await importOriginal<typeof remixrunCloudflare>();
@@ -165,7 +165,7 @@ describe('Book Detail Page', () => {
 		// TODO: ログイン状態で借りている人がいる場合
 	});
 
-	describe('BreadCrumbs', () => {
+	describe('Breadcrumbs', () => {
 		it('should navigate to home page when clicked', async () => {
 			const { user } = customRender(
 				<BookDetailStub initialEntries={['/home/books/1']} />,
