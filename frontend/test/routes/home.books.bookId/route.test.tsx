@@ -1,6 +1,5 @@
 import type * as remixrunCloudflare from '@remix-run/cloudflare';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/cloudflare';
-import type * as remixrunReact from '@remix-run/react';
 import { createRemixStub } from '@remix-run/testing';
 import { screen, waitFor } from '@testing-library/react';
 import { customRender } from 'test/helpers/wrapper';
@@ -22,20 +21,6 @@ vi.mock('@remix-run/cloudflare', async (importOriginal) => {
 		redirect: (url: string, init?: number | ResponseInit) => {
 			return redirect(url, init);
 		},
-	};
-});
-
-const { navigateMock } = vi.hoisted(() => {
-	return {
-		navigateMock: vi.fn(),
-	};
-});
-
-vi.mock('@remix-run/react', async (importOriginal) => {
-	const actual = await importOriginal<typeof remixrunReact>();
-	return {
-		...actual,
-		useNavigate: () => navigateMock,
 	};
 });
 
