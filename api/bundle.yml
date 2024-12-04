@@ -20,6 +20,8 @@ tags:
     description: 貸出履歴に関するAPI
   - name: auth
     description: 認証に関するAPI
+  - name: google-books
+    description: Google Books から書籍の情報を取得するAPI
 paths:
   /books:
     get:
@@ -337,12 +339,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /books/search:
+  /googlebooks:
     get:
       tags:
-        - book
-      operationId: searchBooks
-      summary: 書籍を検索する
+        - google-books
+      operationId: searchGoogleBooks
+      summary: Google Books から書籍を検索する
       security: []
       parameters:
         - name: page
@@ -409,49 +411,42 @@ paths:
                   books:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                        authors:
-                          type: array
-                          items:
-                            type: string
-                        publisher:
-                          type: string
-                        publishedDate:
-                          type: string
-                        description:
-                          type: string
-                        thumbnail:
-                          type: string
-                        isbn:
-                          type: string
-                      required:
-                        - id
-                        - title
-                        - authors
+                      $ref: '#/components/schemas/GoogleBook'
                 required:
                   - totalBook
                   - books
-              example:
-                totalBook: 30
-                books:
-                  - id: 5-OgzgEACAAJ
-                    title: 計算機プログラムの構造と解釈
-                    authors:
-                      - Harold Abelson
-                      - Gerald Jay Sussman
-                      - Julie Sussman
-                    publisher: 翔泳社
-                    publishedDate: '2018-07-01'
-                    description: 言わずと知れた計算機科学の古典的名著
-                    thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
-                    isbn: '9784798135984'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /googlebooks/{volumeId}:
+    get:
+      tags:
+        - google-books
+      operationId: getGoogleBook
+      summary: Google Books から特定の書籍の情報を取得する
+      security: []
+      parameters:
+        - name: volumeId
+          in: path
+          description: Google BooksのID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 情報の取得に成功した
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleBook'
+              examples:
+                book:
+                  $ref: '#/components/examples/google-book'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /users:
@@ -1025,6 +1020,31 @@ components:
           type: string
       required:
         - message
+    GoogleBook:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        authors:
+          type: array
+          items:
+            type: string
+        publisher:
+          type: string
+        publishedDate:
+          type: string
+        description:
+          type: string
+        thumbnail:
+          type: string
+        isbn:
+          type: string
+      required:
+        - id
+        - title
+        - authors
     User:
       type: object
       properties:
@@ -1109,6 +1129,19 @@ components:
         thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
         isbn: '9784798135984'
         stock: 1
+    google-book:
+      value:
+        id: 5-OgzgEACAAJ
+        title: 計算機プログラムの構造と解釈
+        authors:
+          - Harold Abelson
+          - Gerald Jay Sussman
+          - Julie Sussman
+        publisher: 翔泳社
+        publishedDate: '2018-07-01'
+        description: 言わずと知れた計算機科学の古典的名著
+        thumbnail: http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api
+        isbn: '9784798135984'
     user:
       value:
         id: 1

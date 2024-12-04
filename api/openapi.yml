@@ -3,15 +3,15 @@ info:
   title: KITCC Library API
   contact:
     name: KITCC
-    url: "https://www.kitcc.org/"
-    email: "question@kitcc.org"
+    url: 'https://www.kitcc.org/'
+    email: 'question@kitcc.org'
   license:
     name: MIT
     url: https://en.wikipedia.org/wiki/MIT_License
-  version: "1.0.0"
+  version: '1.0.0'
 
 servers:
-  - url: "https://kitcc-library-api.kitcc.workers.dev"
+  - url: 'https://kitcc-library-api.kitcc.workers.dev'
 
 tags:
   - name: book
@@ -22,25 +22,30 @@ tags:
     description: 貸出履歴に関するAPI
   - name: auth
     description: 認証に関するAPI
+  - name: google-books
+    description: Google Books から書籍の情報を取得するAPI
 
 paths:
   /books:
-    $ref: "./paths/book.yml#/books"
+    $ref: './paths/book.yml#/books'
   /books/{bookId}:
-    $ref: "./paths/book.yml#/book"
-  /books/search:
-    $ref: "./paths/book.yml#/search"
+    $ref: './paths/book.yml#/book'
+
+  /googlebooks:
+    $ref: paths/google-books.yml#/books
+  /googlebooks/{volumeId}:
+    $ref: paths/google-books.yml#/book
 
   /users:
-    $ref: "./paths/user.yml#/users"
+    $ref: './paths/user.yml#/users'
   /users/{userId}:
-    $ref: "paths/user.yml#/user"
+    $ref: 'paths/user.yml#/user'
 
   /loans:
-    $ref: "./paths/loan.yml#/loans"
+    $ref: './paths/loan.yml#/loans'
 
   /auth:
-    $ref: "./paths/auth.yml#/auth"
+    $ref: './paths/auth.yml#/auth'
 
 components:
   securitySchemes:

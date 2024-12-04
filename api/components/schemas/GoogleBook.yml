@@ -1,0 +1,24 @@
+type: object
+properties:
+  id:
+    type: string
+  title:
+    type: string
+  authors:
+    type: array
+    items:
+      type: string
+  publisher:
+    type: string
+  publishedDate:
+    type: string
+  description:
+    type: string
+  thumbnail:
+    type: string
+  isbn:
+    type: string
+required:
+  - id
+  - title
+  - authors
