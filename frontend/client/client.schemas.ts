@@ -144,24 +144,13 @@ name?: string;
 email?: string;
 };
 
-export type SearchBooks200BooksItem = {
-  authors: string[];
-  description?: string;
-  id: string;
-  isbn?: string;
-  publishedDate?: string;
-  publisher?: string;
-  thumbnail?: string;
-  title: string;
-};
-
-export type SearchBooks200 = {
-  books: SearchBooks200BooksItem[];
+export type SearchGoogleBooks200 = {
+  books: GoogleBook[];
   /** 総書籍数 */
   totalBook: number;
 };
 
-export type SearchBooksParams = {
+export type SearchGoogleBooksParams = {
 /**
  * ページ番号
  */
@@ -303,6 +292,17 @@ export interface User {
   name: string;
   /** @nullable */
   sessionToken?: string | null;
+}
+
+export interface GoogleBook {
+  authors: string[];
+  description?: string;
+  id: string;
+  isbn?: string;
+  publishedDate?: string;
+  publisher?: string;
+  thumbnail?: string;
+  title: string;
 }
 
 export interface Error {

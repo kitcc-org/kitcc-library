@@ -32,12 +32,13 @@ import type {
   GetLoansParams,
   GetUsers200,
   GetUsersParams,
+  GoogleBook,
   InternalServerErrorResponse,
   Loan,
   LoginBody,
   NotFoundResponse,
-  SearchBooks200,
-  SearchBooksParams,
+  SearchGoogleBooks200,
+  SearchGoogleBooksParams,
   UnauthorizedResponse,
   UpdateBookBody,
   UpdateUserBody,
@@ -499,15 +500,15 @@ export const useDeleteBook = <TError = BadRequestResponse | UnauthorizedResponse
     }
     
 /**
- * @summary 書籍を検索する
+ * @summary Google Books から書籍を検索する
  */
-export type searchBooksResponse = {
-  data: SearchBooks200;
+export type searchGoogleBooksResponse = {
+  data: SearchGoogleBooks200;
   status: number;
   headers: Headers;
 }
 
-export const getSearchBooksUrl = (params?: SearchBooksParams,) => {
+export const getSearchGoogleBooksUrl = (params?: SearchGoogleBooksParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -517,12 +518,12 @@ export const getSearchBooksUrl = (params?: SearchBooksParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/books/search?${normalizedParams.toString()}` : `https://localhost:8787/books/search`
+  return normalizedParams.size ? `https://localhost:8787/googlebooks?${normalizedParams.toString()}` : `https://localhost:8787/googlebooks`
 }
 
-export const searchBooks = async (params?: SearchBooksParams, options?: RequestInit): Promise<searchBooksResponse> => {
+export const searchGoogleBooks = async (params?: SearchGoogleBooksParams, options?: RequestInit): Promise<searchGoogleBooksResponse> => {
   
-  return customFetch<Promise<searchBooksResponse>>(getSearchBooksUrl(params),
+  return customFetch<Promise<searchGoogleBooksResponse>>(getSearchGoogleBooksUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -533,43 +534,119 @@ export const searchBooks = async (params?: SearchBooksParams, options?: RequestI
 
 
 
-export const getSearchBooksQueryKey = (params?: SearchBooksParams,) => {
-    return [`https://localhost:8787/books/search`, ...(params ? [params]: [])] as const;
+export const getSearchGoogleBooksQueryKey = (params?: SearchGoogleBooksParams,) => {
+    return [`https://localhost:8787/googlebooks`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getSearchBooksQueryOptions = <TData = Awaited<ReturnType<typeof searchBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(params?: SearchBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getSearchGoogleBooksQueryOptions = <TData = Awaited<ReturnType<typeof searchGoogleBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(params?: SearchGoogleBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSearchBooksQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getSearchGoogleBooksQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchBooks>>> = ({ signal }) => searchBooks(params, { signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchGoogleBooks>>> = ({ signal }) => searchGoogleBooks(params, { signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type SearchBooksQueryResult = NonNullable<Awaited<ReturnType<typeof searchBooks>>>
-export type SearchBooksQueryError = BadRequestResponse | InternalServerErrorResponse
+export type SearchGoogleBooksQueryResult = NonNullable<Awaited<ReturnType<typeof searchGoogleBooks>>>
+export type SearchGoogleBooksQueryError = BadRequestResponse | InternalServerErrorResponse
 
 
 /**
- * @summary 書籍を検索する
+ * @summary Google Books から書籍を検索する
  */
 
-export function useSearchBooks<TData = Awaited<ReturnType<typeof searchBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(
- params?: SearchBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useSearchGoogleBooks<TData = Awaited<ReturnType<typeof searchGoogleBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(
+ params?: SearchGoogleBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getSearchBooksQueryOptions(params,options)
+  const queryOptions = getSearchGoogleBooksQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Google Books から特定の書籍の情報を取得する
+ */
+export type getGoogleBookResponse = {
+  data: GoogleBook;
+  status: number;
+  headers: Headers;
+}
+
+export const getGetGoogleBookUrl = (volumeId: string,) => {
+
+
+  return `https://localhost:8787/googlebooks/${volumeId}`
+}
+
+export const getGoogleBook = async (volumeId: string, options?: RequestInit): Promise<getGoogleBookResponse> => {
+  
+  return customFetch<Promise<getGoogleBookResponse>>(getGetGoogleBookUrl(volumeId),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetGoogleBookQueryKey = (volumeId: string,) => {
+    return [`https://localhost:8787/googlebooks/${volumeId}`] as const;
+    }
+
+    
+export const getGetGoogleBookQueryOptions = <TData = Awaited<ReturnType<typeof getGoogleBook>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(volumeId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGoogleBookQueryKey(volumeId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoogleBook>>> = ({ signal }) => getGoogleBook(volumeId, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(volumeId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGoogleBookQueryResult = NonNullable<Awaited<ReturnType<typeof getGoogleBook>>>
+export type GetGoogleBookQueryError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
+
+
+/**
+ * @summary Google Books から特定の書籍の情報を取得する
+ */
+
+export function useGetGoogleBook<TData = Awaited<ReturnType<typeof getGoogleBook>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(
+ volumeId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetGoogleBookQueryOptions(volumeId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
