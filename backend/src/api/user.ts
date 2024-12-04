@@ -211,13 +211,13 @@ app.get(
 		}
 
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['userId']);
+		const userId = parseInt(param['userId']);
 
 		const db = drizzle(ctx.env.DB);
 		const users: SelectUser[] = await db
 			.select()
 			.from(userTable)
-			.where(eq(userTable.id, id));
+			.where(eq(userTable.id, userId));
 
 		if (users.length === 0) {
 			return ctx.notFound();
@@ -273,12 +273,12 @@ app.patch(
 		}
 
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['userId']);
+		const userId = parseInt(param['userId']);
 
 		const userIdCookie = getCookie(ctx, 'user_id', 'secure');
-		const userId = Number(userIdCookie);
+		const currentUserId = Number(userIdCookie);
 
-		if (id !== userId) {
+		if (currentUserId !== userId) {
 			// ログインユーザと更新対象のユーザが異なる
 			return ctx.json(
 				{
@@ -307,7 +307,7 @@ app.patch(
 			const user = await db
 				.select()
 				.from(userTable)
-				.where(eq(userTable.id, id));
+				.where(eq(userTable.id, userId));
 
 			if (user.length === 0) {
 				return ctx.notFound();
@@ -335,7 +335,7 @@ app.patch(
 						? await generateHash(newUser.newPassword)
 						: undefined,
 				})
-				.where(eq(userTable.id, id))
+				.where(eq(userTable.id, userId))
 				.returning();
 		} catch (err) {
 			if (err instanceof Error) {
@@ -392,12 +392,12 @@ app.delete(
 		}
 
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['userId']);
+		const userId = parseInt(param['userId']);
 
 		const db = drizzle(ctx.env.DB);
 		const deletedUser = await db
 			.delete(userTable)
-			.where(eq(userTable.id, id))
+			.where(eq(userTable.id, userId))
 			.returning();
 
 		if (deletedUser.length === 0) {
