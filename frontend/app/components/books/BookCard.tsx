@@ -19,16 +19,10 @@ const BookCard = ({ book }: BookCardProps) => {
 				<BookCardHeader book={book} />
 			</Card.Section>
 			<Card.Section withBorder inheritPadding py="xs">
-				<BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
+				<BookCardThumbnail book={book} />
 			</Card.Section>
 
-			{!!user && (
-				<BookCardFooter
-					id={book.id}
-					stock={book.stock}
-					thumbnail={book.thumbnail}
-				/>
-			)}
+			{!!user && <BookCardFooter book={book} />}
 		</Card>
 	);
 };
