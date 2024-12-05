@@ -1,5 +1,5 @@
-import BookDetailEditButton from './BookDetailEditButton';
 import BookDetailDeleteButton from './BookDetailDeleteButton';
+import BookDetailEditButton from './BookDetailEditButton';
 
 interface BookDetailControlButtonsProps {
 	id: number;

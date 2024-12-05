@@ -133,10 +133,7 @@ const BookDetail = () => {
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailActionPanel
-						id={bookResponse.data.id}
-						thumbnail={bookResponse.data.thumbnail}
-					/>
+					<BookDetailActionPanel book={bookResponse.data} />
 				</Grid.Col>
 				<Grid.Col span={9}>
 					<Outlet
