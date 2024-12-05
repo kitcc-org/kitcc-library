@@ -1,20 +1,20 @@
 import { Card } from '@mantine/core';
+import { CartProps } from '~/stores/cartAtom';
 import BookCardThumbnail from '../books/BookCardThumbnail';
 import LoanCardHeader from './LoanCardHeader';
 
 interface LoanCardProps {
-	id: number;
-	thumbnail?: string;
+	loan: CartProps;
 }
 
-const LoanCard = ({ id, thumbnail }: LoanCardProps) => {
+const LoanCard = ({ loan }: LoanCardProps) => {
 	return (
 		<Card shadow="sm" radius="md" pb="xs" withBorder>
 			<Card.Section withBorder inheritPadding>
-				<LoanCardHeader id={id} />
+				<LoanCardHeader id={loan.id} />
 			</Card.Section>
 			<Card.Section withBorder inheritPadding py="xs">
-				<BookCardThumbnail id={id} thumbnail={thumbnail} />
+				<BookCardThumbnail book={loan} />
 			</Card.Section>
 		</Card>
 	);
