@@ -171,9 +171,10 @@ app.get(
 		const param = ctx.req.valid('param');
 		const volumeId = param['volumeId'];
 
-		const response = await fetch(`${GOOGLE_BOOOKS_BASE_URL}/${volumeId}`);
+		const response = await fetch(
+			`${GOOGLE_BOOOKS_BASE_URL}/${volumeId}?key=${ctx.env.GOOGLE_BOOKS_API_KEY}`,
+		);
 		if (response.status !== 200) {
-			console.log(response);
 			const error: GoogleAPIError = await response.json();
 			return ctx.json(error, { status: response.status });
 		}
