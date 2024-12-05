@@ -6,49 +6,47 @@ import {
 	redirect,
 } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
-import {
-	createBook,
-	getBooks,
-	searchBooks,
-	searchBooksResponse,
-} from 'client/client';
-import { CreateBookBody } from 'client/client.schemas';
+import { createBook, getBooks, getGoogleBook } from 'client/client';
+import { CreateBookBody, GoogleBook } from 'client/client.schemas';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 
 interface LoaderData {
-	searchBooksResponse: searchBooksResponse;
+	googleBook: GoogleBook;
 	totalBook?: number;
 	bookId?: number;
 }
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-	const session = await getSession(request.headers.get('Cookie'));
+export const loader = async ({ params }: LoaderFunctionArgs) => {
 	// 書籍の情報を取得する
-	const isbn = params.isbn ?? '';
-	const searchBooksResponse = await searchBooks({ isbn: isbn });
-	// 既に登録済みであるか確認するため
-	if (session.has('user')) {
-		const getBookResponse = await getBooks({ isbn: isbn });
-		if (getBookResponse.data.totalBook > 0) {
+	const volumeId = params.volumeId ?? '';
+	const { data: googleBook } = await getGoogleBook(volumeId);
+
+	if (googleBook.isbn) {
+		// 既に登録済みであるか確認する
+		const { data: getBooksData } = await getBooks({ isbn: googleBook.isbn });
+		if (getBooksData.totalBook > 0) {
+			// 登録済みである場合
 			return json<LoaderData>({
-				searchBooksResponse: searchBooksResponse,
-				totalBook: getBookResponse.data.totalBook,
-				bookId: getBookResponse.data.books[0].id,
+				googleBook: googleBook,
+				totalBook: getBooksData.totalBook,
+				bookId: getBooksData.books[0].id,
 			});
 		} else {
+			// 未登録の場合
 			return json<LoaderData>({
-				searchBooksResponse: searchBooksResponse,
-				totalBook: getBookResponse.data.totalBook,
+				googleBook: googleBook,
+				totalBook: getBooksData.totalBook,
 				bookId: undefined,
 			});
 		}
 	} else {
-		// ログイン済みでない場合は、APIを呼び出す回数を減らすために蔵書の情報を取得しない
+		// ログイン済みでない場合
+		// APIの呼び出す回数を減らすために蔵書の情報を取得しない
 		return json<LoaderData>({
-			searchBooksResponse: searchBooksResponse,
+			googleBook: googleBook,
 			totalBook: undefined,
 			bookId: undefined,
 		});
@@ -104,23 +102,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 const GlobalBookDetailPage = () => {
-	const { searchBooksResponse, totalBook, bookId } =
-		useLoaderData<LoaderData>();
+	const { googleBook, totalBook, bookId } = useLoaderData<LoaderData>();
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
-					<BookDetailActionPanel
-						thumbnail={searchBooksResponse.data.books[0].thumbnail}
-						searchBook={searchBooksResponse.data.books[0]}
-						totalBook={totalBook}
-					/>
+					<BookDetailActionPanel book={googleBook} totalBook={totalBook} />
 				</Grid.Col>
 				<Grid.Col span={9}>
-					<GlobalBookDetailContent
-						book={searchBooksResponse.data.books[0]}
-						bookId={bookId}
-					/>
+					<GlobalBookDetailContent book={googleBook} bookId={bookId} />
 				</Grid.Col>
 			</Grid>
 		</Stack>

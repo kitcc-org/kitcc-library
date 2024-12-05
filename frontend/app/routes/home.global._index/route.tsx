@@ -3,13 +3,13 @@ import { useDisclosure } from '@mantine/hooks';
 import type { LoaderFunctionArgs } from '@remix-run/cloudflare';
 import { json } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
-import { searchBooks, searchBooksResponse } from 'client/client';
-import { SearchBooksParams } from 'client/client.schemas';
+import { searchGoogleBooks, searchGoogleBooksResponse } from 'client/client';
+import { SearchGoogleBooksParams } from 'client/client.schemas';
 import { useState } from 'react';
 import GlobalBookListComponent from '~/components/global-books/GlobalBookListComponent';
 
 interface LoaderData {
-	booksResponse?: searchBooksResponse;
+	booksResponse?: searchGoogleBooksResponse;
 	condition: {
 		keyword?: string;
 		title?: string;
@@ -22,7 +22,7 @@ interface LoaderData {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-	let response: searchBooksResponse;
+	let response: searchGoogleBooksResponse;
 	// 検索条件を取得する
 	const url = new URL(request.url);
 	const keyword = url.searchParams.get('keyword') ?? undefined;
@@ -48,7 +48,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		});
 	} else if (keyword) {
 		// 書籍情報を取得する(キーワード検索)
-		response = await searchBooks({
+		response = await searchGoogleBooks({
 			keyword: keyword,
 			page: page,
 			limit: limit,
@@ -68,7 +68,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		});
 	} else {
 		// 書籍情報を取得する(詳細検索)
-		response = await searchBooks({
+		response = await searchGoogleBooks({
 			intitle: title,
 			inauthor: author,
 			inpublisher: publisher,
@@ -97,7 +97,7 @@ const GlobalBookListPage = () => {
 	const [opened, { open, close }] = useDisclosure();
 	const [searchMode, setSearchMode] = useState(keyword ? 'keyword' : 'detail');
 	const navigate = useNavigate();
-	const form = useForm<SearchBooksParams>({
+	const form = useForm<SearchGoogleBooksParams>({
 		mode: 'uncontrolled',
 		initialValues: {
 			keyword: keyword ?? '',
@@ -108,7 +108,7 @@ const GlobalBookListPage = () => {
 		},
 	});
 
-	const handleDetailSubmit = (props: SearchBooksParams) => {
+	const handleDetailSubmit = (props: SearchGoogleBooksParams) => {
 		const params = new URLSearchParams();
 
 		if (props.intitle) {
@@ -130,7 +130,7 @@ const GlobalBookListPage = () => {
 		navigate(`/home/global?${params.toString()}`);
 	};
 
-	const handleKeywordSubmit = (props: SearchBooksParams) => {
+	const handleKeywordSubmit = (props: SearchGoogleBooksParams) => {
 		const params = new URLSearchParams();
 
 		if (props.keyword) {
