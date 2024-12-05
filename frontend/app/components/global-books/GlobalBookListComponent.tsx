@@ -1,8 +1,8 @@
 import { Stack } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import { SerializeFrom } from '@remix-run/cloudflare';
-import type { searchBooksResponse } from 'client/client';
-import type { SearchBooksParams } from 'client/client.schemas';
+import type { searchGoogleBooksResponse } from 'client/client';
+import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import React from 'react';
 import { PaginationProps } from '~/types/pagination';
 import ErrorComponent from '../common/error/ErrorComponent';
@@ -13,15 +13,15 @@ import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import NoQueryComponent from './NoQueryComponent';
 
 export interface HandleGlobalSearchFunctions {
-	handleDetailSubmit: (props: SearchBooksParams) => void;
-	handleKeywordSubmit: (props: SearchBooksParams) => void;
+	handleDetailSubmit: (props: SearchGoogleBooksParams) => void;
+	handleKeywordSubmit: (props: SearchGoogleBooksParams) => void;
 }
 
 interface GlobalBookListComponentProps {
-	booksResponse?: SerializeFrom<searchBooksResponse>;
+	booksResponse?: SerializeFrom<searchGoogleBooksResponse>;
 	form: UseFormReturnType<
-		SearchBooksParams,
-		(values: SearchBooksParams) => SearchBooksParams
+		SearchGoogleBooksParams,
+		(values: SearchGoogleBooksParams) => SearchGoogleBooksParams
 	>;
 	globalSearchFunctions: HandleGlobalSearchFunctions;
 	paginationProps: PaginationProps;
@@ -46,9 +46,7 @@ const GlobalBookListComponent = ({
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
 			<GlobalBookSearchComponent
-				isOpen={isOpen}
-				open={open}
-				close={close}
+				disclosure={{ isOpen, open, close }}
 				form={form}
 				globalSearchFunctions={globalSearchFunctions}
 				searchMode={searchMode}

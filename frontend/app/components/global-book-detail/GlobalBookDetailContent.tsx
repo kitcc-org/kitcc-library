@@ -1,12 +1,12 @@
 import { Stack } from '@mantine/core';
-import { SearchBooks200BooksItem } from 'client/client.schemas';
-import GlobalBookDetailContentTable from './GlobalBookDetailContentTable';
-import BookDetailTitle from '../book-detail/BookDetailTitle';
+import { GoogleBook } from 'client/client.schemas';
 import BookDetailDescription from '../book-detail/BookDetailDescription';
+import BookDetailTitle from '../book-detail/BookDetailTitle';
+import GlobalBookDetailContentTable from './GlobalBookDetailContentTable';
 import GlobalBookDetailLink from './GlobalBookDetailLink';
 
 interface GlobalBookDetailContentProps {
-	book: SearchBooks200BooksItem;
+	book: GoogleBook;
 	bookId?: number;
 }
 

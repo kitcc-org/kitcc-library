@@ -1,9 +1,9 @@
 import { Group, rem, Stack, Table, Text } from '@mantine/core';
-import { SearchBooks200BooksItem } from 'client/client.schemas';
+import { GoogleBook } from 'client/client.schemas';
 import GlobalBookDetailAuthorBadge from './GlobalBookDetailAuthorBadge';
 
 interface GlobalBookDetailContentTableProps {
-	book: SearchBooks200BooksItem;
+	book: GoogleBook;
 }
 
 const GlobalBookDetailContentTable = ({
