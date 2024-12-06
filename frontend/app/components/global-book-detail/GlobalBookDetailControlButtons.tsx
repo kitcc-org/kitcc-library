@@ -36,7 +36,7 @@ const GlobalBookDetailControlButtons = ({
 				submit(
 					{ ...bookData },
 					{
-						action: '/home/global/books/$bookId',
+						action: '/home/global/books/$volumeId',
 						method: 'POST',
 						encType: 'application/json',
 					},
