@@ -134,7 +134,6 @@ paths:
                   type: string
                 publishedDate:
                   type: string
-                  format: date
                 description:
                   type: string
                 thumbnail:
@@ -993,7 +992,6 @@ components:
           type: string
         publishedDate:
           type: string
-          format: date
         description:
           type: string
         thumbnail:
