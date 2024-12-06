@@ -9,7 +9,7 @@ import { updateBook } from 'client/client';
 import { UpdateBookBody } from 'client/client.schemas';
 import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
 import { commitSession, getSession } from '~/services/session.server';
-import { formatDate } from '~/utils/day';
+import { formatDate } from '~/utils/date';
 import { BookDetailOutletContext } from '../home.books.$bookId/route';
 
 export interface CustomUpdateBookBody extends UpdateBookBody {
