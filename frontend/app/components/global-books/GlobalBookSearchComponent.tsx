@@ -1,18 +1,20 @@
 import type { UseFormReturnType } from '@mantine/form';
-import type { SearchBooksParams } from 'client/client.schemas';
+import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import React from 'react';
-import GlobalBookSearchModeButton from './GlobalBookSearchModeButton';
 import GlobalBookDetailSearchForm from './GlobalBookDetailSearchForm';
 import GlobalBookKeywordSearchForm from './GlobalBookKeywordSearchForm';
 import { HandleGlobalSearchFunctions } from './GlobalBookListComponent';
+import GlobalBookSearchModeButton from './GlobalBookSearchModeButton';
 
 interface GlobalBookSearchComponentProps {
-	isOpen: boolean;
-	open: () => void;
-	close: () => void;
+	disclosure: {
+		isOpen: boolean;
+		open: () => void;
+		close: () => void;
+	};
 	form: UseFormReturnType<
-		SearchBooksParams,
-		(values: SearchBooksParams) => SearchBooksParams
+		SearchGoogleBooksParams,
+		(values: SearchGoogleBooksParams) => SearchGoogleBooksParams
 	>;
 	globalSearchFunctions: HandleGlobalSearchFunctions;
 	searchMode: string;
@@ -20,9 +22,7 @@ interface GlobalBookSearchComponentProps {
 }
 
 const GlobalBookSearchComponent = ({
-	isOpen,
-	open,
-	close,
+	disclosure: { isOpen, open, close },
 	form,
 	globalSearchFunctions,
 	searchMode,

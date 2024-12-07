@@ -9,6 +9,7 @@ import { deleteUser, getUsers, getUsersResponse } from 'client/client';
 import UsersListComponent from '~/components/users/UsersListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
+import { makeCookieHeader } from '~/utils/session';
 
 interface LoaderData {
 	usersResponse: getUsersResponse;
@@ -50,10 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 
 	const response = await deleteUser(userId, {
 		headers: { Cookie: cookieHeader },
@@ -72,6 +70,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 				});
 			}
 			break;
+
 		case 401:
 			session.flash('error', 'ログインしてください');
 			return redirect('/login', {
@@ -79,13 +78,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					'Set-Cookie': await commitSession(session),
 				},
 			});
+
 		case 404:
 			session.flash('error', 'ユーザーが見つかりませんでした');
 			break;
+
 		case 500:
 			session.flash('error', 'サーバーエラーが発生しました');
 			break;
 	}
+
 	return json<ActionResponse>(
 		{ method: 'DELETE', status: response.status },
 		{

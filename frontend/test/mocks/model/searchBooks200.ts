@@ -4,10 +4,10 @@
  * KITCC Library API
  * OpenAPI spec version: 1.0.0
  */
-import type { SearchBooks200BooksItem } from './searchBooks200BooksItem';
+import type { GoogleBook } from './searchBooks200BooksItem';
 
 export type SearchBooks200 = {
-  books: SearchBooks200BooksItem[];
-  /** 総書籍数 */
-  totalBook: number;
+	books: GoogleBook[];
+	/** 総書籍数 */
+	totalBook: number;
 };

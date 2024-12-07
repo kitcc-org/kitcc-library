@@ -1,11 +1,15 @@
+const checkPassword = (password: string) => {
+	return (
+		password.length >= 8 && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(password)
+	);
+};
+
 export const generatePassword = () => {
-	let password = '';
-	const checkPassword = (element: string) =>
-		element.length >= 8 && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/.test(element);
-
-	while (!checkPassword(password)) {
-		password = Math.random().toString(36).substring(2);
+	// eslint-disable-next-line no-constant-condition
+	while (true) {
+		const password = Math.random().toString(36).substring(2);
+		if (checkPassword(password)) {
+			return password;
+		}
 	}
-
-	return password;
 };

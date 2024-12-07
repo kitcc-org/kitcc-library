@@ -1,11 +1,11 @@
 import { TextInput } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
-import type { SearchBooksParams } from 'client/client.schemas';
+import type { SearchGoogleBooksParams } from 'client/client.schemas';
 
 interface GlobalSearchKeywordFormProps {
 	form: UseFormReturnType<
-		SearchBooksParams,
-		(values: SearchBooksParams) => SearchBooksParams
+		SearchGoogleBooksParams,
+		(values: SearchGoogleBooksParams) => SearchGoogleBooksParams
 	>;
 }
 

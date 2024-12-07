@@ -19,7 +19,7 @@ const CartCard = ({ book }: CartCardProps) => {
 				/>
 			</Card.Section>
 			<Card.Section withBorder inheritPadding py="xs">
-				<BookCardThumbnail id={book.id} thumbnail={book.thumbnail} />
+				<BookCardThumbnail book={book} />
 			</Card.Section>
 		</Card>
 	);

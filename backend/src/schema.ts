@@ -38,7 +38,7 @@ export const getBooksResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string().date(),
+  "publishedDate": zod.string(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBooksResponseBooksItemIsbnRegExp),
@@ -57,7 +57,7 @@ export const createBookBody = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string().date(),
+  "publishedDate": zod.string(),
   "description": zod.string(),
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().regex(createBookBodyIsbnRegExp),
@@ -91,7 +91,7 @@ export const getBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string().date(),
+  "publishedDate": zod.string(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getBookResponseIsbnRegExp),
@@ -131,7 +131,7 @@ export const updateBookResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string().date(),
+  "publishedDate": zod.string(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(updateBookResponseIsbnRegExp),
@@ -151,26 +151,26 @@ export const deleteBookParams = zod.object({
 
 
 /**
- * @summary 書籍を検索する
+ * @summary Google Books から書籍を検索する
  */
-export const searchBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
-export const searchBooksQueryLimitMax = 40;
+export const searchGoogleBooksQueryPageRegExp = new RegExp('^[1-9]\\d*$');
+export const searchGoogleBooksQueryLimitMax = 40;
 
-export const searchBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
-export const searchBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
+export const searchGoogleBooksQueryLimitRegExp = new RegExp('^[1-9]\\d*$');
+export const searchGoogleBooksQueryIsbnRegExp = new RegExp('^\\d{10}(\\d{3})?$');
 
 
-export const searchBooksQueryParams = zod.object({
-  "page": zod.string().min(1).regex(searchBooksQueryPageRegExp).optional(),
-  "limit": zod.string().min(1).max(searchBooksQueryLimitMax).regex(searchBooksQueryLimitRegExp).optional(),
+export const searchGoogleBooksQueryParams = zod.object({
+  "page": zod.string().min(1).regex(searchGoogleBooksQueryPageRegExp).optional(),
+  "limit": zod.string().min(1).max(searchGoogleBooksQueryLimitMax).regex(searchGoogleBooksQueryLimitRegExp).optional(),
   "keyword": zod.string().optional(),
   "intitle": zod.string().optional(),
   "inauthor": zod.string().optional(),
   "inpublisher": zod.string().optional(),
-  "isbn": zod.string().regex(searchBooksQueryIsbnRegExp).optional()
+  "isbn": zod.string().regex(searchGoogleBooksQueryIsbnRegExp).optional()
 })
 
-export const searchBooksResponse = zod.object({
+export const searchGoogleBooksResponse = zod.object({
   "totalBook": zod.number(),
   "books": zod.array(zod.object({
   "id": zod.string(),
@@ -182,6 +182,25 @@ export const searchBooksResponse = zod.object({
   "thumbnail": zod.string().optional(),
   "isbn": zod.string().optional()
 }))
+})
+
+
+/**
+ * @summary Google Books から特定の書籍の情報を取得する
+ */
+export const getGoogleBookParams = zod.object({
+  "volumeId": zod.string()
+})
+
+export const getGoogleBookResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "authors": zod.array(zod.string()),
+  "publisher": zod.string().optional(),
+  "publishedDate": zod.string().optional(),
+  "description": zod.string().optional(),
+  "thumbnail": zod.string().optional(),
+  "isbn": zod.string().optional()
 })
 
 
@@ -337,7 +356,7 @@ export const getLoansResponse = zod.object({
   "title": zod.string(),
   "authors": zod.array(zod.string()),
   "publisher": zod.string(),
-  "publishedDate": zod.string().date(),
+  "publishedDate": zod.string(),
   "description": zod.string(),
   "thumbnail": zod.string().url().optional(),
   "isbn": zod.string().regex(getLoansResponseLoansItemBooksIsbnRegExp),

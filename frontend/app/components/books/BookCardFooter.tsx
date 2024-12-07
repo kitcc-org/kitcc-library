@@ -1,16 +1,15 @@
 import { Center } from '@mantine/core';
+import { Book } from 'client/client.schemas';
 import BookCardCartButton from './BookCardCartButton';
 
 interface BookCardFooterProps {
-	id: number;
-	stock: number;
-	thumbnail?: string;
+	book: Book;
 }
 
-const BookCardFooter = ({ id, stock, thumbnail }: BookCardFooterProps) => {
+const BookCardFooter = ({ book }: BookCardFooterProps) => {
 	return (
 		<Center pt={10}>
-			<BookCardCartButton id={id} stock={stock} thumbnail={thumbnail} />
+			<BookCardCartButton book={book} />
 		</Center>
 	);
 };

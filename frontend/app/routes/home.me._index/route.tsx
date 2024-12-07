@@ -13,6 +13,7 @@ import MyPageComponent from '~/components/me/MyPageComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { CartProps } from '~/stores/cartAtom';
 import { displayLoanAtom, selectedLoanAtom } from '~/stores/loanAtom';
+import { makeCookieHeader } from '~/utils/session';
 
 interface LoaderData {
 	userData: User;
@@ -41,10 +42,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${userData.id};`,
-		`__Secure-session_token=${userData.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 	const loansResponse = await getLoans(
 		{ userId: String(userData.id), page: page, limit: limit },
 		{ headers: { Cookie: cookieHeader } },
@@ -69,10 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${userData.id};`,
-		`__Secure-session_token=${userData.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 
 	const requestBody = await request.json<{ selectedLoan: CartProps[] }>();
 	const selectedLoan = requestBody.selectedLoan;

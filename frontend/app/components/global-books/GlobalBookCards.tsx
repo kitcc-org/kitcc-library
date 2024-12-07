@@ -1,10 +1,10 @@
-import { SearchBooks200BooksItem } from 'client/client.schemas';
 import { ScrollArea, SimpleGrid } from '@mantine/core';
-import GlobalBookCard from './GlobalBookCard';
+import { GoogleBook } from 'client/client.schemas';
 import NoBookComponent from '../books/NoBookComponent';
+import GlobalBookCard from './GlobalBookCard';
 
 interface GlobalBookCardsProps {
-	books: SearchBooks200BooksItem[];
+	books: GoogleBook[];
 }
 
 const GlobalBookCards = ({ books }: GlobalBookCardsProps) => {

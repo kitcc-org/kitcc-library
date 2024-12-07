@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 import { useLocation } from '@remix-run/react';
-import { SearchBooks200BooksItem } from 'client/client.schemas';
+import { Book, GoogleBook } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { userAtom } from '~/stores/userAtom';
 import GlobalBookDetailControlButtons from '../global-book-detail/GlobalBookDetailControlButtons';
@@ -8,16 +8,12 @@ import BookDetailControlButtons from './BookDetailControlButtons';
 import BookDetailThumbnail from './BookDetailThumbnail';
 
 interface BookDetailActionPanelProps {
-	id?: number;
-	thumbnail?: string;
-	searchBook?: SearchBooks200BooksItem;
+	book: Book | GoogleBook;
 	totalBook?: number;
 }
 
 const BookDetailActionPanel = ({
-	id,
-	thumbnail,
-	searchBook,
+	book,
 	totalBook,
 }: BookDetailActionPanelProps) => {
 	const [user] = useAtom(userAtom);
@@ -30,16 +26,19 @@ const BookDetailActionPanel = ({
 			justify="center"
 			gap="md"
 		>
-			<BookDetailThumbnail thumbnail={thumbnail} />
-			{user && location.pathname.includes('global')
-				? searchBook &&
-					typeof totalBook == 'number' && (
+			<BookDetailThumbnail thumbnail={book.thumbnail} />
+			{
+				// prettier-ignore
+				user && location.pathname.includes('global')
+					? (
 						<GlobalBookDetailControlButtons
-							searchBook={searchBook}
-							totalBook={totalBook}
+							book={book as GoogleBook}
+							totalBook={totalBook ?? 0}
 						/>
+					) : (
+						<BookDetailControlButtons id={Number(book.id)} />
 					)
-				: id && <BookDetailControlButtons id={id} />}
+			}
 		</Stack>
 	);
 };

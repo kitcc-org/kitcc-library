@@ -28,7 +28,7 @@ const LoanCards = () => {
 					spacing={{ base: 10, '300px': 'xl' }}
 				>
 					{loans.map((loan) => (
-						<LoanCard key={loan.id} id={loan.id} thumbnail={loan.thumbnail} />
+						<LoanCard key={loan.id} loan={loan} />
 					))}
 				</SimpleGrid>
 			</ScrollArea>

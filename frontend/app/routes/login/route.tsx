@@ -62,11 +62,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	// ログインに失敗した場合
 	switch (response.status) {
 		case 400:
-			// prettier-ignore
 			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 401:
-			// prettier-ignore
 			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
 			break;
 		case 404:

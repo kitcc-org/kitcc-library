@@ -11,6 +11,7 @@ import CartListComponent from '~/components/cart/CartListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import type { CartProps } from '~/stores/cartAtom';
 import { selectedCartBooksAtom } from '~/stores/cartAtom';
+import { makeCookieHeader } from '~/utils/session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
@@ -37,12 +38,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 
-	// prettier-ignore
 	const requestBody = await request.json<{ selectedCartBook: CartProps[] }>();
 	const selectedCartBook = requestBody.selectedCartBook;
 	const upsertBody: UpsertLoansBodyItem[] = selectedCartBook.map((book) => {

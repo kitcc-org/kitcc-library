@@ -14,6 +14,7 @@ import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification, successNotification } from '~/utils/notification';
 import { generatePassword } from '~/utils/password';
+import { makeCookieHeader } from '~/utils/session';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
@@ -45,10 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${userData.id};`,
-		`__Secure-session_token=${userData.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 
 	const requestBody = await request.json<{ createUserBody: CreateUserBody }>();
 	const createUserBody = requestBody.createUserBody;
@@ -64,6 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					'Set-Cookie': await commitSession(session),
 				},
 			});
+
 		case 401:
 			session.flash('error', 'ログインしてください');
 			return redirect('/login', {
@@ -71,6 +70,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					'Set-Cookie': await commitSession(session),
 				},
 			});
+
 		case 409:
 			session.flash('error', '同じメールアドレスのユーザーが既に存在します');
 			return json<ActionResponse>(
@@ -81,6 +81,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					},
 				},
 			);
+
 		default:
 			session.flash('error', 'ユーザーの追加に失敗しました');
 			return json<ActionResponse>(
