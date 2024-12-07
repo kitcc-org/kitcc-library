@@ -11,7 +11,7 @@ const BookCardThumbnail = ({ book }: BookCardThumbnailProps) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const destination = location.pathname.includes('global')
-		? `/home/global/books/${book.id}`
+		? `/home/global/${book.id}`
 		: `/home/books/${book.id}`;
 
 	return (

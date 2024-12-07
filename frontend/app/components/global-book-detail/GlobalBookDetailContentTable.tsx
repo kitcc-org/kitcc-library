@@ -17,9 +17,9 @@ const GlobalBookDetailContentTable = ({
 					<Table.Th>著者</Table.Th>
 					<Table.Td>
 						<Group gap={rem(7)}>
-							{book.authors.map((author, id) => (
-								<GlobalBookDetailAuthorBadge key={id} name={author} />
-							))}
+							{book.authors.map((author, id) => {
+								return <GlobalBookDetailAuthorBadge key={id} name={author} />;
+							})}
 						</Group>
 					</Table.Td>
 				</Table.Tr>
