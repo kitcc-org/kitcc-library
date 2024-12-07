@@ -12,6 +12,7 @@ import MyPageEditComponent from '~/components/me-edit/MyPageEditComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification } from '~/utils/notification';
+import { makeCookieHeader } from '~/utils/session';
 
 export interface UpdateUserFormBody extends UpdateUserBody {
 	newPasswordAgain?: string;
@@ -50,10 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${userData.id};`,
-		`__Secure-session_token=${userData.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 
 	const requestBody = await request.json<{ updateUserBody: UpdateUserBody }>();
 	const updateUserBody = requestBody.updateUserBody;
@@ -71,6 +69,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					'Set-Cookie': await commitSession(session),
 				},
 			});
+
 		case 400:
 			session.flash('error', 'メールアドレスまたはパスワードが間違っています');
 			return json<ActionResponse>(
@@ -84,6 +83,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					},
 				},
 			);
+
 		case 401:
 			session.flash('error', 'ログインしてください');
 			return redirect('/login', {
@@ -91,6 +91,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					'Set-Cookie': await commitSession(session),
 				},
 			});
+
 		case 404:
 			session.flash('error', 'ユーザーが見つかりませんでした');
 			return json<ActionResponse>(
@@ -104,6 +105,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					},
 				},
 			);
+
 		case 500:
 			session.flash('error', 'サーバーエラーが発生しました');
 			return json<ActionResponse>(
@@ -117,6 +119,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 					},
 				},
 			);
+
 		default:
 			session.flash('error', 'ユーザー情報を更新できませんでした');
 			return json<ActionResponse>(

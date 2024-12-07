@@ -1,11 +1,11 @@
 import { createCookieSessionStorage } from '@remix-run/cloudflare';
 import { User } from 'client/client.schemas';
 
-interface SessionData {
+export interface SessionData {
 	user: User;
 }
 
-interface SessionFlashData {
+export interface SessionFlashData {
 	success?: string;
 	error?: string;
 }

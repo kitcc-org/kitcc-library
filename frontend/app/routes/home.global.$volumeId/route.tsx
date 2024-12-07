@@ -12,6 +12,7 @@ import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPane
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
+import { makeCookieHeader } from '~/utils/session';
 
 interface LoaderData {
 	googleBook: GoogleBook;
@@ -66,11 +67,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
-
+	const cookieHeader = makeCookieHeader(session);
 	const requestBody = await request.json<CreateBookBody>();
 
 	const response = await createBook(requestBody, {

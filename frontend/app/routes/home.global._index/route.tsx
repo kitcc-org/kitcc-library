@@ -23,6 +23,7 @@ interface LoaderData {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	let response: searchGoogleBooksResponse;
+
 	// 検索条件を取得する
 	const url = new URL(request.url);
 	const keyword = url.searchParams.get('keyword') ?? undefined;
@@ -32,6 +33,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const author = url.searchParams.get('author') ?? undefined;
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
+
 	// 検索条件が指定されていない場合は検索をしない
 	if (!keyword && !title && !publisher && !isbn && !author) {
 		return json<LoaderData>({

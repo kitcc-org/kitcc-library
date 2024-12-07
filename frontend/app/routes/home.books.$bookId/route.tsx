@@ -13,6 +13,7 @@ import { Book } from 'client/client.schemas';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 import { ActionResponse } from '~/types/response';
+import { makeCookieHeader } from '~/utils/session';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
@@ -26,6 +27,7 @@ export interface BookDetailOutletContext {
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
+	const cookieHeader = makeCookieHeader(session);
 
 	// 書籍の情報を取得する
 	const bookId = params.bookId ?? '';
@@ -38,10 +40,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 			{ bookId: bookId },
 			{
 				headers: {
-					Cookie: [
-						`__Secure-user_id=${session.get('user')?.id}`,
-						`__Secure-session_token=${session.get('user')?.sessionToken}`,
-					].join('; '),
+					Cookie: cookieHeader,
 				},
 			},
 		);
@@ -66,10 +65,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 	const formData = await request.formData();
 
 	if (request.method === 'DELETE') {
