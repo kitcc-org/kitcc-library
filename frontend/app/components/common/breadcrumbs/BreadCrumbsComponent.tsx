@@ -13,7 +13,7 @@ interface BreadCrumbsComponentProps {
 
 const BreadCrumbsComponent = ({ anchors }: BreadCrumbsComponentProps) => {
 	return (
-		<Breadcrumbs>
+		<Breadcrumbs my="xs">
 			{anchors.map((item, index) => (
 				<Anchor href={item.href} key={index}>
 					<Group gap="xs">
