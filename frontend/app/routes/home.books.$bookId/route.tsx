@@ -4,7 +4,7 @@ import type {
 	LoaderFunctionArgs,
 } from '@remix-run/cloudflare';
 import { json, redirect } from '@remix-run/cloudflare';
-import { Outlet, useLoaderData } from '@remix-run/react';
+import { Outlet, useLoaderData, useLocation } from '@remix-run/react';
 import type { getBookResponse, getLoansResponse } from 'client/client';
 import { deleteBook, getBook, getLoans } from 'client/client';
 import { commitSession, getSession } from '~/services/session.server';
@@ -13,6 +13,10 @@ import { Book } from 'client/client.schemas';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
 import ErrorComponent from '~/components/common/error/ErrorComponent';
 import { ActionResponse } from '~/types/response';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import { LuBookCopy } from 'react-icons/lu';
+import { FaBook } from 'react-icons/fa6';
+import { TbBookUpload } from 'react-icons/tb';
 
 interface LoaderData {
 	bookResponse: getBookResponse;
@@ -121,6 +125,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 const BookDetail = () => {
 	const { bookResponse, loansResponse } = useLoaderData<typeof loader>();
+	const location = useLocation();
 	switch (bookResponse.status) {
 		case 400:
 			return <ErrorComponent message="リクエストが不正です" />;
@@ -131,6 +136,32 @@ const BookDetail = () => {
 	}
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<BreadCrumbsComponent
+				anchors={
+					location.pathname.includes('/edit')
+						? [
+								{ icon: <LuBookCopy />, title: '蔵書一覧', href: '/home' },
+								{
+									icon: <FaBook />,
+									title: bookResponse.data.title,
+									href: `/home/books/${bookResponse.data.id}`,
+								},
+								{
+									icon: <TbBookUpload />,
+									title: '書籍更新',
+									href: `/home/books/${bookResponse.data.id}/edit`,
+								},
+							]
+						: [
+								{ icon: <LuBookCopy />, title: '蔵書一覧', href: '/home' },
+								{
+									icon: <FaBook />,
+									title: bookResponse.data.title,
+									href: `/home/books/${bookResponse.data.id}`,
+								},
+							]
+				}
+			/>
 			<Grid gutter={rem(50)}>
 				<Grid.Col span={3}>
 					<BookDetailActionPanel

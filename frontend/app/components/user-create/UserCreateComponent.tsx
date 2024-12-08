@@ -8,6 +8,9 @@ import { Container } from '@mantine/core';
 import UserCreatePasswordForm from './UserCreatePasswordForm';
 import UserCreateSubmitButton from './UserCreateSubmitButton';
 import UserCreatePasswordComponent from './UserCreatePasswordComponent';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { FaUsers } from 'react-icons/fa';
+import { FaUserPlus } from 'react-icons/fa6';
 
 interface UserCreateComponentProps {
 	form: UseFormReturnType<
@@ -30,6 +33,16 @@ const UserCreateComponent = ({
 	return (
 		<Container size="sm">
 			<FormLayout<CreateUserBody> form={form} handleSubmit={handleSubmit}>
+				<BreadCrumbsComponent
+					anchors={[
+						{ icon: <FaUsers />, title: 'ユーザー一覧', href: '/home/users' },
+						{
+							icon: <FaUserPlus />,
+							title: 'ユーザー作成',
+							href: '/home/users/create',
+						},
+					]}
+				/>
 				<UserCreateTitle />
 				<UserCreateNameForm form={form} />
 				<UserCreateEmailForm form={form} />

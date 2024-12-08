@@ -14,9 +14,12 @@ import {
 } from 'client/client';
 import { CreateBookBody } from 'client/client.schemas';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { FaBookAtlas } from 'react-icons/fa6';
 
 interface LoaderData {
 	searchBooksResponse: searchBooksResponse;
@@ -107,23 +110,43 @@ const GlobalBookDetailPage = () => {
 	const { searchBooksResponse, totalBook, bookId } =
 		useLoaderData<LoaderData>();
 	return (
-		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
-			<Grid gutter={rem(50)}>
-				<Grid.Col span={3}>
-					<BookDetailActionPanel
-						thumbnail={searchBooksResponse.data.books[0].thumbnail}
-						searchBook={searchBooksResponse.data.books[0]}
-						totalBook={totalBook}
-					/>
-				</Grid.Col>
-				<Grid.Col span={9}>
-					<GlobalBookDetailContent
-						book={searchBooksResponse.data.books[0]}
-						bookId={bookId}
-					/>
-				</Grid.Col>
-			</Grid>
-		</Stack>
+		<>
+			<BreadCrumbsComponent
+				anchors={[
+					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+					{
+						icon: <FaBookAtlas />,
+						title: searchBooksResponse.data.books[0].title,
+						href: `/home/global/books/${searchBooksResponse.data.books[0].isbn}`,
+					},
+				]}
+			/>
+			<Stack
+				bg="var(--mantine-color-body)"
+				align="stretch"
+				justify="flex-start"
+			>
+				<Grid gutter={rem(50)}>
+					<Grid.Col span={3}>
+						<BookDetailActionPanel
+							thumbnail={searchBooksResponse.data.books[0].thumbnail}
+							searchBook={searchBooksResponse.data.books[0]}
+							totalBook={totalBook}
+						/>
+					</Grid.Col>
+					<Grid.Col span={9}>
+						<GlobalBookDetailContent
+							book={searchBooksResponse.data.books[0]}
+							bookId={bookId}
+						/>
+					</Grid.Col>
+				</Grid>
+			</Stack>
+		</>
 	);
 };
 
