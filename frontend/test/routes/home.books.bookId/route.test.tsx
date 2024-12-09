@@ -97,9 +97,9 @@ describe('Book Detail Page', () => {
 					'Set-Cookie': expect.any(String),
 				},
 			});
-
-			// TODO: ログイン状態で削除ボタンをクリックした場合
 		});
+
+		// TODO: ログイン状態で削除ボタンをクリックした場合
 	});
 
 	describe('Book Detail', () => {
