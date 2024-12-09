@@ -10,15 +10,13 @@ interface ContentsHeaderProps {
 }
 
 const ContentsHeader = ({
-	page,
-	limit,
+	page = 1,
+	limit = 10,
 	total,
 	handleLimitChange,
 }: ContentsHeaderProps) => {
-	const truePage = page ?? 1;
-	const trueLimit = limit ?? 10;
-	const start = (truePage - 1) * trueLimit + 1;
-	const stop = truePage * trueLimit;
+	const start = (page - 1) * limit + 1;
+	const stop = page * limit;
 
 	return (
 		<Group justify="space-between">
