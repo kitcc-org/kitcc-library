@@ -1,4 +1,4 @@
-import { rem, Table } from '@mantine/core';
+import { Table } from '@mantine/core';
 import { GetUsers200UsersItem } from 'client/client.schemas';
 import NoUserComponent from './NoUserComponent';
 import UserDeleteButton from './UserDeleteButton';
@@ -12,14 +12,14 @@ const UsersListTable = ({ users }: UsersTableProps) => {
 		return <NoUserComponent />;
 	}
 	return (
-		<Table striped maw="50%">
+		<Table striped>
 			<Table.Tbody>
 				{users.map((user) => (
 					<Table.Tr key={user.id}>
 						{user.id && (
 							<>
 								<Table.Td fz="md">{user.name}</Table.Td>
-								<Table.Td maw={rem(5)}>
+								<Table.Td ta="right">
 									<UserDeleteButton id={user.id} />
 								</Table.Td>
 							</>

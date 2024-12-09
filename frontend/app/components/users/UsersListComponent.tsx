@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { SerializeFrom } from '@remix-run/cloudflare';
 import { getUsersResponse } from 'client/client';
 import type { PaginationProps } from '~/types/pagination';
@@ -19,14 +19,9 @@ const UsersListComponent = ({
 	usersResponse,
 }: UsersListComponentProps) => {
 	return (
-		<Container>
-			<Stack
-				bg="var(--mantine-color-body)"
-				align="center"
-				justify="center"
-				maw="100%"
-			>
-				<UsersListTitle />
+		<Stack bg="var(--mantine-color-body)" align="center" justify="flex-start">
+			<UsersListTitle />
+			<Stack w={{ base: '70%', md: '50%' }} align="stretch">
 				<ContentsHeader
 					page={paginationProps.page}
 					limit={paginationProps.limit}
@@ -38,15 +33,15 @@ const UsersListComponent = ({
 				) : (
 					<ErrorComponent message={'ユーザー情報を取得できませんでした。'} />
 				)}
-				<UserCreateButton />
-				<PaginationComponent
-					total={paginationProps.total}
-					page={paginationProps.page}
-					limit={paginationProps.limit}
-					handlePaginationChange={paginationProps.handlePaginationChange}
-				/>
 			</Stack>
-		</Container>
+			<UserCreateButton />
+			<PaginationComponent
+				total={paginationProps.total}
+				page={paginationProps.page}
+				limit={paginationProps.limit}
+				handlePaginationChange={paginationProps.handlePaginationChange}
+			/>
+		</Stack>
 	);
 };
 
