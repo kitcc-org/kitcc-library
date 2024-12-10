@@ -1,4 +1,5 @@
 import {
+	Box,
 	ColorSchemeScript,
 	LoadingOverlay,
 	MantineProvider,
@@ -62,11 +63,13 @@ export default function App() {
 
 	return (
 		<>
-			<LoadingOverlay
-				visible={navigation.state !== 'idle'}
-				overlayProps={{ radius: 'sm', blur: 1 }}
-			/>
-			<Outlet />
+			<Box pos="relative">
+				<LoadingOverlay
+					visible={navigation.state !== 'idle'}
+					overlayProps={{ radius: 'sm', blur: 1 }}
+				/>
+				<Outlet />
+			</Box>
 		</>
 	);
 }
