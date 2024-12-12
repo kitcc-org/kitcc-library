@@ -135,10 +135,22 @@ const BooKListPage = () => {
 		},
 	});
 
+	// 検索条件が変更されたらフォームの値を更新する
 	useEffect(() => {
-		// 選択中の書籍をリセットする
-		setSelectedBook([]);
-	}, []);
+		const formValues = form.getValues();
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { page, limit, ...rest } = condition;
+
+		Object.entries(rest).forEach(([key, value]) => {
+			const currentValue = formValues[key as keyof GetBooksParams];
+			if (currentValue !== value) {
+				form.setFieldValue(key, value);
+			}
+		});
+	}, [condition]);
+
+	useEffect(() => setSelectedBook([]), []);
 
 	const handleSubmit = (props: GetBooksParams) => {
 		const params = new URLSearchParams();

@@ -84,10 +84,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 const CartListPage = () => {
 	const [, setSelectedCartBook] = useAtom(selectedCartBooksAtom);
 
-	useEffect(() => {
-		// 選択中の書籍をリセットする
-		setSelectedCartBook([]);
-	}, []);
+	useEffect(() => setSelectedCartBook([]), []);
 
 	return <CartListComponent />;
 };
