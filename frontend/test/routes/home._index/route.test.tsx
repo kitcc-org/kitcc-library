@@ -64,7 +64,8 @@ describe('Book List Page', () => {
 			const publisherInput = await screen.findByLabelText('出版社');
 			await user.type(publisherInput, condition.publisher);
 
-			const isbnInput = await screen.findByLabelText('ISBN');
+			// prettier-ignore
+			const isbnInput = await screen.findByPlaceholderText('10桁または13桁のISBN');
 			await user.type(isbnInput, condition.isbn);
 
 			const submitButton = await screen.findByRole('button', { name: '検索' });
