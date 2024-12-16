@@ -9,12 +9,12 @@ import { redirect, useSubmit } from '@remix-run/react';
 import { createUser } from 'client/client';
 import type { CreateUserBody } from 'client/client.schemas';
 import { useEffect, useState } from 'react';
-import UserCreateComponent from '~/components/user-create/UserCreateComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification, successNotification } from '~/utils/notification';
 import { generatePassword } from '~/utils/password';
 import { makeCookieHeader } from '~/utils/session';
+import UserCreateComponent from './components/UserCreateComponent';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));

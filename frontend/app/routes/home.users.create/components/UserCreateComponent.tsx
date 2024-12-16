@@ -1,16 +1,16 @@
-import FormLayout from '../layouts/FormLayout';
-import { CreateUserBody } from 'client/client.schemas';
-import { UseFormReturnType } from '@mantine/form';
-import UserCreateTitle from './UserCreateTitle';
-import UserCreateEmailForm from './UserCreateEmailForm';
-import UserCreateNameForm from './UserCreateNameForm';
 import { Container } from '@mantine/core';
-import UserCreatePasswordForm from './UserCreatePasswordForm';
-import UserCreateSubmitButton from './UserCreateSubmitButton';
-import UserCreatePasswordComponent from './UserCreatePasswordComponent';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import { UseFormReturnType } from '@mantine/form';
+import { CreateUserBody } from 'client/client.schemas';
 import { FaUsers } from 'react-icons/fa';
 import { FaUserPlus } from 'react-icons/fa6';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import FormLayout from '~/components/layouts/FormLayout';
+import UserCreateEmailForm from './UserCreateEmailForm';
+import UserCreateNameForm from './UserCreateNameForm';
+import UserCreatePasswordComponent from './UserCreatePasswordComponent';
+import UserCreatePasswordForm from './UserCreatePasswordForm';
+import UserCreateSubmitButton from './UserCreateSubmitButton';
+import UserCreateTitle from './UserCreateTitle';
 
 interface UserCreateComponentProps {
 	form: UseFormReturnType<
