@@ -4,13 +4,13 @@ import { SerializeFrom } from '@remix-run/cloudflare';
 import { getBooksResponse } from 'client/client';
 import type { GetBooksParams } from 'client/client.schemas';
 import { LuBookCopy } from 'react-icons/lu';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import ErrorComponent from '~/components/common/error/ErrorComponent';
+import ContentsHeader from '~/components/common/pagination/ContentsHeader';
+import PaginationComponent from '~/components/common/pagination/PaginationComponent';
 import { PaginationProps } from '~/types/pagination';
-import BookSearchComponent from '../book-search/BookSearchComponent';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
-import ErrorComponent from '../common/error/ErrorComponent';
-import ContentsHeader from '../common/pagination/ContentsHeader';
-import PaginationComponent from '../common/pagination/PaginationComponent';
 import BookCards from './BookCards';
+import BookSearchComponent from './search-form/BookSearchComponent';
 
 interface BookListComponentProps {
 	booksResponse: SerializeFrom<getBooksResponse>;

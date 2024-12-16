@@ -1,6 +1,6 @@
 import { Card } from '@mantine/core';
 import type { GoogleBook } from 'client/client.schemas';
-import BookCardThumbnail from '../books/BookCardThumbnail';
+import BookCardThumbnail from '~/routes/home._index/components/BookCardThumbnail';
 
 interface GlobalBookCardProps {
 	book: GoogleBook;

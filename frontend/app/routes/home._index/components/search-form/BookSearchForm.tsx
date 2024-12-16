@@ -1,7 +1,7 @@
 import { Collapse } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import type { GetBooksParams } from 'client/client.schemas';
-import FormLayout from '../layouts/FormLayout';
+import FormLayout from '~/components/layouts/FormLayout';
 import BookSearchAuthorForm from './BookSearchAuthorForm';
 import BookSearchIsbnForm from './BookSearchIsbnForm';
 import BookSearchPublisherForm from './BookSearchPublisherForm';

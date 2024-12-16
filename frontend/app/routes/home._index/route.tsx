@@ -10,11 +10,11 @@ import { deleteBooks, getBooks, getBooksResponse } from 'client/client';
 import { Book, GetBooksParams } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import BookListComponent from '~/components/books/BookListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';
+import BookListComponent from './components/BookListComponent';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;

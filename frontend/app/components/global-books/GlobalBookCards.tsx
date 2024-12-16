@@ -1,6 +1,6 @@
 import { ScrollArea, SimpleGrid } from '@mantine/core';
 import { GoogleBook } from 'client/client.schemas';
-import NoBookComponent from '../books/NoBookComponent';
+import NoBookComponent from '~/routes/home._index/components/NoBookComponent';
 import GlobalBookCard from './GlobalBookCard';
 
 interface GlobalBookCardsProps {
