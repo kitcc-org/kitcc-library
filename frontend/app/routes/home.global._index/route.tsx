@@ -5,7 +5,7 @@ import { json } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { searchGoogleBooks, searchGoogleBooksResponse } from 'client/client';
 import { SearchGoogleBooksParams } from 'client/client.schemas';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GlobalBookListComponent from '~/components/global-books/GlobalBookListComponent';
 
 interface LoaderData {
@@ -96,8 +96,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 const GlobalBookListPage = () => {
 	const { booksResponse, condition } = useLoaderData<typeof loader>();
 	const { keyword, title, author, publisher, isbn, page, limit } = condition;
-	const [opened, { open, close }] = useDisclosure();
+
 	const [searchMode, setSearchMode] = useState(keyword ? 'keyword' : 'detail');
+	const [opened, { open, close }] = useDisclosure();
 	const navigate = useNavigate();
 	const form = useForm<SearchGoogleBooksParams>({
 		mode: 'uncontrolled',
@@ -109,6 +110,21 @@ const GlobalBookListPage = () => {
 			isbn: isbn ?? '',
 		},
 	});
+
+	// 検索条件が変更されたらフォームの値を更新する
+	useEffect(() => {
+		const formValues = form.getValues();
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { page, limit, ...rest } = condition;
+
+		Object.entries(rest).forEach(([key, value]) => {
+			const currentValue = formValues[key as keyof SearchGoogleBooksParams];
+			if (currentValue !== value) {
+				form.setFieldValue(key, value);
+			}
+		});
+	}, [condition]);
 
 	const handleDetailSubmit = (props: SearchGoogleBooksParams) => {
 		const params = new URLSearchParams();
