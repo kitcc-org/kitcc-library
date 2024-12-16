@@ -4,7 +4,9 @@ import { SerializeFrom } from '@remix-run/cloudflare';
 import type { searchGoogleBooksResponse } from 'client/client';
 import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import React from 'react';
+import { AiOutlineGlobal } from 'react-icons/ai';
 import { PaginationProps } from '~/types/pagination';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 import ErrorComponent from '../common/error/ErrorComponent';
 import ContentsHeader from '../common/pagination/ContentsHeader';
 import PaginationComponent from '../common/pagination/PaginationComponent';
@@ -45,6 +47,15 @@ const GlobalBookListComponent = ({
 }: GlobalBookListComponentProps) => {
 	return (
 		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
+			<BreadCrumbsComponent
+				anchors={[
+					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+				]}
+			/>
 			<GlobalBookSearchComponent
 				disclosure={{ isOpen, open, close }}
 				form={form}

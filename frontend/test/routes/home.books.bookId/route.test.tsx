@@ -149,4 +149,18 @@ describe('Book Detail Page', () => {
 
 		// TODO: ログイン状態で借りている人がいる場合
 	});
+
+	describe('Breadcrumbs', () => {
+		it('should navigate to home page when clicked', async () => {
+			const { user } = customRender(
+				<BookDetailStub initialEntries={['/home/books/1']} />,
+			);
+
+			const homeLink = await screen.findByRole('link', { name: '蔵書一覧' });
+			await user.click(homeLink);
+
+			// ホームページに遷移する
+			expect(window.location.pathname).toBe('/home');
+		});
+	});
 });

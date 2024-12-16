@@ -8,7 +8,10 @@ import {
 import { useLoaderData } from '@remix-run/react';
 import { createBook, getBooks, getGoogleBook } from 'client/client';
 import { CreateBookBody, GoogleBook } from 'client/client.schemas';
+import { AiOutlineGlobal } from 'react-icons/ai';
+import { FaBookAtlas } from 'react-icons/fa6';
 import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import GlobalBookDetailContent from '~/components/global-book-detail/GlobalBookDetailContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
@@ -101,16 +104,36 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 const GlobalBookDetailPage = () => {
 	const { googleBook, totalBook, bookId } = useLoaderData<LoaderData>();
 	return (
-		<Stack bg="var(--mantine-color-body)" align="stretch" justify="flex-start">
-			<Grid gutter={rem(50)}>
-				<Grid.Col span={3}>
-					<BookDetailActionPanel book={googleBook} totalBook={totalBook} />
-				</Grid.Col>
-				<Grid.Col span={9}>
-					<GlobalBookDetailContent book={googleBook} bookId={bookId} />
-				</Grid.Col>
-			</Grid>
-		</Stack>
+		<>
+			<BreadCrumbsComponent
+				anchors={[
+					{
+						icon: <AiOutlineGlobal />,
+						title: 'グローバル検索',
+						href: '/home/global',
+					},
+					{
+						icon: <FaBookAtlas />,
+						title: googleBook.title,
+						href: `/home/global/${googleBook.id}`,
+					},
+				]}
+			/>
+			<Stack
+				bg="var(--mantine-color-body)"
+				align="stretch"
+				justify="flex-start"
+			>
+				<Grid gutter={rem(50)}>
+					<Grid.Col span={3}>
+						<BookDetailActionPanel book={googleBook} totalBook={totalBook} />
+					</Grid.Col>
+					<Grid.Col span={9}>
+						<GlobalBookDetailContent book={googleBook} bookId={bookId} />
+					</Grid.Col>
+				</Grid>
+			</Stack>
+		</>
 	);
 };
 
