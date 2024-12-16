@@ -8,11 +8,11 @@ import {
 import { useLoaderData, useSubmit } from '@remix-run/react';
 import { updateUser } from 'client/client';
 import type { UpdateUserBody, User } from 'client/client.schemas';
-import MyPageEditComponent from '~/components/me-edit/MyPageEditComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { errorNotification } from '~/utils/notification';
 import { makeCookieHeader } from '~/utils/session';
+import MyPageEditComponent from './components/MyPageEditComponent';
 
 export interface UpdateUserFormBody extends UpdateUserBody {
 	newPasswordAgain?: string;

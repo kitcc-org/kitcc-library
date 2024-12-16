@@ -1,13 +1,13 @@
 import { Container, Space } from '@mantine/core';
-import MyPageEditTitle from './MyPageEditTitle';
 import { UseFormReturnType } from '@mantine/form';
-import { UpdateUserFormBody } from '~/routes/home.me.edit/route';
-import MyPageEditProfileFieldSet from './MyPageEditProfileFieldSet';
-import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';
-import FormLayout from '../layouts/FormLayout';
-import MyPageEditSubmitButton from './MyPageEditSubmitButton';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 import { FaUser, FaUserEdit } from 'react-icons/fa';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import FormLayout from '~/components/layouts/FormLayout';
+import { UpdateUserFormBody } from '~/routes/home.me.edit/route';
+import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';
+import MyPageEditProfileFieldSet from './MyPageEditProfileFieldSet';
+import MyPageEditSubmitButton from './MyPageEditSubmitButton';
+import MyPageEditTitle from './MyPageEditTitle';
 
 interface MyPageEditComponentProps {
 	form: UseFormReturnType<
