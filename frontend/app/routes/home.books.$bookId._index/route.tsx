@@ -1,6 +1,6 @@
 import { useOutletContext } from '@remix-run/react';
 import { BookDetailOutletContext } from '../home.books.$bookId/route';
-import BookDetailContent from '~/components/book-detail/BookDetailContent';
+import BookDetailContent from './components/BookDetailContent';
 
 const BookDetailPage = () => {
 	const { book, loansResponse } = useOutletContext<BookDetailOutletContext>();
