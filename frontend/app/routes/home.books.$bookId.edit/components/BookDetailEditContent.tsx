@@ -1,6 +1,6 @@
 import { UseFormReturnType } from '@mantine/form';
+import FormLayout from '~/components/layouts/FormLayout';
 import { CustomUpdateBookBody } from '~/routes/home.books.$bookId.edit/route';
-import FormLayout from '../layouts/FormLayout';
 import BookDetailAuthorsForm from './BookDetailAuthorsForm';
 import BookDetailEditTitle from './BookDetailEditTitle';
 import BookDetailIsbnForm from './BookDetailIsbnForm';

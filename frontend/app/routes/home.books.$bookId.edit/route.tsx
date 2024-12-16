@@ -7,11 +7,11 @@ import {
 import { useOutletContext, useSubmit } from '@remix-run/react';
 import { updateBook } from 'client/client';
 import { UpdateBookBody } from 'client/client.schemas';
-import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
 import { commitSession, getSession } from '~/services/session.server';
 import { formatDate } from '~/utils/date';
 import { makeCookieHeader } from '~/utils/session';
 import { BookDetailOutletContext } from '../home.books.$bookId/route';
+import BookDetailEditContent from './components/BookDetailEditContent';
 
 export interface CustomUpdateBookBody extends UpdateBookBody {
 	customPublishedDate?: Date;
