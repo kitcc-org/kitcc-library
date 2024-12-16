@@ -1,7 +1,7 @@
 import { Stack } from '@mantine/core';
 import { GoogleBook } from 'client/client.schemas';
-import BookDetailDescription from '../book-detail/BookDetailDescription';
-import BookDetailTitle from '../book-detail/BookDetailTitle';
+import BookDetailDescription from '~/routes/home.books.$bookId._index/components/BookDetailDescription';
+import BookDetailTitle from '~/routes/home.books.$bookId._index/components/BookDetailTitle';
 import GlobalBookDetailContentTable from './GlobalBookDetailContentTable';
 import GlobalBookDetailLink from './GlobalBookDetailLink';
 
