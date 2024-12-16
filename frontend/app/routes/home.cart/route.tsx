@@ -7,11 +7,11 @@ import { upsertLoans } from 'client/client';
 import { UpsertLoansBodyItem } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import CartListComponent from '~/components/cart/CartListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import type { CartProps } from '~/stores/cartAtom';
 import { selectedCartBooksAtom } from '~/stores/cartAtom';
 import { makeCookieHeader } from '~/utils/session';
+import CartListComponent from './components/CartListComponent';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));

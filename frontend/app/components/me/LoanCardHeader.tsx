@@ -1,8 +1,8 @@
 import { Checkbox, Group } from '@mantine/core';
 import { useAtom } from 'jotai';
+import CartCardNumberInput from '~/routes/home.cart/components/CartCardNumberInput';
 import type { CartProps } from '~/stores/cartAtom';
 import { displayLoanAtom, selectedLoanAtom } from '~/stores/loanAtom';
-import CartCardNumberInput from '../cart/CartCardNumberInput';
 
 interface LoanCardHeaderProps {
 	id: number;

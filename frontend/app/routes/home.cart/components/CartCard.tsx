@@ -1,6 +1,6 @@
 import { Card } from '@mantine/core';
+import BookCardThumbnail from '~/components/books/BookCardThumbnail';
 import { CartProps } from '~/stores/cartAtom';
-import BookCardThumbnail from '../books/BookCardThumbnail';
 import CartCardHeader from './CartCardHeader';
 
 interface CartCardProps {

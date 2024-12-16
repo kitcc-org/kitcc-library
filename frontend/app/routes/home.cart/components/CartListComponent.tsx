@@ -1,8 +1,8 @@
 import { Stack } from '@mantine/core';
 import { useAtom } from 'jotai';
 import { LuShoppingCart } from 'react-icons/lu';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
 import { cartAtom } from '~/stores/cartAtom';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 import CartCards from './CartCards';
 import CartSelectedDialog from './CartSelectedDialog';
 import CartTitle from './CartTitle';
