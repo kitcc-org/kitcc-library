@@ -9,9 +9,9 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 import { login } from 'client/client';
 import type { LoginBody } from 'client/client.schemas';
 import { useEffect } from 'react';
-import LoginFormComponent from '~/components/login/LoginFormComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { errorNotification } from '~/utils/notification';
+import LoginFormComponent from './components/LoginFormComponent';
 
 interface LoaderData {
 	error?: string;

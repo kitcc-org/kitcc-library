@@ -1,7 +1,7 @@
 import type { UseFormReturnType } from '@mantine/form';
 import type { LoginBody } from 'client/client.schemas';
-import FormBaseLayout from '../layouts/FormBaseLayout';
-import FormLayout from '../layouts/FormLayout';
+import FormBaseLayout from '~/components/layouts/FormBaseLayout';
+import FormLayout from '~/components/layouts/FormLayout';
 import LoginEmailForm from './LoginEmailForm';
 import LoginFormHelpText from './LoginFormHelpText';
 import LoginFormTitle from './LoginFormTitle';
