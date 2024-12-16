@@ -1,7 +1,7 @@
 import { Container, Space } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { FaUser, FaUserEdit } from 'react-icons/fa';
-import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '~/components/breadcrumbs/BreadCrumbsComponent';
 import FormLayout from '~/components/layouts/FormLayout';
 import { UpdateUserFormBody } from '~/routes/home.me.edit/route';
 import MyPageEditPasswordFieldSet from './MyPageEditPasswordFieldSet';

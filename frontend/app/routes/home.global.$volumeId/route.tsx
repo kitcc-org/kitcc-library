@@ -10,7 +10,7 @@ import { createBook, getBooks, getGoogleBook } from 'client/client';
 import { CreateBookBody, GoogleBook } from 'client/client.schemas';
 import { AiOutlineGlobal } from 'react-icons/ai';
 import { FaBookAtlas } from 'react-icons/fa6';
-import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '~/components/breadcrumbs/BreadCrumbsComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';

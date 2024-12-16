@@ -3,7 +3,7 @@ import { UseFormReturnType } from '@mantine/form';
 import { CreateUserBody } from 'client/client.schemas';
 import { FaUsers } from 'react-icons/fa';
 import { FaUserPlus } from 'react-icons/fa6';
-import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '~/components/breadcrumbs/BreadCrumbsComponent';
 import FormLayout from '~/components/layouts/FormLayout';
 import UserCreateEmailForm from './UserCreateEmailForm';
 import UserCreateNameForm from './UserCreateNameForm';

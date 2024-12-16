@@ -1,9 +1,9 @@
 import { Stack } from '@mantine/core';
 import { SerializeFrom } from '@remix-run/cloudflare';
 import { getLoansResponse } from 'client/client';
-import ErrorComponent from '~/components/common/error/ErrorComponent';
-import ContentsHeader from '~/components/common/pagination/ContentsHeader';
-import PaginationComponent from '~/components/common/pagination/PaginationComponent';
+import ErrorComponent from '~/components/error/ErrorComponent';
+import ContentsHeader from '~/components/pagination/ContentsHeader';
+import PaginationComponent from '~/components/pagination/PaginationComponent';
 import { PaginationProps } from '~/types/pagination';
 import LoanCards from './LoanCards';
 

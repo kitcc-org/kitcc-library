@@ -105,7 +105,9 @@ app.get(
 		});
 
 		// Google Books APIにリクエストを送信する
-		const response = await fetch(`${GOOGLE_BOOOKS_BASE_URL}?${params}`);
+		const response = await fetch(
+			`${GOOGLE_BOOOKS_BASE_URL}?${params.toString()}`,
+		);
 		if (response.status !== 200) {
 			const error: GoogleAPIError = await response.json();
 			return ctx.json(error, { status: response.status });

@@ -3,7 +3,7 @@ import type { UseFormReturnType } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import type { GetBooksParams } from 'client/client.schemas';
 import { MdCameraAlt } from 'react-icons/md';
-import IsbnScanModal from '~/components/common/isbn-scan-modal/IsbnScanModal';
+import IsbnScanModal from '~/components/isbn-scan-modal/IsbnScanModal';
 
 interface SearchIsbnFormProps {
 	form: UseFormReturnType<

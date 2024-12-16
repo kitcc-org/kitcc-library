@@ -3,7 +3,7 @@ import { SerializeFrom } from '@remix-run/cloudflare';
 import { getLoansResponse } from 'client/client';
 import { User } from 'client/client.schemas';
 import { FaUser } from 'react-icons/fa';
-import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import BreadCrumbsComponent from '~/components/breadcrumbs/BreadCrumbsComponent';
 import { PaginationProps } from '~/types/pagination';
 import MyLoansListComponent from './MyLoansListComponent';
 import MyProfileComponent from './MyProfileComponent';
