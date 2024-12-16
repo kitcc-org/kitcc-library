@@ -128,7 +128,7 @@ const Home = () => {
 	}, [error]);
 
 	return (
-		<AppShell header={{ height: 70 }} padding={{ default: 'md', sm: 'sm' }}>
+		<AppShell header={{ height: 70 }} padding="md">
 			<HeaderComponent />
 			<Container size="xl">
 				<AppShell.Main>
