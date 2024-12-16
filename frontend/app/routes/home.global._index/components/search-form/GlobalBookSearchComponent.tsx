@@ -1,9 +1,9 @@
 import type { UseFormReturnType } from '@mantine/form';
 import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import React from 'react';
-import GlobalBookDetailSearchForm from './GlobalBookDetailSearchForm';
-import GlobalBookKeywordSearchForm from './GlobalBookKeywordSearchForm';
-import { HandleGlobalSearchFunctions } from './GlobalBookListComponent';
+import GlobalBookDetailSearchForm from '../GlobalBookDetailSearchForm';
+import GlobalBookKeywordSearchForm from '../GlobalBookKeywordSearchForm';
+import { HandleGlobalSearchFunctions } from '../GlobalBookListComponent';
 import GlobalBookSearchModeButton from './GlobalBookSearchModeButton';
 
 interface GlobalBookSearchComponentProps {

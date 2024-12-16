@@ -5,14 +5,14 @@ import type { searchGoogleBooksResponse } from 'client/client';
 import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import React from 'react';
 import { AiOutlineGlobal } from 'react-icons/ai';
+import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
+import ErrorComponent from '~/components/common/error/ErrorComponent';
+import ContentsHeader from '~/components/common/pagination/ContentsHeader';
+import PaginationComponent from '~/components/common/pagination/PaginationComponent';
 import { PaginationProps } from '~/types/pagination';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
-import ErrorComponent from '../common/error/ErrorComponent';
-import ContentsHeader from '../common/pagination/ContentsHeader';
-import PaginationComponent from '../common/pagination/PaginationComponent';
 import GlobalBookCards from './GlobalBookCards';
-import GlobalBookSearchComponent from './GlobalBookSearchComponent';
 import NoQueryComponent from './NoQueryComponent';
+import GlobalBookSearchComponent from './search-form/GlobalBookSearchComponent';
 
 export interface HandleGlobalSearchFunctions {
 	handleDetailSubmit: (props: SearchGoogleBooksParams) => void;

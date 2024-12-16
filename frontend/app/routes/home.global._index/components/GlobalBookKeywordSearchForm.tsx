@@ -1,10 +1,10 @@
 import { Collapse, Space } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
 import type { SearchGoogleBooksParams } from 'client/client.schemas';
-import FormLayout from '../layouts/FormLayout';
-import GlobalBookSearchKeywordForm from './GlobalBookSearchKeywordForm';
-import GlobalBookSearchSubmitButton from './GlobalBookSearchSubmitButton';
-import GlobalSearchSegment from './GlobalSearchSegment';
+import FormLayout from '~/components/layouts/FormLayout';
+import GlobalBookSearchKeywordForm from './search-form/GlobalBookSearchKeywordForm';
+import GlobalBookSearchSubmitButton from './search-form/GlobalBookSearchSubmitButton';
+import GlobalSearchSegment from './search-form/GlobalSearchSegment';
 
 interface GlobalKeywordSearchFormProps {
 	isOpen: boolean;
