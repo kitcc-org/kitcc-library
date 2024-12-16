@@ -23,7 +23,7 @@ const MyProfileComponent = ({ name, email }: MyProfileComponentProps) => {
 	return (
 		<Center>
 			<Paper shadow="xs" p="xl" withBorder w="50%" maw={rem(500)}>
-				<Stack gap={rem(0)}>
+				<Stack gap={rem(10)}>
 					<Group justify="center" gap="0px">
 						<Avatar variant="white" radius="sm" size={rem(100)} />
 						<Text size={rem(30)}>{name}</Text>

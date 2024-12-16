@@ -2,11 +2,11 @@ import { Stack } from '@mantine/core';
 import { SerializeFrom } from '@remix-run/cloudflare';
 import { getLoansResponse } from 'client/client';
 import { User } from 'client/client.schemas';
-import { PaginationProps } from '~/types/pagination';
-import MyLoansListComponent from './MyLoansListComponent';
-import MyProfileDataComponent from './MyProfileComponent';
-import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
 import { FaUser } from 'react-icons/fa';
+import { PaginationProps } from '~/types/pagination';
+import BreadCrumbsComponent from '../common/breadcrumbs/BreadCrumbsComponent';
+import MyLoansListComponent from './MyLoansListComponent';
+import MyProfileComponent from './MyProfileComponent';
 
 interface MyPageComponentProps {
 	user: User;
@@ -24,7 +24,7 @@ const MyPageComponent = ({
 			<BreadCrumbsComponent
 				anchors={[{ icon: <FaUser />, title: 'マイページ', href: '/home/me' }]}
 			/>
-			<MyProfileDataComponent name={user.name} email={user.email} />
+			<MyProfileComponent name={user.name} email={user.email} />
 			<MyLoansListComponent
 				loansResponse={loansResponse}
 				paginationProps={paginationProps}
