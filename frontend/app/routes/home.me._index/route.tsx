@@ -9,11 +9,11 @@ import { getLoans, getLoansResponse, upsertLoans } from 'client/client';
 import { UpsertLoansBodyItem, User } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import MyPageComponent from '~/components/me/MyPageComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { CartProps } from '~/stores/cartAtom';
 import { displayLoanAtom, selectedLoanAtom } from '~/stores/loanAtom';
 import { makeCookieHeader } from '~/utils/session';
+import MyPageComponent from './components/MyPageComponent';
 
 interface LoaderData {
 	userData: User;
