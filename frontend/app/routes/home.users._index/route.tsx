@@ -6,10 +6,10 @@ import {
 } from '@remix-run/cloudflare';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { deleteUser, getUsers, getUsersResponse } from 'client/client';
-import UsersListComponent from '~/components/users/UsersListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';
+import UsersListComponent from './components/UsersListComponent';
 
 interface LoaderData {
 	usersResponse: getUsersResponse;
