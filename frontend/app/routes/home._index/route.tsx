@@ -14,6 +14,7 @@ import BookListComponent from '~/components/books/BookListComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { selectedBooksAtom } from '~/stores/bookAtom';
 import { ActionResponse } from '~/types/response';
+import { makeCookieHeader } from '~/utils/session';
 
 interface LoaderData {
 	booksResponse: getBooksResponse;
@@ -36,6 +37,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const author = url.searchParams.get('author') ?? undefined;
 	const page = url.searchParams.get('page') ?? undefined;
 	const limit = url.searchParams.get('limit') ?? undefined;
+
 	// 書籍情報を取得する
 	const response = await getBooks({
 		title: title,
@@ -72,12 +74,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
-
-	// prettier-ignore
+	const cookieHeader = makeCookieHeader(session);
 	const requestBody = await request.json<{ selectedBook: Book[] }>();
 	const selectedBook = requestBody.selectedBook;
 

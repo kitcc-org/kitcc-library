@@ -1,18 +1,18 @@
 import { Collapse, Space } from '@mantine/core';
 import type { UseFormReturnType } from '@mantine/form';
-import type { SearchBooksParams } from 'client/client.schemas';
+import type { SearchGoogleBooksParams } from 'client/client.schemas';
 import FormLayout from '../layouts/FormLayout';
-import GlobalBookSearchSubmitButton from './GlobalBookSearchSubmitButton';
 import GlobalBookSearchKeywordForm from './GlobalBookSearchKeywordForm';
+import GlobalBookSearchSubmitButton from './GlobalBookSearchSubmitButton';
 import GlobalSearchSegment from './GlobalSearchSegment';
 
 interface GlobalKeywordSearchFormProps {
 	isOpen: boolean;
 	form: UseFormReturnType<
-		SearchBooksParams,
-		(values: SearchBooksParams) => SearchBooksParams
+		SearchGoogleBooksParams,
+		(values: SearchGoogleBooksParams) => SearchGoogleBooksParams
 	>;
-	handleSubmit: (props: SearchBooksParams) => void;
+	handleSubmit: (props: SearchGoogleBooksParams) => void;
 	searchMode: string;
 	setSearchMode: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -31,7 +31,10 @@ const GlobalBookKeywordSearchForm = ({
 				setSearchMode={setSearchMode}
 			/>
 			<Space h="md" />
-			<FormLayout<SearchBooksParams> form={form} handleSubmit={handleSubmit}>
+			<FormLayout<SearchGoogleBooksParams>
+				form={form}
+				handleSubmit={handleSubmit}
+			>
 				<GlobalBookSearchKeywordForm form={form} />
 				<GlobalBookSearchSubmitButton />
 			</FormLayout>

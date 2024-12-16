@@ -5,13 +5,13 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SearchBooks200BooksItem = {
-  authors: string[];
-  description?: string;
-  id: string;
-  isbn?: string;
-  publishedDate?: string;
-  publisher?: string;
-  thumbnail?: string;
-  title: string;
+export type GoogleBook = {
+	authors: string[];
+	description?: string;
+	id: string;
+	isbn?: string;
+	publishedDate?: string;
+	publisher?: string;
+	thumbnail?: string;
+	title: string;
 };

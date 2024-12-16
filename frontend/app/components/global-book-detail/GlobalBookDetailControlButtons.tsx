@@ -1,42 +1,44 @@
 import { Button } from '@mantine/core';
 import { useSubmit } from '@remix-run/react';
-import { CreateBookBody, SearchBooks200BooksItem } from 'client/client.schemas';
+import { CreateBookBody, GoogleBook } from 'client/client.schemas';
 import { BiSolidBookAdd } from 'react-icons/bi';
 
 interface GlobalBookDetailControlButtonsProps {
-	searchBook: SearchBooks200BooksItem;
+	book: GoogleBook;
 	totalBook: number;
 }
 
 const GlobalBookDetailControlButtons = ({
-	searchBook,
+	book,
 	totalBook,
 }: GlobalBookDetailControlButtonsProps) => {
 	const submit = useSubmit();
 
-	const addBookData: CreateBookBody = {
-		authors: searchBook.authors,
-		description: searchBook.description ?? '',
-		isbn: searchBook.isbn ?? '',
-		publishedDate: searchBook.publishedDate ?? '',
-		publisher: searchBook.publisher ?? '',
+	const bookData: CreateBookBody = {
+		authors: book.authors,
+		description: book.description ?? '',
+		isbn: book.isbn ?? '',
+		publishedDate: book.publishedDate ?? '',
+		publisher: book.publisher ?? '',
 		stock: 1,
-		thumbnail: searchBook.thumbnail,
-		title: searchBook.title,
+		thumbnail: book.thumbnail,
+		title: book.title,
 	};
 
 	return (
 		<Button
 			variant="filled"
+			fz="lg"
 			color="teal"
 			disabled={totalBook > 0}
 			leftSection={<BiSolidBookAdd />}
 			onClick={() => {
 				submit(
-					{ ...addBookData },
+					{ ...bookData },
 					{
-						action: '/home/global/books/$bookId',
+						action: '/home/global/$volumeId',
 						method: 'POST',
+						encType: 'application/json',
 					},
 				);
 			}}

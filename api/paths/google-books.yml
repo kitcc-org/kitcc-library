@@ -1,0 +1,111 @@
+books:
+  get:
+    tags:
+      - google-books
+    operationId: searchGoogleBooks
+    summary: Google Books から書籍を検索する
+    security: []
+    parameters:
+      - name: page
+        in: query
+        description: ページ番号
+        required: false
+        schema:
+          type: string
+          pattern: ^[1-9]\d*$
+          minimum: 1
+          default: 1
+      - name: limit
+        in: query
+        description: 1ページあたりの表示数
+        required: false
+        schema:
+          type: string
+          pattern: ^[1-9]\d*$
+          minimum: 1
+          maximum: 40
+          default: 10
+      - name: keyword
+        in: query
+        description: 検索キーワード
+        required: false
+        schema:
+          type: string
+      - name: intitle
+        in: query
+        description: タイトル
+        required: false
+        schema:
+          type: string
+      - name: inauthor
+        in: query
+        description: 著者
+        required: false
+        schema:
+          type: string
+      - name: inpublisher
+        in: query
+        description: 出版社
+        required: false
+        schema:
+          type: string
+      - name: isbn
+        in: query
+        description: ISBN
+        required: false
+        schema:
+          type: string
+          pattern: '^\d{10}(\d{3})?$'
+    responses:
+      '200':
+        description: 検索に成功した
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                totalBook:
+                  description: 総書籍数
+                  type: integer
+                books:
+                  type: array
+                  items:
+                    $ref: '../components/schemas/GoogleBook.yml'
+              required:
+                - totalBook
+                - books
+      '400':
+        $ref: '../components/responses/4xx.yml#/BadRequest'
+      '500':
+        $ref: '../components/responses/5xx.yml#/InternalServerError'
+
+book:
+  get:
+    tags:
+      - google-books
+    operationId: getGoogleBook
+    summary: Google Books から特定の書籍の情報を取得する
+    security: []
+    parameters:
+      - name: volumeId
+        in: path
+        description: Google BooksのID
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: 情報の取得に成功した
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/GoogleBook.yml'
+            examples:
+              book:
+                $ref: '../components/examples/google-book.yml'
+      '400':
+        $ref: '../components/responses/4xx.yml#/BadRequest'
+      '404':
+        $ref: '../components/responses/4xx.yml#/NotFound'
+      '500':
+        $ref: '../components/responses/5xx.yml#/InternalServerError'

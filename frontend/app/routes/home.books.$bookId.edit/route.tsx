@@ -9,21 +9,20 @@ import { updateBook } from 'client/client';
 import { UpdateBookBody } from 'client/client.schemas';
 import BookDetailEditContent from '~/components/book-detail-edit/BookDetailEditContent';
 import { commitSession, getSession } from '~/services/session.server';
-import { formatDate } from '~/utils/day';
+import { formatDate } from '~/utils/date';
+import { makeCookieHeader } from '~/utils/session';
 import { BookDetailOutletContext } from '../home.books.$bookId/route';
 
 export interface CustomUpdateBookBody extends UpdateBookBody {
 	customPublishedDate?: Date;
 }
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
 	const session = await getSession(request.headers.get('Cookie'));
-
-	const bookId = params.bookId ?? '';
 
 	if (!session.has('user')) {
 		session.flash('error', 'ログインしてください');
-		return redirect(`/home/books/${bookId}`, {
+		return redirect(`/login`, {
 			headers: {
 				'Set-Cookie': await commitSession(session),
 			},
@@ -45,10 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 		});
 	}
 
-	const cookieHeader = [
-		`__Secure-user_id=${session.get('user')?.id};`,
-		`__Secure-session_token=${session.get('user')?.sessionToken}`,
-	].join('; ');
+	const cookieHeader = makeCookieHeader(session);
 	const formData = await request.formData();
 
 	if (request.method === 'PATCH') {
@@ -146,7 +142,7 @@ const BookEditPage = () => {
 			{
 				bookId: book.id,
 				title: props.title ?? '',
-				authors: props.authors ? props.authors.join(',') : '',
+				authors: props.authors ?? [],
 				publisher: props.publisher ?? '',
 				publishedDate: props.customPublishedDate
 					? formatDate(props.customPublishedDate)

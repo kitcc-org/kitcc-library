@@ -1,9 +1,9 @@
 import { Group, rem, Stack, Table, Text } from '@mantine/core';
-import { SearchBooks200BooksItem } from 'client/client.schemas';
+import { GoogleBook } from 'client/client.schemas';
 import GlobalBookDetailAuthorBadge from './GlobalBookDetailAuthorBadge';
 
 interface GlobalBookDetailContentTableProps {
-	book: SearchBooks200BooksItem;
+	book: GoogleBook;
 }
 
 const GlobalBookDetailContentTable = ({
@@ -17,9 +17,9 @@ const GlobalBookDetailContentTable = ({
 					<Table.Th>著者</Table.Th>
 					<Table.Td>
 						<Group gap={rem(7)}>
-							{book.authors.map((author, id) => (
-								<GlobalBookDetailAuthorBadge key={id} name={author} />
-							))}
+							{book.authors.map((author, id) => {
+								return <GlobalBookDetailAuthorBadge key={id} name={author} />;
+							})}
 						</Group>
 					</Table.Td>
 				</Table.Tr>

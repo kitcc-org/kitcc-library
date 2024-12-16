@@ -11,8 +11,6 @@ import {
 	getBookResponse,
 	getBooksQueryParams,
 	getBooksResponse,
-	searchBooksQueryParams,
-	searchBooksResponse,
 	updateBookBody,
 	updateBookParams,
 	updateBookResponse,
@@ -20,158 +18,6 @@ import {
 import { isLoggedIn } from '../utils/auth';
 
 const app = new Hono<{ Bindings: Env }>();
-
-// Google Books APIsのレスポンスボディ
-// 200(OK)の場合
-interface GoogleBookVolume {
-	totalItems: number;
-	items?: [
-		{
-			id: string;
-			volumeInfo: {
-				title: string;
-				authors?: string[];
-				publisher?: string;
-				publishedDate?: string;
-				description?: string;
-				imageLinks?: {
-					thumbnail: string;
-				};
-				industryIdentifiers?: {
-					type: string;
-					identifier: string;
-				}[];
-			};
-		},
-	];
-}
-// 400(Bad Request)の場合
-interface GoogleApiError {
-	error: {
-		code: number;
-		message: string;
-		errors: {
-			message: string;
-			domain: string;
-			reason: string;
-		}[];
-	};
-}
-
-// GET /search のレスポンス
-interface GoogleBook {
-	id: string;
-	title: string;
-	authors: string[];
-	publisher: string;
-	publishedDate: string;
-	description: string;
-	thumbnail: string;
-	isbn: string;
-}
-
-app.get(
-	'/search',
-	zValidator('query', searchBooksQueryParams, (result, ctx) => {
-		if (!result.success) {
-			return ctx.json(
-				{
-					message: 'Query Parameter Validation Error',
-					error: result.error,
-				},
-				400,
-			);
-		}
-	}),
-	async (ctx) => {
-		const query = ctx.req.valid('query');
-
-		const page = parseInt(query['page'] ?? '1');
-		const limit = parseInt(query['limit'] ?? '10');
-
-		delete query['page'];
-		delete query['limit'];
-
-		// 絞り込み条件を作成する
-		let terms = query['keyword'] ?? '';
-		for (const [key, value] of Object.entries(query)) {
-			if (value) {
-				terms += `+${key}:${value}`;
-			}
-		}
-
-		// クエリパラメータを作成する
-		const params = new URLSearchParams({
-			q: terms,
-			startIndex: String((page - 1) * limit),
-			maxResults: String(limit),
-			key: ctx.env.GOOGLE_BOOKS_API_KEY,
-		});
-
-		// Google Books APIsにリクエストを送信する
-		// prettier-ignore
-		const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
-		if (response.status !== 200) {
-			const error: GoogleApiError = await response.json();
-			return ctx.json(error, 400);
-		}
-
-		const volumeResult: GoogleBookVolume = await response.json();
-		// ヒットした書籍を格納する配列
-		const hitBooks: GoogleBook[] = [];
-
-		// 書籍がヒットしたか確認する
-		if (volumeResult.hasOwnProperty('items')) {
-			// ヒットした書籍を配列に格納する
-			for (const item of volumeResult.items ?? []) {
-				const book = item.volumeInfo;
-
-				// ISBNを取得する
-				let isbn = undefined;
-				if (book.hasOwnProperty('industryIdentifiers')) {
-					// prettier-ignore
-					for(const identifier of book.industryIdentifiers!) {
-						if (identifier.type === 'ISBN_13') {
-							isbn = identifier.identifier;
-							break;
-						} else if (identifier.type === 'ISBN_10') {
-							isbn = identifier.identifier;
-						}
-					}
-				}
-
-				// 書籍を配列に追加する
-				hitBooks.push({
-					id: item.id,
-					title: book.title,
-					authors: book.authors ?? [],
-					publisher: book.publisher ?? '',
-					publishedDate: book.publishedDate ?? '',
-					description: book.description ?? '',
-					thumbnail: book.imageLinks?.thumbnail ?? '',
-					isbn: isbn ?? '',
-				});
-			}
-		}
-
-		const responseBody = {
-			totalBook: volumeResult.totalItems,
-			books: hitBooks,
-		};
-		const result = searchBooksResponse.safeParse(responseBody);
-		if (!result.success) {
-			console.error(result.error);
-			return ctx.json(
-				{
-					message: 'Response Validation Error',
-				},
-				500,
-			);
-		} else {
-			return ctx.json(result.data);
-		}
-	},
-);
 
 app.get(
 	'/',
@@ -370,13 +216,13 @@ app.get(
 	}),
 	async (ctx) => {
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['bookId']);
+		const bookId = parseInt(param['bookId']);
 
 		const db = drizzle(ctx.env.DB);
 		const books: SelectBook[] = await db
 			.select()
 			.from(bookTable)
-			.where(eq(bookTable.id, id));
+			.where(eq(bookTable.id, bookId));
 
 		if (books.length === 0) {
 			return ctx.notFound();
@@ -433,7 +279,7 @@ app.patch(
 		}
 
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['bookId']);
+		const bookId = parseInt(param['bookId']);
 
 		const book = ctx.req.valid('json');
 
@@ -443,7 +289,7 @@ app.patch(
 			updatedBook = await db
 				.update(bookTable)
 				.set(book)
-				.where(eq(bookTable.id, id))
+				.where(eq(bookTable.id, bookId))
 				.returning();
 		} catch (err) {
 			if (err instanceof Error) {
@@ -500,12 +346,12 @@ app.delete(
 		}
 
 		const param = ctx.req.valid('param');
-		const id = parseInt(param['bookId']);
+		const bookId = parseInt(param['bookId']);
 
 		const db = drizzle(ctx.env.DB);
 		const deletedBook = await db
 			.delete(bookTable)
-			.where(eq(bookTable.id, id))
+			.where(eq(bookTable.id, bookId))
 			.returning();
 
 		if (deletedBook.length === 0) {

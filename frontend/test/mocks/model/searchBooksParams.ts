@@ -5,33 +5,33 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type SearchBooksParams = {
-/**
- * ページ番号
- */
-page?: string;
-/**
- * 1ページあたりの表示数
- */
-limit?: string;
-/**
- * 検索キーワード
- */
-keyword?: string;
-/**
- * タイトル
- */
-intitle?: string;
-/**
- * 著者
- */
-inauthor?: string;
-/**
- * 出版社
- */
-inpublisher?: string;
-/**
- * ISBN
- */
-isbn?: string;
+export type SearchGoogleBooksParams = {
+	/**
+	 * ページ番号
+	 */
+	page?: string;
+	/**
+	 * 1ページあたりの表示数
+	 */
+	limit?: string;
+	/**
+	 * 検索キーワード
+	 */
+	keyword?: string;
+	/**
+	 * タイトル
+	 */
+	intitle?: string;
+	/**
+	 * 著者
+	 */
+	inauthor?: string;
+	/**
+	 * 出版社
+	 */
+	inpublisher?: string;
+	/**
+	 * ISBN
+	 */
+	isbn?: string;
 };

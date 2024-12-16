@@ -1,7 +1,7 @@
 type: object
 properties:
   id:
-    type: integer
+    type: string
   title:
     type: string
   authors:
@@ -16,18 +16,9 @@ properties:
     type: string
   thumbnail:
     type: string
-    format: uri
   isbn:
     type: string
-    pattern: '^\d{10}(\d{3})?$'
-  stock:
-    type: integer
 required:
   - id
   - title
   - authors
-  - publisher
-  - publishedDate
-  - description
-  - isbn
-  - stock

@@ -30,7 +30,7 @@ import type {
   InternalServerErrorResponse,
   LoginBody,
   NotFoundResponse,
-  SearchBooksParams,
+  SearchGoogleBooksParams,
   UnauthorizedResponse,
   UpdateBookBody,
   UpdateUserBody,
@@ -51,8 +51,9 @@ import type {
   GetBooks200,
   GetLoans200,
   GetUsers200,
+  GoogleBook,
   Loan,
-  SearchBooks200,
+  SearchGoogleBooks200,
   User
 } from './model'
 
@@ -536,15 +537,15 @@ export const useDeleteBook = <TError = BadRequestResponse | UnauthorizedResponse
     }
     
 /**
- * @summary 書籍を検索する
+ * @summary Google Books から書籍を検索する
  */
-export type searchBooksResponse = {
-  data: SearchBooks200;
+export type searchGoogleBooksResponse = {
+  data: SearchGoogleBooks200;
   status: number;
   headers: Headers;
 }
 
-export const getSearchBooksUrl = (params?: SearchBooksParams,) => {
+export const getSearchGoogleBooksUrl = (params?: SearchGoogleBooksParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -554,12 +555,12 @@ export const getSearchBooksUrl = (params?: SearchBooksParams,) => {
     }
   });
 
-  return normalizedParams.size ? `https://localhost:8787/books/search?${normalizedParams.toString()}` : `https://localhost:8787/books/search`
+  return normalizedParams.size ? `https://localhost:8787/googlebooks?${normalizedParams.toString()}` : `https://localhost:8787/googlebooks`
 }
 
-export const searchBooks = async (params?: SearchBooksParams, options?: RequestInit): Promise<searchBooksResponse> => {
+export const searchGoogleBooks = async (params?: SearchGoogleBooksParams, options?: RequestInit): Promise<searchGoogleBooksResponse> => {
   
-  const res = await fetch(getSearchBooksUrl(params),
+  const res = await fetch(getSearchGoogleBooksUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -575,43 +576,124 @@ export const searchBooks = async (params?: SearchBooksParams, options?: RequestI
 
 
 
-export const getSearchBooksQueryKey = (params?: SearchBooksParams,) => {
-    return [`https://localhost:8787/books/search`, ...(params ? [params]: [])] as const;
+export const getSearchGoogleBooksQueryKey = (params?: SearchGoogleBooksParams,) => {
+    return [`https://localhost:8787/googlebooks`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getSearchBooksQueryOptions = <TData = Awaited<ReturnType<typeof searchBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(params?: SearchBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData>, fetch?: RequestInit}
+export const getSearchGoogleBooksQueryOptions = <TData = Awaited<ReturnType<typeof searchGoogleBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(params?: SearchGoogleBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData>, fetch?: RequestInit}
 ) => {
 
 const {query: queryOptions, fetch: fetchOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getSearchBooksQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getSearchGoogleBooksQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchBooks>>> = ({ signal }) => searchBooks(params, { signal, ...fetchOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchGoogleBooks>>> = ({ signal }) => searchGoogleBooks(params, { signal, ...fetchOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type SearchBooksQueryResult = NonNullable<Awaited<ReturnType<typeof searchBooks>>>
-export type SearchBooksQueryError = BadRequestResponse | InternalServerErrorResponse
+export type SearchGoogleBooksQueryResult = NonNullable<Awaited<ReturnType<typeof searchGoogleBooks>>>
+export type SearchGoogleBooksQueryError = BadRequestResponse | InternalServerErrorResponse
 
 
 /**
- * @summary 書籍を検索する
+ * @summary Google Books から書籍を検索する
  */
 
-export function useSearchBooks<TData = Awaited<ReturnType<typeof searchBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(
- params?: SearchBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchBooks>>, TError, TData>, fetch?: RequestInit}
+export function useSearchGoogleBooks<TData = Awaited<ReturnType<typeof searchGoogleBooks>>, TError = BadRequestResponse | InternalServerErrorResponse>(
+ params?: SearchGoogleBooksParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof searchGoogleBooks>>, TError, TData>, fetch?: RequestInit}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getSearchBooksQueryOptions(params,options)
+  const queryOptions = getSearchGoogleBooksQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Google Books から特定の書籍の情報を取得する
+ */
+export type getGoogleBookResponse = {
+  data: GoogleBook;
+  status: number;
+  headers: Headers;
+}
+
+export const getGetGoogleBookUrl = (volumeId: string,) => {
+
+
+  return `https://localhost:8787/googlebooks/${volumeId}`
+}
+
+export const getGoogleBook = async (volumeId: string, options?: RequestInit): Promise<getGoogleBookResponse> => {
+  
+  const res = await fetch(getGetGoogleBookUrl(volumeId),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data, headers: res.headers }
+}
+
+
+
+export const getGetGoogleBookQueryKey = (volumeId: string,) => {
+    return [`https://localhost:8787/googlebooks/${volumeId}`] as const;
+    }
+
+    
+export const getGetGoogleBookQueryOptions = <TData = Awaited<ReturnType<typeof getGoogleBook>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(volumeId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData>, fetch?: RequestInit}
+) => {
+
+const {query: queryOptions, fetch: fetchOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGoogleBookQueryKey(volumeId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoogleBook>>> = ({ signal }) => getGoogleBook(volumeId, { signal, ...fetchOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(volumeId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGoogleBookQueryResult = NonNullable<Awaited<ReturnType<typeof getGoogleBook>>>
+export type GetGoogleBookQueryError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse
+
+
+/**
+ * @summary Google Books から特定の書籍の情報を取得する
+ */
+
+export function useGetGoogleBook<TData = Awaited<ReturnType<typeof getGoogleBook>>, TError = BadRequestResponse | NotFoundResponse | InternalServerErrorResponse>(
+ volumeId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGoogleBook>>, TError, TData>, fetch?: RequestInit}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetGoogleBookQueryOptions(volumeId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1411,7 +1493,7 @@ export const useLogout = <TError = InternalServerErrorResponse,
     
 
 
-export const getGetBooksResponseMock = (overrideResponse: Partial< GetBooks200 > = {}): GetBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), description: faker.string.alpha(20), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.date.past().toISOString().split('T')[0], publisher: faker.string.alpha(20), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.string.alpha(20)})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+export const getGetBooksResponseMock = (overrideResponse: Partial< GetBooks200 > = {}): GetBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), description: faker.string.alpha(20), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.string.alpha(20), publisher: faker.string.alpha(20), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.string.alpha(20)})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
 export const getCreateBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
@@ -1419,7 +1501,9 @@ export const getGetBookResponseMock = (): Book => ({"id":1,"title":"計算機プ
 
 export const getUpdateBookResponseMock = (): Book => ({"id":1,"title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2012-07-06","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984","stock":1})
 
-export const getSearchBooksResponseMock = (): SearchBooks200 => ({"totalBook":30,"books":[{"id":"5-OgzgEACAAJ","title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2018-07-01","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984"}]})
+export const getSearchGoogleBooksResponseMock = (overrideResponse: Partial< SearchGoogleBooks200 > = {}): SearchGoogleBooks200 => ({books: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), description: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), id: faker.string.alpha(20), isbn: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publishedDate: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), publisher: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), thumbnail: faker.helpers.arrayElement([faker.string.alpha(20), undefined]), title: faker.string.alpha(20)})), totalBook: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+
+export const getGetGoogleBookResponseMock = (): GoogleBook => ({"id":"5-OgzgEACAAJ","title":"計算機プログラムの構造と解釈","authors":["Harold Abelson","Gerald Jay Sussman","Julie Sussman"],"publisher":"翔泳社","publishedDate":"2018-07-01","description":"言わずと知れた計算機科学の古典的名著","thumbnail":"http://books.google.com/books/content?id=LlH-oAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api","isbn":"9784798135984"})
 
 export const getGetUsersResponseMock = (overrideResponse: Partial< GetUsers200 > = {}): GetUsers200 => ({totalUser: faker.number.int({min: undefined, max: undefined}), users: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), name: faker.helpers.arrayElement([faker.string.alpha(20), undefined])})), ...overrideResponse})
 
@@ -1431,7 +1515,7 @@ export const getUpdateUserResponseMock = (): User => ({"id":1,"name":"比企谷�
 
 export const getDeleteUserResponseMock = (): DeleteUser204 => ({"message":"No Content"})
 
-export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 > = {}): GetLoans200 => ({loans: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({books: faker.helpers.arrayElement([{authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), description: faker.string.alpha(20), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.date.past().toISOString().split('T')[0], publisher: faker.string.alpha(20), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.string.alpha(20)}, undefined]), loans: faker.helpers.arrayElement([{bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})}, undefined]), users: faker.helpers.arrayElement([{email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.string.alpha(20), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]), undefined])}, undefined])})), totalLoan: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
+export const getGetLoansResponseMock = (overrideResponse: Partial< GetLoans200 > = {}): GetLoans200 => ({loans: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({books: faker.helpers.arrayElement([{authors: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha(20))), description: faker.string.alpha(20), id: faker.number.int({min: undefined, max: undefined}), isbn: faker.helpers.fromRegExp('^\d{10}(\d{3})?$'), publishedDate: faker.string.alpha(20), publisher: faker.string.alpha(20), stock: faker.number.int({min: undefined, max: undefined}), thumbnail: faker.helpers.arrayElement([faker.internet.url(), undefined]), title: faker.string.alpha(20)}, undefined]), loans: faker.helpers.arrayElement([{bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})}, undefined]), users: faker.helpers.arrayElement([{email: faker.internet.email(), id: faker.number.int({min: undefined, max: undefined}), name: faker.string.alpha(20), sessionToken: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha(20), null]), undefined])}, undefined])})), totalLoan: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})
 
 export const getUpsertLoansResponseMock = (): Loan[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({bookId: faker.number.int({min: undefined, max: undefined}), createdAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), updatedAt: faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}), undefined]), userId: faker.number.int({min: undefined, max: undefined}), volume: faker.number.int({min: undefined, max: undefined})})))
 
@@ -1506,12 +1590,24 @@ export const getDeleteBookMockHandler = (overrideResponse?: void | ((info: Param
   })
 }
 
-export const getSearchBooksMockHandler = (overrideResponse?: SearchBooks200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SearchBooks200> | SearchBooks200)) => {
-  return http.get('*/books/search', async (info) => {
+export const getSearchGoogleBooksMockHandler = (overrideResponse?: SearchGoogleBooks200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SearchGoogleBooks200> | SearchGoogleBooks200)) => {
+  return http.get('*/googlebooks', async (info) => {
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
-            : getSearchBooksResponseMock()),
+            : getSearchGoogleBooksResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGetGoogleBookMockHandler = (overrideResponse?: GoogleBook | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GoogleBook> | GoogleBook)) => {
+  return http.get('*/googlebooks/:volumeId', async (info) => {
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getGetGoogleBookResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -1640,7 +1736,8 @@ export const getKITCCLibraryAPIMock = () => [
   getGetBookMockHandler(),
   getUpdateBookMockHandler(),
   getDeleteBookMockHandler(),
-  getSearchBooksMockHandler(),
+  getSearchGoogleBooksMockHandler(),
+  getGetGoogleBookMockHandler(),
   getGetUsersMockHandler(),
   getCreateUserMockHandler(),
   getDeleteUsersMockHandler(),
