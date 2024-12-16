@@ -1,25 +1,20 @@
 import { Button } from '@mantine/core';
 import { useNavigate } from '@remix-run/react';
+import { Book } from 'client/client.schemas';
 import { useAtom } from 'jotai';
 import { BiSolidCartAdd } from 'react-icons/bi';
 import { cartAtom } from '~/stores/cartAtom';
 import { addBooksToCart } from '~/utils/cart';
 
 interface BookCardCartButtonProps {
-	id: number;
-	stock: number;
-	thumbnail?: string;
+	book: Book;
 }
 
-const BookCardCartButton = ({
-	id,
-	stock,
-	thumbnail,
-}: BookCardCartButtonProps) => {
+const BookCardCartButton = ({ book }: BookCardCartButtonProps) => {
 	const [cart, setCart] = useAtom(cartAtom);
 	const navigate = useNavigate();
 	const addCart = () => {
-		setCart(addBooksToCart(cart, [{ id, stock, thumbnail }]));
+		setCart(addBooksToCart(cart, [book]));
 		navigate('/home/cart');
 	};
 	return (
@@ -27,10 +22,13 @@ const BookCardCartButton = ({
 			variant="filled"
 			color="yellow"
 			radius="xl"
-			disabled={stock === 0}
+			disabled={book.stock === 0}
 			onClick={addCart}
 			leftSection={<BiSolidCartAdd size={23} />}
-			fz={10}
+			fz={{
+				base: 10,
+				md: 'xs',
+			}}
 		>
 			カートに入れる
 		</Button>
