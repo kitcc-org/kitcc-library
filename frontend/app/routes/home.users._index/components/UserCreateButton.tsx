@@ -7,7 +7,7 @@ const UserCreateButton = () => {
 			color="blue"
 			variant="filled"
 			radius="xl"
-			leftSection={<RiUserAddFill />}
+			leftSection={<RiUserAddFill size={18} />}
 			component="a"
 			href="users/create"
 		>

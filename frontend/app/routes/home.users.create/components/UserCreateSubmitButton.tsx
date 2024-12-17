@@ -10,7 +10,7 @@ const UserCreateSubmitButton = ({ copied }: UserCreateSubmitButtonProps) => {
 		<Button
 			type="submit"
 			color="yellow"
-			leftSection={<RiUserAddFill />}
+			leftSection={<RiUserAddFill size={18} />}
 			disabled={!copied}
 		>
 			{copied ? '作成' : 'パスワードを生成してください'}

@@ -11,7 +11,7 @@ const PasswordGenerateButton = ({
 	return (
 		<Button
 			onClick={() => handlePasswordGenButtonClick()}
-			leftSection={<FaKey />}
+			leftSection={<FaKey size={15} />}
 		>
 			パスワードを生成する
 		</Button>
