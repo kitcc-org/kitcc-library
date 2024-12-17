@@ -11,12 +11,12 @@ import { Book } from 'client/client.schemas';
 import { FaBook } from 'react-icons/fa6';
 import { LuBookCopy } from 'react-icons/lu';
 import { TbBookUpload } from 'react-icons/tb';
-import BookDetailActionPanel from '~/components/book-detail/BookDetailActionPanel';
-import BreadCrumbsComponent from '~/components/common/breadcrumbs/BreadCrumbsComponent';
-import ErrorComponent from '~/components/common/error/ErrorComponent';
+import BreadCrumbsComponent from '~/components/breadcrumbs/BreadCrumbsComponent';
+import ErrorComponent from '~/components/error/ErrorComponent';
 import { commitSession, getSession } from '~/services/session.server';
 import { ActionResponse } from '~/types/response';
 import { makeCookieHeader } from '~/utils/session';
+import BookDetailActionPanel from './components/BookDetailActionPanel';
 
 interface LoaderData {
 	bookResponse: getBookResponse;

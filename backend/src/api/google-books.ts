@@ -38,7 +38,7 @@ interface GoogleAPIError {
 	};
 }
 
-const GOOGLE_BOOOKS_BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
+const GOOGLE_BOOKS_BASE_URL = 'https://www.googleapis.com/books/v1/volumes';
 
 const getGoogleBookInfo = (volumeInfo: GoogleBooksVolumeInfo) => {
 	// ISBNを取得する
@@ -105,7 +105,9 @@ app.get(
 		});
 
 		// Google Books APIにリクエストを送信する
-		const response = await fetch(`${GOOGLE_BOOOKS_BASE_URL}?${params}`);
+		const response = await fetch(
+			`${GOOGLE_BOOKS_BASE_URL}?${params.toString()}`,
+		);
 		if (response.status !== 200) {
 			const error: GoogleAPIError = await response.json();
 			return ctx.json(error, { status: response.status });
@@ -172,7 +174,7 @@ app.get(
 		const volumeId = param['volumeId'];
 
 		const response = await fetch(
-			`${GOOGLE_BOOOKS_BASE_URL}/${volumeId}?key=${ctx.env.GOOGLE_BOOKS_API_KEY}`,
+			`${GOOGLE_BOOKS_BASE_URL}/${volumeId}?key=${ctx.env.GOOGLE_BOOKS_API_KEY}`,
 		);
 		if (response.status !== 200) {
 			const error: GoogleAPIError = await response.json();

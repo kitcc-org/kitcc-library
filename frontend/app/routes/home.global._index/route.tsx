@@ -6,7 +6,7 @@ import { useLoaderData, useNavigate } from '@remix-run/react';
 import { searchGoogleBooks, searchGoogleBooksResponse } from 'client/client';
 import { SearchGoogleBooksParams } from 'client/client.schemas';
 import { useEffect, useState } from 'react';
-import GlobalBookListComponent from '~/components/global-books/GlobalBookListComponent';
+import GlobalBookListComponent from './components/GlobalBookListComponent';
 
 interface LoaderData {
 	booksResponse?: searchGoogleBooksResponse;
