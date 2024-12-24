@@ -61,7 +61,7 @@
 		"eslint-plugin-jsx-a11y": "^6.7.1",
 		"eslint-plugin-react": "^7.33.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
-		"happy-dom": "^15.7.4",
+		"happy-dom": "^15.10.2",
 		"msw": "^2.5.1",
 		"orval": "^7.1.1",
 		"postcss": "^8.4.47",
