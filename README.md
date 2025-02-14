@@ -46,7 +46,36 @@ KITCC が所有する書籍を管理する Web アプリ
 
 ## ER 図
 
-![ER図](https://github.com/user-attachments/assets/6b9cc0ed-4be6-43d3-9b81-179ae72b0acd)
+```mermaid
+erDiagram
+    Book {
+        int book_id PK
+        string title
+        string authors
+        string publisher
+        date published_date
+        string description
+        string isbn
+        int stock
+    }
+
+    Loan {
+        int user_id FK
+        int book_id FK
+        int volume
+        datetime created_at
+        datetime updated_at
+    }
+
+    User {
+        int user_id PK
+        string name
+        string email
+        string password_digest
+    }
+    User ||--o{ Loan : "borrows"
+    Book ||--o{ Loan : "borrowed"
+```
 
 ## ワイヤーフレーム
 
