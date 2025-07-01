@@ -1,7 +1,7 @@
 module.exports = {
 	client: {
 		input: {
-			target: './api/bundle.yml',
+			target: './openapi/bundle.yml',
 		},
 		output: {
 			client: 'react-query',
@@ -19,7 +19,7 @@ module.exports = {
 	},
 	msw: {
 		input: {
-			target: './api/bundle.yml',
+			target: './openapi/bundle.yml',
 		},
 		output: {
 			baseUrl: 'https://localhost:8787',
@@ -41,7 +41,7 @@ module.exports = {
 	},
 	zod: {
 		input: {
-			target: './api/bundle.yml',
+			target: './openapi/bundle.yml',
 		},
 		output: {
 			client: 'zod',

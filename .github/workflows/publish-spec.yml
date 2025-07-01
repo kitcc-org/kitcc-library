@@ -21,7 +21,7 @@ jobs:
           node-version: '22'
 
       - name: Bundle API
-        working-directory: api
+        working-directory: openapi
         run: |
           npm run bundle
 
@@ -29,7 +29,7 @@ jobs:
         uses: Legion2/swagger-ui-action@v1
         with:
           output: swagger-ui
-          spec-file: ./api/bundle.yml
+          spec-file: ./openapi/bundle.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Cloudflare Pages
