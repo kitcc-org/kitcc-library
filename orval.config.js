@@ -1,7 +1,7 @@
 module.exports = {
 	client: {
 		input: {
-			target: './api/bundle.yml',
+			target: './openapi/bundle.yml',
 		},
 		output: {
 			baseUrl: 'https://kitcc-library-api.kitcc.workers.dev',
@@ -19,7 +19,7 @@ module.exports = {
 	},
 	zod: {
 		input: {
-			target: './api/bundle.yml',
+			target: './openapi/bundle.yml',
 		},
 		output: {
 			client: 'zod',

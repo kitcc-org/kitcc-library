@@ -1,7 +1,7 @@
 ## ディレクトリ構造
 
 ```
-api
+openapi
 ├── bundle.yml ... APIに仕様を1つにまとめたYAMLファイル
 ├── components ... 使い回すために部品化された仕様
 │   ├── examples
@@ -15,11 +15,13 @@ api
 ## CLI
 
 バリデーション
+
 ```
 $ npm run lint
 ```
 
-APIの仕様を1つのYAMLファイルにまとめる
+API の仕様を 1 つの YAML ファイルにまとめる
+
 ```
 $ npm run bundle
 ```

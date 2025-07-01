@@ -17,4 +17,4 @@ jobs:
 
       - name: Validate API Specification
         run: |
-          redocly lint ./api/openapi.yml
+          redocly lint ./openapi/openapi.yml
